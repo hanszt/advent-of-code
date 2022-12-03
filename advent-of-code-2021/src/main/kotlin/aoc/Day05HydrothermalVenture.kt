@@ -1,6 +1,6 @@
 package aoc
 
-import model.GridPoint2D
+import aoc.utils.model.GridPoint2D
 import model.Line
 import java.io.File
 import kotlin.math.max

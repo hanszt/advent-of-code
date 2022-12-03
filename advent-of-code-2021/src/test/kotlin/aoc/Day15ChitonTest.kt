@@ -3,7 +3,7 @@ package aoc
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
-import utils.*
+import aoc.utils.*
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertTrue

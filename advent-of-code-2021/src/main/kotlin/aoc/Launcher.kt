@@ -1,6 +1,6 @@
 package aoc
 
-import utils.*
+import aoc.utils.*
 
 fun main(args: Array<String>) {
     ChallengeDay.inputDir = args.firstOrNull() ?: "input"

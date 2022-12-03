@@ -1,7 +1,7 @@
 package model
 
-import utils.mapBoth
-import utils.mapFirst
+import aoc.utils.mapBoth
+import aoc.utils.mapFirst
 
 internal data class SignalEntry(val uniqueSignalPatterns: List<String>, val fourDigitPatterns: List<String>) {
 

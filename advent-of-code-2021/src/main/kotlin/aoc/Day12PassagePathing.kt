@@ -1,8 +1,8 @@
 package aoc
 
-import model.Node
-import utils.allPathsByDfs
-import utils.toBiDiGraph
+import aoc.utils.allPathsByDfs
+import aoc.utils.model.Node
+import aoc.utils.toBiDiGraph
 import java.io.File
 import java.util.*
 

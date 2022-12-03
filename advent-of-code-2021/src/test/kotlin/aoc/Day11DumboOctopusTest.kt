@@ -5,7 +5,7 @@ import aoc.Day11DumboOctopus.simulateStep
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
-import utils.*
+import aoc.utils.*
 
 internal class Day11DumboOctopusTest {
 

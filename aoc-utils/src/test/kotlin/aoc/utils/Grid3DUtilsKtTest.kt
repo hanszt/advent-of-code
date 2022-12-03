@@ -1,8 +1,7 @@
-package utils
+package aoc.utils
 
-import model.GridPoint3D
+import aoc.utils.model.GridPoint3D
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 internal class Grid3DUtilsKtTest {
 
@@ -13,7 +12,7 @@ internal class Grid3DUtilsKtTest {
         for (orientation in orientations.indices) {
             val newOrientation = point.rotate(orientation)
             println("newOrientation = $newOrientation")
-            assertEquals(newOrientations[orientation], newOrientation)
+            kotlin.test.assertEquals(newOrientations[orientation], newOrientation)
         }
     }
 

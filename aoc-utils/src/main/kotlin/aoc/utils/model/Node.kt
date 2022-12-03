@@ -1,10 +1,10 @@
-package model
+package aoc.utils.model
 
 import java.util.*
 
 open class Node<T>(val value: T? = null) {
 
-    internal val neighbors =  mutableSetOf<Node<T>>()
+    val neighbors =  mutableSetOf<Node<T>>()
 
     fun addNeighbor(neighbor: Node<T>) = neighbors.add(neighbor)
 

@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package utils
+package aoc.utils
 
 /**
  * from list of strings to grid converters

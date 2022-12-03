@@ -1,8 +1,8 @@
 package aoc
 
-import utils.sumNaturalNrs
 import java.io.File
 import kotlin.math.abs
+import aoc.utils.sumNaturalNrs
 
 internal object Day07TheTreacheryOfWales : ChallengeDay {
 

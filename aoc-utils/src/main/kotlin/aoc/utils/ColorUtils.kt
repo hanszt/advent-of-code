@@ -32,7 +32,7 @@ fun <T> T.withColors(textColor: String, backgroundColor: String, size: Int = 1) 
 fun to16bitAnsiColorTabel(bgColors: Boolean = false): Map<Int, String> {
     return (0 until SIXTEEN_BIT).flatMap { i ->
         (0 until SIXTEEN_BIT).map { i * SIXTEEN_BIT + it }
-    }.associateBy( { it }, { "\u001b[${if (bgColors) 4 else 3}8;5;${it}m" })
+    }.associateBy(::self) { "\u001b[${if (bgColors) 4 else 3}8;5;${it}m" }
 }
 
 fun random16BitColor() = colorTable16Bit.values.random()

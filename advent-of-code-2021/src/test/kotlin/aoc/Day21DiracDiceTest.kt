@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import utils.mapBoth
+import aoc.utils.mapBoth
 import java.io.File
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

@@ -1,5 +1,6 @@
 package model
 
+import aoc.utils.model.GridPoint2D
 import kotlin.math.abs
 
 internal data class Line(val begin: GridPoint2D, val end: GridPoint2D) {

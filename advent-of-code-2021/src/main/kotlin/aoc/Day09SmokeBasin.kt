@@ -1,7 +1,7 @@
 package aoc
 
-import model.GridPoint2D
-import utils.toIntGrid
+import aoc.utils.model.GridPoint2D
+import aoc.utils.toIntGrid
 import java.io.File
 
 internal object Day09SmokeBasin : ChallengeDay {

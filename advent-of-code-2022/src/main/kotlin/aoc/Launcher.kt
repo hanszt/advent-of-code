@@ -8,8 +8,8 @@ fun main(vararg args: String) {
     val inputDir = args.firstOrNull() ?: "input"
 
     val results = sequenceOf(
-        Day01CalorieCounting("$inputDir/day1.txt"),
-        Day02RockPaperScissors("$inputDir/day2.txt")
+        Day01CalorieCounting("$inputDir/day01.txt"),
+        Day02RockPaperScissors("$inputDir/day02.txt")
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()

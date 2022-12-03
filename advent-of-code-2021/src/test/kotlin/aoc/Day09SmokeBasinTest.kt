@@ -5,10 +5,10 @@ import aoc.Day09SmokeBasin.toLowPoints
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import model.GridPoint2D
-import utils.CYAN
-import utils.withColor
-import utils.toIntGrid
+import aoc.utils.model.GridPoint2D
+import aoc.utils.CYAN
+import aoc.utils.withColor
+import aoc.utils.toIntGrid
 
 internal class Day09SmokeBasinTest {
 

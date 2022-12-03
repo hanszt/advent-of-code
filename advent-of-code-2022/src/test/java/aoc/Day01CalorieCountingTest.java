@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day01CalorieCountingTest {
 
-    private final Day01CalorieCounting day01CalorieCounting = new Day01CalorieCounting("input/day1.txt");
+    private final Day01CalorieCounting day01CalorieCounting = new Day01CalorieCounting("input/day01.txt");
 
     @Test
     void testPart1() {

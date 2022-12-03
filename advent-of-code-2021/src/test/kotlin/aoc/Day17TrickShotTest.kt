@@ -1,12 +1,12 @@
 package aoc
 
 import aoc.Day17TrickShot.Probe
-import model.GridPoint2D
+import aoc.utils.model.GridPoint2D
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import utils.*
+import aoc.utils.*
 
 internal class Day17TrickShotTest {
 

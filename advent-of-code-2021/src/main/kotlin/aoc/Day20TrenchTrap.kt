@@ -1,6 +1,8 @@
 package aoc
 
-import utils.*
+import aoc.utils.forEachPoint
+import aoc.utils.splitByBlankLine
+import aoc.utils.toIntGrid
 import java.io.File
 
 internal object Day20TrenchTrap : ChallengeDay {

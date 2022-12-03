@@ -1,9 +1,9 @@
 package aoc
 
-import utils.oneOrMoreWhiteSpaces
-import utils.rotated
-import utils.splitByBlankLine
-import utils.toIntGrid
+import aoc.utils.oneOrMoreWhiteSpaces
+import aoc.utils.rotated
+import aoc.utils.splitByBlankLine
+import aoc.utils.toIntGrid
 import java.io.File
 
 internal object Day04GiantSquid : ChallengeDay {

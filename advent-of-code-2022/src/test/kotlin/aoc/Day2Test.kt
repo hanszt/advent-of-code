@@ -5,11 +5,11 @@ import kotlin.test.assertEquals
 
 internal class Day2Test {
 
-    private val day02RockPaperScissors = Day02RockPaperScissors("input/day2.txt")
+    private val day02RockPaperScissors = Day02RockPaperScissors("input/day02.txt")
 
     @Test
     fun `test part 1 test`() {
-        val score = Day02RockPaperScissors("input/day2test.txt").part1()
+        val score = Day02RockPaperScissors("input/day02test.txt").part1()
         assertEquals(15, score)
     }
 
@@ -22,7 +22,7 @@ internal class Day2Test {
 
     @Test
     fun `test part 2 test`() {
-        val score = Day02RockPaperScissors("input/day2test.txt").part2()
+        val score = Day02RockPaperScissors("input/day02test.txt").part2()
         assertEquals(12, score)
     }
 

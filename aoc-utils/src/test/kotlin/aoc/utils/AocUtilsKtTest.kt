@@ -1,8 +1,7 @@
-package utils
+package aoc.utils
 
 import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.*
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource

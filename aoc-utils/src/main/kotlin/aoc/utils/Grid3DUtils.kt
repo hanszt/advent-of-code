@@ -1,6 +1,6 @@
-package utils
+package aoc.utils
 
-import model.GridPoint3D
+import aoc.utils.model.GridPoint3D
 
 class Transform3D(val dir: Int, val translation: GridPoint3D)
 
@@ -8,7 +8,7 @@ fun GridPoint3D.transform(transform: Transform3D): GridPoint3D = rotate(transfor
 
 fun GridPoint3D.transform(transforms: List<Transform3D>): GridPoint3D = transforms.fold(this, GridPoint3D::transform)
 
-fun GridPoint3D.rotate(orientation: Int): GridPoint3D = orientations[orientation].invoke(this)
+fun GridPoint3D.rotate(orientation: Int): GridPoint3D = orientations[orientation](this)
 
 val orientations = listOf<(GridPoint3D) -> GridPoint3D>(
     { (x, y, z) -> GridPoint3D(x, y, z) },

@@ -1,7 +1,7 @@
-package utils
+package aoc.utils
 
-import model.Node
-import model.WeightedNode
+import aoc.utils.model.Node
+import aoc.utils.model.WeightedNode
 
 fun List<String>.toBiDiGraph(delimiter: String): Map<String, Node<String?>> = toBiDiGraph(delimiter) { it }
 

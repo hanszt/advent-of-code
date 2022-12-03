@@ -12,16 +12,15 @@ internal object Day10SyntaxScoring : ChallengeDay {
             closingToScoresPart1[corrupted] ?: 0
         }
 
-    fun toCorruptedClosingCharAndRemainingChars(s: String): Pair<Char, List<Char>> {
-        val chars = s.toMutableList()
-        var prevSize: Int
-        while (true) {
-            prevSize = chars.size
-            val closingChar = chars.removeValidUnitChunk()
-            if (chars.size == prevSize) {
-                return closingChar to chars
-            }
+    tailrec fun toCorruptedClosingCharAndRemainingChars(
+        s: String, chars: MutableList<Char> = s.toMutableList()
+    ): Pair<Char, List<Char>> {
+        val prevSize = chars.size
+        val closingChar = chars.removeValidUnitChunk()
+        if (chars.size == prevSize) {
+            return closingChar to chars
         }
+        return toCorruptedClosingCharAndRemainingChars(s, chars)
     }
 
     private val openingToClosingChars = mapOf('(' to ')', '[' to ']', '{' to '}', '<' to '>')

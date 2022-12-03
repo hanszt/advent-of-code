@@ -1,7 +1,7 @@
 package aoc
 
 import model.SignalEntry
-import utils.endsTo
+import aoc.utils.endsTo
 import java.io.File
 
 internal object Day08SevenSegmentSearch : ChallengeDay {

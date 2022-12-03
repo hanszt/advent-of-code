@@ -1,8 +1,8 @@
 package aoc
 
-import utils.self
-import utils.reduce
-import utils.splitByBlankLine
+import aoc.utils.reduce
+import aoc.utils.splitByBlankLine
+import aoc.utils.self
 import java.io.File
 
 internal object Day14ExtendedPolymerization : ChallengeDay {

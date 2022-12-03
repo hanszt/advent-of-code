@@ -1,4 +1,4 @@
-package model
+package aoc.utils.model
 
 import java.util.*
 

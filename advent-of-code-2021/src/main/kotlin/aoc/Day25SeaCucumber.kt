@@ -1,7 +1,7 @@
 package aoc
 
-import utils.toGridOf
 import java.io.File
+import aoc.utils.toGridOf
 
 internal object Day25SeaCucumber : ChallengeDay {
 

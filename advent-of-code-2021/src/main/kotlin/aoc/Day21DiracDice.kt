@@ -1,6 +1,6 @@
 package aoc
 
-import utils.wrapBack
+import aoc.utils.wrapBack
 import java.io.File
 import kotlin.math.min
 

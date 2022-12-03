@@ -1,7 +1,7 @@
 package aoc
 
-import model.WeightedNode
-import utils.*
+import aoc.utils.*
+import aoc.utils.model.WeightedNode
 import java.io.File
 import java.util.*
 

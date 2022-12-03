@@ -4,7 +4,7 @@ import aoc.Day05HydrothermalVenture.asGrid
 import aoc.Day05HydrothermalVenture.countIntersections
 import aoc.Day05HydrothermalVenture.toVentureLines
 import org.junit.jupiter.api.Test
-import utils.*
+import aoc.utils.*
 import java.io.File
 
 internal class Day05HydrothermalVentureTest {

@@ -3,7 +3,7 @@ package aoc
 import aoc.Day13TransparentOrigami.toExpectedTextOrElseThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import utils.*
+import aoc.utils.*
 
 internal class Day13TransparentOrigamiTest {
 

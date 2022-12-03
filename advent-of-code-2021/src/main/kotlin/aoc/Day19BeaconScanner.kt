@@ -1,8 +1,13 @@
 package aoc
 
-import model.GridPoint3D
-import utils.*
+import aoc.utils.model.GridPoint3D
+import aoc.utils.self
+import aoc.utils.splitByBlankLine
 import java.io.File
+import aoc.utils.Transform3D
+import aoc.utils.transform
+import aoc.utils.orientations
+import aoc.utils.rotate
 
 //
 // I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.

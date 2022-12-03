@@ -1,6 +1,6 @@
-package utils
+package aoc.utils
 
-import model.GridPoint2D
+import aoc.utils.model.GridPoint2D
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

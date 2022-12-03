@@ -1,6 +1,6 @@
 package aoc
 
-import utils.self
+import aoc.utils.self
 import java.io.File
 
 internal object Day22ReactorReboot : ChallengeDay {

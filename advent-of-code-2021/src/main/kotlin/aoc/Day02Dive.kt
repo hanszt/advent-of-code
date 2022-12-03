@@ -1,9 +1,10 @@
 package aoc
 
-import model.GridPoint2D
-import utils.mapSecond
-import utils.toEnds
+import aoc.utils.mapSecond
 import java.io.File
+
+import aoc.utils.model.GridPoint2D
+import aoc.utils.toEnds
 
 internal object Day02Dive : ChallengeDay {
 

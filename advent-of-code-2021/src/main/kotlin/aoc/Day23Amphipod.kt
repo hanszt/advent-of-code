@@ -1,6 +1,6 @@
 package aoc
 
-import utils.*
+import aoc.utils.*
 import java.io.File
 import java.util.*
 import kotlin.math.abs
