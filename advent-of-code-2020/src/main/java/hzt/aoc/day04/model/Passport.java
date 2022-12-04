@@ -1,14 +1,13 @@
 package hzt.aoc.day04.model;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import hzt.aoc.AocLogger;
 
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Passport {
 
-    private static final Logger LOGGER = LogManager.getLogger(Passport.class);
+    private static final AocLogger LOGGER = AocLogger.getLogger(Passport.class);
 
     private static final Pattern HAIR_COLOR_PATTERN = Pattern.compile("(#)([\\da-fA-F]{6})");
     private static final Pattern PASSWORD_ID_PATTERN = Pattern.compile("(\\d{9})");

@@ -2,7 +2,7 @@ package hzt.aoc.day12;
 
 import hzt.aoc.Challenge;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 public abstract class Day12Challenge extends Challenge {
 
@@ -19,19 +19,14 @@ public abstract class Day12Challenge extends Challenge {
         super(challengeTitle, description, "20201212-input-day12.txt");
     }
 
-    Point2D getTranslationInWindDirection(final char direction, final int amount) {
-        switch (direction) {
-            case EAST:
-                return new Point2D(amount, 0);
-            case WEST:
-                return new Point2D(-amount, 0);
-            case NORTH:
-                return new Point2D(0, amount);
-            case SOUTH:
-                return new Point2D(0, -amount);
-            default:
-                return new Point2D(0,0);
-        }
+    GridPoint2D getTranslationInWindDirection(final char direction, final int amount) {
+        return switch (direction) {
+            case EAST -> new GridPoint2D(amount, 0);
+            case WEST -> new GridPoint2D(-amount, 0);
+            case NORTH -> new GridPoint2D(0, amount);
+            case SOUTH -> new GridPoint2D(0, -amount);
+            default -> new GridPoint2D(0, 0);
+        };
     }
 
 

@@ -1,6 +1,6 @@
 package hzt.aoc.day24;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class Part1LobbyLayout extends Day24Challenge {
 
     @Override
     protected long calculateResult(final List<List<String>> instructionsList) {
-        final Map<Point2D, Tile> tileMap = buildFloorByInstructions(instructionsList);
+        final Map<GridPoint2D, Tile> tileMap = buildFloorByInstructions(instructionsList);
         return countTilesWithBlackSideUp(tileMap.values());
     }
 

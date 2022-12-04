@@ -1,7 +1,5 @@
 package hzt.aoc.day14;
 
-import hzt.aoc.Pair;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,12 +8,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Program implements Iterable<Pair<Integer, Integer>> {
+public class Program implements Iterable<Program.Pair> {
 
     private static final int BITMASK_LENGTH = 36;
 
     private final String bitMask;
-    private final List<Pair<Integer, Integer>> integerAsBinaryStringsToMemorySpotList = new ArrayList<>();
+    private final List<Pair> integerAsBinaryStringsToMemorySpotList = new ArrayList<>();
 
 
     public Program(final String bitMask) {
@@ -23,15 +21,15 @@ public class Program implements Iterable<Pair<Integer, Integer>> {
     }
 
     public void put(final int value, final int memSpot) {
-        integerAsBinaryStringsToMemorySpotList.add(new Pair<>(value, memSpot));
+        integerAsBinaryStringsToMemorySpotList.add(new Pair(value, memSpot));
     }
 
     @Override
-    public Iterator<Pair<Integer, Integer>> iterator() {
+    public Iterator<Pair> iterator() {
         return integerAsBinaryStringsToMemorySpotList.iterator();
     }
 
-    public Long getValueStoredAfterBitMaskApplication(final int value) {
+    public long getValueStoredAfterBitMaskApplication(final int value) {
         final String binaryString36 = convertIntToBinaryString(value);
         final char[] array = binaryString36.toCharArray();
         for (int i = 0; i < binaryString36.length(); i++) {
@@ -78,6 +76,9 @@ public class Program implements Iterable<Pair<Integer, Integer>> {
                 "bitMask='" + bitMask + '\'' +
                 ", integersAsBinaryStringsToMemorySpot=" + integerAsBinaryStringsToMemorySpotList +
                 '}';
+    }
+
+    record Pair(int binNr, int memSpot) {
     }
 
 }

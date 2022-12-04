@@ -9,7 +9,9 @@ fun main(vararg args: String) {
 
     val results = sequenceOf(
         Day01CalorieCounting("$inputDir/day01.txt"),
-        Day02RockPaperScissors("$inputDir/day02.txt")
+        Day02RockPaperScissors("$inputDir/day02.txt"),
+        Day03RucksackReorganisation("$inputDir/day03.txt"),
+        Day04CampCleanup("$inputDir/day04.txt"),
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()

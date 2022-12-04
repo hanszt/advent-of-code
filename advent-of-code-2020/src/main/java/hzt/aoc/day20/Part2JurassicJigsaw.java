@@ -1,6 +1,6 @@
 package hzt.aoc.day20;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +25,7 @@ public class Part2JurassicJigsaw extends Day20Challenge {
         final int pictureSideLength = (int) Math.sqrt(tileIdsToGrids.size());
         final Set<Integer> placedIds = new HashSet<>();
         final Tile[][] placedTiles = new Tile[pictureSideLength][pictureSideLength];
-        final boolean complete = placeNextTile(placedIds, placedTiles, new Point2D(0, 0), tileIdsToGrids);
+        final boolean complete = placeNextTile(placedIds, placedTiles, new GridPoint2D(0, 0), tileIdsToGrids);
         if (complete) {
             final List<String> fullPicture = buildFullPicture(placedTiles, pictureSideLength);
             return countHowManyHashesNotPartOfSeeMonster(fullPicture);
@@ -121,7 +121,7 @@ public class Part2JurassicJigsaw extends Day20Challenge {
 
     private boolean placeNextTile(final Set<Integer> placedIds,
                                   final Tile[][] placed,
-                                  final Point2D curPosition,
+                                  final GridPoint2D curPosition,
                                   final Map<Integer, Tile> tiles) {
         for (final Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
             if (!placedIds.contains(entry.getKey())) {
@@ -143,10 +143,10 @@ public class Part2JurassicJigsaw extends Day20Challenge {
                                     final Set<Integer> placedIds,
                                     final Map<Integer, Tile> tiles) {
         for (final List<String> orientation : curTile.getOrientations()) {
-            final Point2D cur = curTile.getPosition();
+            final GridPoint2D cur = curTile.getPosition();
             placed[cur.y()][cur.x()] = new Tile(orientation);
             if (canPlaceTile(placed, cur)) {
-                final Point2D next = nextPosition(cur);
+                final GridPoint2D next = nextPosition(cur);
                 final boolean allTilesPlaced = next.y() == sideLength;
                 final var nextTilePlaced = placeNextTile(placedIds, placed, next, tiles);
                 if (allTilesPlaced || nextTilePlaced) {
@@ -157,17 +157,17 @@ public class Part2JurassicJigsaw extends Day20Challenge {
         return false;
     }
 
-    private Point2D nextPosition(final Point2D point2D) {
-        int nextX = point2D.x() + 1;
-        int nextY = point2D.y();
+    private GridPoint2D nextPosition(final GridPoint2D gridPoint2D) {
+        int nextX = gridPoint2D.x() + 1;
+        int nextY = gridPoint2D.y();
         if (nextX == sideLength) {
             nextX = 0;
             nextY++;
         }
-        return new Point2D(nextX, nextY);
+        return new GridPoint2D(nextX, nextY);
     }
 
-    private static boolean canPlaceTile(final Tile[][] placed, final Point2D p) {
+    private static boolean canPlaceTile(final Tile[][] placed, final GridPoint2D p) {
         if (p.x() > 0 && !placed[p.y()][p.x() - 1].getRight().equals(placed[p.y()][p.x()].getLeft())) {
             return false;
         }

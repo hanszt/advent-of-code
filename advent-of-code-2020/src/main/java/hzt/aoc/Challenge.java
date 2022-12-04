@@ -1,8 +1,6 @@
 package hzt.aoc;
 
 import hzt.aoc.io.IOController2;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +12,7 @@ import static hzt.Launcher.DOTTED_LINE;
 public abstract class Challenge {
 
     @SuppressWarnings("squid:S1312")
-    public static final Logger LOGGER = LogManager.getLogger(Challenge.class);
+    public static final AocLogger LOGGER = AocLogger.getLogger(Challenge.class);
 
     protected static final Pattern COMMA_PATTERN = Pattern.compile(",");
     protected static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");

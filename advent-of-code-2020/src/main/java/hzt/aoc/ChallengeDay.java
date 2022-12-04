@@ -1,8 +1,5 @@
 package hzt.aoc;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -12,7 +9,7 @@ import static hzt.Launcher.DOTTED_LINE;
 
 public final class ChallengeDay {
 
-    private static final Logger LOGGER = LogManager.getLogger(ChallengeDay.class);
+    private static final AocLogger LOGGER = AocLogger.getLogger(ChallengeDay.class);
 
     private final String textColor;
     private final String title;
@@ -23,7 +20,7 @@ public final class ChallengeDay {
         this.title = title;
         this.textColor = textColor;
         this.date = date;
-        this.challenges = challenges;
+        this.challenges = Arrays.copyOf(challenges, challenges.length);
         for(final Challenge challenge : challenges) {
             challenge.setTitle(title);
         }

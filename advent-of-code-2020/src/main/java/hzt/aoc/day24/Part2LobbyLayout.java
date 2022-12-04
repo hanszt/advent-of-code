@@ -1,6 +1,6 @@
 package hzt.aoc.day24;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +21,7 @@ public class Part2LobbyLayout extends Day24Challenge {
 
     @Override
     protected long calculateResult(final List<List<String>> instructions) {
-        final Map<Point2D, Tile> tileMap = buildFloorByInstructions(instructions);
+        final Map<GridPoint2D, Tile> tileMap = buildFloorByInstructions(instructions);
         final Set<Tile> blackTiles = tileMap.values().stream().filter(Tile::isBlackUp).collect(Collectors.toSet());
         for (int day = 0; day < DAYS_OF_EXHIBIT; day++) {
             simulate(blackTiles);

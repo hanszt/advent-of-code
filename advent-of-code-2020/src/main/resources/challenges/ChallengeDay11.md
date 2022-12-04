@@ -86,7 +86,7 @@ This process continues for three more rounds:
     #.LLLLLL.L
     #.#L#L#.##
 
-At this point2D, something interesting happens: the chaos stabilizes and further applications of these rules cause no seats to change state! Once people stop moving around, you count 37 occupied seats.
+At this point, something interesting happens: the chaos stabilizes and further applications of these rules cause no seats to change state! Once people stop moving around, you count 37 occupied seats.
 
 Simulate your seating area by applying the seating rules repeatedly until no seats change state. How many seats end up occupied?
 
@@ -208,6 +208,6 @@ Given the same starting layout as above, these new rules cause the seating area 
     #.LLLLL#.L
     #.L#LL#.L#
 
-Again, at this point2D, people stop shifting around and the seating area reaches equilibrium. Once this occurs, you count 26 occupied seats.
+Again, at this gridPoint2D, people stop shifting around and the seating area reaches equilibrium. Once this occurs, you count 26 occupied seats.
 
 Given the new visibility method and the rule change for occupied seats becoming empty, once equilibrium is reached, how many seats end up occupied?

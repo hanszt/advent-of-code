@@ -1,8 +1,8 @@
 package hzt;
 
+import hzt.aoc.AocLogger;
 import hzt.aoc.Challenge;
 import hzt.aoc.ChallengeDay;
-import hzt.aoc.Pair;
 import hzt.aoc.day01.Part1ReportRepair;
 import hzt.aoc.day01.Part2ReportRepair;
 import hzt.aoc.day02.Part1PasswordPhilosophy;
@@ -55,9 +55,6 @@ import hzt.aoc.day23.Part2CrabCups;
 import hzt.aoc.day24.Part1LobbyLayout;
 import hzt.aoc.day24.Part2LobbyLayout;
 import hzt.aoc.day25.Part1ComboBreaker;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +85,7 @@ public class Launcher implements Runnable {
 
     private static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
     public static final String DOTTED_LINE = "___________________________________________________________________";
-    private static final Logger LOGGER = LogManager.getLogger(Launcher.class);
+    private static final AocLogger LOGGER = AocLogger.getLogger(Launcher.class);
     private static final String RESET = "\u001B[0m";
     private static final String RED = "\u001B[31m";
     private static final String GREEN = "\u001B[32m";
@@ -224,9 +221,9 @@ public class Launcher implements Runnable {
         } else if (input.equals(CLEAR)) {
             clearAnswers();
         } else if (input.equals(INFO)) {
-            setChallengeLoggerToLevel(Level.INFO);
+            setChallengeLoggerToLevel(Logger.Level.INFO);
         } else if (input.equals(TRACE)) {
-            setChallengeLoggerToLevel(Level.TRACE);
+            setChallengeLoggerToLevel(Logger.Level.TRACE);
         } else if (NUMBER_LENGTH_ONE_OR_MORE.matcher(input).matches()) {
             executeByChallengeNumber(input);
         } else {
@@ -240,7 +237,7 @@ public class Launcher implements Runnable {
         out.println("Answers cleared");
     }
 
-    private void setChallengeLoggerToLevel(final Level level) {
+    private void setChallengeLoggerToLevel(final Logger.Level level) {
         Challenge.LOGGER.setLevel(level);
         clearAnswers();
         out.println("Challenge Logger level set to " + level.toString());
@@ -273,21 +270,25 @@ public class Launcher implements Runnable {
     }
 
     private static String sortedSolveTimesAsString(final List<ChallengeDay> challengeDays) {
-        final List<Pair<Challenge, ChallengeDay>> challenges = challengeDays.stream()
+        record Pair<A, B>(A left, B right) {
+        }
+        final var challenges = challengeDays.stream()
                 .map(day -> day.challengesAsStream().map(c -> new Pair<>(c, day)))
                 .flatMap(Stream::distinct)
-                .sorted(Comparator.comparing(pair -> pair.left().getSolveTime()))
+                .sorted(Comparator.comparing(pair -> pair.left.getSolveTime()))
                 .toList();
 
         final StringBuilder sb = new StringBuilder();
         sb.append(RESET);
         sb.append(String.format("%nChallenges sorted by solve time:%n"));
-        for (final Pair<Challenge, ChallengeDay> p : challenges) {
+        for (final var p : challenges) {
+            final var challenge = p.left;
+            final var day = p.right;
             sb.append(String.format("Day %2d Challenge: %-50s, answer: %-50s, solve time: %8.3f milliseconds%n",
-                    p.right().getDayOfMonth(),
-                    p.right().getTitle() + " " + p.left().getPart(),
-                    p.left().getAnswer(),
-                    p.left().getSolveTime() / 1e6));
+                    day.getDayOfMonth(),
+                    day.getTitle() + " " + challenge.getPart(),
+                    challenge.getAnswer(),
+                    challenge.getSolveTime() / 1e6));
         }
         return sb.toString();
     }

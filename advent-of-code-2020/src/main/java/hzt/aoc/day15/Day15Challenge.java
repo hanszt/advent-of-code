@@ -1,15 +1,14 @@
 package hzt.aoc.day15;
 
+import hzt.aoc.AocLogger;
 import hzt.aoc.Challenge;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Day15Challenge extends Challenge {
 
-    private static final Logger LOGGER = LogManager.getLogger(Day15Challenge.class);
+    private static final AocLogger LOGGER = AocLogger.getLogger(Day15Challenge.class);
 
     Day15Challenge(final String challengeTitle, final String description) {
         super(challengeTitle, description, "20201215-input-day15.txt");

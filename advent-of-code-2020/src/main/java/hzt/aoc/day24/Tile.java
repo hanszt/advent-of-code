@@ -1,6 +1,6 @@
 package hzt.aoc.day24;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class Tile {
     static final String NORTH_EAST = "ne";
 
     private static final Map<String, String> OPPOSITE_DIR = new HashMap<>();
-    private static final Map<String, Point2D> INSTRUCTION_TO_DIR = new HashMap<>();
+    private static final Map<String, GridPoint2D> INSTRUCTION_TO_DIR = new HashMap<>();
 
     static {
         OPPOSITE_DIR.put(EAST, WEST);
@@ -27,21 +27,20 @@ public class Tile {
         OPPOSITE_DIR.put(NORTH_WEST, SOUTH_EAST);
         OPPOSITE_DIR.put(SOUTH_WEST, NORTH_EAST);
         OPPOSITE_DIR.put(NORTH_EAST, SOUTH_WEST);
-        INSTRUCTION_TO_DIR.put(EAST, new Point2D(1, 0));
-        INSTRUCTION_TO_DIR.put(WEST, new Point2D(-1, 0));
-        INSTRUCTION_TO_DIR.put(SOUTH_EAST, new Point2D(1, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_WEST, new Point2D(-1, 1));
-        INSTRUCTION_TO_DIR.put(SOUTH_WEST, new Point2D(0, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_EAST, new Point2D(0, 1));
+        INSTRUCTION_TO_DIR.put(EAST, new GridPoint2D(1, 0));
+        INSTRUCTION_TO_DIR.put(WEST, new GridPoint2D(-1, 0));
+        INSTRUCTION_TO_DIR.put(SOUTH_EAST, new GridPoint2D(1, -1));
+        INSTRUCTION_TO_DIR.put(NORTH_WEST, new GridPoint2D(-1, 1));
+        INSTRUCTION_TO_DIR.put(SOUTH_WEST, new GridPoint2D(0, -1));
+        INSTRUCTION_TO_DIR.put(NORTH_EAST, new GridPoint2D(0, 1));
     }
 
-    private final Point2D position;
+    private final GridPoint2D position;
     private boolean blackUp;
-    private int nrOfBlackNeighbors;
 
-    private final Map<Point2D, Tile> instructionsToNeighborsMap = new HashMap<>();
+    private final Map<GridPoint2D, Tile> instructionsToNeighborsMap = new HashMap<>();
 
-    public Tile(final Point2D position) {
+    public Tile(final GridPoint2D position) {
         this.position = position;
         this.blackUp = false;
     }
@@ -50,9 +49,9 @@ public class Tile {
         blackUp = !blackUp;
     }
 
-    public Tile getNeighborByInstruction(final String instruction, final Map<Point2D, Tile> allTiles) {
-        final Point2D delta = INSTRUCTION_TO_DIR.get(instruction);
-        final Point2D newPosition = new Point2D(this.position.x() + delta.x(), this.position.y() + delta.y());
+    public Tile getNeighborByInstruction(final String instruction, final Map<GridPoint2D, Tile> allTiles) {
+        final GridPoint2D delta = INSTRUCTION_TO_DIR.get(instruction);
+        final GridPoint2D newPosition = new GridPoint2D(this.position.x() + delta.x(), this.position.y() + delta.y());
         final Tile neighbor;
         if (instructionsToNeighborsMap.get(delta) != null) {
             neighbor = instructionsToNeighborsMap.get(delta);
@@ -66,43 +65,10 @@ public class Tile {
         return neighbor;
     }
 
-    void countBlackNeighbors() {
-        nrOfBlackNeighbors = 0;
-        for (final Tile neighbor : instructionsToNeighborsMap.values()) {
-            if (neighbor.isBlackUp()) {
-                nrOfBlackNeighbors++;
-            }
-        }
-    }
-
-    void countBlackNeighbors(final Map<Point2D, Tile> allTiles) {
-        nrOfBlackNeighbors = 0;
-        for (final Point2D delta : INSTRUCTION_TO_DIR.values()) {
-            final Point2D neighborPosition = new Point2D(this.position.x() + delta.x(), this.position.y() + delta.y());
-            if (allTiles.containsKey(neighborPosition)) {
-                final Tile neighbor = allTiles.get(neighborPosition);
-                if (neighbor.isBlackUp()) {
-                    nrOfBlackNeighbors++;
-                }
-            }
-        }
-    }
-
-    //    Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
-    //    Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
-    void executeRule() {
-        if (blackUp && (nrOfBlackNeighbors == 0 || nrOfBlackNeighbors > 2)) {
-            flip();
-        }
-        if (!blackUp && nrOfBlackNeighbors == 2) {
-            flip();
-        }
-    }
-
     List<Tile> neighbors() {
         final List<Tile> neighbors = new ArrayList<>();
-        for (final Point2D delta : INSTRUCTION_TO_DIR.values()) {
-            neighbors.add(new Tile(new Point2D(position.x() + delta.x(), position.y() + delta.y())));
+        for (final GridPoint2D delta : INSTRUCTION_TO_DIR.values()) {
+            neighbors.add(new Tile(new GridPoint2D(position.x() + delta.x(), position.y() + delta.y())));
         }
         return neighbors;
     }
@@ -111,7 +77,7 @@ public class Tile {
         return blackUp;
     }
 
-    public Point2D getPosition() {
+    public GridPoint2D getPosition() {
         return position;
     }
 
@@ -138,16 +104,16 @@ public class Tile {
         return sb.toString();
     }
 
-    private static String neighborAsString(final Map.Entry<Point2D, Tile> e) {
-        final Point2D p = e.getValue().position;
-        final Point2D delta = e.getKey();
+    private static String neighborAsString(final Map.Entry<GridPoint2D, Tile> e) {
+        final GridPoint2D p = e.getValue().position;
+        final GridPoint2D delta = e.getKey();
         return String.format("delta(x=%2d, y=%2d)->(position='(x=%3d, y=%3d)', blackUp=%5b) ",
                 delta.x(), delta.y(), p.x(), p.y(), e.getValue().blackUp);
     }
 
     @Override
     public String toString() {
-        return String.format("Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, nrOfBlackNeighbors=%d, Neighbors={%s}}",
-                position.x(), position.y(), blackUp, nrOfBlackNeighbors, neighborsAsString());
+        return String.format("Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, Neighbors={%s}}",
+                position.x(), position.y(), blackUp, neighborsAsString());
     }
 }

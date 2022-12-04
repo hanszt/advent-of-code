@@ -1,6 +1,6 @@
 package hzt.aoc.day20;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import static java.util.function.Predicate.not;
 public class Tile {
 
     private static final int CORNERS = 4;
-    private Point2D position;
+    private GridPoint2D position;
     private final List<String> content;
     private final List<List<String>> orientations;
 
@@ -152,11 +152,11 @@ public class Tile {
         return List.copyOf(orientations);
     }
 
-    public Point2D getPosition() {
+    public GridPoint2D getPosition() {
         return position;
     }
 
-    public void setPosition(final Point2D position) {
+    public void setPosition(final GridPoint2D position) {
         this.position = position;
     }
 

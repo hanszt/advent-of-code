@@ -1,6 +1,6 @@
 package hzt.aoc.day12;
 
-import hzt.aoc.Point2D;
+import hzt.aoc.GridPoint2D;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public class Part2RainRisk extends Day12Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        Point2D wayPoint = new Point2D(10, 1);
-        Point2D ship = new Point2D(0, 0);
+        GridPoint2D wayPoint = new GridPoint2D(10, 1);
+        GridPoint2D ship = new GridPoint2D(0, 0);
         for (final String line : inputList) {
             final char instruction = line.charAt(0);
             final int amount = Integer.parseInt(line.substring(1));
@@ -29,13 +29,13 @@ public class Part2RainRisk extends Day12Challenge {
         return getMessage(Math.abs(ship.x()) + Math.abs(ship.y()));
     }
 
-    private static Point2D rotateWayPointRoundShip(final Point2D initWayPoint, final char instruction, final int angle) {
-        Point2D wayPoint = initWayPoint;
+    private static GridPoint2D rotateWayPointRoundShip(final GridPoint2D initWayPoint, final char instruction, final int angle) {
+        GridPoint2D wayPoint = initWayPoint;
         if ((instruction == TURN_RIGHT || instruction == TURN_LEFT) && angle % NINETY_DEGREES == 0) {
-            final Point2D dir = instruction == TURN_RIGHT ? new Point2D(1, -1) : new Point2D(-1, 1);
+            final GridPoint2D dir = instruction == TURN_RIGHT ? new GridPoint2D(1, -1) : new GridPoint2D(-1, 1);
             int counter = 0;
             while (angle / NINETY_DEGREES != counter) {
-                wayPoint = new Point2D(dir.x() * wayPoint.y(), dir.y() * wayPoint.x());
+                wayPoint = new GridPoint2D(dir.x() * wayPoint.y(), dir.y() * wayPoint.x());
                 counter++;
             }
         }
