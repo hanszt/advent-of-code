@@ -1,10 +1,9 @@
 package aoc;
 
+import org.hzt.utils.io.FileX;
 import org.jetbrains.annotations.NotNull;
 import utils.AocUtilsKt;
-import utils.FileUtils;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ public class Day01CalorieCounting implements ChallengeDay {
     private final List<String> foods;
 
     public Day01CalorieCounting(String fileName) {
-        this.foods = AocUtilsKt.splitByBlankLine(FileUtils.readToString(Path.of(fileName)));
+        this.foods = AocUtilsKt.splitByBlankLine(FileX.of(fileName).readText());
     }
 
     @Override

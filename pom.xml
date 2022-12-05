@@ -95,6 +95,13 @@
             <id>mavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
+        <!--https://stackoverflow.com/questions/13834141/create-local-maven-repository-->
+        <repository>
+            <id>project-maven-repo</id>
+            <!--https://stackoverflow.com/questions/3084629/finding-the-root-directory-of-a-multi-module-maven-reactor-project-->
+            <!--suppress MavenModelInspection -->
+            <url>file:///${maven.multiModuleProjectDirectory}/_project-mvn-repo</url>
+        </repository>
     </repositories>
 
     <build>

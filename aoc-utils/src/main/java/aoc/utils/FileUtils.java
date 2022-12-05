@@ -18,12 +18,4 @@ public final class FileUtils {
             throw new IllegalStateException(e);
         }
     }
-
-    public static String readToString(Path path) {
-        try {
-            return Files.readString(path);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 }
