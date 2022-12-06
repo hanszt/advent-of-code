@@ -33,12 +33,10 @@ public class Part2TicketTranslation extends Day16Challenge {
                 }
             }
         }
-        LOGGER.trace(ourTicketValues);
+        LOGGER.trace(() -> ourTicketValues);
 
         iterateUntilUniqueValueForeEachField(possibleMatches);
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace(booleanGrid2DAsString(possibleMatches));
-        }
+        LOGGER.trace(() -> booleanGrid2DAsString(possibleMatches));
         return getAnswer(possibleMatches, ourTicketValues);
     }
 

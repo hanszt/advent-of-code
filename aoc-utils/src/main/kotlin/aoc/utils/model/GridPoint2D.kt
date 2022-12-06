@@ -11,4 +11,8 @@ data class GridPoint2D(val x: Int, val y: Int) {
     operator fun times(factor: Int) = GridPoint2D(x * factor, y * factor)
     fun toSignVector() = GridPoint2D(x.sign, y.sign)
     fun gridDistance(other: GridPoint2D) = abs(x - other.x).coerceAtLeast(abs(y - other.y))
+
+    companion object {
+        infix fun Int.by(y: Int) = GridPoint2D(this, y)
+    }
 }

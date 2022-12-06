@@ -16,10 +16,12 @@ public class Part2ConwayCubes extends Part1ConwayCubes {
         List<List<List<List<Boolean>>>> grid4d = getInitGrid4D(inputList);
         for (int i = 0; i < NUMBER_OF_CYCLES; i++) {
             addInactiveOuterLayer4D(grid4d);
-            LOGGER.trace("Iteration: " + i);
+            int index = i;
+            LOGGER.trace(() -> "Iteration: " + index);
             int w = -(grid4d.size() - 1) / 2;
             for (final List<List<List<Boolean>>> grid3D : grid4d) {
-                LOGGER.trace(String.format("at w = %d %s", w, grid3DAsString(grid3D)));
+                int finalW = w;
+                LOGGER.trace(() -> String.format("at w = %d %s", finalW, grid3DAsString(grid3D)));
                 w++;
             }
             grid4d = applyRules4D(grid4d);

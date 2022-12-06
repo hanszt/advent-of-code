@@ -20,8 +20,10 @@ public class Part1ConwayCubes extends Day17Challenge {
         List<List<List<Boolean>>> grid3d = getInitGrid3D(inputList);
         for (int i = 0; i < NUMBER_OF_CYCLES; i++) {
             addInactiveOuterLayer3D(grid3d);
-            LOGGER.trace(String.format("Iteration: %d%n%s", i, grid3DAsString(grid3d)));
-            grid3d = updateGrid(grid3d);
+            int iteration = i;
+            final var updated = updateGrid(grid3d);
+            LOGGER.trace(() -> String.format("Iteration: %d%n%s", iteration, grid3DAsString(updated)));
+            grid3d = updated;
         }
         return countActive3D(grid3d);
     }

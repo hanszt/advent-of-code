@@ -1,7 +1,9 @@
 package aoc
 
 import aoc.utils.*
+import aoc.utils.model.GridPoint2D
 import aoc.utils.model.WeightedNode
+import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
 import java.util.*
 
@@ -10,13 +12,13 @@ internal object Day15Chiton : ChallengeDay {
     fun part1(path: String): Int = File(path).readLines().toIntGrid(Char::digitToInt).calculateTotalRisk<Any>()
 
     private fun <T> Array<IntArray>.calculateTotalRisk(): Int =
-        toShortestPath<T>(first().lastIndex to lastIndex, 0 to 0).sumOf(WeightedNode<T>::weight)
+        toShortestPath<T>(first().lastIndex by lastIndex, 0 by 0).sumOf(WeightedNode<T>::weight)
 
     private fun <T> Array<IntArray>.toShortestPath(
-        startPoint: Pair<Int, Int>,
-        endPoint: Pair<Int, Int>
+        startPoint: GridPoint2D,
+        endPoint: GridPoint2D
     ): List<WeightedNode<T>> {
-        val graph = toWeightedGraph<T>(listOf(1 to 0, 0 to 1, -1 to 0, 0 to -1))
+        val graph = toWeightedGraph<T>(listOf(1 by 0, 0 by 1, -1 by 0, 0 by -1))
         val start = graph[startPoint] ?: throw IllegalStateException()
         val goal = graph[endPoint] ?: throw IllegalStateException()
         return start.dijkstra(goal).shortestPath

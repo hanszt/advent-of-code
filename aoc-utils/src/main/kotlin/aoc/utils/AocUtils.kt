@@ -9,12 +9,7 @@ inline fun <A, B, R> Pair<A, B>.mapSecond(transform: (B) -> R): Pair<A, R> = fir
 
 inline fun <A, R> Pair<A, A>.mapBoth(transform: (A) -> R): Pair<R, R> = transform(first) to transform(second)
 
-inline fun <A, B, R> Pair<A, B>.reduce(transform: (A, B) -> R): R = transform(first, second)
-
 infix fun <A, B, C> Pair<A, B>.to(third: C): Triple<A, B, C> = Triple(first, second, third)
-
-inline fun <S, T : S> Triple<T, T, T>.reduce(operation: (acc: S, T) -> S): S =
-    operation(operation(first, second), third)
 
 fun <T> Iterable<T>.toEnds() = first() to last()
 
@@ -41,10 +36,12 @@ fun Long.nanoTimeToFormattedDuration(spacer: Int = 7, decimalPlaces: Int = 3): S
     }
 }
 
+fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
+
+fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
+
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
 
 fun <T> self(value: T) = value
-
-fun <K, V> Map<K, V>.inverseMap() = map { it.value to it.key }.toMap()

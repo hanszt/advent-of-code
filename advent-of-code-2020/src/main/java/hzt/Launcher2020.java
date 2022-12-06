@@ -80,12 +80,11 @@ import static java.lang.System.*;
  *
  * @author Hans Zuidervaart,
  */
-@SuppressWarnings("squid:S106")
-public class Launcher implements Runnable {
+public class Launcher2020 implements Runnable {
 
     private static final Pattern NUMBER_LENGTH_ONE_OR_MORE = Pattern.compile("\\d+");
     public static final String DOTTED_LINE = "___________________________________________________________________";
-    private static final AocLogger LOGGER = AocLogger.getLogger(Launcher.class);
+    private static final AocLogger LOGGER = AocLogger.getLogger(Launcher2020.class);
     private static final String RESET = "\u001B[0m";
     private static final String RED = "\u001B[31m";
     private static final String GREEN = "\u001B[32m";
@@ -103,13 +102,13 @@ public class Launcher implements Runnable {
     private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
 
 
-    public Launcher() {
+    public Launcher2020() {
         populateChallengeDaysMap(challengeDays);
     }
 
     private static String loadBanner() {
         final var name = "/banner.txt";
-        final var path = Optional.ofNullable(Launcher.class.getResource(name))
+        final var path = Optional.ofNullable(Launcher2020.class.getResource(name))
                 .map(URL::getFile)
                 .map(File::new)
                 .map(File::toPath)
@@ -182,7 +181,7 @@ public class Launcher implements Runnable {
     }
 
     public static void main(final String[] args) {
-        new Launcher().start();
+        new Launcher2020().start();
     }
 
     private void start() {

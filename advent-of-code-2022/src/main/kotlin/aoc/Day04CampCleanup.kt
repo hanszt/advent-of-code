@@ -2,6 +2,9 @@ package aoc
 
 import java.io.File
 
+/**
+ * @see <a href="https://adventofcode.com/2022/day/4">Day 4: Camp Cleanup</a>
+ */
 class Day04CampCleanup(filName: String) : ChallengeDay {
 
     private val sectionAssignments = File(filName).readLines()

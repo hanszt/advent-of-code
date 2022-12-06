@@ -1,8 +1,7 @@
 package aoc
 
-import aoc.utils.reduce
-import aoc.utils.splitByBlankLine
 import aoc.utils.self
+import aoc.utils.splitByBlankLine
 import java.io.File
 
 internal object Day14ExtendedPolymerization : ChallengeDay {
@@ -22,7 +21,7 @@ internal object Day14ExtendedPolymerization : ChallengeDay {
         .let { (instructions, initPolymer) ->
             toPairCounts(instructions, initPolymer, steps)
                 .toMaxAndMinCount(initPolymer.first())
-                .reduce(Long::minus)
+                .let { (maxCount, minCount) -> maxCount - minCount }
         }
 
     private fun toPairCounts(instructions: List<Pair<String, Char>>, polymer: String, steps: Int): Map<String, Long> =

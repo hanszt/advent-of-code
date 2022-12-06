@@ -1,5 +1,7 @@
 package aoc
 
+import aoc.utils.max
+import aoc.utils.min
 import java.io.File
 
 // Credits to Turkey dev
@@ -29,8 +31,8 @@ internal object Day16PacketDecoder : ChallengeDay {
             when (typeId) {
                 0 -> parseOperation().sum()
                 1 -> parseOperation().reduce(Long::times)
-                2 -> parseOperation().minOf { it }
-                3 -> parseOperation().maxOf { it }
+                2 -> parseOperation().min()
+                3 -> parseOperation().max()
                 4 -> parseLiteral()
                 5 -> parseOperation().let { (subPacket, other) -> if (subPacket > other) 1 else 0 }
                 6 -> parseOperation().let { (subPacket, other) -> if (subPacket < other) 1 else 0 }

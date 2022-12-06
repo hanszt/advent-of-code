@@ -24,7 +24,7 @@ class Day03RucksackReorganisationTest {
         assertEquals(2499, result);
     }
     @ParameterizedTest(name = "{0} should map to priority {1}")
-    @CsvSource(value = {"a, 1", "b, 2", "c, 3", "A, 27"})
+    @CsvSource(value = {"a, 1", "b, 2", "c, 3", "z, 26", "A, 27", "Z, 52"})
     void testCharacterToPriority(char letter, int expected) {
         assertEquals(expected, Day03RucksackReorganisation.toPriority(letter));
     }

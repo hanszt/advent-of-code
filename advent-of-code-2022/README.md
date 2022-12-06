@@ -29,7 +29,7 @@ Also possible via the ide of your choice
 
 ## Running the main method
 
-The Main method is located [here](src/main/kotlin/aoc/Launcher.kt). You can use this to run all puzzles at ones
+The Main method is located [here](src/main/kotlin/aoc/Launcher2022.kt). You can use this to run all puzzles at ones
 
 ---
 

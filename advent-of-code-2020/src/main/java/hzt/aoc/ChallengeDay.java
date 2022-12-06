@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static hzt.Launcher.DOTTED_LINE;
+import static hzt.Launcher2020.DOTTED_LINE;
 
 public final class ChallengeDay {
 

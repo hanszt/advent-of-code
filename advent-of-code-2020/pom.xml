@@ -42,7 +42,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>hzt.Launcher</mainClass>
+                            <mainClass>hzt.Launcher2020</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

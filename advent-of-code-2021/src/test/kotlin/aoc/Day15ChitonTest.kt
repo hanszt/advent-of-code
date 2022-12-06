@@ -1,9 +1,10 @@
 package aoc
 
+import aoc.utils.*
+import aoc.utils.model.GridPoint2D.Companion.by
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
-import aoc.utils.*
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertTrue
@@ -31,15 +32,16 @@ internal class Day15ChitonTest {
     }
 
     private fun Array<IntArray>.pathInGridAsString(): String {
-        val graph = toWeightedGraph<Any>(listOf(-1 to 0, -1 to 0, 0 to 1, 1 to 0))
-        val startPoint = 0 to 0
-        val endPoint = first().lastIndex to lastIndex
+        val graph = toWeightedGraph<Any>(listOf(-1 by 0, -1 by 0, 0 by 1, 1 by 0))
+        val startPoint = 0 by 0
+        val endPoint = first().lastIndex by lastIndex
         val start = graph[startPoint] ?: throw IllegalStateException()
         val goal = graph[endPoint] ?: throw IllegalStateException()
-        val nodesToCoordinates = graph.inverseMap()
+        val nodesToCoordinates = graph.map { it.value to it.key }.toMap()
         val grid = toGridOf(Int::toString)
 
-        start.dijkstra(goal).shortestPath.plus(goal).mapNotNull(nodesToCoordinates::get)
+        start.dijkstra(goal).shortestPath.plus(goal)
+            .mapNotNull(nodesToCoordinates::get)
             .forEach { (x, y) -> grid[y][x] = grid[y][x].withColors(BRIGHT_YELLOW, YELLOW_BG, 2) }
 
         return grid.gridAsString { if (it.length == 1) it.withColors(BROWN_BG, random16BitColor(), 2) else it }

@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static hzt.Launcher.DOTTED_LINE;
+import static hzt.Launcher2020.DOTTED_LINE;
 
 public abstract class Challenge {
 

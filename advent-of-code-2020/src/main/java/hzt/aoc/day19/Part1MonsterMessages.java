@@ -15,7 +15,7 @@ public class Part1MonsterMessages extends Day19Challenge {
 
     @Override
     protected long countMatches() {
-        LOGGER.trace(parsedInputAsString(rulesToSubRules, messages));
+        LOGGER.trace(() -> parsedInputAsString(rulesToSubRules, messages));
         return messages.stream()
                 .map(Part1MonsterMessages::asCharList)
                 .filter(this::matches)

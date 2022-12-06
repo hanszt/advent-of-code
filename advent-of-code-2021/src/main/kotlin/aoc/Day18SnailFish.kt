@@ -1,5 +1,6 @@
 package aoc
 
+import aoc.utils.max
 import java.io.File
 
 //
@@ -110,7 +111,7 @@ internal object Day18SnailFish : ChallengeDay {
             snailNrs.indices
                 .filter { index != it }
                 .map { (snailNrs[index] + snailNrs[it]).magnitude() }
-        }.maxOf { it }
+        }.max()
     }
 
     fun part1(path: String): Int = File(path).readLines()

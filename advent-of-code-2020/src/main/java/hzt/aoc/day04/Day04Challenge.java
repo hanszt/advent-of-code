@@ -55,37 +55,19 @@ public abstract class Day04Challenge extends Challenge {
             final String value = keyValue[1];
             sb.append(String.format("Entry{key='%s', value='%s'}", key, value));
             switch (key) {
-                case PASSPORT_ID:
-                    passport.setPasswordID(value);
-                    break;
-                case EXPIRATION_YEAR:
-                    passport.setExpirationYear(value);
-                    break;
-                case ISSUE_YEAR:
-                    passport.setIssueYear(value);
-                    break;
-                case COUNTRY_ID:
-                    passport.setCountryId(value);
-                    break;
-                case BIRTH_YEAR:
-                    passport.setBirthYear(value);
-                    break;
-                case HEIGHT:
-                    passport.setHeight(value);
-                    break;
-                case EYE_COLOR:
-                    passport.setEyeColor(value);
-                    break;
-                case HAIR_COLOR:
-                    passport.setHairColor(value);
-                    break;
-                default:
-                    LOGGER.trace("No match");
-                    break;
+                case PASSPORT_ID -> passport.setPasswordID(value);
+                case EXPIRATION_YEAR -> passport.setExpirationYear(value);
+                case ISSUE_YEAR -> passport.setIssueYear(value);
+                case COUNTRY_ID -> passport.setCountryId(value);
+                case BIRTH_YEAR -> passport.setBirthYear(value);
+                case HEIGHT -> passport.setHeight(value);
+                case EYE_COLOR -> passport.setEyeColor(value);
+                case HAIR_COLOR -> passport.setHairColor(value);
+                default -> LOGGER.trace(() -> "No match");
             }
             sb.append(String.format("%n"));
         }
-        LOGGER.trace(sb.toString());
+        LOGGER.trace(() -> sb.toString());
         return passport;
     }
 

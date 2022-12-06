@@ -47,7 +47,7 @@ public abstract class Day24Challenge extends Challenge {
             }
             instructions.add(instruction);
         }
-        LOGGER.trace(listOfStringListsAsString(instructions));
+        LOGGER.trace(() -> listOfStringListsAsString(instructions));
         return getMessage(calculateResult(instructions));
     }
 
@@ -63,7 +63,7 @@ public abstract class Day24Challenge extends Challenge {
             }
             curTile.flip();
         }
-        tileMap.values().forEach(LOGGER::trace);
+        tileMap.values().forEach(s -> LOGGER.trace(() -> s));
         return tileMap;
     }
 

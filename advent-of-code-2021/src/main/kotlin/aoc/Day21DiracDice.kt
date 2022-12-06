@@ -98,7 +98,6 @@ internal object Day21DiracDice : ChallengeDay {
             solveSpace[player1Pos][player2Pos][player1Score][player2Score] = winCount
             return winCount
         }
-
         val (player1Winnings, player2Winnings) = playDiracDice(player1InitPos, player2InitPos, 0, 0)
         return maxOf(player1Winnings, player2Winnings)
     }

@@ -14,23 +14,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.function.Predicate.not;
+
+/**
+ * @see <a href="https://adventofcode.com/2022/day/5">Day 5: Supply stacks</a>
+ */
 public class Day05SupplyStacks implements ChallengeDay {
 
-    private final List<Deque<Character>> stacks;
+    private final List<String> stackLines;
     private final List<String> instructions;
 
     public Day05SupplyStacks(String fileName) {
-        final var s = FileUtils.useLines(Path.of(fileName), Stream::toList);
-        final var stackLines = new ArrayList<String>();
-        final var iterator = s.iterator();
-        while (iterator.hasNext()) {
-            final var next = iterator.next();
-            if (next.isBlank()) {
-                break;
-            }
-            stackLines.add(next);
-        }
-        this.stacks = toStacks(stackLines);
+        final var iterator = FileUtils.useLines(Path.of(fileName), Stream::toList).iterator();
+        this.stackLines = Sequence.of(() -> iterator).takeWhile(not(String::isBlank)).toList();
         this.instructions = Sequence.of(() -> iterator).toList();
     }
 
@@ -62,6 +58,7 @@ public class Day05SupplyStacks implements ChallengeDay {
     @NotNull
     @Override
     public String part1() {
+        final var stacks = toStacks(stackLines);
         for (var instr : instructions) {
             final var instruction = toInstruction(instr);
             for (int i = 0; i < instruction.amount; i++) {
@@ -69,10 +66,10 @@ public class Day05SupplyStacks implements ChallengeDay {
                 stacks.get(instruction.to - 1).addFirst(first);
             }
         }
-        return toTopCratesAsString();
+        return toTopCratesAsString(stacks);
     }
 
-    private String toTopCratesAsString() {
+    private String toTopCratesAsString(List<Deque<Character>> stacks) {
         return stacks.stream()
                 .map(Deque::peek)
                 .filter(Objects::nonNull)
@@ -82,7 +79,8 @@ public class Day05SupplyStacks implements ChallengeDay {
 
     @NotNull
     @Override
-    public Object part2() {
+    public String part2() {
+        final var stacks = toStacks(stackLines);
         for (var instr : instructions) {
             final var instruction = toInstruction(instr);
             final var characters = new ArrayDeque<Character>();
@@ -93,7 +91,7 @@ public class Day05SupplyStacks implements ChallengeDay {
                 stacks.get(instruction.to - 1).addFirst(characters.removeLast());
             }
         }
-        return toTopCratesAsString();
+        return toTopCratesAsString(stacks);
     }
 
     private static Instruction toInstruction(String instr) {
@@ -104,6 +102,6 @@ public class Day05SupplyStacks implements ChallengeDay {
         return new Instruction(amount, from, to);
     }
 
-    record Instruction(int amount, int from, int to) {
+    private record Instruction(int amount, int from, int to) {
     }
 }

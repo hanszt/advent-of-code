@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -41,10 +42,10 @@ internal class AocUtilsKtTest {
         )
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = ["1..10 -> 55", "1..100 -> 5050", "1..1000 -> 500500"])
-    fun `test sum natural nrs`(intRangeToSum: String) {
-        val (start, end, expected) = intRangeToSum.split("..", " -> ").map(String::toInt)
+    @ParameterizedTest(name = "range {0} sums to: {1}")
+    @CsvSource(value = ["1..10 -> 55", "1..100 -> 5050", "1..1000 -> 500500"], delimiterString = " -> ")
+    fun `test sum natural nrs`(intRangeToSum: String, expected: Int) {
+        val (start, end) = intRangeToSum.split("..").map(String::toInt)
         assertEquals(expected, sumNaturalNrs(start, end))
     }
 }

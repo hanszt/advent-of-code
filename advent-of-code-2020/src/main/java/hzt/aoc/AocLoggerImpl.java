@@ -1,5 +1,7 @@
 package hzt.aoc;
 
+import java.util.function.Supplier;
+
 @SuppressWarnings(AocLoggerImpl.STANDARD_OUTPUTS_SHOULD_NOT_BE_USED_FOR_LOGGING)
 public final class AocLoggerImpl implements AocLogger {
 
@@ -13,9 +15,9 @@ public final class AocLoggerImpl implements AocLogger {
     }
 
     @Override
-    public void trace(Object s) {
+    public void trace(Supplier<Object> supplier) {
         if (level.getSeverity() <= System.Logger.Level.TRACE.getSeverity()) {
-            System.out.println(s);
+            System.out.println(supplier.get());
         }
     }
 
@@ -39,11 +41,6 @@ public final class AocLoggerImpl implements AocLogger {
             System.err.println(simpleName + " - " + s);
             throwable.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean isTraceEnabled() {
-        return level.getSeverity() <= System.Logger.Level.TRACE.getSeverity();
     }
 
     @Override

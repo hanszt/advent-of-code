@@ -71,7 +71,7 @@ public class Passport {
             final boolean eyeColorValid = eyeColor != null && VALID_EYE_COLORS.contains(eyeColor);
             // a nine-digit number, including leading zeroes.
             final boolean passportIdValid = PASSWORD_ID_PATTERN.matcher(passwordID).matches();
-            LOGGER.trace(isValidAsString(birthYearValid, issueYearValid, expirationYearValid, heightValid,
+            LOGGER.trace(() -> isValidAsString(birthYearValid, issueYearValid, expirationYearValid, heightValid,
                     hairColorValid, eyeColorValid, passportIdValid));
             final var personCharacteristicsValid = eyeColorValid && hairColorValid && heightValid;
             final var passWordValid = passportIdValid && expirationYearValid && issueYearValid && birthYearValid;
@@ -102,7 +102,7 @@ public class Passport {
             final String value = height.substring(0, height.length() - UNIT_LENGTH);
             final String unit = height.substring(height.length() - UNIT_LENGTH);
             final boolean valueIsNumber = NR_PATTERN.matcher(value).matches();
-            LOGGER.trace("value is number=" + valueIsNumber + " Value=" + value);
+            LOGGER.trace(() -> "value is number=" + valueIsNumber + " Value=" + value);
             if (valueIsNumber) {
                 return checkHeightUnit(value, unit);
             } else {

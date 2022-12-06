@@ -1,17 +1,19 @@
 package aoc
 
-import utils.*
+import aoc.utils.*
 
 fun main(vararg args: String) {
     println(readTextFromResource("/title.txt").withColor(RED))
 
-    val inputDir = args.firstOrNull() ?: "input"
+    val inputDir = args.firstOrNull() ?: "advent-of-code-2022/input"
 
     val results = sequenceOf(
         Day01CalorieCounting("$inputDir/day01.txt"),
         Day02RockPaperScissors("$inputDir/day02.txt"),
         Day03RucksackReorganisation("$inputDir/day03.txt"),
         Day04CampCleanup("$inputDir/day04.txt"),
+        Day05SupplyStacks("$inputDir/day05.txt"),
+        Day06("$inputDir/day06.txt")
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()
@@ -20,7 +22,7 @@ fun main(vararg args: String) {
     println(readTextFromResource("/banner.txt").withColor(GREEN))
 }
 
-private val ansiColors = listOf(RESET, BRIGHT_BLUE, GREEN, RESET, YELLOW, RESET, CYAN, RESET)
+private val ansiColors = listOf(BRIGHT_BLUE, RESET, GREEN, RESET, YELLOW, RESET, CYAN, RESET)
 
 data class AocResult(val name: String, val result: Result<String>, val solveTimeNanos: Long) {
 

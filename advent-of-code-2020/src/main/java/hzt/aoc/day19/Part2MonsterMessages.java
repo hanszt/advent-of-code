@@ -14,7 +14,7 @@ public class Part2MonsterMessages extends Day19Challenge {
     protected long countMatches() {
         addRuleToRulesMaps("8: 42 | 42 8");
         addRuleToRulesMaps("11: 42 31 | 42 11 31");
-        LOGGER.trace(parsedInputAsString(rulesToSubRules, messages));
+        LOGGER.trace(() -> parsedInputAsString(rulesToSubRules, messages));
         final String startRule = rulesAsStringMap.get(0);
         final String regex = ruleRegex2(startRule);
         final Pattern pattern = Pattern.compile(regex);

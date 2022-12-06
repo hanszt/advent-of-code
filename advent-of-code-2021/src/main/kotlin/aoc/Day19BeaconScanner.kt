@@ -1,13 +1,11 @@
 package aoc
 
+import aoc.utils.*
 import aoc.utils.model.GridPoint3D
-import aoc.utils.self
-import aoc.utils.splitByBlankLine
 import java.io.File
-import aoc.utils.Transform3D
-import aoc.utils.transform
-import aoc.utils.orientations
-import aoc.utils.rotate
+import aoc.utils.model.GridPoint3D.Companion.by
+import aoc.utils.model.GridPoint2D.Companion.by
+import kotlin.collections.max
 
 //
 // I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.
@@ -22,9 +20,9 @@ internal object Day19BeaconScanner : ChallengeDay {
     private fun String.toScannerDataSets(): List<Set<GridPoint3D>> =
         splitByBlankLine().map { s -> s.lines().filterNot { "scanner" in it }.map(::toPoint3D).toSet() }
 
-    private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> GridPoint3D(x, y, z) }
+    private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> x by y by z }
 
-    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map { point.distance(it) } }.maxOf { it }
+    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map { point.distance(it) } }.max();
 
     private fun List<Set<GridPoint3D>>.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
         val detectedPoints = this[scannerIndex]

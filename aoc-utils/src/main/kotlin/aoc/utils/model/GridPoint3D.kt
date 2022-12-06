@@ -10,5 +10,6 @@ data class GridPoint3D(val x: Int, val y: Int, val z: Int) {
 
     companion object {
         val zero = GridPoint3D(0, 0, 0)
+        infix fun GridPoint2D.by(z: Int) = GridPoint3D(x, y, z)
     }
 }

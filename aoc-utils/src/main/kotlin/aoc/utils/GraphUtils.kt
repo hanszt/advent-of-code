@@ -1,7 +1,9 @@
 package aoc.utils
 
+import aoc.utils.model.GridPoint2D
 import aoc.utils.model.Node
 import aoc.utils.model.WeightedNode
+import aoc.utils.model.GridPoint2D.Companion.by
 
 fun List<String>.toBiDiGraph(delimiter: String): Map<String, Node<String?>> = toBiDiGraph(delimiter) { it }
 
@@ -21,15 +23,15 @@ inline fun <T> List<String>.toBiDiGraph(delimiter: String, mapper: (String) -> T
     return nodes
 }
 
-fun <T> Array<IntArray>.toWeightedGraph(directions: List<Pair<Int, Int>>): Map<Pair<Int, Int>, WeightedNode<T>> {
-    val graph = mutableMapOf<Pair<Int, Int>, WeightedNode<T>>()
+fun <T> Array<IntArray>.toWeightedGraph(directions: List<GridPoint2D>): Map<GridPoint2D, WeightedNode<T>> {
+    val graph = mutableMapOf<GridPoint2D, WeightedNode<T>>()
     forEachPoint { x, y ->
-        val curNode = graph.computeIfAbsent(x to y) { WeightedNode(weight = this[y][x]) }
-        directions.map { (dx, dy) -> (x + dx) to (y + dy) }
+        val curNode = graph.computeIfAbsent(x by y) { WeightedNode(weight = this[y][x]) }
+        directions.map { (dx, dy) -> (x + dx) by (y + dy) }
             .mapNotNull { (nx, ny) ->
                 getOrNull(ny)
                     ?.getOrNull(nx)
-                    ?.let { graph.computeIfAbsent(nx to ny) { WeightedNode(weight = this[ny][nx]) } }
+                    ?.let { graph.computeIfAbsent(nx by ny) { WeightedNode(weight = this[ny][nx]) } }
             }.forEach(curNode::addNeighbor)
     }
     return graph

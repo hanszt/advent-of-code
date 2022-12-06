@@ -15,7 +15,7 @@ public abstract class Day18Challenge extends Challenge {
     }
 
     long calculateAnswer(final String equationAString) {
-        LOGGER.trace("Input equation: " + equationAString);
+        LOGGER.trace(() -> "Input equation: " + equationAString);
         return solveEquation(parseEquation(equationAString));
     }
 
@@ -42,18 +42,20 @@ public abstract class Day18Challenge extends Challenge {
                     indexOpenBracket = i;
                 } else if (elementList.get(i).equals(")")) {
                     final List<String> subList = elementList.subList(indexOpenBracket + 1, i);
-                    LOGGER.trace(subList);
+                    LOGGER.trace(() -> subList);
                     result = evaluateBetweenParentheses(subList);
                     replaceEquationBySubResult(newList, result, indexOpenBracket, subList.size() + 1);
                     newList.remove(indexOpenBracket + 1);
-                    LOGGER.trace(result);
+                    var fResult = result;
+                    LOGGER.trace(() -> fResult);
                     break;
                 }
             }
             elementList = newList;
         }
         result = evaluateBetweenParentheses(elementList);
-        LOGGER.trace(result);
+        var fResult = result;
+        LOGGER.trace(() -> fResult);
         return Long.parseLong(result);
     }
 

@@ -1,5 +1,6 @@
 package aoc;
 
+import aoc.utils.FileUtils;
 import org.hzt.utils.collections.MutableSetX;
 import org.hzt.utils.sequences.Sequence;
 import org.hzt.utils.strings.StringX;
@@ -8,10 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
-import aoc.utils.FileUtils;
 
-import static java.util.stream.Collectors.toSet;
-
+/**
+ * @see <a href="https://adventofcode.com/2022/day/3">Day 3: Rucksack reorganisation</a>
+ */
 public class Day03RucksackReorganisation implements ChallengeDay {
 
     private final List<String> rucksacks;
@@ -30,11 +31,10 @@ public class Day03RucksackReorganisation implements ChallengeDay {
 
     private static int findDuplicatedItem(String content) {
         final var half = content.length() / 2;
-        final var sack1 = content.substring(0, half).chars().mapToObj(c -> (char) c).collect(toSet());
-        final var sack2 = content.substring(half).chars().mapToObj(c -> (char) c).collect(toSet());
+        final var sack1 = StringX.of(content.substring(0, half)).toMutableSet();
+        final var sack2 = StringX.of(content.substring(half)).toMutableSet();
         sack1.retainAll(sack2);
-        final var character = Sequence.of(sack1).single();
-        return toPriority(character);
+        return toPriority(sack1.single());
     }
 
     static int toPriority(char c) {

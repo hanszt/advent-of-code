@@ -1,6 +1,6 @@
 package aoc
 
-import utils.camelCaseToSentence
+import aoc.utils.camelCaseToSentence
 
 /**
  * Challenge day

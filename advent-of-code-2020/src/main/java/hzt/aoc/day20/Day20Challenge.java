@@ -36,10 +36,8 @@ public abstract class Day20Challenge extends Challenge {
                 tileContent.add(line);
             }
         }
-        if (LOGGER.isTraceEnabled()) {
-            tileIdsToGrids.forEach((k, v) -> LOGGER.trace(k + "->" + v));
-            LOGGER.trace(tileIdsToGrids.size());
-        }
+        tileIdsToGrids.forEach((k, v) -> LOGGER.trace(() -> k + "->" + v));
+        LOGGER.trace(() -> tileIdsToGrids.size());
         return tileIdsToGrids;
     }
 

@@ -2,13 +2,12 @@ package aoc
 
 import java.io.File
 
+/**
+ * @see <a href="https://adventofcode.com/2022/day/2">Day 2: Rock paper scissors</a>
+ */
 class Day02RockPaperScissors(fileName: String) : ChallengeDay {
 
-    private val lines: List<String>
-
-    init {
-        lines = File(fileName).readLines()
-    }
+    private val lines: List<String> = File(fileName).readLines()
 
     override fun part1(): Int {
         var totalScore = 0
@@ -39,23 +38,14 @@ class Day02RockPaperScissors(fileName: String) : ChallengeDay {
         return totalScore
     }
 
-    private fun determineSelf(opponent: Int, outcome: Int): Int {
-        return when (outcome) {
-            draw -> opponent
-            win -> determineSelfWhenWon(opponent)
-            else -> determineSelfWhenLost(opponent)
-        }
+    private fun determineSelf(opponent: Int, outcome: Int) = when (outcome) {
+        draw -> opponent
+        win -> determineSelfWhenWon(opponent)
+        else -> determineSelfWhenLost(opponent)
     }
 
-    private fun determineSelfWhenWon(opponent: Int): Int {
-        val i = opponent + 1
-        return if (i > 3) 1 else i
-    }
-
-    private fun determineSelfWhenLost(opponent: Int): Int {
-        val i = opponent - 1
-        return if (i < 1) 3 else i
-    }
+    private fun determineSelfWhenWon(opponent: Int) = if (opponent + 1 > 3) 1 else opponent + 1
+    private fun determineSelfWhenLost(opponent: Int) = if (opponent - 1 < 1) 3 else opponent - 1
 
     companion object {
 

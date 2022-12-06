@@ -1,6 +1,8 @@
 package hzt.aoc;
 
 
+import java.util.function.Supplier;
+
 public interface AocLogger {
 
     static AocLogger getLogger(Class<?> aClass) {
@@ -12,12 +14,10 @@ public interface AocLogger {
 
     void setLevel(System.Logger.Level level);
 
-    void trace(Object s);
+    void trace(Supplier<Object> s);
 
     void error(Object s);
 
     void error(Object s, Throwable throwable);
-
-    boolean isTraceEnabled();
 
 }

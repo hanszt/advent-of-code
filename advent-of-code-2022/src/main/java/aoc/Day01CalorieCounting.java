@@ -2,12 +2,12 @@ package aoc;
 
 import org.hzt.utils.io.FileX;
 import org.jetbrains.annotations.NotNull;
-import utils.AocUtilsKt;
+import aoc.utils.AocUtilsKt;
 
 import java.util.List;
 
 /**
- * @see <a href="https://adventofcode.com/2021/day/1">Day 1: Sonar Sweep</a>
+ * @see <a href="https://adventofcode.com/2022/day/1">Day 1: Calorie counting</a>
  */
 public class Day01CalorieCounting implements ChallengeDay {
 

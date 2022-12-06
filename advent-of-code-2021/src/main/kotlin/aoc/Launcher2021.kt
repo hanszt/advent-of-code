@@ -3,7 +3,7 @@ package aoc
 import aoc.utils.*
 
 fun main(args: Array<String>) {
-    ChallengeDay.inputDir = args.firstOrNull() ?: "input"
+    ChallengeDay.inputDir = args.firstOrNull() ?: "advent-of-code-2021/input"
     println(readTextFromResource("/title.txt").withColor(RED))
     println("By Hans Zuidervaart")
     println("Credits to Roman Elizarov, The Turkey Dev and William Y Feng%n%n".format())

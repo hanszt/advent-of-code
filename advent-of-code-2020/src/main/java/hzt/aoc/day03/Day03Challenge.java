@@ -19,7 +19,7 @@ public abstract class Day03Challenge extends Challenge {
     @Override
     protected String solve(final List<String> inputList) {
         final List<List<Boolean>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
-        LOGGER.trace(booleanGrid2DAsString(grid));
+        LOGGER.trace(() -> booleanGrid2DAsString(grid));
         return String.valueOf(calculateResult(grid));
     }
 
@@ -28,9 +28,14 @@ public abstract class Day03Challenge extends Challenge {
     int calculateNumberOfTreesEncountered(final List<List<Boolean>> treeGrid, final GridPoint2D initPositin, final GridPoint2D slope) {
         int numberOfTrees = 0;
         GridPoint2D position = initPositin;
-        while (position.y() < treeGrid.size()) {
-            final boolean isTree = treeGrid.get(position.y()).get(position.x());
-            LOGGER.trace("x: " + position.x() + ", y: " + position.y() + ", " + "Is tree: " + isTree);
+        while (true) {
+            final var y = position.y();
+            if (!(y < treeGrid.size())) {
+                break;
+            }
+            final var x = position.x();
+            final boolean isTree = treeGrid.get(y).get(x);
+            LOGGER.trace(() -> "x: " + x + ", y: " + y + ", " + "Is tree: " + isTree);
             if (isTree) {
                 numberOfTrees++;
             }

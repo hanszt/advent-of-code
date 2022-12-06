@@ -17,10 +17,10 @@ public class Part1ComboBreaker extends Day25Challenge {
         final long loopSizeDoor = findLoopSize(doorPublicKey);
         final long encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard);
         final long encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor);
-        LOGGER.trace("Card loop size: " + loopSizeCard);
-        LOGGER.trace("Door loop size: " + loopSizeDoor);
-        LOGGER.trace("Card encryption key: " + encryptionKeyCard);
-        LOGGER.trace("Door encryption key: " + encryptionKeyDoor);
+        LOGGER.trace(() -> "Card loop size: " + loopSizeCard);
+        LOGGER.trace(() -> "Door loop size: " + loopSizeDoor);
+        LOGGER.trace(() -> "Card encryption key: " + encryptionKeyCard);
+        LOGGER.trace(() -> "Door encryption key: " + encryptionKeyDoor);
         return encryptionKeyCard == encryptionKeyDoor ? encryptionKeyCard : 0;
     }
 

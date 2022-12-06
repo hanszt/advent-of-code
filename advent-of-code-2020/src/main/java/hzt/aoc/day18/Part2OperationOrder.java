@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Part2OperationOrder extends Day18Challenge {
 
+    private static final int EVALUATION_LENGTH = 3;
+    private static final String OPERATOR_TO_EVALUATE_FIRST = "+";
+
     public Part2OperationOrder() {
         super("part 2",
                 "What do you get if you add up the results of evaluating the homework problems using these new rules?");
     }
-
-    private static final int EVALUATION_LENGTH = 3;
-    private static final String OPERATOR_TO_EVALUATE_FIRST = "+";
 
 
     @Override
@@ -28,12 +28,14 @@ public class Part2OperationOrder extends Day18Challenge {
                 }
             }
             elementList = newList;
-            LOGGER.trace(elementList);
+            var fElementList = elementList;
+            LOGGER.trace(() -> fElementList);
         }
         if (elementList.size() > 1) {
             subResult = evaluateInOrder(elementList);
         }
-        LOGGER.trace("Sub result part 2: " + subResult);
+        final var fSubResult = subResult;
+        LOGGER.trace(() -> "Sub result part 2: " + fSubResult);
         return subResult;
     }
 

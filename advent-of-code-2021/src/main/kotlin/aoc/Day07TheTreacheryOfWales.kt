@@ -3,6 +3,8 @@ package aoc
 import java.io.File
 import kotlin.math.abs
 import aoc.utils.sumNaturalNrs
+import aoc.utils.min
+import aoc.utils.max;
 
 internal object Day07TheTreacheryOfWales : ChallengeDay {
 
@@ -12,9 +14,8 @@ internal object Day07TheTreacheryOfWales : ChallengeDay {
 
     private inline fun File.toMinimumConsumption(calculateConsumption: (Int, Int) -> Int): Int =
         readText().trim().split(',').map(String::toInt).run {
-            (minOf { it }..maxOf { it })
-                .map { alignmentPos -> sumOf { start -> calculateConsumption(start, alignmentPos) } }
-                .minOf { it }
+            (min()..max())
+                .minOf { alignmentPos -> sumOf { start -> calculateConsumption(start, alignmentPos) } }
         }
 
     private fun toFuelConsumptionPart2(start: Int, alignmentPos: Int) = sumNaturalNrs(bound = abs(start - alignmentPos))

@@ -24,7 +24,7 @@ public abstract class Day01Challenge extends Challenge {
         final Set<Integer> integers = inputList.stream().map(Integer::parseInt).collect(Collectors.toSet());
         integersThatSumTo2020List.clear();
         integersThatSumTo2020List.addAll(findIntegersListThatSumTo2020(new TreeSet<>(integers)));
-        LOGGER.trace(getMessage(integersThatSumTo2020List));
+        LOGGER.trace(() -> getMessage(integersThatSumTo2020List));
         return String.valueOf(calculateProduct(integersThatSumTo2020List.get(0)));
     }
 
