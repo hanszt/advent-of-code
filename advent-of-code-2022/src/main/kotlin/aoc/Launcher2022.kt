@@ -13,7 +13,7 @@ fun main(vararg args: String) {
         Day03RucksackReorganisation("$inputDir/day03.txt"),
         Day04CampCleanup("$inputDir/day04.txt"),
         Day05SupplyStacks("$inputDir/day05.txt"),
-        Day06("$inputDir/day06.txt")
+        Day06TuningTrouble("$inputDir/day06.txt")
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()
