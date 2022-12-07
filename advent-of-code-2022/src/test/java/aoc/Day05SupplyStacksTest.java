@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Day05SupplyStacksTest {
 
-    private final Day05SupplyStacks day05SupplyStacks = new Day05SupplyStacks("input/day05.txt");
+        private final Day05SupplyStacks day05SupplyStacks = new Day05SupplyStacks("input/day05.txt");
     @Test
     void testPart1() {
         final var part1 = day05SupplyStacks.part1();
