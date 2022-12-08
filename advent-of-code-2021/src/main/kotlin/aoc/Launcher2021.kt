@@ -4,7 +4,7 @@ import aoc.utils.*
 
 fun main(args: Array<String>) {
     ChallengeDay.inputDir = args.firstOrNull() ?: "advent-of-code-2021/input"
-    println(readTextFromResource("/title.txt").withColor(RED))
+    println({}.readTextFromResource("/title.txt").withColor(RED))
     println("By Hans Zuidervaart")
     println("Credits to Roman Elizarov, The Turkey Dev and William Y Feng%n%n".format())
     val results = sequenceOf(
@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
         .onEach(::println)
         .toList()
     println("%nTotal solve time: %2.3f seconds%n".format(results.sumOf(AocResult::solveTimeNanos) / 1e9))
-    println(readTextFromResource("/banner.txt").withColor(GREEN))
+    println({}.readTextFromResource("/banner.txt").withColor(GREEN))
 }
 
 private val ansiColors = listOf(BRIGHT_BLUE, RESET, GREEN, RESET, YELLOW, RESET, CYAN, RESET)

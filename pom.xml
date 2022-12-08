@@ -34,7 +34,7 @@
         <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
         <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <core.version>0.7.5.17</core.version>
+        <hzt.utils.version>0.7.5.17</hzt.utils.version>
     </properties>
 
     <dependencyManagement>
@@ -65,7 +65,7 @@
             <dependency>
                 <groupId>org.hzt.utils</groupId>
                 <artifactId>core</artifactId>
-                <version>${core.version}</version>
+                <version>${hzt.utils.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hzt.quizes</groupId>

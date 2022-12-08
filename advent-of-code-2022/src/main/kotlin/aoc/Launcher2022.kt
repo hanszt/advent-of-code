@@ -3,7 +3,7 @@ package aoc
 import aoc.utils.*
 
 fun main(vararg args: String) {
-    println(readTextFromResource("/title.txt").withColor(RED))
+    println({}.readTextFromResource("/title.txt").withColor(BRIGHT_BLUE))
 
     val inputDir = args.firstOrNull() ?: "advent-of-code-2022/input"
 
@@ -15,13 +15,13 @@ fun main(vararg args: String) {
         Day05SupplyStacks("$inputDir/day05.txt"),
         Day06TuningTrouble("$inputDir/day06.txt"),
         Day07NoSpaceLeftOnDevice("$inputDir/day07.txt"),
-
+        Day08("$inputDir/day08.txt")
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()
 
     println("%nTotal solve time: %2.3f seconds%n".format(results.sumOf(AocResult::solveTimeNanos) / 1e9))
-    println(readTextFromResource("/banner.txt").withColor(GREEN))
+    println({}.readTextFromResource("/banner.txt").withColor(GREEN))
 }
 
 private val ansiColors = listOf(BRIGHT_BLUE, RESET, GREEN, RESET, YELLOW, RESET, CYAN, RESET)
