@@ -22,7 +22,7 @@ internal object Day19BeaconScanner : ChallengeDay {
 
     private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> x by y by z }
 
-    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map { point.distance(it) } }.max();
+    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map { point.gridDistance(it) } }.max()
 
     private fun List<Set<GridPoint3D>>.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
         val detectedPoints = this[scannerIndex]
@@ -52,7 +52,7 @@ internal object Day19BeaconScanner : ChallengeDay {
         val beacons = scannerDataSets.first().toMutableSet()
 
         val transform3Ds = Array<List<Transform3D>>(scannerDataSets.size) { emptyList() }
-        val scannerPositions = Array(scannerDataSets.size) { GridPoint3D.zero }
+        val scannerPositions = Array(scannerDataSets.size) { GridPoint3D.ZERO }
 
         val found = ArrayDeque<Int>().apply { add(0) }
         val remaining = (1 until scannerDataSets.size).toMutableSet()
@@ -63,7 +63,7 @@ internal object Day19BeaconScanner : ChallengeDay {
                 val transformMatch = scannerDataSets.findMatch(firstFound, remainingScanner) ?: continue
                 val transforms = listOf(transformMatch) + transform3Ds[firstFound]
                 transform3Ds[remainingScanner] = transforms
-                scannerPositions[remainingScanner] = GridPoint3D.zero.transform(transforms)
+                scannerPositions[remainingScanner] = GridPoint3D.ZERO.transform(transforms)
                 beacons.addAll(scannerDataSets[remainingScanner].map { it.transform(transforms) })
                 found.add(remainingScanner)
                 remaining.remove(remainingScanner)

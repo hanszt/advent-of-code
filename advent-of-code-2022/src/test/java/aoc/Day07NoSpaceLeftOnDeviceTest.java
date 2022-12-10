@@ -11,6 +11,7 @@ class Day07NoSpaceLeftOnDeviceTest {
     @Test
     void testPart1() {
         final var result = day07NoSpaceLeftOnDevice.part1();
+        System.out.println(day07NoSpaceLeftOnDevice.toTreeString());
         assertEquals(1_350_966, result);
     }
 

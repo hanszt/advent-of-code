@@ -1,6 +1,7 @@
 package aoc;
 
 import aoc.utils.FileUtils;
+import org.hzt.graph.TreeNode;
 import org.hzt.utils.collections.primitives.IntList;
 import org.hzt.utils.collections.primitives.IntMutableList;
 import org.jetbrains.annotations.NotNull;
@@ -16,11 +17,12 @@ import java.util.stream.Stream;
 public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
 
     private final IntList dirSizes;
+    private final AocFile root;
 
 
     public Day07NoSpaceLeftOnDevice(String fileName) {
         final var lines = FileUtils.useLines(Path.of(fileName), Stream::toList);
-        AocFile root = new AocFile("/", null, -1);
+        root = new AocFile("/", null, -1);
         buildFileTree(lines, root);
         dirSizes = extractDirSizes(root);
     }
@@ -100,7 +102,11 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
         return aocFile.size;
     }
 
-    private static final class AocFile {
+    public String toTreeString() {
+        return root.toTreeString(3);
+    }
+
+    private static final class AocFile implements TreeNode<AocFile, AocFile> {
 
         final String name;
         final int size;
@@ -117,11 +123,12 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
             return size < 0;
         }
 
-        AocFile getParent() {
+        @Override
+        public AocFile getParent() {
             return parent;
         }
 
-        List<AocFile> getChildren() {
+        public List<AocFile> getChildren() {
             return children;
         }
 

@@ -15,7 +15,24 @@ fun main(vararg args: String) {
         Day05SupplyStacks("$inputDir/day05.txt"),
         Day06TuningTrouble("$inputDir/day06.txt"),
         Day07NoSpaceLeftOnDevice("$inputDir/day07.txt"),
-        Day08("$inputDir/day08.txt")
+        Day08TreeTopTreeHouse("$inputDir/day08.txt"),
+        Day09RopeBridge("$inputDir/day09.txt"),
+        Day10CathodeRayTube("$inputDir/day10.txt"),
+        Day11("$inputDir/day11.txt"),
+        Day12("$inputDir/day12.txt"),
+        Day13("$inputDir/day13.txt"),
+        Day14("$inputDir/day14.txt"),
+        Day15("$inputDir/day15.txt"),
+        Day16("$inputDir/day16.txt"),
+        Day17("$inputDir/day17.txt"),
+        Day18("$inputDir/day18.txt"),
+        Day19("$inputDir/day19.txt"),
+        Day20("$inputDir/day20.txt"),
+        Day21("$inputDir/day21.txt"),
+        Day22("$inputDir/day22.txt"),
+        Day23("$inputDir/day23.txt"),
+        Day24("$inputDir/day24.txt"),
+        Day25("$inputDir/day25.txt")
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()

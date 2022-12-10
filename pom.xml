@@ -68,6 +68,11 @@
                 <version>${hzt.utils.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.hzt.utils</groupId>
+                <artifactId>graph-utils</artifactId>
+                <version>${hzt.utils.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.hzt.quizes</groupId>
                 <artifactId>aoc-utils</artifactId>
                 <version>${project.version}</version>

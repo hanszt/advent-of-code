@@ -35,6 +35,10 @@
             <artifactId>core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.hzt.utils</groupId>
+            <artifactId>graph-utils</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.hzt.quizes</groupId>
             <artifactId>aoc-utils</artifactId>
         </dependency>

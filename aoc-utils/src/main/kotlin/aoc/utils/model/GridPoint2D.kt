@@ -10,9 +10,12 @@ data class GridPoint2D(val x: Int, val y: Int) {
     operator fun minus(other: GridPoint2D) = GridPoint2D(x - other.x, y - other.y)
     operator fun times(factor: Int) = GridPoint2D(x * factor, y * factor)
     fun toSignVector() = GridPoint2D(x.sign, y.sign)
-    fun gridDistance(other: GridPoint2D) = abs(x - other.x).coerceAtLeast(abs(y - other.y))
+    fun gridDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
 
     companion object {
+        @JvmField
+        val ZERO = GridPoint2D(0, 0)
+        @JvmStatic
         infix fun Int.by(y: Int) = GridPoint2D(this, y)
     }
 }
