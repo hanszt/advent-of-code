@@ -5,14 +5,20 @@ import aoc.utils.model.Node
 import aoc.utils.model.WeightedNode
 import aoc.utils.model.GridPoint2D.Companion.by
 
-fun List<String>.toBiDiGraph(delimiter: String): Map<String, Node<String?>> = toBiDiGraph(delimiter) { it }
+fun List<String>.toBiDiGraph(delimiter: String): Map<String, Node<String>> = toBiDiGraph(delimiter) { it }
 
-fun List<String>.toBiDiGraph(delimiter: Char): Map<String, Node<String?>> = toBiDiGraph(delimiter.toString())
+fun <R> List<String>.toBiDiGraph(delimiter: String, mapper: (String) -> R): Map<String, Node<R>> = toBiDiGraph(
+    { it.split(delimiter).toEnds() },
+    mapper)
 
-inline fun <T> List<String>.toBiDiGraph(delimiter: String, mapper: (String) -> T): Map<String, Node<T>> {
-    val nodes = mutableMapOf<String, Node<T>>()
-    for (line in this) {
-        val (value, other) = line.split(delimiter)
+fun List<String>.toBiDiGraph(delimiter: Char): Map<String, Node<String>> = toBiDiGraph(
+    { it.split(delimiter).toEnds() },
+    { it })
+
+inline fun <T, K, R> List<T>.toBiDiGraph(toPairMapper: (T) -> Pair<K, K>, mapper: (K) -> R): Map<K, Node<R>> {
+    val nodes = mutableMapOf<K, Node<R>>()
+    for (item in this) {
+        val (value, other) = toPairMapper(item)
         val node = nodes.getOrDefault(value, Node(mapper(value)))
         val otherNode = nodes.getOrDefault(other, Node(mapper(other)))
         node.addNeighbor(otherNode)

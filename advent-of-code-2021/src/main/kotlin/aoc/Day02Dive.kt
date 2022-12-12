@@ -1,10 +1,10 @@
 package aoc
 
 import aoc.utils.mapSecond
-import java.io.File
-
 import aoc.utils.model.GridPoint2D
+import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.toEnds
+import java.io.File
 
 internal object Day02Dive : ChallengeDay {
 
@@ -16,19 +16,19 @@ internal object Day02Dive : ChallengeDay {
     }
 
     private fun toVector(dir: String, size: Int) = when (dir) {
-        "up" -> GridPoint2D(0, -size)
-        "down" -> GridPoint2D(0, size)
-        "forward" -> GridPoint2D(size, 0)
-        else -> GridPoint2D(0, 0)
+        "up" -> 0 by -size
+        "down" -> 0 by size
+        "forward" -> size by 0
+        else -> 0 by 0
     }
 
     fun part2(filePath: String): Int {
         val pairs = File(filePath).useLines { it.toDirAndStepSizes() }
-        var result = GridPoint2D(0, 0)
+        var result = 0 by 0
         var aim = 0
         for ((dir, stepSize) in pairs) {
             when (dir) {
-                "forward" -> result += GridPoint2D(stepSize, stepSize * aim)
+                "forward" -> result += stepSize by stepSize * aim
                 "up" -> aim -= stepSize
                 "down" -> aim += stepSize
             }

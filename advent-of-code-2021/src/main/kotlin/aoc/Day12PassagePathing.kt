@@ -11,7 +11,7 @@ internal object Day12PassagePathing : ChallengeDay {
 
     fun part1(path: String): Int = File(path).readLines().toBiDiGraph('-').countDistinctPaths()
 
-    private fun Map<String, Node<String?>>.countDistinctPaths(): Int = let { graph ->
+    private fun Map<String, Node<String>>.countDistinctPaths(): Int = let { graph ->
         val start = graph["start"] ?: throw IllegalStateException()
         val end = graph["end"] ?: throw IllegalStateException()
         return allPathsByDfs(start, end) { it.value?.all(Char::isLowerCase) ?: false }.count()

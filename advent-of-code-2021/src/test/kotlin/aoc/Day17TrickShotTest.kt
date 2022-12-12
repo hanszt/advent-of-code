@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import aoc.utils.*
+import aoc.utils.model.GridPoint2D.Companion.by
 
 internal class Day17TrickShotTest {
 
@@ -41,7 +42,7 @@ internal class Day17TrickShotTest {
 
     @Test
     fun `display traveled path`() {
-        val probe = Probe(velocity = GridPoint2D(8, 3))
+        val probe = Probe(velocity = 8 by 3)
         val path = probe.getPath()
         val maxX = path.maxOf(GridPoint2D::x)
 

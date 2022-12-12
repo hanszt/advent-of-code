@@ -9,14 +9,14 @@ fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
     while (unsettled.isNotEmpty()) {
         val current = unsettled.minByOrNull(WeightedNode<T>::distance) ?: break
         for (neighbor in current.neighbors) {
-            if (neighbor !in settled && neighbor is WeightedNode) {
+            if (neighbor !in settled) {
                 neighbor.updateShortestPath(current)
-                unsettled.add(neighbor)
+                unsettled += neighbor
             }
         }
-        if (current == goal) return current
-        unsettled.remove(current)
-        settled.add(current)
+        if (current == goal) return goal
+        unsettled -= current
+        settled += current
     }
     throw IllegalStateException("no path to $goal found")
 }
@@ -32,20 +32,20 @@ private fun <T> MutableList<List<Node<T>>>.dfsRecursive(
     predicate: (Node<T>) -> Boolean
 ) {
     if (current == goal) {
-        this.add(localPathList.toList())
+        this += localPathList.toList()
         return
     }
     if (predicate(current)) {
-        visited.add(current)
+        visited += current
     }
     for (neighbor in current.neighbors) {
         if (neighbor !in visited) {
-            localPathList.add(neighbor)
+            localPathList += neighbor
             dfsRecursive(neighbor, goal, visited, localPathList, predicate)
-            localPathList.remove(neighbor)
+            localPathList -= neighbor
         }
     }
     if (predicate(current)) {
-        visited.remove(current)
+        visited -= current
     }
 }

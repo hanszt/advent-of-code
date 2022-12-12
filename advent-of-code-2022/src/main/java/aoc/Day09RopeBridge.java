@@ -26,10 +26,10 @@ public class Day09RopeBridge implements ChallengeDay {
         final var magnitude = Integer.parseInt(s[1]);
         final var dir = s[0];
         return switch (dir) {
-            case "R" -> new GridPoint2D(magnitude, 0);
-            case "L" -> new GridPoint2D(-magnitude, 0);
-            case "U" -> new GridPoint2D(0, magnitude);
-            case "D" -> new GridPoint2D(0, -magnitude);
+            case "R" -> GridPoint2D.of(magnitude, 0);
+            case "L" -> GridPoint2D.of(-magnitude, 0);
+            case "U" -> GridPoint2D.of(0, magnitude);
+            case "D" -> GridPoint2D.of(0, -magnitude);
             default -> throw new IllegalStateException("No valid direction " + dir);
         };
     }
@@ -80,13 +80,10 @@ public class Day09RopeBridge implements ChallengeDay {
             final var posHead = knotPos[i];
             final var posTail = knotPos[i + 1];
             final var distance = posHead.gridDistance(posTail);
-            if (distance == 2 && (posHead.getX() == posTail.getX() || posHead.getY() == posTail.getY())) {
-                final var dir = posHead.minus(posTail).toSignVector();
-                knotPos[i + 1] = posTail.plus(dir);
-            }
-            if (distance > 2 && posHead.getX() != posTail.getX() && posHead.getY() != posTail.getY()) {
-                final var dir = posHead.minus(posTail).toSignVector();
-                knotPos[i + 1] = posTail.plus(dir);
+            final var case1 = distance == 2 && (posHead.getX() == posTail.getX() || posHead.getY() == posTail.getY());
+            final var case2 = distance > 2 && posHead.getX() != posTail.getX() && posHead.getY() != posTail.getY();
+            if (case1 || case2) {
+                knotPos[i + 1] = posTail.plus(posHead.minus(posTail).toSignVector());
             }
         }
         return knotPos[knotPos.length - 1];

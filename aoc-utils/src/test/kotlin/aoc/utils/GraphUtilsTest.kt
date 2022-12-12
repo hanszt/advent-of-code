@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-internal class GraphUtilsKtTest {
+internal class GraphUtilsTest {
 
     @Test
     fun `convert an associations list to a graph`() {

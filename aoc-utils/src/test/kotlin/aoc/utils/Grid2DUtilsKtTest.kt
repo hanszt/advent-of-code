@@ -1,6 +1,7 @@
 package aoc.utils
 
-import aoc.utils.model.GridPoint2D
+import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.model.gridPoint2D
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -44,11 +45,11 @@ internal class Grid2DUtilsKtTest {
     @Test
     fun `test rotate rotates generic matrix by 90 deg clockwise`() {
         val input = listOf(
-            listOf(GridPoint2D(1, 1), GridPoint2D(2, 2))
+            listOf(gridPoint2D(1, 1), gridPoint2D(2, 2))
         )
         val expected = listOf(
-            listOf(GridPoint2D(1, 1)),
-            listOf(GridPoint2D(2, 2))
+            listOf(1 by 1),
+            listOf(2 by 2)
         )
         val rotatedClockWise = input.rotate()
         rotatedClockWise.forEach(::println)
@@ -58,12 +59,12 @@ internal class Grid2DUtilsKtTest {
     @Test
     fun `test rotated rotates generic 2d array by 90 deg clockwise`() {
         val input = arrayOf(
-            arrayOf(GridPoint2D(1, 1), GridPoint2D(2, 2)),
-            arrayOf(GridPoint2D(3, 3), GridPoint2D(4, 4))
+            arrayOf(1 by 1, 2 by 2),
+            arrayOf(3 by 3, 4 by 4)
         )
         val expected = arrayOf(
-            arrayOf(GridPoint2D(3, 3), GridPoint2D(1, 1)),
-            arrayOf(GridPoint2D(4, 4), GridPoint2D(2, 2))
+            arrayOf(3 by 3, 1 by 1),
+            arrayOf(4 by 4, 2 by 2)
         )
         val rotatedClockWise = input.rotated()
         println(rotatedClockWise.gridAsString(1))

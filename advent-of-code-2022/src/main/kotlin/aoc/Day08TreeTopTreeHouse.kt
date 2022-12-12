@@ -1,5 +1,7 @@
 package aoc
 
+import aoc.utils.gridCount
+import aoc.utils.mapByPoint
 import aoc.utils.max
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
@@ -12,67 +14,34 @@ import java.io.File
 class Day08TreeTopTreeHouse(fileName: String) : ChallengeDay {
 
     private val treeGrid: Array<IntArray> = File(fileName).readLines().toIntGrid(Char::digitToInt)
-
     private val directions = listOf(0 by 1, 0 by -1, 1 by 0, -1 by 0)
 
-    override fun part1(): Int {
-        var counter = 0
-        for (y in 1 until treeGrid.lastIndex) {
-            for (x in 1 until treeGrid.first().lastIndex) {
-                for (dir in directions) {
-                    if (visibleFromOutSide(y, x, dir)) {
-                        counter++
-                        break
-                    }
-                }
-            }
-        }
-        return counter + treeCountAtEdges()
-    }
+    override fun part1(): Int = treeGrid.gridCount { x, y -> directions.any { visibleFromOutSide(x by y, it) } }
 
-    private fun visibleFromOutSide(y: Int, x: Int, delta: GridPoint2D): Boolean {
-        val tree = treeGrid[y][x]
-        var xC = x
-        var yC = y
-        while (yC in 1 until treeGrid.lastIndex && xC in 1 until treeGrid[0].lastIndex) {
-            val other = treeGrid[yC + delta.y][xC + delta.x]
-            if (other >= tree) {
-                return false
-            }
-            xC += delta.x
-            yC += delta.y
+    private fun visibleFromOutSide(spot: GridPoint2D, delta: GridPoint2D): Boolean {
+        val tree = treeGrid[spot.y][spot.x]
+        var cur = spot
+        while (cur.y in 1 until treeGrid.lastIndex && cur.x in 1 until treeGrid[0].lastIndex) {
+            val other = treeGrid[cur.y + delta.y][cur.x + delta.x]
+            if (other >= tree) return false
+            cur += delta
         }
         return true
     }
 
-    private fun treeCountAtEdges() = (2 * treeGrid.size + 2 * treeGrid.first().size - 4)
+    override fun part2(): Int =
+        treeGrid.mapByPoint { x, y -> directions.map { toScore(x by y, it) }.reduce { total, score -> total * score } }
+            .flatten()
+            .max()
 
-    override fun part2(): Int {
-        val scores = ArrayList<Int>()
-        for (y in treeGrid.indices) {
-            for (x in 0 until treeGrid.first().size) {
-                val y0 = toScore(y, x, directions[0])
-                val y1 = toScore(y, x, directions[1])
-                val x0 = toScore(y, x, directions[2])
-                val x1 = toScore(y, x, directions[3])
-                scores.add(x0 * x1 * y0 * y1)
-            }
-        }
-        return scores.max()
-    }
-
-    private fun toScore(y: Int, x: Int, delta: GridPoint2D): Int {
+    private fun toScore(spot: GridPoint2D, delta: GridPoint2D): Int {
         var score = 0
-        var xC = x
-        var yC = y
-        while (yC in 1 until treeGrid.lastIndex && xC in 1 until treeGrid[0].lastIndex) {
-            val other = treeGrid[yC + delta.y][xC + delta.x]
-            xC += delta.x
-            yC += delta.y
+        var cur = spot
+        while (cur.y in 1 until treeGrid.lastIndex && cur.x in 1 until treeGrid[0].lastIndex) {
+            val other = treeGrid[cur.y + delta.y][cur.x + delta.x]
             score++
-            if (other >= treeGrid[y][x]) {
-                break
-            }
+            cur += delta
+            if (other >= treeGrid[spot.y][spot.x]) break
         }
         return score
     }

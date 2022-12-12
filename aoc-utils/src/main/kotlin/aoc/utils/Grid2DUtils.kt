@@ -34,9 +34,14 @@ inline fun <reified T> Array<Array<T>>.copyGrid() = map(Array<T>::copyOf).toType
 inline fun <T, reified R> Array<Array<T>>.mapByPoint(transform: (Int, Int) -> R): Array<Array<R>> =
     indices.map { y -> this[y].indices.map { x -> transform(x, y) }.toTypedArray() }.toTypedArray()
 
+inline fun <reified R> Array<IntArray>.mapByPoint(transform: (Int, Int) -> R): Array<Array<R>> =
+    indices.map { y -> this[y].indices.map { x -> transform(x, y) }.toTypedArray() }.toTypedArray()
+
 inline fun <T> Array<Array<T>>.anyInGrid(predicate: (T) -> Boolean) = any { it.any(predicate) }
 
 inline fun Array<IntArray>.allInGrid(predicate: (Int) -> Boolean) = all { it.all(predicate) }
+
+inline fun Array<IntArray>.gridCount(transform: (Int, Int) -> Boolean): Int = indices.sumOf { y -> this[y].indices.count { x -> transform(x, y) } }
 
 inline fun <T> Array<Array<T>>.forEachInGrid(action: (T) -> Unit) = forEach { it.forEach(action) }
 
@@ -54,7 +59,6 @@ inline fun Array<IntArray>.forEachPointAndValue(action: (Int, Int, Int) -> Unit)
 
 /**
  * Rotation and mirroring
- *
  */
 fun <T> List<List<T>>.rotate(): List<List<T>> =
     first().indices.map { col -> indices.reversed().map { row -> this[row][col] } }

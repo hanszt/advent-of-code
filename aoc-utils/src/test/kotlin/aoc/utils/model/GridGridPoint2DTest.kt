@@ -1,10 +1,11 @@
 package aoc.utils.model
 
-import org.junit.jupiter.api.Assertions.*
+import aoc.utils.model.GridPoint2D.Companion.by
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class GridGridPoint2DTest {
 
     @Test
-    fun testPointsEqualWhenSameCoordinate() = assertEquals(GridPoint2D(2, 4), GridPoint2D(2, 4))
+    fun testPointsEqualWhenSameCoordinate() = assertEquals(2 by 4, 2 by 4)
 }
