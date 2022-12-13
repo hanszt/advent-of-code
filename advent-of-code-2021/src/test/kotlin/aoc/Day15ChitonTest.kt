@@ -1,7 +1,9 @@
 package aoc
 
 import aoc.utils.*
+import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.model.WeightedNode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
@@ -32,16 +34,14 @@ internal class Day15ChitonTest {
     }
 
     private fun Array<IntArray>.pathInGridAsString(): String {
-        val graph = toWeightedGraph<Any>(listOf(-1 by 0, -1 by 0, 0 by 1, 1 by 0))
+        val graph = toWeightedGraph(listOf(-1 by 0, -1 by 0, 0 by 1, 1 by 0), computeValue = { x, y -> x by y })
         val startPoint = 0 by 0
         val endPoint = first().lastIndex by lastIndex
         val start = graph[startPoint] ?: throw IllegalStateException()
         val goal = graph[endPoint] ?: throw IllegalStateException()
-        val nodesToCoordinates = graph.map { it.value to it.key }.toMap()
         val grid = toGridOf(Int::toString)
-
         start.dijkstra(goal).shortestPath.plus(goal)
-            .mapNotNull(nodesToCoordinates::get)
+            .mapNotNull(WeightedNode<GridPoint2D>::value)
             .forEach { (x, y) -> grid[y][x] = grid[y][x].withColors(BRIGHT_YELLOW, YELLOW_BG, 2) }
 
         return grid.gridAsString { if (it.length == 1) it.withColors(BROWN_BG, random16BitColor(), 2) else it }

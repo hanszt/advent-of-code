@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.LongUnaryOperator;
 
+/**
+ * @see <a href="https://adventofcode.com/2022/day/9">Day 9: Rope bridge</a>
+ */
 public class Day11MonkeyInTheMiddle implements ChallengeDay {
 
     private final List<String> monkeysAsString;

@@ -2,9 +2,12 @@ package aoc;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Day13 implements ChallengeDay {
+/**
+ * @see <a href="https://adventofcode.com/2022/day/13">Day 13: Distress signal</a>
+ */
+public class Day13DistressSignal implements ChallengeDay {
 
-    public Day13(String fileName) {
+    public Day13DistressSignal(String fileName) {
 
     }
 

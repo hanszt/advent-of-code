@@ -17,4 +17,8 @@ class WeightedNode<T>(val value: T? = null, val weight: Int) {
             shortestPath = neighbor.shortestPath.plus(neighbor)
         }
     }
+
+    override fun toString(): String {
+        return "WeightedNode(value=$value, weight=$weight, distance=$distance)"
+    }
 }

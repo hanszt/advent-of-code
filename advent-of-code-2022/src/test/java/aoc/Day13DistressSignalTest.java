@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-class Day13Test {
+class Day13DistressSignalTest {
 
-    private final Day13 day13 = new Day13("input/day13.txt");
+    private final Day13DistressSignal day13 = new Day13DistressSignal("input/day13.txt");
 
     @Test
     @Disabled("Not implemented")

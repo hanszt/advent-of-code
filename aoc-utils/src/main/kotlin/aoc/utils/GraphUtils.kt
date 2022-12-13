@@ -29,15 +29,18 @@ inline fun <T, K, R> List<T>.toBiDiGraph(toPairMapper: (T) -> Pair<K, K>, mapper
     return nodes
 }
 
-fun <T> Array<IntArray>.toWeightedGraph(directions: List<GridPoint2D>): Map<GridPoint2D, WeightedNode<T>> {
+fun <T> Array<IntArray>.toWeightedGraph(directions: List<GridPoint2D>,
+                                        computeWeight: (Int, Int) -> Int = { x, y -> this[y][x] },
+                                        computeValue: (Int, Int) -> T? = { _, _ -> null }):
+        Map<GridPoint2D, WeightedNode<T>> {
     val graph = mutableMapOf<GridPoint2D, WeightedNode<T>>()
     forEachPoint { x, y ->
-        val curNode = graph.computeIfAbsent(x by y) { WeightedNode(weight = this[y][x]) }
+        val curNode = graph.computeIfAbsent(x by y) { WeightedNode(computeValue(x, y), weight = computeWeight(x, y)) }
         directions.map { (dx, dy) -> (x + dx) by (y + dy) }
             .mapNotNull { (nx, ny) ->
                 getOrNull(ny)
                     ?.getOrNull(nx)
-                    ?.let { graph.computeIfAbsent(nx by ny) { WeightedNode(weight = this[ny][nx]) } }
+                    ?.let { graph.computeIfAbsent(nx by ny) { WeightedNode(computeValue(nx, ny), weight = computeWeight(nx, ny)) } }
             }.forEach(curNode::addNeighbor)
     }
     return graph
