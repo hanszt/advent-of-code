@@ -16,10 +16,10 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
 
     private val lines = File(fileName).readLines()
 
-    private fun createGrid(input: List<String>): Triple<Point, Point, Map<Point, Int>> {
+    private fun createGrid(input: List<String>): Grid {
         val grid: MutableMap<Point, Int> = HashMap()
-        var start: Point? = null
-        var end: Point? = null
+        lateinit var start: Point
+        lateinit var end: Point
         for (y in input.indices) {
             val row = input[y]
             for (x in row.indices) {
@@ -36,14 +36,10 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
                 grid[point] = height.code - 'a'.code
             }
         }
-        return Triple(start!!, end!!, grid)
+        return Grid(grid, start, end)
     }
 
-    private fun Map<Point, Int>.floodFill(
-        start: Point,
-        goal: Point,
-        postProcess: (Int, Int) -> (Int) = { _, length -> length }
-    ): Int {
+    private fun Grid.floodFill(postProcess: (Int, Int) -> (Int) = { _, length -> length }): Int {
         val dirs = listOf(-1 by 0, 1 by 0, 0 by -1, 0 by 1)
         val shortestPaths = mutableMapOf(start to 0)
         val queue: Queue<Point> = LinkedList<Point>().apply { add(start) }
@@ -51,28 +47,29 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
             val pos = queue.remove()
             for (dir in dirs) {
                 val neighborPos = pos + dir
-                this[neighborPos]?.let {
-                    val gridHeight = this[neighborPos]!!
-                    if (gridHeight - this[pos]!! <= 1) {
-                        val newPathLength = shortestPaths[pos]!! + 1
-                        if (newPathLength < (shortestPaths[neighborPos] ?: Int.MAX_VALUE)) {
-                            shortestPaths[neighborPos] = postProcess(gridHeight, newPathLength)
-                            queue.add(neighborPos)
-                        }
-                    }
-                }
+                shortestPaths.update(pos, neighborPos, postProcess)?.also(queue::add)
             }
         }
         return shortestPaths[goal] ?: throw IllegalStateException("No path found...")
     }
 
-    override fun part1(): Int {
-        val (start, end, grid) = createGrid(lines)
-        return grid.floodFill(start, end)
-    }
+    override fun part1(): Int = createGrid(lines).floodFill()
+    override fun part2(): Int = createGrid(lines).floodFill { height, length -> if (height == 0) 0 else length }
 
-    override fun part2(): Int {
-        val (start, end, grid) = createGrid(lines)
-        return grid.floodFill(start, end) { height, pathLength -> if (height == 0) 0 else pathLength }
+    data class Grid(val grid: Map<Point, Int>, val start: Point, val goal: Point) {
+
+        fun MutableMap<Point, Int>.update(pos: Point, neighborPos: Point, postProcess: (Int, Int) -> Int): Point? {
+            grid[neighborPos]?.let {
+                val gridHeight = grid[neighborPos]!!
+                if (gridHeight - grid[pos]!! <= 1) {
+                    val newPathLength = this[pos]!! + 1
+                    if (newPathLength < (this[neighborPos] ?: Int.MAX_VALUE)) {
+                        this[neighborPos] = postProcess(gridHeight, newPathLength)
+                        return neighborPos
+                    }
+                }
+            }
+            return null
+        }
     }
 }

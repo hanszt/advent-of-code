@@ -21,7 +21,7 @@ fun main(vararg args: String) {
         Day11MonkeyInTheMiddle("$inputDir/day11.txt"),
         Day12HillClimbingAlgorithm("$inputDir/day12.txt"),
         Day13DistressSignal("$inputDir/day13.txt"),
-        Day14("$inputDir/day14.txt"),
+        Day14RegolithReservoir("$inputDir/day14.txt"),
         Day15("$inputDir/day15.txt"),
         Day16("$inputDir/day16.txt"),
         Day17("$inputDir/day17.txt"),
