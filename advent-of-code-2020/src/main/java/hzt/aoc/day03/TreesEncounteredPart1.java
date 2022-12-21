@@ -1,6 +1,7 @@
 package hzt.aoc.day03;
 
-import hzt.aoc.GridPoint2D;
+import aoc.utils.model.GridPoint2D;
+
 import java.util.List;
 
 public class TreesEncounteredPart1 extends Day03Challenge {
@@ -12,7 +13,7 @@ public class TreesEncounteredPart1 extends Day03Challenge {
 
     @Override
     protected long calculateResult(final List<List<Boolean>> grid) {
-        return calculateNumberOfTreesEncountered(grid, new GridPoint2D(0, 0), Path.SLOPE3_1.getSlope());
+        return calculateNumberOfTreesEncountered(grid, GridPoint2D.ZERO, Path.SLOPE3_1.getSlope());
     }
 
     @Override

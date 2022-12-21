@@ -1,6 +1,7 @@
 package aoc
 
 import aoc.utils.max
+import org.hzt.graph.TreeNode
 import java.io.File
 
 //
@@ -13,7 +14,7 @@ import java.io.File
 // source: https://github.com/elizarov/AdventOfCode2021
 internal object Day18SnailFish : ChallengeDay {
 
-    sealed class SnailNr {
+    sealed class SnailNr : TreeNode<SnailNr, SnailNr> {
 
         private fun findPair(nesting: Int): Pair? {
             if (nesting == 0) return this as? Pair?
@@ -72,7 +73,7 @@ internal object Day18SnailFish : ChallengeDay {
 
         fun reduce() = generateSequence(seed = this, ::reductionStep).last()
 
-        private fun reductionStep(snailNr: SnailNr): SnailNr? = snailNr.buildReplaceMap()?.let { snailNr.replace(it) }
+        private fun reductionStep(snailNr: SnailNr): SnailNr? = snailNr.buildReplaceMap()?.let(snailNr::replace)
 
         fun magnitude(): Int = when (this) {
             is Regular -> value
@@ -82,10 +83,14 @@ internal object Day18SnailFish : ChallengeDay {
 
     private class Regular(val value: Int) : SnailNr() {
         override fun toString(): String = value.toString()
+
+        override fun getChildren(): List<SnailNr> = emptyList();
     }
 
     private class Pair(val left: SnailNr, val right: SnailNr) : SnailNr() {
         override fun toString(): String = "[$left,$right]"
+
+        override fun getChildren(): List<SnailNr> = listOf(left, right)
     }
 
     fun toSnailNr(snailNrAsString: String): SnailNr {

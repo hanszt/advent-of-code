@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+
 public abstract class Day16Challenge extends Challenge {
 
     Day16Challenge(final String challengeTitle, final String description) {
@@ -27,12 +29,13 @@ public abstract class Day16Challenge extends Challenge {
                 if ("nearby tickets:".equals(s)) {
                     inputPart++;
                 }
-
                 if (inputPart == 0) {
                     addField(s, fields);
-                } else if (inputPart == 1 && !"your ticket:".equals(s)) {
+                }
+                if (inputPart == 1 && !"your ticket:".equals(s)) {
                     yourTicketValues.addAll(commaSeparatedStringToIntegerList(s));
-                } else if (inputPart == 2 && !"nearby tickets:".equals(s)) {
+                }
+                if (inputPart == 2 && !"nearby tickets:".equals(s)) {
                     nearbyTicketValues.add(commaSeparatedStringToIntegerList(s));
                 }
             }
@@ -42,7 +45,7 @@ public abstract class Day16Challenge extends Challenge {
 
     protected abstract long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, List<List<Integer>> nearbyTicketValues);
 
-    private void addField(final String s, final List<Field> fields) {
+    private static void addField(final String s, final List<Field> fields) {
         final String[] array = s.split(": ");
         final Field field = new Field(array[0]);
         final String[] ranges = array[1].split(" or ");
@@ -50,7 +53,7 @@ public abstract class Day16Challenge extends Challenge {
             final String[] lowerUpper = range.split("-");
             final int lower = Integer.parseInt(lowerUpper[0]);
             final int upper = Integer.parseInt(lowerUpper[1]);
-            field.addRange(new GridPoint2D(lower, upper));
+            field.addRange(gridPoint2D(lower, upper));
         }
         fields.add(field);
     }

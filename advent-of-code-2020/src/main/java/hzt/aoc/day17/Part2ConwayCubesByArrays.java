@@ -1,5 +1,7 @@
 package hzt.aoc.day17;
 
+import hzt.aoc.GridPoint4D;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
                 for (var y = 0; y < grid2d.length; y++) {
                     final var row = grid2d[y];
                     for (var x = 0; x < row.length; x++) {
-                        final var activeNeighbors = countActiveNeighbors(new GridPoint4D(x, y, z, w), grid4d);
+                        final var activeNeighbors = countActiveNeighbors(GridPoint4D.of(x, y, z, w), grid4d);
                         newGrid4d[w][z][y][x] = applyRules(row[x], activeNeighbors);
                     }
                 }
@@ -81,7 +83,7 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
             for (var z = Math.max(cur.z() - 1, 0); z <= upperBound(cur.z(), curGrid4d[0].length); z++) {
                 for (var y = Math.max(cur.y() - 1, 0); y <= upperBound(cur.y(), curGrid4d[0][0].length); y++) {
                     for (var x = Math.max(cur.x() - 1, 0); x <= upperBound(cur.x(), curGrid4d[0][0][0].length); x++) {
-                        if (!cur.samePoint(x, y, z, w) && curGrid4d[w][z][y][x]) {
+                        if (!cur.equals(GridPoint4D.of(x, y, z, w)) && curGrid4d[w][z][y][x]) {
                             activeNeighbors++;
                         }
                     }

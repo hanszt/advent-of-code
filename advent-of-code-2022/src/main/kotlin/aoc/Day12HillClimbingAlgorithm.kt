@@ -1,5 +1,6 @@
 package aoc
 
+import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
 import java.util.LinkedList
@@ -40,12 +41,11 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
     }
 
     private fun Grid.floodFill(postProcess: (Int, Int) -> (Int) = { _, length -> length }): Int {
-        val dirs = listOf(-1 by 0, 1 by 0, 0 by -1, 0 by 1)
         val shortestPaths = mutableMapOf(start to 0)
         val queue: Queue<Point> = LinkedList<Point>().apply { add(start) }
         while (queue.isNotEmpty()) {
             val pos = queue.remove()
-            for (dir in dirs) {
+            for (dir in GridPoint2D.orthoDirs) {
                 val neighborPos = pos + dir
                 shortestPaths.update(pos, neighborPos, postProcess)?.also(queue::add)
             }

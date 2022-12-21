@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static aoc.utils.model.GridPoint3DKt.gridPoint3D;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,7 +36,7 @@ class Day17ChallengeByArraysTest {
                 {false, false, false},
         }};
         System.out.println(conwayCubes.grid3DAsString(input));
-        final int neighbours = conwayCubes.countActiveNeighbors(new GridPoint3D(1, 1, 0), input);
+        final int neighbours = conwayCubes.countActiveNeighbors(gridPoint3D(1, 1, 0), input);
         assertEquals(3, neighbours);
     }
 

@@ -95,6 +95,11 @@ final class Day13DistressSignal implements ChallengeDay {
             }
             return l1.nodes.size() < l2.nodes.size() ? 1 : 0;
         }
+
+        @Override
+        default Collection<CompNode> getChildren() {
+            return this instanceof CompList l ? l.nodes : Collections.emptyList();
+        }
     }
 
     record CompList(List<CompNode> nodes) implements CompNode {
@@ -120,11 +125,6 @@ final class Day13DistressSignal implements ChallengeDay {
             parser.index++;
             return list;
         }
-
-        @Override
-        public Collection<CompNode> getChildren() {
-            return nodes;
-        }
     }
 
     record CompNumber(int value) implements CompNode {
@@ -137,11 +137,6 @@ final class Day13DistressSignal implements ChallengeDay {
                     sqrBracketIndex < 0 ? parser.s.length() : sqrBracketIndex));
             parser.index += numStr.length();
             return new CompNumber(Integer.parseInt(numStr));
-        }
-
-        @Override
-        public Collection<CompNode> getChildren() {
-            return Collections.emptyList();
         }
     }
 }

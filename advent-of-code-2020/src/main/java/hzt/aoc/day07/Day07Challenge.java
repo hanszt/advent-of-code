@@ -1,7 +1,10 @@
 package hzt.aoc.day07;
 
 import hzt.aoc.Challenge;
+import org.hzt.graph.TreeNode;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +21,20 @@ public abstract class Day07Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final Map<String, Bag> bagColorsToRule = inputList.stream()
+        final Map<String, Bag> bagColorsToBag = getColorBagMap(inputList);
+
+        final long numberOfBags = solveByRules(bagColorsToBag);
+        return String.valueOf(numberOfBags);
+    }
+
+    Map<String, Bag> getColorBagMap(List<String> inputList) {
+        final Map<String, Bag> bagColorsToBag = inputList.stream()
                 .map(this::extractBagFromLine)
                 .collect(Collectors.toMap(bag -> bag.bagColor, bag -> bag));
-        final long numberOfBags = solveByRules(bagColorsToRule);
-        return String.valueOf(numberOfBags);
+
+        bagColorsToBag.values()
+                .forEach(b -> b.childBagColorsToAmounts.forEach((c, a) -> b.children().add(bagColorsToBag.get(c))));
+        return bagColorsToBag;
     }
 
     protected abstract long solveByRules(Map<String, Bag> bags);
@@ -38,28 +50,26 @@ public abstract class Day07Challenge extends Challenge {
                 final int amount = Integer.parseInt(stringAmount);
                 final String bagColor = string.replaceAll(NUMBER_LENGTH_ONE_OR_MORE.pattern(), "")
                         .split(Pattern.quote(" bag"))[0].strip(); // strip white spaces from trailing edges
-                currentBag.addColorToAmount(bagColor, amount);
+                currentBag.childBagColorsToAmounts.put(bagColor, amount);
             }
         }
         return currentBag;
     }
 
-    static class Bag {
-
-        final String bagColor;
-        final Map<String, Integer> childBagColorsToAmounts = new HashMap<>();
+    record Bag(String bagColor, Map<String, Integer> childBagColorsToAmounts, List<Bag> children) implements TreeNode<Bag, Bag> {
 
         public Bag(final String bagColor) {
-            this.bagColor = bagColor;
+            this(bagColor, new HashMap<>(), new ArrayList<>());
         }
 
-        void addColorToAmount(final String bagColor, final int amount) {
-            childBagColorsToAmounts.put(bagColor, amount);
+        @Override
+        public Collection<Bag> getChildren() {
+            return children;
         }
 
         @Override
         public String toString() {
-            return "Rule{" +
+            return "Bag{" +
                     "bagColor='" + bagColor + '\'' +
                     ", childBagColorsToAmounts=" + childBagColorsToAmounts +
                     '}';

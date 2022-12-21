@@ -28,7 +28,10 @@ internal class Day18SnailFishTest {
         ], delimiterString = " -> "
     )
     fun `test reduce nr`(snailNr: String, expected: String) {
-        val reducedNr = Day18SnailFish.toSnailNr(snailNr).reduce()
+        val toSnailNr = Day18SnailFish.toSnailNr(snailNr)
+        println(toSnailNr.toTreeString(1))
+        println()
+        val reducedNr = toSnailNr.reduce()
         assertEquals(expected, reducedNr.toString())
     }
 

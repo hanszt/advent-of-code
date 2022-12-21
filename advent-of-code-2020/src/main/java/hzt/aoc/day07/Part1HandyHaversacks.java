@@ -18,7 +18,7 @@ public class Part1HandyHaversacks extends Day07Challenge {
     }
 
     private static boolean hasDescendent(final Map<String, Bag> bags, final String target, final Bag bag) {
-        for (String color : bag.childBagColorsToAmounts.keySet()) {
+        for (String color : bag.childBagColorsToAmounts().keySet()) {
             if (color.equals(target) || hasDescendent(bags, target, bags.get(color))) {
                 return true;
             }

@@ -1,6 +1,6 @@
 package hzt.aoc.day20;
 
-import hzt.aoc.GridPoint2D;
+import aoc.utils.model.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +25,7 @@ public class Part2JurassicJigsaw extends Day20Challenge {
         final int pictureSideLength = (int) Math.sqrt(tileIdsToGrids.size());
         final Set<Integer> placedIds = new HashSet<>();
         final Tile[][] placedTiles = new Tile[pictureSideLength][pictureSideLength];
-        final boolean complete = placeNextTile(placedIds, placedTiles, new GridPoint2D(0, 0), tileIdsToGrids);
+        final boolean complete = placeNextTile(placedIds, placedTiles, GridPoint2D.ZERO, tileIdsToGrids);
         if (complete) {
             final List<String> fullPicture = buildFullPicture(placedTiles, pictureSideLength);
             return countHowManyHashesNotPartOfSeeMonster(fullPicture);
@@ -144,10 +144,10 @@ public class Part2JurassicJigsaw extends Day20Challenge {
                                     final Map<Integer, Tile> tiles) {
         for (final List<String> orientation : curTile.getOrientations()) {
             final GridPoint2D cur = curTile.getPosition();
-            placed[cur.y()][cur.x()] = new Tile(orientation);
+            placed[cur.getY()][cur.getX()] = new Tile(orientation);
             if (canPlaceTile(placed, cur)) {
                 final GridPoint2D next = nextPosition(cur);
-                final boolean allTilesPlaced = next.y() == sideLength;
+                final boolean allTilesPlaced = next.getY() == sideLength;
                 final var nextTilePlaced = placeNextTile(placedIds, placed, next, tiles);
                 if (allTilesPlaced || nextTilePlaced) {
                     return true;
@@ -158,21 +158,21 @@ public class Part2JurassicJigsaw extends Day20Challenge {
     }
 
     private GridPoint2D nextPosition(final GridPoint2D gridPoint2D) {
-        int nextX = gridPoint2D.x() + 1;
-        int nextY = gridPoint2D.y();
+        int nextX = gridPoint2D.getX() + 1;
+        int nextY = gridPoint2D.getY();
         if (nextX == sideLength) {
             nextX = 0;
             nextY++;
         }
-        return new GridPoint2D(nextX, nextY);
+        return GridPoint2D.of(nextX, nextY);
     }
 
     private static boolean canPlaceTile(final Tile[][] placed, final GridPoint2D p) {
-        if (p.x() > 0 && !placed[p.y()][p.x() - 1].getRight().equals(placed[p.y()][p.x()].getLeft())) {
+        if (p.getX() > 0 && !placed[p.getY()][p.getX() - 1].getRight().equals(placed[p.getY()][p.getX()].getLeft())) {
             return false;
         }
-        if (p.y() > 0) {
-            return placed[p.y() - 1][p.x()].getBottom().equals(placed[p.y()][p.x()].getTop());
+        if (p.getY() > 0) {
+            return placed[p.getY() - 1][p.getX()].getBottom().equals(placed[p.getY()][p.getX()].getTop());
         }
         return true;
     }

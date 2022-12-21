@@ -7,14 +7,15 @@ import aoc.utils.model.GridPoint3D.Companion.by
 import aoc.utils.model.GridPoint2D.Companion.by
 import kotlin.collections.max
 
-//
-// I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.
-//
-// I did a little refactoring and renaming to understand what is going on.
-//
-// It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov
-//
-// https://github.com/elizarov/AdventOfCode2021
+/**
+* I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.
+*
+* I did a little refactoring and renaming to understand what is going on.
+*
+* It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov
+*
+* @see <a href="https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day19.kt">Day19 elizarov solution</a>
+*/
 internal object Day19BeaconScanner : ChallengeDay {
 
     private fun String.toScannerDataSets(): List<Set<GridPoint3D>> =
@@ -22,7 +23,7 @@ internal object Day19BeaconScanner : ChallengeDay {
 
     private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> x by y by z }
 
-    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map { point.gridDistance(it) } }.max()
+    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map(point::manhattanDistance) }.max()
 
     private fun List<Set<GridPoint3D>>.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
         val detectedPoints = this[scannerIndex]
@@ -38,7 +39,7 @@ internal object Day19BeaconScanner : ChallengeDay {
         return null
     }
 
-    private suspend fun SequenceScope<GridPoint3D>.compare(points: Set<GridPoint3D>, rotatedOther: List<GridPoint3D>) {
+    private suspend fun SequenceScope<GridPoint3D>.compare(points: Iterable<GridPoint3D>, rotatedOther: Iterable<GridPoint3D>) {
         for (detected in points) {
             for (rotated in rotatedOther) {
                 yield(detected - rotated)

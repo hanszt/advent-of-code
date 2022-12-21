@@ -22,19 +22,17 @@ internal object Day09SmokeBasin : ChallengeDay {
     fun Array<IntArray>.toLowPoints() = heightToNeighborHeights()
         .filter { (_, height, neighborHeights) -> neighborHeights.all { it > height } }
 
-    private val directions = listOf(0 to 1, 1 to 0, 0 to -1, -1 to 0)
-
     private fun Array<IntArray>.heightToNeighborHeights() =
         indices.flatMap { y ->
             first().indices.map { x ->
-                val neighborHeights = directions.mapNotNull { (dx, dy) -> getOrNull(y + dy)?.getOrNull(x + dx) }
+                val neighborHeights = GridPoint2D.orthoDirs.mapNotNull { (dx, dy) -> getOrNull(y + dy)?.getOrNull(x + dx) }
                 return@map Triple(x by y, this[y][x], neighborHeights)
             }
         }
 
     fun Array<IntArray>.findBassinPoints(x: Int, y: Int, bassinPoints: MutableSet<GridPoint2D>) {
         val basinSize = bassinPoints.size
-        for ((dx, dy) in directions) {
+        for ((dx, dy) in GridPoint2D.orthoDirs) {
             val xNew = x + dx
             val yNew = y + dy
             val neighborHeight = getOrNull(yNew)?.getOrNull(xNew) ?: continue

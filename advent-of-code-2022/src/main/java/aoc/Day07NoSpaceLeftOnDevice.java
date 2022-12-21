@@ -54,7 +54,7 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
             String line = terminalOutput.get(i);
             if (line.contains("$ cd")) {
                 if (line.contains("..")) {
-                    current = current.getParent();
+                    current = current.parent();
                 } else {
                     final var split = line.split(" ");
                     final var name = split[2];
@@ -124,7 +124,7 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
         }
 
         @Override
-        public AocFile getParent() {
+        public AocFile parent() {
             return parent;
         }
 
@@ -139,6 +139,5 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
             return info + parentName;
         }
     }
-
 
 }

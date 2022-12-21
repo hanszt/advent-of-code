@@ -1,6 +1,6 @@
 package hzt.aoc.day20;
 
-import hzt.aoc.GridPoint2D;
+import aoc.utils.model.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashSet;

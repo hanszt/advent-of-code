@@ -1,5 +1,7 @@
 package hzt.aoc.day16;
 
+import aoc.utils.model.GridPoint2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Field {
 
     public boolean containsValueInRanges(final Integer integer) {
         for (final GridPoint2D p : valueRanges) {
-            if (integer >= p.x() && integer <= p.y()) {
+            if (integer >= p.getX() && integer <= p.getY()) {
                 return true;
             }
         }

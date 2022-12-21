@@ -1,8 +1,7 @@
 package hzt.aoc.day03;
 
+import aoc.utils.model.GridPoint2D;
 import hzt.aoc.Challenge;
-
-import hzt.aoc.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,17 +28,17 @@ public abstract class Day03Challenge extends Challenge {
         int numberOfTrees = 0;
         GridPoint2D position = initPositin;
         while (true) {
-            final var y = position.y();
-            if (!(y < treeGrid.size())) {
+            final var y = position.getY();
+            if (y >= treeGrid.size()) {
                 break;
             }
-            final var x = position.x();
+            final var x = position.getX();
             final boolean isTree = treeGrid.get(y).get(x);
             LOGGER.trace(() -> "x: " + x + ", y: " + y + ", " + "Is tree: " + isTree);
             if (isTree) {
                 numberOfTrees++;
             }
-            position = position.add(slope.x(), slope.y());
+            position = position.plus(slope);
         }
         return numberOfTrees;
     }
@@ -47,7 +46,7 @@ public abstract class Day03Challenge extends Challenge {
     private static List<List<Boolean>> buildGrid(final List<String> inputList) {
         final double patternLength = inputList.get(0).length();
         final int height = inputList.size();
-        final int length = height * (Path.SLOPE7_1.getSlope().x());
+        final int length = height * (Path.SLOPE7_1.getSlope().getX());
         final int timesRepeatedHorizontally = (int) Math.round(length / patternLength);
         final List<List<Boolean>> gird = new ArrayList<>();
         for (final String patternRow : inputList) {
@@ -62,11 +61,11 @@ public abstract class Day03Challenge extends Challenge {
     }
 
     enum Path {
-        SLOPE3_1(new GridPoint2D(3, 1)),
-        SLOPE1_1(new GridPoint2D(1, 1)),
-        SLOPE5_1(new GridPoint2D(5, 1)),
-        SLOPE7_1(new GridPoint2D(7, 1)),
-        SLOPE1_2(new GridPoint2D(1, 2));
+        SLOPE3_1(GridPoint2D.of(3, 1)),
+        SLOPE1_1(GridPoint2D.of(1, 1)),
+        SLOPE5_1(GridPoint2D.of(5, 1)),
+        SLOPE7_1(GridPoint2D.of(7, 1)),
+        SLOPE1_2(GridPoint2D.of(1, 2));
 
         private final GridPoint2D slope;
 

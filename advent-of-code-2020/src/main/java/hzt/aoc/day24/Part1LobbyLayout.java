@@ -1,6 +1,6 @@
 package hzt.aoc.day24;
 
-import hzt.aoc.GridPoint2D;
+import aoc.utils.model.GridPoint2D;
 
 import java.util.List;
 import java.util.Map;

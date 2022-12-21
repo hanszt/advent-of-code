@@ -1,5 +1,7 @@
 package hzt.aoc.day17;
 
+import hzt.aoc.GridPoint4D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class Part2ConwayCubes extends Part1ConwayCubes {
                 for (int y = 0; y < grid2d.size(); y++) {
                     final List<Boolean> row = grid2d.get(y);
                     for (int x = 0; x < row.size(); x++) {
-                        final int activeNeighbors = countActiveNeighbors(new GridPoint4D(x, y, z, w), grid4d);
+                        final int activeNeighbors = countActiveNeighbors(GridPoint4D.of(x, y, z, w), grid4d);
                         final boolean currentActive = applyRules(row.get(x), activeNeighbors);
                         newGrid4d.get(w).get(z).get(y).set(x, currentActive);
                     }
@@ -86,13 +88,14 @@ public class Part2ConwayCubes extends Part1ConwayCubes {
         return copy;
     }
 
+    @SuppressWarnings("java:S134")
     private int countActiveNeighbors(final GridPoint4D cur, final List<List<List<List<Boolean>>>> curGrid4d) {
         int activeNeighbors = 0;
         for (int w = Math.max(cur.w() - 1, 0); w <= upperBound(cur.w(), curGrid4d.size()); w++) {
             for (int z = Math.max(cur.z() - 1, 0); z <= upperBound(cur.z(), curGrid4d.get(0).size()); z++) {
                 for (int y = Math.max(cur.y() - 1, 0); y <= upperBound(cur.y(), curGrid4d.get(0).get(0).size()); y++) {
                     for (int x = Math.max(cur.x() - 1, 0); x <= upperBound(cur.x(), curGrid4d.get(0).get(0).get(0).size()); x++) {
-                        if (isActiveNeighbor(new GridPoint4D(x, y, z, w), cur, curGrid4d)) {
+                        if (isActiveNeighbor(GridPoint4D.of(x, y, z, w), cur, curGrid4d)) {
                             activeNeighbors++;
                         }
                     }
@@ -102,7 +105,9 @@ public class Part2ConwayCubes extends Part1ConwayCubes {
         return activeNeighbors;
     }
 
-    private static boolean isActiveNeighbor(final GridPoint4D checked, final GridPoint4D cur, final List<List<List<List<Boolean>>>> curGrid4d) {
+    private static boolean isActiveNeighbor(final GridPoint4D checked,
+                                            final GridPoint4D cur,
+                                            final List<List<List<List<Boolean>>>> curGrid4d) {
         return !cur.equals(checked) && curGrid4d.get(checked.w()).get(checked.z()).get(checked.y()).get(checked.x());
     }
 

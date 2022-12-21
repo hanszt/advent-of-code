@@ -1,12 +1,14 @@
 package hzt.aoc.day24;
 
-import hzt.aoc.GridPoint2D;
+import aoc.utils.model.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
 
 public class Tile {
 
@@ -27,12 +29,12 @@ public class Tile {
         OPPOSITE_DIR.put(NORTH_WEST, SOUTH_EAST);
         OPPOSITE_DIR.put(SOUTH_WEST, NORTH_EAST);
         OPPOSITE_DIR.put(NORTH_EAST, SOUTH_WEST);
-        INSTRUCTION_TO_DIR.put(EAST, new GridPoint2D(1, 0));
-        INSTRUCTION_TO_DIR.put(WEST, new GridPoint2D(-1, 0));
-        INSTRUCTION_TO_DIR.put(SOUTH_EAST, new GridPoint2D(1, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_WEST, new GridPoint2D(-1, 1));
-        INSTRUCTION_TO_DIR.put(SOUTH_WEST, new GridPoint2D(0, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_EAST, new GridPoint2D(0, 1));
+        INSTRUCTION_TO_DIR.put(EAST, gridPoint2D(1, 0));
+        INSTRUCTION_TO_DIR.put(WEST, gridPoint2D(-1, 0));
+        INSTRUCTION_TO_DIR.put(SOUTH_EAST, gridPoint2D(1, -1));
+        INSTRUCTION_TO_DIR.put(NORTH_WEST, gridPoint2D(-1, 1));
+        INSTRUCTION_TO_DIR.put(SOUTH_WEST, gridPoint2D(0, -1));
+        INSTRUCTION_TO_DIR.put(NORTH_EAST, gridPoint2D(0, 1));
     }
 
     private final GridPoint2D position;
@@ -51,7 +53,7 @@ public class Tile {
 
     public Tile getNeighborByInstruction(final String instruction, final Map<GridPoint2D, Tile> allTiles) {
         final GridPoint2D delta = INSTRUCTION_TO_DIR.get(instruction);
-        final GridPoint2D newPosition = new GridPoint2D(this.position.x() + delta.x(), this.position.y() + delta.y());
+        final GridPoint2D newPosition = gridPoint2D(this.position.getX() + delta.getX(), this.position.getY() + delta.getY());
         final Tile neighbor;
         if (instructionsToNeighborsMap.get(delta) != null) {
             neighbor = instructionsToNeighborsMap.get(delta);
@@ -68,7 +70,7 @@ public class Tile {
     List<Tile> neighbors() {
         final List<Tile> neighbors = new ArrayList<>();
         for (final GridPoint2D delta : INSTRUCTION_TO_DIR.values()) {
-            neighbors.add(new Tile(new GridPoint2D(position.x() + delta.x(), position.y() + delta.y())));
+            neighbors.add(new Tile(gridPoint2D(position.getX() + delta.getX(), position.getY() + delta.getY())));
         }
         return neighbors;
     }
@@ -108,12 +110,12 @@ public class Tile {
         final GridPoint2D p = e.getValue().position;
         final GridPoint2D delta = e.getKey();
         return String.format("delta(x=%2d, y=%2d)->(position='(x=%3d, y=%3d)', blackUp=%5b) ",
-                delta.x(), delta.y(), p.x(), p.y(), e.getValue().blackUp);
+                delta.getX(), delta.getY(), p.getX(), p.getY(), e.getValue().blackUp);
     }
 
     @Override
     public String toString() {
         return String.format("Tile{position='(x=%3d, y=%3d)', blackUp=%-5b, Neighbors={%s}}",
-                position.x(), position.y(), blackUp, neighborsAsString());
+                position.getX(), position.getY(), blackUp, neighborsAsString());
     }
 }

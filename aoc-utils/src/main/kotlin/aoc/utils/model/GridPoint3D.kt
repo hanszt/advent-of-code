@@ -13,11 +13,21 @@ interface GridPoint3D {
     operator fun component3(): Int = z
     operator fun minus(other: GridPoint3D) = gridPoint3D(x - other.x, y - other.y, z - other.z)
     operator fun plus(other: GridPoint3D) = gridPoint3D(x + other.x, y + other.y, z + other.z)
-    fun gridDistance(other: GridPoint3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
+    fun manhattanDistance(other: GridPoint3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
 
     companion object {
         @JvmField
         val ZERO = of(0, 0, 0)
+
+        @JvmField
+        val orthoDirs = listOf(
+            gridPoint3D(0, 0, 1),
+            gridPoint3D(0, 0, -1),
+            gridPoint3D(0, 1, 0),
+            gridPoint3D(0, -1, 0),
+            gridPoint3D(1, 0, 0),
+            gridPoint3D(-1, 0, 0)
+        )
 
         infix fun GridPoint2D.by(z: Int) = of(x, y, z)
 

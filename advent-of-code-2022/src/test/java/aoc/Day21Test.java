@@ -1,26 +1,29 @@
 package aoc;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day21Test {
 
-    private final Day13DistressSignal day13 = new Day13DistressSignal("input/day13.txt");
+    private final Day21 day13 = new Day21("input/day21.txt");
 
     @Test
-    @Disabled("Not implemented")
     void testPart1() {
         final var result = day13.part1();
-        fail("Not implemented");
+        assertEquals(157714751182692L, result);
     }
 
     @Test
-    @Disabled("Not implemented")
+    void testPart1Test() {
+        final var result = new Day21("input/day21test.txt").part1();
+        assertEquals(152, result);
+    }
+
+    @Test
     void testPart2() {
         final var result = day13.part2();
-        fail("Not implemented");
+        assertEquals(0, result);
     }
 
 }

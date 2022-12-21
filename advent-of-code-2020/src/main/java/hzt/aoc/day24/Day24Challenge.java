@@ -1,7 +1,7 @@
 package hzt.aoc.day24;
 
+import aoc.utils.model.GridPoint2D;
 import hzt.aoc.Challenge;
-import hzt.aoc.GridPoint2D;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +53,7 @@ public abstract class Day24Challenge extends Challenge {
 
     Map<GridPoint2D, Tile> buildFloorByInstructions(final List<List<String>> instructionsList) {
         final Map<GridPoint2D, Tile> tileMap = new HashMap<>();
-        final Tile centerTile = new Tile(new GridPoint2D(0, 0));
+        final Tile centerTile = new Tile(GridPoint2D.ZERO);
         tileMap.put(centerTile.getPosition(), centerTile);
         for (final List<String> instructions : instructionsList) {
             Tile curTile = centerTile;

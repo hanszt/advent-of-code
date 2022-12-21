@@ -45,7 +45,7 @@ class Day13DistressSignalTest {
         return Stream.of(
                 parseNrTest("[[4,3,4,[2]]]", 1, 4),
                 parseNrTest("[1,[2,[3,[4,[5,6,7]]]],8,9]", 4, 9),
-                parseNrTest("[[[0,7,1,[0,5,5]],[],10,4,[10,[0,5,8,3,10],6,4,5]],[5],[2],[[0],[2]],[6,[8],7,[[2],6,[8,4],[],7],2]]", 5, 32));
+                parseNrTest("[[[0,7,1,[0,5,5]],[],10,4,[10,[0,5,8,3,10],6,4,5]],[5],[2],[[0],[2]],[6,[8],7,[[2],6,[8,4],[],7],2]]", 5, 30));
     }
 
     private DynamicTest parseNrTest(String nrAsString, int listSize, int expectedNrCount) {
@@ -54,10 +54,9 @@ class Day13DistressSignalTest {
         final var list = CompList.parse(new Parser(nrAsString));
         println(list.toTreeString(2, n -> n instanceof CompNumber nr ? String.valueOf(nr.value()) : "List:"));
 
-        final var nrCount = list.asSequence().count(CompNode::isLeaf);
+        final var nrCount = list.depthFirstSequence().count(s -> s instanceof CompNumber);
         final var treeString = list.toTreeString("[", ",", "]",
-                n -> n instanceof CompNumber nr ? String.valueOf(nr.value()) : n.getChildren().isEmpty() ? "[]" : "");
-
+                n -> n instanceof CompNumber nr ? String.valueOf(nr.value()) : n.isLeaf() ? "[]" : "");
 
         return dynamicTest(displayName, () -> assertAll(
                 () -> assertEquals(listSize, list.getChildren().size()),
