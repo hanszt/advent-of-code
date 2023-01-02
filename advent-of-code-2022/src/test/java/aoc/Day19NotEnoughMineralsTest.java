@@ -6,11 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day19NotEnoughMineralsTest {
 
-    private final Day19NotEnoughMinerals day19NotEnoughMinerals = new Day19NotEnoughMinerals("input/day19.txt");
-
     @Test
     void testPart1() {
-        final var result = day19NotEnoughMinerals.part1();
+        final var result = new Day19NotEnoughMinerals("input/day19.txt").part1();
         assertEquals(1_616, result);
     }
 
@@ -22,7 +20,7 @@ class Day19NotEnoughMineralsTest {
 
     @Test
     void testPart2() {
-        final var result = day19NotEnoughMinerals.part2();
+        final var result = new Day19NotEnoughMinerals("input/day19.txt").part2();
         assertEquals(8_990, result);
     }
 

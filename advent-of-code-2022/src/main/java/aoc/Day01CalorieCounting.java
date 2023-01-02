@@ -1,6 +1,7 @@
 package aoc;
 
 import org.hzt.utils.io.FileX;
+import org.hzt.utils.sequences.Sequence;
 import org.jetbrains.annotations.NotNull;
 import aoc.utils.AocUtilsKt;
 
@@ -19,18 +20,15 @@ public class Day01CalorieCounting implements ChallengeDay {
 
     @Override
     public @NotNull Integer part1() {
-        return foods.stream()
-                .mapToInt(Day01CalorieCounting::sumCalories)
-                .max()
-                .orElseThrow();
+        return Sequence.of(foods).maxOf(Day01CalorieCounting::sumCalories);
     }
 
     @Override
-    public @NotNull Integer part2() {
-        return foods.stream()
+    public @NotNull Long part2() {
+        return Sequence.of(foods)
                 .mapToInt(Day01CalorieCounting::sumCalories)
-                .sorted()
-                .skip(foods.size() - 3L)
+                .sortedDescending()
+                .take(3L)
                 .sum();
     }
 

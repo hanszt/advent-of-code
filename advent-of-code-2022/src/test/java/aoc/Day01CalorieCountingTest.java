@@ -12,14 +12,14 @@ class Day01CalorieCountingTest {
     void testPart1() {
         final var maxSum = day01CalorieCounting.part1();
         System.out.println(maxSum);
-        assertEquals(72511, maxSum);
+        assertEquals(72_511, maxSum);
     }
 
     @Test
     void testPart2() {
         final var topThree = day01CalorieCounting.part2();
         System.out.println(topThree);
-        assertEquals(212117, topThree);
+        assertEquals(212_117, topThree);
     }
 
 }

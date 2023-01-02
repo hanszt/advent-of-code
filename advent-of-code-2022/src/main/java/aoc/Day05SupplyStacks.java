@@ -10,8 +10,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
@@ -69,12 +67,10 @@ public class Day05SupplyStacks implements ChallengeDay {
         return toTopCratesAsString(stacks);
     }
 
-    private String toTopCratesAsString(List<Deque<Character>> stacks) {
-        return stacks.stream()
-                .map(Deque::peek)
-                .filter(Objects::nonNull)
-                .map(Object::toString)
-                .collect(Collectors.joining());
+    private static String toTopCratesAsString(List<Deque<Character>> stacks) {
+        return Sequence.of(stacks)
+                .mapNotNull(Deque::peek)
+                .joinToString("");
     }
 
     @NotNull

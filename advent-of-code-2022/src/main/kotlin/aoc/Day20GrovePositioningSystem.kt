@@ -2,6 +2,11 @@ package aoc
 
 import java.io.File
 
+/**
+ * Credits to Elizarov
+ *
+ * @see <a href="https://adventofcode.com/2022/day/20">Day 20</a>
+ */
 class Day20GrovePositioningSystem(fileName: String) : ChallengeDay {
 
     private val input = File(fileName).readLines()
@@ -23,10 +28,10 @@ class Day20GrovePositioningSystem(fileName: String) : ChallengeDay {
                 for (i in index until numbers.lastIndex) {
                     mutableNrs[i].index--
                 }
-                val j = (index + nr).mod(numbers.lastIndex)
-                number.index = j
-                mutableNrs.add(j, number)
-                for (i in j + 1 until numbers.size) {
+                val nextIndex = (index + nr).mod(numbers.lastIndex)
+                number.index = nextIndex
+                mutableNrs.add(nextIndex, number)
+                for (i in nextIndex + 1 until numbers.size) {
                     mutableNrs[i].index++
                 }
             }

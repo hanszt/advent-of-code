@@ -4,8 +4,8 @@ import hzt.aoc.Challenge;
 import org.hzt.graph.TreeNode;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -63,8 +63,8 @@ public abstract class Day07Challenge extends Challenge {
         }
 
         @Override
-        public Collection<Bag> getChildren() {
-            return children;
+        public Iterator<Bag> childrenIterator() {
+            return children.iterator();
         }
 
         @Override

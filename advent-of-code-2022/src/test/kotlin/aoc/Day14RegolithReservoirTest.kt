@@ -1,7 +1,7 @@
 package aoc
 
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 internal class Day14RegolithReservoirTest {
 
@@ -9,24 +9,24 @@ internal class Day14RegolithReservoirTest {
     @Test
     fun `test part 1 test`() {
         val result = Day14RegolithReservoir("input/day14test.txt").part1()
-        assertEquals(24, result)
+        result shouldBe 24
     }
 
     @Test
     fun `test part 1`() {
         val result = day14RegolithReservoir.part1()
-        assertEquals(614, result)
+        result shouldBe 614
     }
 
     @Test
     fun `test part 2 test`() {
         val result = Day14RegolithReservoir("input/day14test.txt").part2()
-        assertEquals(93, result)
+        result shouldBe 93
     }
 
     @Test
     fun `test part 2`() {
         val result = day14RegolithReservoir.part2()
-        assertEquals(26_170, result)
+        result shouldBe 26_170
     }
 }

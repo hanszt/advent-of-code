@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -97,8 +97,8 @@ final class Day13DistressSignal implements ChallengeDay {
         }
 
         @Override
-        default Collection<CompNode> getChildren() {
-            return this instanceof CompList l ? l.nodes : Collections.emptyList();
+        default Iterator<CompNode> childrenIterator() {
+            return this instanceof CompList l ? l.nodes.iterator() : Collections.emptyIterator();
         }
     }
 

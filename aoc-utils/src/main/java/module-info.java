@@ -1,5 +1,5 @@
 open module advent.of.code.utils {
-    requires kotlin.stdlib.jdk8;
+    requires kotlin.stdlib;
     requires org.jetbrains.annotations;
     requires hzt.utils.core;
 

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
 
     private final IntList dirSizes;
-    private final AocFile root;
+    final AocFile root;
 
 
     public Day07NoSpaceLeftOnDevice(String fileName) {
@@ -59,7 +60,7 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
                     final var split = line.split(" ");
                     final var name = split[2];
                     final var newCurrent = new AocFile(name, current, -1);
-                    current.getChildren().add(newCurrent);
+                    current.children.add(newCurrent);
                     current = newCurrent;
                 }
             }
@@ -78,7 +79,7 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
             final var split = nextLine.split(" ");
             final var sizeOrDir = split[0];
             if (!"dir".equals(sizeOrDir)) {
-                current.getChildren().add(new AocFile(split[1], current, Integer.parseInt(sizeOrDir)));
+                current.children.add(new AocFile(split[1], current, Integer.parseInt(sizeOrDir)));
             }
         }
     }
@@ -91,9 +92,9 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
     }
 
     private static int sumSizes(AocFile aocFile, IntMutableList sizes) {
-        if (aocFile.isDirectory()) {
+        if (aocFile.isInternal()) {
             int sum = 0;
-            for (var child : aocFile.getChildren()) {
+            for (var child : aocFile.childrenSequence()) {
                 sum += sumSizes(child, sizes);
             }
             sizes.add(sum);
@@ -102,39 +103,20 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
         return aocFile.size;
     }
 
-    public String toTreeString() {
-        return root.toTreeString(3);
-    }
-
-    private static final class AocFile implements TreeNode<AocFile, AocFile> {
-
-        final String name;
-        final int size;
-        final AocFile parent;
-        final List<AocFile> children = new ArrayList<>();
+    record AocFile(String name, int size, AocFile parent, List<AocFile> children)
+            implements TreeNode<AocFile, AocFile> {
 
         AocFile(String name, AocFile parent, int size) {
-            this.name = name;
-            this.parent = parent;
-            this.size = size;
+            this(name, size, parent, new ArrayList<>());
         }
 
-        boolean isDirectory() {
-            return size < 0;
-        }
-
-        @Override
-        public AocFile parent() {
-            return parent;
-        }
-
-        public List<AocFile> getChildren() {
-            return children;
+        public Iterator<AocFile> childrenIterator() {
+            return children.iterator();
         }
 
         @Override
         public String toString() {
-            final var info = isDirectory() ? ("dir: " + this.name) : "file: %s, (size %d)".formatted(this.name, size);
+            final var info = isInternal() ? ("dir: " + this.name) : "file: %s, (size %d)".formatted(this.name, size);
             final var parentName = parent != null ? (", parent: " + parent.name) : "";
             return info + parentName;
         }

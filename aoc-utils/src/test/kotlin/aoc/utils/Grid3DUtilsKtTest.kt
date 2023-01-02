@@ -2,6 +2,7 @@ package aoc.utils
 
 import aoc.utils.model.GridPoint3D
 import aoc.utils.model.gridPoint3D
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class Grid3DUtilsKtTest {
@@ -13,7 +14,7 @@ internal class Grid3DUtilsKtTest {
         for (orientation in orientations.indices) {
             val newOrientation = point.rotate(orientation)
             println("newOrientation = $newOrientation")
-            newOrientations[orientation].assertEqualTo(newOrientation)
+            newOrientations[orientation] shouldBe newOrientation
         }
     }
 

@@ -49,11 +49,11 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
             final var beacon = entry.getValue();
             sensors.add(sensor);
             beacons.add(beacon);
-            final var d = sensor.manhattanDistance(beacon);
-            if (sensor.getY() - d <= TARGET_Y && sensor.getY() + d >= TARGET_Y) {
+            final var distance = sensor.manhattanDistance(beacon);
+            if (sensor.getY() - distance <= TARGET_Y && sensor.getY() + distance >= TARGET_Y) {
 
-                final Predicate<GridPoint2D> isRequiredDistance = p -> sensor.manhattanDistance(p) <= d;
-                IntRange.closed(sensor.getX() - d, sensor.getX() + d)
+                final Predicate<GridPoint2D> isRequiredDistance = p -> sensor.manhattanDistance(p) <= distance;
+                IntRange.closed(sensor.getX() - distance, sensor.getX() + distance)
                         .mapToObj(x -> gridPoint2D(x, TARGET_Y))
                         .filter(isRequiredDistance.and(not(beacons::contains)).and(not(sensors::contains)))
                         .forEach(areaChecked::add);

@@ -28,11 +28,11 @@ fun main(vararg args: String) {
         Day18BoilingBoulders("$inputDir/day18.txt"),
         Day19NotEnoughMinerals("$inputDir/day19.txt"),
         Day20GrovePositioningSystem("$inputDir/day20.txt"),
-        Day21("$inputDir/day21.txt"),
-        Day22("$inputDir/day22.txt"),
-        Day23("$inputDir/day23.txt"),
-        Day24("$inputDir/day24.txt"),
-        Day25("$inputDir/day25.txt")
+        Day21MonkeyMath("$inputDir/day21.txt"),
+        Day22MonkeyMap("$inputDir/day22.txt"),
+        Day23UnstableDiffusion("$inputDir/day23.txt"),
+        Day24BlizzardBasin("$inputDir/day24.txt"),
+        Day25FullOfHotAir("$inputDir/day25.txt")
     ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()

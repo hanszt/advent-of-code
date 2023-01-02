@@ -22,9 +22,7 @@ class Day16ProboscideaVolcanium(fileName: String) : ChallengeDay {
         return graph[targetMinute].map(Map.Entry<Tunnel, Int>::value).max()
     }
 
-    override fun part2(): Int {
-        return part2(26)
-    }
+    override fun part2(): Int = part2(26)
 
     fun part2(targetMinute: Int): Int {
         val valveMap = valveMap()
@@ -32,7 +30,7 @@ class Day16ProboscideaVolcanium(fileName: String) : ChallengeDay {
 
         val tunnelsAndPressures = pressures[targetMinute].toList()
             .groupingBy { it.first.distance }
-            .fold(0) { a, e -> maxOf(a, e.second) }
+            .fold(0) { p, (_, pressure) -> maxOf(p, pressure) }
 
         val valveIds = valveMap.values.filter { it.flowRate > 0 }.map(Valve::id)
 

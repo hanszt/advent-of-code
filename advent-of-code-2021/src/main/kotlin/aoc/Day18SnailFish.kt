@@ -4,14 +4,15 @@ import aoc.utils.max
 import org.hzt.graph.TreeNode
 import java.io.File
 
-//
-// I've not been able to solve this day myself. This solution is from the repo Elizarov
-//
-// I did a little refactoring to understand what is going on.
-//
-// It is very educational to see such a clean and need solution. Many thanks to Elizarov for sharing his code on GitHub
-//
-// source: https://github.com/elizarov/AdventOfCode2021
+/**
+ * I've not been able to solve this day myself. This solution is from the repo Elizarov
+ *
+ * I did a little refactoring to understand what is going on.
+ *
+ * It is very educational to see such a clean and need solution. Many thanks to Elizarov for sharing his code on GitHub
+ *
+ * @see <a href="https://github.com/elizarov/AdventOfCode2021">Advent of code 2021 Elizarov</a>
+ */
 internal object Day18SnailFish : ChallengeDay {
 
     sealed class SnailNr : TreeNode<SnailNr, SnailNr> {
@@ -79,18 +80,17 @@ internal object Day18SnailFish : ChallengeDay {
             is Regular -> value
             is Pair -> 3 * left.magnitude() + 2 * right.magnitude()
         }
+
+        override fun childrenIterator(): Iterator<SnailNr> =
+            (if (this is Pair) listOf(left, right) else emptyList()).iterator()
     }
 
     private class Regular(val value: Int) : SnailNr() {
         override fun toString(): String = value.toString()
-
-        override fun getChildren(): List<SnailNr> = emptyList();
     }
 
     private class Pair(val left: SnailNr, val right: SnailNr) : SnailNr() {
         override fun toString(): String = "[$left,$right]"
-
-        override fun getChildren(): List<SnailNr> = listOf(left, right)
     }
 
     fun toSnailNr(snailNrAsString: String): SnailNr {

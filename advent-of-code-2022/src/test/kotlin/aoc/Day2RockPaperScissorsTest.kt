@@ -3,7 +3,7 @@ package aoc
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class Day2Test {
+internal class Day2RockPaperScissorsTest {
 
     private val day02RockPaperScissors = Day02RockPaperScissors("input/day02.txt")
 

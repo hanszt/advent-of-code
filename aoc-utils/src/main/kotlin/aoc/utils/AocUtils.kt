@@ -45,3 +45,16 @@ fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bou
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
 
 fun <T> self(value: T) = value
+
+fun <R> List<String>.parts(map: (List<String>) -> R): List<R> = buildList {
+    var cur = ArrayList<String>()
+    for (s in this@parts) {
+        if (s == "") {
+            add(map(cur))
+            cur = ArrayList()
+            continue
+        }
+        cur.add(s)
+    }
+    if (cur.isNotEmpty()) add(map(cur))
+}

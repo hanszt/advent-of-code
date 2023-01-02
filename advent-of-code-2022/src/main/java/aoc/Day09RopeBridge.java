@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+
 /**
  * @see <a href="https://adventofcode.com/2022/day/9">Day 9: Rope bridge</a>
  */
@@ -26,10 +28,10 @@ public class Day09RopeBridge implements ChallengeDay {
         final var magnitude = Integer.parseInt(s[1]);
         final var dir = s[0];
         return switch (dir) {
-            case "R" -> GridPoint2D.of(magnitude, 0);
-            case "L" -> GridPoint2D.of(-magnitude, 0);
-            case "U" -> GridPoint2D.of(0, magnitude);
-            case "D" -> GridPoint2D.of(0, -magnitude);
+            case "R" -> gridPoint2D(magnitude, 0);
+            case "L" -> gridPoint2D(-magnitude, 0);
+            case "U" -> gridPoint2D(0, magnitude);
+            case "D" -> gridPoint2D(0, -magnitude);
             default -> throw new IllegalStateException("No valid direction " + dir);
         };
     }

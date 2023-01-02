@@ -12,11 +12,12 @@ import aoc.utils.camelCaseToSentence
 @JvmDefaultWithCompatibility
 interface ChallengeDay {
 
-    fun runParts(): List<AocResult> {
+    fun runParts(): Sequence<AocResult> {
         val name = javaClass.simpleName.camelCaseToSentence()
-        val result1 = runChallengeTimed({ part1() }, "$name part 1")
-        val result2 = runChallengeTimed({ part2() }, "$name part 2")
-        return listOf(result1, result2)
+        return sequenceOf(
+            runChallengeTimed({ part1() }, "$name part 1"),
+            runChallengeTimed({ part2() }, "$name part 2")
+        )
     }
 
     private fun runChallengeTimed(solve: () -> Any, name: String): AocResult {
