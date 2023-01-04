@@ -35,7 +35,7 @@ That's why I was not able to solve all parts myself. For those parts I looked at
 
 These are the repo's I visited to see the solutions for the parts I was not able to solve myself.
 
-- [Day 16 packet decoder part 1 and 2 by The TurkeyDev](https://github.com/TheTurkeyDev/Advent-of-Code-2021/blob/main/src/dev/theturkey/aoc2021/Day16.java)
+- [Day 16 packet decoder part 1 and 2 by The TurkeyDev](https://github.com/TheTurkeyDev/Advent-of-Code-2021/blob/main/src/dev/theturkey/aoc.seastories/Day16.java)
 - [Day 18 snail fish part 1 and 2 by Roman Elizarov](https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day18.kt)
 - [Day 19 beacon scanner part 1 and 2 by Roman Elizarov](https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day19_fast.kt)
 - [Day 21 dirac dice part 2 by Roman Elizarov](https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day21_2.kt)

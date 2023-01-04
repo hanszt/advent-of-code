@@ -63,7 +63,7 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -99,7 +99,7 @@ public class Launcher2020 implements Runnable {
     private static final String TRACE = "t";
     private static final String INFO = "i";
 
-    private final Map<Integer, ChallengeDay> challengeDays = new HashMap<>();
+    private final Map<Integer, ChallengeDay> challengeDays = new LinkedHashMap<>();
 
 
     public Launcher2020() {
@@ -180,15 +180,18 @@ public class Launcher2020 implements Runnable {
                 new Part1ComboBreaker()));
     }
 
-    public static void main(final String[] args) {
-        new Launcher2020().start();
+    public static void main(final String... args) {
+        new Launcher2020().run();
     }
 
-    private void start() {
-        run();
+    public static void runOnce() {
+        final long startTime = nanoTime();
+        LOGGER.info(String.format("%n%s", TITTLE));
+        new Launcher2020().challengeDays.values().forEach(ChallengeDay::solveChallenges);
+        final long runtime = nanoTime() - startTime;
+        out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
     }
 
-    @Override
     public void run() {
         String userInput = ALL;
         final long startTime = nanoTime();
@@ -200,7 +203,6 @@ public class Launcher2020 implements Runnable {
         }
         final long runtime = nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
-        exit(0);
     }
 
     private void executeAllAndPrintSummary() {
