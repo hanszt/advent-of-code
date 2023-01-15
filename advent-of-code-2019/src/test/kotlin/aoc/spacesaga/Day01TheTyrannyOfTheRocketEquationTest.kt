@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.CsvSource
 
 class Day01TheTyrannyOfTheRocketEquationTest {
 
-
     private val day01TheTyrannyOfTheRocketEquation = Day01TheTyrannyOfTheRocketEquation("input/day01.txt")
 
     @Test

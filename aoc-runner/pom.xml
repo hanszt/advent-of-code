@@ -16,6 +16,11 @@
     <dependencies>
         <dependency>
             <groupId>org.hzt.quizes</groupId>
+            <artifactId>advent-of-code-2019</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hzt.quizes</groupId>
             <artifactId>advent-of-code-2020</artifactId>
             <version>${project.version}</version>
         </dependency>

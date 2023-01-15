@@ -2,34 +2,36 @@ package aoc.seastories
 
 import aoc.utils.*
 import aoc.utils.model.GridPoint3D
+import aoc.utils.model.gridPoint3D
 import java.io.File
-import aoc.utils.model.GridPoint3D.Companion.by
-import aoc.utils.model.GridPoint2D.Companion.by
 import kotlin.collections.max
 
+typealias ScannerData = List<Set<GridPoint3D>>
+
 /**
-* I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.
-*
-* I did a little refactoring and renaming to understand what is going on.
-*
-* It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov
-*
-* @see <a href="https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day19.kt">Day19 elizarov solution</a>
-*/
+ * I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.
+ *
+ * I did a little refactoring and renaming to understand what is going on.
+ *
+ * It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov
+ *
+ * @see <a href="https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day19.kt">Day19 elizarov solution</a>
+ */
 internal object Day19BeaconScanner : ChallengeDay {
 
-    private fun String.toScannerDataSets(): List<Set<GridPoint3D>> =
-        splitByBlankLine().map { s -> s.lines().filterNot { "scanner" in it }.map(::toPoint3D).toSet() }
+    private fun String.toScannerDataSets(): ScannerData =
+        splitByBlankLine().map { s -> s.lines().filter { "scanner" !in it }.map(::toPoint3D).toSet() }
 
-    private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> x by y by z }
+    private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> gridPoint3D(x, y, z) }
 
-    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { point -> map(point::manhattanDistance) }.max()
+    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { map(it::manhattanDistance) }.max()
 
-    private fun List<Set<GridPoint3D>>.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
+    private fun ScannerData.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
         val detectedPoints = this[scannerIndex]
         for (orientation in orientations.indices) {
             val rotatedPointsOther = this[otherScannerIndex].map { it.rotate(orientation) }
-            val translation = sequence { compare(detectedPoints, rotatedPointsOther) }
+            val translation = detectedPoints.asSequence()
+                .flatMap { detected -> rotatedPointsOther.map { detected - it } }
                 .groupingBy(::self)
                 .eachCount()
                 .filterValues { it >= 12 }
@@ -37,14 +39,6 @@ internal object Day19BeaconScanner : ChallengeDay {
             return Transform3D(orientation, translation)
         }
         return null
-    }
-
-    private suspend fun SequenceScope<GridPoint3D>.compare(points: Iterable<GridPoint3D>, rotatedOther: Iterable<GridPoint3D>) {
-        for (detected in points) {
-            for (rotated in rotatedOther) {
-                yield(detected - rotated)
-            }
-        }
     }
 
     @Suppress("kotlin:S1481")
