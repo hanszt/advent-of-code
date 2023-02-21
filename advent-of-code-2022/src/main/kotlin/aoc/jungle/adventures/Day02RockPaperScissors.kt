@@ -10,33 +10,37 @@ class Day02RockPaperScissors(fileName: String) : ChallengeDay {
 
     private val lines: List<String> = File(fileName).readLines()
 
-    override fun part1(): Int {
-        var totalScore = 0
-        for (line in lines) {
-            val (opponent, self) = line.split(" ").map { types[it]!! }
-            totalScore += determineScore(opponent, self) + self
-        }
-        return totalScore
+    override fun part1(): Int = lines.fold(0) { totalScore, line ->
+        val (opponent, self) = line.split(" ").map { it.toType() }
+        totalScore + determineScore(opponent, self) + self
     }
 
-    private fun determineScore(opponent: Int, self: Int): Int {
-        return if (opponent == self) draw
-        else {
-            val win1 = opponent == rock && self == paper
-            val win2 = opponent == paper && self == scissors
-            val win3 = opponent == scissors && self == rock
-            if (win1 || win2 || win3) win else lost
-        }
+    private fun determineScore(opponent: Int, self: Int): Int = when {
+        self == paper && opponent == rock -> win
+        self == scissors && opponent == paper -> win
+        self == rock && opponent == scissors -> win
+        self == opponent -> draw
+        else -> lost
     }
 
-    override fun part2(): Int {
-        var totalScore = 0
-        for (line in lines) {
-            val (opponent, requiredOutcome) = line.split(" ")
-            val outcome = requiredOutcomes[requiredOutcome]!!
-            totalScore += outcome + determineSelf(types[opponent]!!, outcome)
-        }
-        return totalScore
+    override fun part2(): Int = lines.fold(0) { totalScore, line ->
+        val (opponent, requiredOutcome) = line.split(" ")
+        val score = requiredOutcome.toScore()
+        totalScore + score + determineSelf(opponent.toType(), score)
+    }
+
+    private fun String.toScore(): Int = when(this) {
+        "X" -> lost
+        "Y" -> draw
+        "Z" -> win
+        else -> error("$this unknown")
+    }
+
+    private fun String.toType() = when(this) {
+        "A", "X" -> rock
+        "B", "Y" -> paper
+        "C", "Z" -> scissors
+        else -> error("$this unknown type")
     }
 
     private fun determineSelf(opponent: Int, outcome: Int) = when (outcome) {
@@ -57,11 +61,5 @@ class Day02RockPaperScissors(fileName: String) : ChallengeDay {
         private const val rock = 1
         private const val paper = 2
         private const val scissors = 3
-
-        private val types = mapOf(
-            "A" to rock, "B" to paper, "C" to scissors,
-            "X" to rock, "Y" to paper, "Z" to scissors
-        )
-        private val requiredOutcomes = mapOf("X" to lost, "Y" to draw, "Z" to win)
     }
 }

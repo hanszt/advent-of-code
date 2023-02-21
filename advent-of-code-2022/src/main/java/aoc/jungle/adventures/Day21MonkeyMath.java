@@ -135,7 +135,7 @@ public class Day21MonkeyMath implements ChallengeDay {
                 case '-' -> n1 - n2;
                 case '*' -> n1 * n2;
                 case '/' -> n1 / n2;
-                default -> throw new IllegalStateException();
+                default -> throw new IllegalStateException("Unknown op: " + op);
             };
         }
 

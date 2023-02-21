@@ -12,15 +12,15 @@ internal object Day12PassagePathing : ChallengeDay {
     fun part1(path: String): Int = File(path).readLines().toBiDiGraph('-').countDistinctPaths()
 
     private fun Map<String, Node<String>>.countDistinctPaths(): Int = let { graph ->
-        val start = graph["start"] ?: throw IllegalStateException()
-        val end = graph["end"] ?: throw IllegalStateException()
+        val start = graph["start"] ?: error("start not found")
+        val end = graph["end"] ?: error("end not found")
         return allPathsByDfs(start, end) { it.value?.all(Char::isLowerCase) ?: false }.count()
     }
 
     fun part2(path: String): Int {
         val graph = File(path).readLines().toBiDiGraph("-") { label -> Cave(label, false) }
-        val start = graph["start"] ?: throw IllegalStateException()
-        val end = graph["end"] ?: throw IllegalStateException()
+        val start = graph["start"] ?: error("start not found")
+        val end = graph["end"] ?: error("end not found")
 
         return graph.filter { (label) -> label != "start" && label != "end" && label.all(Char::isLowerCase) }
             .flatMap { (_, allowedToVisitTwice) -> findPathsByBfs(start, end, allowedToVisitTwice) }

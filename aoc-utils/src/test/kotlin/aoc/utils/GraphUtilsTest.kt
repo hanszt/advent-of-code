@@ -8,9 +8,10 @@ internal class GraphUtilsTest {
 
     @Test
     fun `convert an associations list to a graph`() {
-        val resource = this::class.java.getResource("/2021day12.txt") ?: throw IllegalStateException()
+        val name = "/2021day12.txt"
+        val resource = this::class.java.getResource(name) ?: error("$name not found")
         val graph = File(resource.file).readLines().toBiDiGraph("-").onEach(::println)
-        val startNode = graph["start"] ?: throw IllegalStateException()
+        val startNode = graph["start"] ?: error("start not found")
         assertEquals(startNode.neighbors, setOf(graph["my"], graph["PK"], graph["lj"]))
     }
 }

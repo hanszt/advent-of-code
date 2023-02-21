@@ -51,7 +51,7 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
                 shortestPaths.update(pos, neighborPos, postProcess)?.also(queue::add)
             }
         }
-        return shortestPaths[goal] ?: throw IllegalStateException("No path found...")
+        return shortestPaths[goal] ?: error("No path found...")
     }
 
     override fun part1(): Int = createGrid(lines).floodFill()

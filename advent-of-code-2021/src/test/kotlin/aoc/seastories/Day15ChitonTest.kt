@@ -37,8 +37,8 @@ internal class Day15ChitonTest {
         val graph = toWeightedGraph(listOf(-1 by 0, -1 by 0, 0 by 1, 1 by 0), computeValue = { x, y -> x by y })
         val startPoint = 0 by 0
         val endPoint = first().lastIndex by lastIndex
-        val start = graph[startPoint] ?: throw IllegalStateException()
-        val goal = graph[endPoint] ?: throw IllegalStateException()
+        val start = graph[startPoint]!!
+        val goal = graph[endPoint]!!
         val grid = toGridOf(Int::toString)
         start.dijkstra(goal).shortestPath.plus(goal)
             .mapNotNull(WeightedNode<GridPoint2D>::value)

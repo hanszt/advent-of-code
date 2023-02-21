@@ -19,8 +19,8 @@ internal object Day15Chiton : ChallengeDay {
         endPoint: GridPoint2D
     ): List<WeightedNode<T>> {
         val graph = toWeightedGraph<T>(listOf(1 by 0, 0 by 1, -1 by 0, 0 by -1))
-        val start = graph[startPoint] ?: throw IllegalStateException()
-        val goal = graph[endPoint] ?: throw IllegalStateException()
+        val start = graph[startPoint] ?: error("Start at $startPoint not found")
+        val goal = graph[endPoint] ?: error("Goal at $endPoint not found")
         return start.dijkstra(goal).shortestPath
     }
 
