@@ -45,7 +45,7 @@ internal object Day24ArithmeticLogicUnit : ChallengeDay {
                 if (result[index] !in 1..9) {
                     return null
                 }
-            } else throw IllegalStateException("increment or mod must be none null")
+            } else error("increment or mod must be none null")
         }
         return result
     }

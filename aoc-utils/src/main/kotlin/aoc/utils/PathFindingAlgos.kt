@@ -3,11 +3,11 @@ package aoc.utils
 import aoc.utils.model.Node
 import aoc.utils.model.WeightedNode
 
-fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
+infix fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
     val settled = mutableSetOf<WeightedNode<T>>()
-    val unsettled = mutableSetOf(this.apply { distance = 0 })
+    val unsettled = mutableSetOf(this.apply { cost = 0 })
     while (unsettled.isNotEmpty()) {
-        val current = unsettled.minByOrNull(WeightedNode<T>::distance) ?: break
+        val current = unsettled.minByOrNull(WeightedNode<T>::cost) ?: break
         for (neighbor in current.neighbors) {
             if (neighbor !in settled) {
                 neighbor.updateShortestPath(current)
@@ -18,7 +18,7 @@ fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
         unsettled -= current
         settled += current
     }
-    throw IllegalStateException("no path to $goal found")
+    error("no path to $goal found")
 }
 
 fun <T> allPathsByDfs(start: Node<T>, goal: Node<T>, predicate: (Node<T>) -> Boolean): List<List<Node<T>>> =

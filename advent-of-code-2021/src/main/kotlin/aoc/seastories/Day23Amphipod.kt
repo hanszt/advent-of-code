@@ -48,7 +48,7 @@ internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeD
                 checkedBurrows.add(burrow)
             }
         }
-        throw IllegalStateException("No minimum energy found")
+        error("No minimum energy found")
     }
 
     private fun Burrow.ifPossibleMoveToTargetRoom(queue: Queue<Burrow>) {

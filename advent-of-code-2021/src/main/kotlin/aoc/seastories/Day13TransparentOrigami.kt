@@ -25,7 +25,7 @@ internal object Day13TransparentOrigami : ChallengeDay {
         return when (dir) {
             'x' -> foldAlongX(value)
             'y' -> foldAlongY(value)
-            else -> throw IllegalStateException()
+            else -> error("unsupported dir: $dir")
         }
     }
 

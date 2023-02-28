@@ -1,24 +1,22 @@
 package aoc.utils.model
 
-import java.util.*
+class WeightedNode<T>(val value: T? = null,
+                      val weight: Int,
+                      val neighbors: MutableSet<WeightedNode<T>> = HashSet()) {
 
-class WeightedNode<T>(val value: T? = null, val weight: Int) {
+    var cost = Int.MAX_VALUE
+    var leastCostPath: List<WeightedNode<T>> = emptyList()
 
-    var distance = Int.MAX_VALUE
-    var shortestPath: List<WeightedNode<T>> = LinkedList()
-    val neighbors = mutableSetOf<WeightedNode<T>>()
 
     fun addNeighbor(neighbor: WeightedNode<T>) = neighbors.add(neighbor)
 
     fun updateShortestPath(neighbor: WeightedNode<T>) {
-        val neighborDistance = neighbor.distance + weight
-        if (neighborDistance < distance) {
-            distance = neighborDistance
-            shortestPath = neighbor.shortestPath.plus(neighbor)
+        val neighborCost = neighbor.cost + weight
+        if (neighborCost < cost) {
+            cost = neighborCost
+            leastCostPath = neighbor.leastCostPath.plus(neighbor)
         }
     }
 
-    override fun toString(): String {
-        return "WeightedNode(value=$value, weight=$weight, distance=$distance)"
-    }
+    override fun toString(): String = "WeightedNode(value=$value, weight=$weight, distance=$cost)"
 }
