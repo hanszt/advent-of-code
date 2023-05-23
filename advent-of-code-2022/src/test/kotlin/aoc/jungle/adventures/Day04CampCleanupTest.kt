@@ -8,15 +8,15 @@ class Day04CampCleanupTest {
 
     @Test
     fun `test part 1`() {
-        val part1 = day04CampCleanup.part1()
-        println(part1)
-        assertEquals(459, part1)
+        val result = day04CampCleanup.part1()
+        println(result)
+        assertEquals(459, result)
     }
 
     @Test
     fun `test part 2`() {
-        val part1 = day04CampCleanup.part2()
-        println(part1)
-        assertEquals(779, part1)
+        val result = day04CampCleanup.part2()
+        println(result)
+        assertEquals(779, result)
     }
 }

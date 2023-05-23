@@ -28,8 +28,8 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.code.style>official</kotlin.code.style>
         <!--        dependencies-->
-        <kotlin.version>1.8.0</kotlin.version>
-        <junit-jupiter.version>5.9.0</junit-jupiter.version>
+        <kotlin.version>1.8.10</kotlin.version>
+        <junit-jupiter.version>5.9.3</junit-jupiter.version>
         <kotest-assertions.version>5.5.4</kotest-assertions.version>
         <annotations.version>23.0.0</annotations.version>
         <!--        plugins-->

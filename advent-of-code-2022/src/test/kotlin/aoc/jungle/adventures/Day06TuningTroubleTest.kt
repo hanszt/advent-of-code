@@ -10,22 +10,22 @@ internal class Day06TuningTroubleTest {
 
     @Test
     fun `test part 1`() {
-        val part1 = day06TuningTrouble.part1()
-        println(part1)
-        assertEquals(1929, part1)
+        val result = day06TuningTrouble.part1()
+        println(result)
+        assertEquals(1929, result)
     }
 
     @Test
     fun `test part 1 test input`() {
-        val part1 = Day06TuningTrouble("input/day06test.txt").part1()
-        println(part1)
-        assertEquals(7, part1)
+        val result = Day06TuningTrouble("input/day06test.txt").part1()
+        println(result)
+        assertEquals(7, result)
     }
 
     @Test
     fun `test part 2`() {
-        val part1 = day06TuningTrouble.part2()
-        println(part1)
-        assertEquals(3298, part1)
+        val result = day06TuningTrouble.part2()
+        println(result)
+        assertEquals(3298, result)
     }
 }
