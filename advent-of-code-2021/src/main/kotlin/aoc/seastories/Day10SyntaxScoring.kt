@@ -46,7 +46,7 @@ internal object Day10SyntaxScoring : ChallengeDay {
         lines.map(::toCorruptedClosingCharAndRemainingChars)
             .filter { (closing) -> isIncomplete(closing) }
             .map { (_, chars) -> chars.reversed().mapNotNull(openingToClosingChars::get) }
-            .map(::toScoreCompletionList)
+            .map(::toCompletionListScore)
             .toMiddleScore()
     }
 
@@ -56,7 +56,7 @@ internal object Day10SyntaxScoring : ChallengeDay {
 
     private val closingToScorePart2 = mapOf(')' to 1, ']' to 2, '}' to 3, '>' to 4)
 
-    private fun toScoreCompletionList(chars: List<Char>): Long =
+    private fun toCompletionListScore(chars: List<Char>): Long =
         chars.mapNotNull(closingToScorePart2::get).map(Int::toLong).reduce { score, cur -> score * 5 + cur }
 
     override fun part1() = part1(ChallengeDay.inputDir + "/day10.txt")

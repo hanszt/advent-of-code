@@ -2,42 +2,40 @@ package aoc.jungle.adventures
 
 @Suppress("kotlin:S138", "kotlin:S3776")
 fun towerHeightElizarov(nrOfRocksStopped: Long, input: List<String>): Long {
-    fun shape(si: Int, u: (Int, Int) -> Unit) {
-        when (si) {
-            0 -> {
-                u(0, 0)
-                u(0, 1)
-                u(0, 2)
-                u(0, 3)
-            }
-            1 -> {
-                u(0, 1)
-                u(1, 0)
-                u(1, 1)
-                u(1, 2)
-                u(2, 1)
-            }
-            2 -> {
-                u(0, 0)
-                u(0, 1)
-                u(0, 2)
-                u(1, 2)
-                u(2, 2)
-            }
-            3 -> {
-                u(0, 0)
-                u(1, 0)
-                u(2, 0)
-                u(3, 0)
-            }
-            4 -> {
-                u(0, 0)
-                u(0, 1)
-                u(1, 0)
-                u(1, 1)
-            }
-            else -> error(si)
+    fun shape(si: Int, u: (Int, Int) -> Unit) = when (si) {
+        0 -> {
+            u(0, 0)
+            u(0, 1)
+            u(0, 2)
+            u(0, 3)
         }
+        1 -> {
+            u(0, 1)
+            u(1, 0)
+            u(1, 1)
+            u(1, 2)
+            u(2, 1)
+        }
+        2 -> {
+            u(0, 0)
+            u(0, 1)
+            u(0, 2)
+            u(1, 2)
+            u(2, 2)
+        }
+        3 -> {
+            u(0, 0)
+            u(1, 0)
+            u(2, 0)
+            u(3, 0)
+        }
+        4 -> {
+            u(0, 0)
+            u(0, 1)
+            u(1, 0)
+            u(1, 1)
+        }
+        else -> error(si)
     }
     val f = ArrayList<BooleanArray>()
     fun test(si: Int, i0: Int, j0: Int): Boolean {
@@ -92,14 +90,14 @@ fun towerHeightElizarov(nrOfRocksStopped: Long, input: List<String>): Long {
         val rem = nrOfRocksStopped - rn
         var ds0 = 0
         val iRest = prev + (rem % clen).toInt()
-        for (k in 0 until rn) ds0 += us[k].ds
-        for (k in prev until iRest) ds0 += us[k].ds
+        for (k in 0 ..< rn) ds0 += us[k].ds
+        for (k in prev ..< iRest) ds0 += us[k].ds
         var dsCycle = 0
-        for (k in prev until rn) dsCycle += us[k].ds
+        for (k in prev ..< rn) dsCycle += us[k].ds
         ans = ds0 + (rem / clen) * dsCycle
         return true
     }
-    for (rn in 0 until nrOfRocksStopped) {
+    for (rn in 0 ..< nrOfRocksStopped) {
         si = (si + 1) % sn
         val s0 = f.size
         var i = s0 + 3

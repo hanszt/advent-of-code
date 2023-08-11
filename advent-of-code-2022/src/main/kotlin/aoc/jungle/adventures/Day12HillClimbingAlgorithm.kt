@@ -4,8 +4,6 @@ import aoc.utils.ChallengeDay
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
-import java.util.LinkedList
-import java.util.Queue
 import aoc.utils.model.GridPoint2D as Point
 
 /**
@@ -43,9 +41,9 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
 
     private fun Grid.floodFill(postProcess: (Int, Int) -> (Int) = { _, length -> length }): Int {
         val shortestPaths = mutableMapOf(start to 0)
-        val queue: Queue<Point> = LinkedList<Point>().apply { add(start) }
+        val queue = ArrayDeque<Point>().apply { add(start) }
         while (queue.isNotEmpty()) {
-            val pos = queue.remove()
+            val pos = queue.removeFirst()
             for (dir in GridPoint2D.orthoDirs) {
                 val neighborPos = pos + dir
                 shortestPaths.update(pos, neighborPos, postProcess)?.also(queue::add)
@@ -59,11 +57,12 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
 
     data class Grid(val grid: Map<Point, Int>, val start: Point, val goal: Point) {
 
-        fun MutableMap<Point, Int>.update(pos: Point, neighborPos: Point, postProcess: (Int, Int) -> Int): Point? {
-            grid[neighborPos]?.let {
-                val gridHeight = grid[neighborPos]!!
-                if (gridHeight - grid[pos]!! <= 1) {
-                    val newPathLength = this[pos]!! + 1
+        fun MutableMap<Point, Int>.update(pos: Point,
+                                          neighborPos: Point,
+                                          postProcess: (Int, Int) -> Int): Point? {
+            grid[neighborPos]?.let { gridHeight ->
+                if (gridHeight - (grid[pos] ?: error("No value for $pos")) <= 1) {
+                    val newPathLength = (this[pos] ?: error("No value for  $pos")) + 1
                     if (newPathLength < (this[neighborPos] ?: Int.MAX_VALUE)) {
                         this[neighborPos] = postProcess(gridHeight, newPathLength)
                         return neighborPos

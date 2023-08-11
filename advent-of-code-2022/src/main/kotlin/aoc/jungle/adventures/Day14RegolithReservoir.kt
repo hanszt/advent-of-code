@@ -42,16 +42,16 @@ class Day14RegolithReservoir(fileName: String) : ChallengeDay {
         val entryPoint = 500 by 0
         var sandPlacedPart1 = 0
         var sandPlacedPart2 = 0
-        var fallingIntoAbyss = false
+        var hasSettled = true
         var canFall = true
         while (canFall) {
             var sandPoint = entryPoint
-            var resting = false
-            while (!resting) {
+            var moving = true
+            while (moving) {
                 val below = sandPoint.plusY(1)
                 if (below.y == highestRow + 2) {
-                    fallingIntoAbyss = true
-                    resting = true
+                    hasSettled = false
+                    moving = false
                     grid[sandPoint] = Type.SAND
                     sandPlacedPart2++
                     continue
@@ -75,12 +75,12 @@ class Day14RegolithReservoir(fileName: String) : ChallengeDay {
                     canFall = false
                     break
                 }
-                resting = true
+                moving = false
                 grid[sandPoint] = Type.SAND
-                if (!fallingIntoAbyss) sandPlacedPart1++
+                if (hasSettled) sandPlacedPart1++
                 sandPlacedPart2++
             }
         }
-        return Pair(sandPlacedPart1, sandPlacedPart2)
+        return sandPlacedPart1 to sandPlacedPart2
     }
 }

@@ -24,8 +24,8 @@ class Day18BoilingBoulders(fileName: String) : ChallengeDay {
 
     private fun calcSurfaceArea(cubes: List<Cube>): Int {
         var touchingSides = 0
-        for (i in 0 until cubes.lastIndex) {
-            for (j in i + 1 until cubes.size) {
+        for (i in 0 ..< cubes.lastIndex) {
+            for (j in i + 1 ..< cubes.size) {
                 touchingSides += if (cubes[i].manhattanDistance(cubes[j]) == 1) 2 else 0
             }
         }

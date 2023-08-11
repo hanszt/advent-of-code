@@ -67,7 +67,6 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
     @Override
     public Long part2() {
         final long BOUND = 4_000_000L;
-
         for (var entry : sensorBeaconMap.entrySet()) {
             final var sensor = entry.getKey();
             final var radius = sensor.manhattanDistance(entry.getValue()) + 1;
@@ -101,7 +100,8 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
             final var ringPoint = iterator.next();
             for (var e : sensorBeaconMap.entrySet()) {
                 final var otherSensor = e.getKey();
-                final var fallsInRange = otherSensor.manhattanDistance(ringPoint) <= otherSensor.manhattanDistance(e.getValue());
+                final var point2D = e.getValue();
+                final var fallsInRange = otherSensor.manhattanDistance(ringPoint) <= otherSensor.manhattanDistance(point2D);
                 if (fallsInRange) {
                     iterator.remove();
                     break;
