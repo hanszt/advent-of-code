@@ -29,7 +29,7 @@ public class Part1ConwayCubesByArrays extends Day17ChallengeByArrays {
     long countActive3D(final boolean[][][] grid3d) {
         return Arrays.stream(grid3d)
                 .flatMap(Arrays::stream)
-                .mapToInt(activeCubes -> countActive(activeCubes))
+                .mapToInt(Part1ConwayCubesByArrays::countActive)
                 .sum();
     }
 

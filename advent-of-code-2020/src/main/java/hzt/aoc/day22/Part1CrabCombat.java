@@ -1,6 +1,6 @@
 package hzt.aoc.day22;
 
-import java.util.Deque;
+import java.util.SequencedCollection;
 
 public class Part1CrabCombat extends Day22Challenge {
 
@@ -12,19 +12,19 @@ public class Part1CrabCombat extends Day22Challenge {
 
 
     @Override
-    protected long play(final Deque<Integer> player1Cards, final Deque<Integer> player2Cards) {
+    protected long play(final SequencedCollection<Integer> player1Cards, final SequencedCollection<Integer> player2Cards) {
         while (!player1Cards.isEmpty() && !player2Cards.isEmpty()) {
             playRound(player1Cards, player2Cards);
         }
-        final Deque<Integer> winningPlayerCards = player1Cards.isEmpty() ? player2Cards : player1Cards;
+        final var winningPlayerCards = player1Cards.isEmpty() ? player2Cards : player1Cards;
         return calculateScoreWinningPlayer(winningPlayerCards);
     }
 
 
 
-    private static void playRound(final Deque<Integer> player1Cards, final Deque<Integer> player2Cards) {
-        final int player1TopCard = player1Cards.pop();
-        final int player2TopCard = player2Cards.pop();
+    private static void playRound(final SequencedCollection<Integer> player1Cards, final SequencedCollection<Integer> player2Cards) {
+        final int player1TopCard = player1Cards.removeFirst();
+        final int player2TopCard = player2Cards.removeFirst();
         if (player1TopCard > player2TopCard) {
             player1Cards.addLast(player1TopCard);
             player1Cards.addLast(player2TopCard);

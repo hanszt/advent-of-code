@@ -2,7 +2,7 @@ package hzt.aoc.day15;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day15ChallengeTest {
 
@@ -11,7 +11,7 @@ class Day15ChallengeTest {
         final var challenge = new Part1RambunctiousRecitation();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(1373, Integer.parseInt(answer));
+        assertEquals(1_373, Integer.parseInt(answer));
     }
 
     @Test
@@ -19,7 +19,7 @@ class Day15ChallengeTest {
         final var challenge = new Part2RambunctiousRecitation();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals( 112458, Long.parseLong(answer));
+        assertEquals( 112_458, Long.parseLong(answer));
     }
 
 }

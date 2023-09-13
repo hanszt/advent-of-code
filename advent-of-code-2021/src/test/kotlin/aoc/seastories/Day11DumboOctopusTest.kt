@@ -2,24 +2,28 @@ package aoc.seastories
 
 import aoc.seastories.Day11DumboOctopus.Octopus
 import aoc.seastories.Day11DumboOctopus.simulateStep
-import org.junit.jupiter.api.Assertions
+import aoc.utils.BRIGHT_YELLOW
+import aoc.utils.gridAsString
+import aoc.utils.toGridOf
+import aoc.utils.toIntGrid
+import aoc.utils.withColor
 import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import aoc.utils.*
 
 internal class Day11DumboOctopusTest {
 
     @Test
-    fun `part 1 test input`() = Assertions.assertEquals(1_656, Day11DumboOctopus.part1("input/day11test.txt"))
+    fun `part 1 test input`() = assertEquals(1_656, Day11DumboOctopus.part1("input/day11test.txt"))
 
     @Test
-    fun `part 1 result`() = Assertions.assertEquals(1_683, Day11DumboOctopus.part1().also(::println))
+    fun `part 1 result`() = assertEquals(1_683, Day11DumboOctopus.part1().also(::println))
 
     @Test
-    fun `part 2 test input`() = Assertions.assertEquals(195, Day11DumboOctopus.part2("input/day11test.txt"))
+    fun `part 2 test input`() = assertEquals(195, Day11DumboOctopus.part2("input/day11test.txt"))
 
     @Test
-    fun `part 2 result`() = Assertions.assertEquals(788, Day11DumboOctopus.part2().also(::println))
+    fun `part 2 result`() = assertEquals(788, Day11DumboOctopus.part2().also(::println))
 
     @Test
     fun `test simulate one step`() {

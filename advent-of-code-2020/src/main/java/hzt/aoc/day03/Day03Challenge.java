@@ -24,9 +24,9 @@ public abstract class Day03Challenge extends Challenge {
 
     protected abstract long calculateResult(List<List<Boolean>> grid);
 
-    int calculateNumberOfTreesEncountered(final List<List<Boolean>> treeGrid, final GridPoint2D initPositin, final GridPoint2D slope) {
+    int calculateNumberOfTreesEncountered(final List<List<Boolean>> treeGrid, final GridPoint2D slope) {
         int numberOfTrees = 0;
-        GridPoint2D position = initPositin;
+        GridPoint2D position = GridPoint2D.ZERO;
         while (true) {
             final var y = position.getY();
             if (y >= treeGrid.size()) {

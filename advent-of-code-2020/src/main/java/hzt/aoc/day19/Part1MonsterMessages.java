@@ -2,7 +2,6 @@ package hzt.aoc.day19;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 // credits to Turkey dev
 // We used the principle of bnf's here
@@ -25,7 +24,7 @@ public class Part1MonsterMessages extends Day19Challenge {
     private static List<Character> asCharList(final String message) {
         return message.chars()
                 .mapToObj(c -> (char) c)
-                .collect(Collectors.toList());
+                .collect(ArrayList::new, List::add, List::addAll);
     }
 
     private boolean matches(final List<Character> messageChars) {
@@ -39,8 +38,8 @@ public class Part1MonsterMessages extends Day19Challenge {
             return ruleIsEndRule(rule, messageChars);
         }
 
-        final List<List<Integer>> allSubRules = rulesToSubRules.get(rule);
-        for (final List<Integer> subRules : allSubRules) {
+        final var allSubRules = rulesToSubRules.get(rule);
+        for (final var subRules : allSubRules) {
             final List<Character> charsCopy = new ArrayList<>(messageChars);
             boolean matchesAll = true;
             for (final int curRule : subRules) {
@@ -51,7 +50,7 @@ public class Part1MonsterMessages extends Day19Challenge {
             }
             if (matchesAll) {
                 while (messageChars.size() > charsCopy.size()) {
-                    messageChars.remove(0);
+                    messageChars.removeFirst();
                 }
                 return true;
             }
@@ -60,8 +59,8 @@ public class Part1MonsterMessages extends Day19Challenge {
     }
 
     private boolean ruleIsEndRule(final int rule, final List<Character> messageChars) {
-        if (messageChars.get(0).equals(endChars.get(rule))) {
-            messageChars.remove(0);
+        if (messageChars.getFirst().equals(endChars.get(rule))) {
+            messageChars.removeFirst();
             return true;
         } else {
             return false;

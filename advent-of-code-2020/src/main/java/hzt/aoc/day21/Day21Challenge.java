@@ -2,7 +2,12 @@ package hzt.aoc.day21;
 
 import hzt.aoc.Challenge;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // credits to Johan de Jong
@@ -14,7 +19,7 @@ public abstract class Day21Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Food> foods = inputList.stream().map(this::parseLine).collect(Collectors.toList());
+        final List<Food> foods = inputList.stream().map(this::parseLine).toList();
         return calculateAnswer(foods);
     }
 
@@ -38,7 +43,7 @@ public abstract class Day21Challenge extends Challenge {
             final List<Food> foodsWithAllergen = extractFoodsWithAllergen(allergen, foods);
             final Set<String> allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen);
             for (final String ingredient : allPossibleIngredients) {
-                final boolean inAllFoods = foodsWithAllergen.stream().allMatch(food -> food.getIngredients().contains(ingredient));
+                final boolean inAllFoods = foodsWithAllergen.stream().allMatch(food -> food.ingredientSet().contains(ingredient));
                 if (inAllFoods) {
                     potentialAllergenIngredients.add(ingredient);
                     allergenToIngredientsMap.computeIfAbsent(allergen, key -> new ArrayList<>()).add(ingredient);
@@ -50,38 +55,32 @@ public abstract class Day21Challenge extends Challenge {
 
     private List<Food> extractFoodsWithAllergen(final String allergen, final List<Food> foods) {
         return foods.stream()
-                .filter(food -> food.getAllergens().contains(allergen))
-                .collect(Collectors.toList());
+                .filter(food -> food.allergenSet().contains(allergen))
+                .toList();
     }
 
     private Set<String> allPossibleIngredientsContainingAllergen(final List<Food> foodsWithAllergen) {
         return foodsWithAllergen.stream()
-                .flatMap(food -> food.getIngredients().stream())
+                .flatMap(Food::ingredients)
                 .collect(Collectors.toSet());
     }
 
     Set<String> extractAllAllergens(final List<Food> foods) {
         return foods.stream()
-                .flatMap(line -> line.getAllergens().stream())
+                .flatMap(Food::allergens)
                 .collect(Collectors.toSet());
     }
 
-    static class Result {
+    record Result(Set<String> potentialAllergenIngredients, Map<String, List<String>> allergenToIngredientsMap) {
 
-        private final Set<String> potentialAllergenIngredients;
-        private final Map<String, List<String>> allergenToIngredientsMap;
+        @Override
+        public Set<String> potentialAllergenIngredients() {
+                return Set.copyOf(potentialAllergenIngredients);
+            }
 
-        public Result(final Set<String> potentialAllergenIngredients, final Map<String, List<String>> allergenToIngredientsMap) {
-            this.potentialAllergenIngredients = potentialAllergenIngredients;
-            this.allergenToIngredientsMap = allergenToIngredientsMap;
+            @Override
+            public Map<String, List<String>> allergenToIngredientsMap() {
+                return Map.copyOf(allergenToIngredientsMap);
+            }
         }
-
-        public Set<String> getPotentialAllergenIngredients() {
-            return Collections.unmodifiableSet(potentialAllergenIngredients);
-        }
-
-        public Map<String, List<String>> getAllergenToIngredientsMap() {
-            return Collections.unmodifiableMap(allergenToIngredientsMap);
-        }
-    }
 }

@@ -1,9 +1,11 @@
 package hzt.aoc.day16;
 
 import hzt.aoc.Challenge;
+import org.hzt.utils.collections.primitives.IntList;
+import org.hzt.utils.collections.primitives.IntMutableList;
+import org.hzt.utils.sequences.Sequence;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
@@ -17,8 +19,8 @@ public abstract class Day16Challenge extends Challenge {
     @Override
     protected String solve(final List<String> inputList) {
         final List<Field> fields = new ArrayList<>();
-        final List<Integer> yourTicketValues = new ArrayList<>();
-        final List<List<Integer>> nearbyTicketValues = new ArrayList<>();
+        final var yourTicketValues = IntMutableList.empty();
+        final List<IntList> nearbyTicketValues = new ArrayList<>();
         Field.setNext(0);
         int inputPart = 0;
         for (final String s : inputList) {
@@ -43,7 +45,7 @@ public abstract class Day16Challenge extends Challenge {
         return getMessage(solveByParsedInput(fields, yourTicketValues, nearbyTicketValues));
     }
 
-    protected abstract long solveByParsedInput(List<Field> fields, List<Integer> yourTicketValues, List<List<Integer>> nearbyTicketValues);
+    protected abstract long solveByParsedInput(List<Field> fields, IntList yourTicketValues, List<IntList> nearbyTicketValues);
 
     private static void addField(final String s, final List<Field> fields) {
         final String[] array = s.split(": ");
@@ -58,8 +60,9 @@ public abstract class Day16Challenge extends Challenge {
         fields.add(field);
     }
 
-    protected List<Integer> findValidTicketValues(final List<Field> fields, final List<List<Integer>> nearbyTicketValues) {
-        return nearbyTicketValues.stream().flatMap(Collection::stream)
+    protected IntList findValidTicketValues(final List<Field> fields, final List<IntList> nearbyTicketValues) {
+        return Sequence.of(nearbyTicketValues)
+                .mapMultiToInt(IntList::forEachInt)
                 .filter(value -> fieldsContainValue(value, fields))
                 .toList();
     }

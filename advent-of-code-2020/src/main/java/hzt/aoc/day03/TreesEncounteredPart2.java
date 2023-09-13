@@ -1,7 +1,5 @@
 package hzt.aoc.day03;
 
-import aoc.utils.model.GridPoint2D;
-
 import java.util.List;
 
 public class TreesEncounteredPart2 extends Day03Challenge {
@@ -15,7 +13,7 @@ public class TreesEncounteredPart2 extends Day03Challenge {
     protected long calculateResult(final List<List<Boolean>> grid) {
         long product = 1;
         for (final Path path : Path.values()) {
-            final int numberOfTrees = calculateNumberOfTreesEncountered(grid, GridPoint2D.ZERO, path.getSlope());
+            final int numberOfTrees = calculateNumberOfTreesEncountered(grid, path.getSlope());
             LOGGER.info(String.format("The number of trees crossed using %s is %d", path.name(), numberOfTrees));
             product *= numberOfTrees;
         }

@@ -13,7 +13,7 @@ public class Part2CustomCustoms extends Day06Challenge {
 
     @Override
     protected int calculateResult(final List<Group> groups) {
-        return groups.stream().map(Group::amountEveryoneAnsweredYes).reduce(0, (acc, cur) -> acc += cur);
+        return groups.stream().mapToInt(Group::amountEveryoneAnsweredYes).sum();
     }
 
     @Override

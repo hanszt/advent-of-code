@@ -2,7 +2,6 @@ package hzt.aoc.day10;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // credits to TurkeyDev
@@ -18,21 +17,21 @@ public class Part2AdaptorArrayWithCachingLongs extends Day10Challenge {
     }
 
     @Override
-    protected Number solveByList(final List<Integer> sortedList) {
-        return numberOfWaysToCompleteAdaptorChain(sortedList);
+    protected Number solveByArray(final int[] array) {
+        return numberOfWaysToCompleteAdaptorChain(array);
     }
 
-    private long numberOfWaysToCompleteAdaptorChain(final List<Integer> sortedList) {
-        if (sortedList.size() == 1) {
+    private long numberOfWaysToCompleteAdaptorChain(final int[] sortedArray) {
+        if (sortedArray.length == 1) {
             return 1;
         }
         long arrangements = 0;
         int index = 1;
-        final Integer current = sortedList.get(0);
+        final int current = sortedArray[0];
 
-        while (sortedList.size() > index && sortedList.get(index) - current <= MAX_STEP_APART) {
-            final List<Integer> subList = sortedList.subList(index, sortedList.size());
-            final String stringSubList = Arrays.toString(subList.toArray(new Integer[0]));
+        while (sortedArray.length > index && sortedArray[index] - current <= MAX_STEP_APART) {
+            final var subList = Arrays.copyOfRange(sortedArray, index, sortedArray.length);
+            final String stringSubList = Arrays.toString(subList);
             if (!cache.containsKey(stringSubList)) {
                 final long subArrangements = numberOfWaysToCompleteAdaptorChain(subList);
                 cache.put(stringSubList, subArrangements);

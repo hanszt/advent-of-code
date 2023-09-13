@@ -14,14 +14,14 @@ class Day03RucksackReorganisationTest {
     void testPart1() {
         final var result = rucksackReorganisation.part1();
         System.out.println("result = " + result);
-        assertEquals(7793, result);
+        assertEquals(7_793, result);
     }
 
     @Test
     void testPart2() {
         final var result = rucksackReorganisation.part2();
         System.out.println("result = " + result);
-        assertEquals(2499, result);
+        assertEquals(2_499, result);
     }
     @ParameterizedTest(name = "{0} should map to priority {1}")
     @CsvSource(value = {"a, 1", "b, 2", "c, 3", "z, 26", "A, 27", "Z, 52"})

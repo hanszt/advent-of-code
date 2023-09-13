@@ -12,7 +12,7 @@ class Day22ChallengeTest {
         final Challenge challenge = new Part1CrabCombat();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(33772, Integer.parseInt(answer));
+        assertEquals(33_772, Integer.parseInt(answer));
     }
 
     @Test
@@ -20,6 +20,6 @@ class Day22ChallengeTest {
         final Challenge challenge = new Part2CrabCombat();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(35070, Integer.parseInt(answer));
+        assertEquals(35_070, Integer.parseInt(answer));
     }
 }

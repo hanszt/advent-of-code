@@ -1,6 +1,6 @@
 package hzt.aoc.day15;
 
-import java.util.List;
+import org.hzt.utils.collections.primitives.IntMutableList;
 
 public class Part1RambunctiousRecitation extends Day15Challenge {
 
@@ -12,11 +12,11 @@ public class Part1RambunctiousRecitation extends Day15Challenge {
     }
 
     @Override
-    protected int getNthNumberSpoken(final List<Integer> numbers) {
+    protected int getNthNumberSpoken(final IntMutableList numbers) {
         int last = 0;
         long start = System.nanoTime();
         while (numbers.size() < THRESHOLD) {
-            final int prevLast = numbers.remove(numbers.size() - 1);
+            final int prevLast = numbers.removeLast();
             int newLast = 0;
             for (int index = numbers.size() - 1; index >= 0; index--) {
                 if (numbers.get(index) == prevLast) {

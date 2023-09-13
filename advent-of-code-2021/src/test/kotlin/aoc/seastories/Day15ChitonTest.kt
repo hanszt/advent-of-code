@@ -4,11 +4,11 @@ import aoc.utils.*
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.WeightedNode
+import java.io.File
+import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
-import java.io.File
-import java.util.concurrent.TimeUnit
 import kotlin.test.assertTrue
 
 internal class Day15ChitonTest {
@@ -40,11 +40,11 @@ internal class Day15ChitonTest {
         val start = graph[startPoint] ?: error("No start found at $startPoint")
         val goal = graph[endPoint] ?: error("No goal found at $endPoint")
         val grid = toGridOf(Int::toString)
-        (start dijkstra goal).leastCostPath.plus(goal)
+        ((start dijkstra goal).leastCostPath + goal)
             .mapNotNull(WeightedNode<GridPoint2D>::value)
-            .forEach { (x, y) -> grid[y][x] = grid[y][x].withColors(BRIGHT_YELLOW, YELLOW_BG, 2) }
+            .forEach { (x, y) -> grid[y][x] = "%2s".format(grid[y][x]).withColors(BRIGHT_YELLOW, YELLOW_BG) }
 
-        return grid.gridAsString { if (it.length == 1) it.withColors(BROWN_BG, random16BitColor(), 2) else it }
+        return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(random16BitColor(), BROWN_BG) else it }
     }
 
 }

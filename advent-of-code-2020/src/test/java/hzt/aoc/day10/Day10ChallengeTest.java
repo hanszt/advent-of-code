@@ -21,7 +21,7 @@ class Day10ChallengeTest {
         final var challenge = new Part1AdaptorArray();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(2240, Integer.parseInt(answer));
+        assertEquals(2_240, Integer.parseInt(answer));
     }
 
     @Test

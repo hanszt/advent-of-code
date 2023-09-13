@@ -1,9 +1,9 @@
 package hzt.aoc.day10;
 
 import hzt.aoc.Challenge;
+import org.hzt.utils.sequences.Sequence;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day10Challenge extends Challenge {
 
@@ -20,25 +20,25 @@ public abstract class Day10Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Integer> list = inputList.stream()
-                .filter(s -> !s.isEmpty())
-                .map(Integer::parseInt)
+        final var list = Sequence.of(inputList)
+                .filterNot(String::isEmpty)
+                .mapToInt(Integer::parseInt)
                 .sorted()
-                .collect(Collectors.toList());
+                .toMutableList();
 
         list.add(0, 0); // add socket jolt value
-        list.add(list.get(list.size() - 1) + MAX_STEP_APART); // add built in phone adaptor jolt value
-        return String.valueOf(solveByList(list));
+        list.add(list.last() + MAX_STEP_APART); // add built in phone adaptor jolt value
+        return String.valueOf(solveByArray(list.toArray()));
     }
 
-    protected abstract Number solveByList(List<Integer> list);
+    protected abstract Number solveByArray(int[] array);
 
 
-    long calculateTheProductBetweenOneAndThreeDifference(final List<Integer> sortedlist) {
+    long calculateTheProductBetweenOneAndThreeDifference(final int[] sortedArray) {
         long oneDifference = 0;
         long threeDifference = 0;
-        for (int i = 0; i < sortedlist.size() - 1; i++) {
-            final int difference = sortedlist.get(i + 1) - sortedlist.get(i);
+        for (int i = 0; i < sortedArray.length - 1; i++) {
+            final int difference = sortedArray[i + 1] - sortedArray[i];
             if (difference == 1) {
                 oneDifference++;
             }

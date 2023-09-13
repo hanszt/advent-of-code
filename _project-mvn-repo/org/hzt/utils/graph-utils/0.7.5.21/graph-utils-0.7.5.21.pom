@@ -6,25 +6,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.hzt.utils</groupId>
         <artifactId>hzt-utils</artifactId>
-        <version>0.7.5.17</version>
+        <groupId>org.hzt.utils</groupId>
+        <version>0.7.5.21</version>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>graph-utils</artifactId>
+
+    <properties>
+        <core.version>0.7.5.21</core.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.hzt.utils</groupId>
-            <artifactId>test-utils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
+            <artifactId>core</artifactId>
         </dependency>
     </dependencies>
 

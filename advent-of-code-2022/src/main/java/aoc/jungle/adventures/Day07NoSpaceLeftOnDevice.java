@@ -31,10 +31,8 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
 
     @NotNull
     @Override
-    public Integer part1() {
-        return dirSizes.stream()
-                .filter(size -> size <= 100_000)
-                .sum();
+    public Long part1() {
+        return dirSizes.sum(size -> size <= 100_000);
     }
 
     @NotNull
@@ -44,10 +42,7 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
         final int NEEDED_SPACE = 30_000_000;
         final var totalSize = dirSizes.max();
         final int spaceToClean = NEEDED_SPACE - (TOTAL_DISK_SPACE - totalSize);
-        return dirSizes.stream()
-                .filter(size -> size >= spaceToClean)
-                .min()
-                .orElseThrow(() -> new IllegalStateException("No minimum size found..."));
+        return dirSizes.min(size -> size >= spaceToClean);
     }
 
     private static void buildFileTree(List<String> terminalOutput, AocFile root) {

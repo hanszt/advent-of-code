@@ -16,7 +16,7 @@ public class Part2AllergenAssessment extends Day21Challenge {
     @Override
     protected String calculateAnswer(final List<Food> foods) {
         final var allAllergens = extractAllAllergens(foods);
-        final var allergenToIngredientsMap = extractAllergens(allAllergens, foods).getAllergenToIngredientsMap();
+        final var allergenToIngredientsMap = extractAllergens(allAllergens, foods).allergenToIngredientsMap();
         return getDangerousIngredientsListAsString(allergenToIngredientsMap);
     }
 

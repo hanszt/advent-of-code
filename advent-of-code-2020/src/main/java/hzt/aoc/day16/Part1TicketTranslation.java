@@ -1,8 +1,10 @@
 package hzt.aoc.day16;
 
-import java.util.Collection;
+import org.hzt.utils.It;
+import org.hzt.utils.collections.primitives.IntList;
+import org.hzt.utils.sequences.Sequence;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Part1TicketTranslation extends Day16Challenge {
 
@@ -12,12 +14,12 @@ public class Part1TicketTranslation extends Day16Challenge {
     }
 
     @Override
-    protected long solveByParsedInput(final List<Field> fields, final List<Integer> yourTicketValues, final List<List<Integer>> nearbyTicketValues) {
-        final List<Integer> inValidTicketValues = nearbyTicketValues.stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+    protected long solveByParsedInput(final List<Field> fields, final IntList yourTicketValues, final List<IntList> nearbyTicketValues) {
+        final var inValidTicketValues = Sequence.of(nearbyTicketValues)
+                .flatMapToInt(It::self)
+                .toMutableList();
         inValidTicketValues.removeAll(findValidTicketValues(fields, nearbyTicketValues));
-        return inValidTicketValues.stream().reduce(Integer::sum).orElse(0);
+        return inValidTicketValues.sum();
     }
 
     @Override

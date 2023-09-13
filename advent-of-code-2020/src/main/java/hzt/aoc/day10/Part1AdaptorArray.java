@@ -1,7 +1,5 @@
 package hzt.aoc.day10;
 
-import java.util.List;
-
 public class Part1AdaptorArray extends Day10Challenge {
 
     public Part1AdaptorArray() {
@@ -13,8 +11,8 @@ public class Part1AdaptorArray extends Day10Challenge {
     }
 
     @Override
-    protected Number solveByList(final List<Integer> sortedlist) {
-        return calculateTheProductBetweenOneAndThreeDifference(sortedlist);
+    protected Number solveByArray(final int[] array) {
+        return calculateTheProductBetweenOneAndThreeDifference(array);
     }
 
     @Override

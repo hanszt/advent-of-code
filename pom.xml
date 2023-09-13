@@ -22,23 +22,24 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <kotlin-maven-plugin.jvmTarget>17</kotlin-maven-plugin.jvmTarget>
         <kotlin.code.style>official</kotlin.code.style>
         <!--        dependencies-->
         <kotlin.version>1.9.0</kotlin.version>
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
         <kotest-assertions.version>5.6.2</kotest-assertions.version>
         <annotations.version>24.0.1</annotations.version>
-        <hzt.utils.version>0.7.5.17</hzt.utils.version>
+        <hzt.utils.version>0.7.5.21</hzt.utils.version>
         <!--        plugins-->
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
-        <build-helper-maven-plugin.version>3.2.0</build-helper-maven-plugin.version>
-        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
+        <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
+        <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
     </properties>
 
     <dependencyManagement>

@@ -11,7 +11,7 @@ class Day06ChallengeTest {
         final var challenge = new Part1CustomCustoms();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(6416, Integer.parseInt(answer));
+        assertEquals(6_416, Integer.parseInt(answer));
     }
 
     @Test
@@ -19,7 +19,7 @@ class Day06ChallengeTest {
         final var challenge = new Part2CustomCustoms();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals(3050, Integer.parseInt(answer));
+        assertEquals(3_050, Integer.parseInt(answer));
     }
 
 }

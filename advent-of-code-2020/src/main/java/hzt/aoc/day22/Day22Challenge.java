@@ -3,8 +3,8 @@ package hzt.aoc.day22;
 import hzt.aoc.Challenge;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.List;
+import java.util.SequencedCollection;
 
 public abstract class Day22Challenge extends Challenge {
 
@@ -14,17 +14,17 @@ public abstract class Day22Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final Deque<Integer> player1Cards = new ArrayDeque<>();
-        final Deque<Integer> player2Cards = new ArrayDeque<>();
+        final var player1Cards = new ArrayDeque<Integer>();
+        final var player2Cards = new ArrayDeque<Integer>();
         fillDecksByInputList(inputList, player1Cards, player2Cards);
         return getMessage(play(player1Cards, player2Cards));
     }
 
-    private static void fillDecksByInputList(final List<String> inputList,
-                                             final Deque<Integer> player1Cards,
-                                             final Deque<Integer> player2Cards) {
+    private static void fillDecksByInputList(final Iterable<String> input,
+                                             final SequencedCollection<Integer> player1Cards,
+                                             final SequencedCollection<Integer> player2Cards) {
         int player = 0;
-        for (final String line : inputList) {
+        for (final String line : input) {
             if (NUMBER_LENGTH_ONE_OR_MORE.matcher(line).matches()) {
                 if (player == 1) {
                     player1Cards.addLast(Integer.parseInt(line));
@@ -42,17 +42,17 @@ public abstract class Day22Challenge extends Challenge {
         }
     }
 
-    long calculateScoreWinningPlayer(final Deque<Integer> winningPlayerCards) {
+    long calculateScoreWinningPlayer(final SequencedCollection<Integer> winningPlayerCards) {
         long score = 0;
         long counter = 1;
         while (!winningPlayerCards.isEmpty()) {
-            score += counter * winningPlayerCards.pollLast();
+            score += counter * winningPlayerCards.removeLast();
             counter++;
         }
         return score;
     }
 
-    protected abstract long play(Deque<Integer> player1Cards, Deque<Integer> player2Cards);
+    protected abstract long play(SequencedCollection<Integer> player1Cards, SequencedCollection<Integer> player2Cards);
 
 
     abstract String getMessage(long value);

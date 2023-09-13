@@ -1,6 +1,8 @@
 package hzt.aoc;
 
 import hzt.aoc.io.IOController2;
+import org.hzt.utils.Patterns;
+import org.hzt.utils.collections.primitives.IntList;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -52,8 +54,8 @@ public abstract class Challenge {
         }
     }
 
-    protected List<Integer> commaSeparatedStringToIntegerList(final String s) {
-        return COMMA_PATTERN.splitAsStream(s).map(Integer::parseInt).toList();
+    protected IntList commaSeparatedStringToIntegerList(final String s) {
+        return Patterns.splitToSequence(COMMA_PATTERN, s).mapToInt(Integer::parseInt).toList();
     }
 
     protected String listOfStringListsAsString(final List<List<String>> listOfStringLists) {

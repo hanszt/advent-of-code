@@ -1,23 +1,22 @@
 package aoc.seastories
 
 import aoc.seastories.Day20TrenchTrap.toEnhancedImage
+import aoc.utils.BROWN_BG
+import aoc.utils.GREEN
+import aoc.utils.gridAsString
+import aoc.utils.random16BitColor
+import aoc.utils.withColor
+import aoc.utils.withColors
+import java.io.File
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import aoc.utils.*
-import java.io.File
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class Day20TrenchTrapTest {
 
-    private lateinit var resultImage: Array<IntArray>
-
-    @BeforeAll
-    fun init() {
-        resultImage = File("input/day20.txt").toEnhancedImage()
-    }
+    private val resultImage by lazy { File("input/day20.txt").toEnhancedImage() }
 
     @Test
     fun `part 1 test input`() = assertEquals(35, Day20TrenchTrap.part1("input/day20test.txt"))
