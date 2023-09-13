@@ -3,7 +3,6 @@ package hzt.aoc.day10;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // credits to TurkeyDev
@@ -18,24 +17,24 @@ public class Part2AdaptorArrayWithCaching extends Day10Challenge {
     }
 
     @Override
-    protected Number solveByList(final List<Integer> sortedList) {
-        return numberOfWaysToCompleteAdaptorChain(sortedList);
+    protected Number solveByArray(final int[] array) {
+        return numberOfWaysToCompleteAdaptorChain(array);
     }
     //improves runtime: Allows to skip parts of the branches in the tree to be recursively walk through.,,
 
-    private BigInteger numberOfWaysToCompleteAdaptorChain(final List<Integer> sortedList) {
-        if (sortedList.size() == 1) {
+    private BigInteger numberOfWaysToCompleteAdaptorChain(final int[] sortedArray) {
+        if (sortedArray.length == 1) {
             return BigInteger.ONE;
         }
         BigInteger arrangements = BigInteger.ZERO;
         int index = 1;
-        final Integer current = sortedList.get(0);
+        final var current = sortedArray[0];
 
-        while (sortedList.size() > index && sortedList.get(index) - current <= MAX_STEP_APART) {
-            final List<Integer> subList = sortedList.subList(index, sortedList.size());
-            final String stringSubList = Arrays.toString(subList.toArray(new Integer[0]));
+        while (sortedArray.length > index && sortedArray[index] - current <= MAX_STEP_APART) {
+            final var subArray = Arrays.copyOfRange(sortedArray, index, sortedArray.length);
+            final String stringSubList = Arrays.toString(subArray);
             if (!cache.containsKey(stringSubList)) {
-                final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(subList);
+                final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(subArray);
                 cache.put(stringSubList, subArrangements);
                 arrangements = arrangements.add(subArrangements);
             } else {

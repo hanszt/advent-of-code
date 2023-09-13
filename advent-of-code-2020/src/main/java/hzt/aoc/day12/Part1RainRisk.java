@@ -33,21 +33,25 @@ public class Part1RainRisk extends Day12Challenge {
             final int dir = instruction == TURN_RIGHT ? 1 : -1;
             int counter = 0;
             while (angle / NINETY_DEGREES != counter) {
-                if (orientation.equals(GridPoint2D.right)) {
-                    orientation = GridPoint2D.of(0, -dir);
-                } else if (orientation.equals(GridPoint2D.up)) {
-                    orientation = GridPoint2D.of(dir, 0);
-                } else if (orientation.equals(GridPoint2D.left)) {
-                    orientation = GridPoint2D.of(0, dir);
-                } else if (orientation.equals(GridPoint2D.down)) {
-                    orientation = GridPoint2D.of(-dir, 0);
-                } else {
-                    throw new IllegalStateException();
-                }
+                orientation = getGridPoint2D(orientation, dir);
                 counter++;
             }
         }
         return orientation;
+    }
+
+    private static GridPoint2D getGridPoint2D(GridPoint2D orientation, int dir) {
+        if (GridPoint2D.right.equals(orientation)) {
+            return GridPoint2D.of(0, -dir);
+        } else if (GridPoint2D.up.equals(orientation)) {
+            return GridPoint2D.of(dir, 0);
+        } else if (GridPoint2D.left.equals(orientation)) {
+            return GridPoint2D.of(0, dir);
+        } else if (GridPoint2D.down.equals(orientation)) {
+            return GridPoint2D.of(-dir, 0);
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     @Override

@@ -6,25 +6,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>hzt-utils</artifactId>
         <groupId>org.hzt.utils</groupId>
-        <version>0.7.5.17</version>
+        <artifactId>hzt-utils</artifactId>
+        <version>0.7.5.21</version>
     </parent>
 
-    <artifactId>graph-utils</artifactId>
-
-    <properties>
-        <core.version>0.7.5.17</core.version>
-    </properties>
+    <artifactId>core</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
+            <groupId>org.hzt.utils</groupId>
+            <artifactId>test-utils</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hzt.utils</groupId>
-            <artifactId>core</artifactId>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
         </dependency>
     </dependencies>
 

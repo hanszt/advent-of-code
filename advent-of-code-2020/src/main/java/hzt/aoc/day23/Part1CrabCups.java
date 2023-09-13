@@ -1,7 +1,6 @@
 package hzt.aoc.day23;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.hzt.utils.collections.primitives.IntList;
 
 public class Part1CrabCups extends Day23Challenge {
 
@@ -15,25 +14,25 @@ public class Part1CrabCups extends Day23Challenge {
     }
 
     @Override
-    protected long calculateAnswer(final List<Integer> cups) {
-        final int lowestCupLabel = cups.stream().reduce(Integer::min).orElseThrow();
-        final int highestCupLabel = cups.stream().reduce(Integer::max).orElseThrow();
-        final var mutableCups = new ArrayList<>(cups);
+    protected long calculateAnswer(final IntList cups) {
+        final int lowestCupLabel = cups.min();
+        final int highestCupLabel = cups.max();
+        final var mutableCups = cups.toMutableList();
         int indexCurrent = 0;
         for (int i = 0; i < NR_OF_MOVES; i++) {
             final int currentCupLabel = mutableCups.get(indexCurrent);
-            final List<Integer> threePickedUpCups = listPickedUpCups(indexCurrent, mutableCups);
+            final var threePickedUpCups = listPickedUpCups(indexCurrent, mutableCups);
             mutableCups.removeAll(threePickedUpCups);
             final int targetCupLabel = determineTargetCupLabel(currentCupLabel, lowestCupLabel, highestCupLabel, mutableCups);
             final int targetIndex = getIndexByLabel(targetCupLabel, mutableCups);
             mutableCups.addAll(targetIndex + 1, threePickedUpCups);
             final var newIndex = getIndexByLabel(currentCupLabel, mutableCups);
-            indexCurrent = ((newIndex + 1) < ((List<Integer>) mutableCups).size()) ? (newIndex + 1) : 0;
+            indexCurrent = ((newIndex + 1) < mutableCups.size()) ? (newIndex + 1) : 0;
         }
         return arrangeInOrder(mutableCups);
     }
 
-    private long arrangeInOrder(final List<Integer> cups) {
+    private long arrangeInOrder(final IntList cups) {
         final int indexCupOne = getIndexByLabel(CUP_ONE_LABEL, cups);
         final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < cups.size() - 1; i++) {

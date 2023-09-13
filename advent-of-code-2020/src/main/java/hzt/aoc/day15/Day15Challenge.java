@@ -2,8 +2,8 @@ package hzt.aoc.day15;
 
 import hzt.aoc.AocLogger;
 import hzt.aoc.Challenge;
+import org.hzt.utils.collections.primitives.IntMutableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Day15Challenge extends Challenge {
@@ -16,8 +16,8 @@ public abstract class Day15Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Integer> numbers = commaSeparatedStringToIntegerList(inputList.get(0));
-        return String.valueOf(getNthNumberSpoken(new ArrayList<>(numbers)));
+        final var numbers = commaSeparatedStringToIntegerList(inputList.getFirst());
+        return String.valueOf(getNthNumberSpoken(IntMutableList.of(numbers)));
     }
 
     long logTime(final int counter, final int step, final int offset, final int lastNumberSpoken, long start) {
@@ -29,6 +29,6 @@ public abstract class Day15Challenge extends Challenge {
         return start;
     }
 
-    protected abstract int getNthNumberSpoken(List<Integer> numbers);
+    protected abstract int getNthNumberSpoken(IntMutableList numbers);
 
 }

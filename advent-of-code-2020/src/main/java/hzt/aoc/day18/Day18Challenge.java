@@ -6,7 +6,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day18Challenge extends Challenge {
 
@@ -27,35 +26,34 @@ public abstract class Day18Challenge extends Challenge {
 
     List<String> parseEquation(final String equationAString) {
         return equationAString.replaceAll("\\s", "")
-                .chars().mapToObj(c -> (char) c)
+                .chars()
+                .mapToObj(c -> (char) c)
                 .map(String::valueOf)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    private long solveEquation(List<String> elementList) {
-        String result;
-        while (elementList.contains("(")) {
+    private long solveEquation(final List<String> elementList) {
+        var results = elementList;
+        while (results.contains("(")) {
             int indexOpenBracket = 0;
-            final List<String> newList = new ArrayList<>(elementList);
-            for (int i = 0; i < elementList.size(); i++) {
-                if (elementList.get(i).equals("(")) {
+            final List<String> newList = new ArrayList<>(results);
+            for (int i = 0; i < results.size(); i++) {
+                if (results.get(i).equals("(")) {
                     indexOpenBracket = i;
-                } else if (elementList.get(i).equals(")")) {
-                    final List<String> subList = elementList.subList(indexOpenBracket + 1, i);
+                } else if (results.get(i).equals(")")) {
+                    final List<String> subList = results.subList(indexOpenBracket + 1, i);
                     LOGGER.trace(() -> subList);
-                    result = evaluateBetweenParentheses(subList);
+                    final var result = evaluateBetweenParentheses(subList);
                     replaceEquationBySubResult(newList, result, indexOpenBracket, subList.size() + 1);
                     newList.remove(indexOpenBracket + 1);
-                    var fResult = result;
-                    LOGGER.trace(() -> fResult);
+                    LOGGER.trace(() -> result);
                     break;
                 }
             }
-            elementList = newList;
+            results = newList;
         }
-        result = evaluateBetweenParentheses(elementList);
-        var fResult = result;
-        LOGGER.trace(() -> fResult);
+        String result = evaluateBetweenParentheses(results);
+        LOGGER.trace(() -> result);
         return Long.parseLong(result);
     }
 
@@ -87,13 +85,11 @@ public abstract class Day18Challenge extends Challenge {
     }
 
     long evaluate(final long first, final String operator, final long second) {
-        if (operator.equals("+")) {
-            return first + second;
-        } else if (operator.equals("*")) {
-            return first * second;
-        } else {
-            throw new UnsupportedOperationException("Operator " + operator + " is not supported...");
-        }
+        return switch (operator) {
+            case "+" -> first + second;
+            case "*" -> first * second;
+            default -> throw new UnsupportedOperationException("Operator " + operator + " is not supported...");
+        };
     }
 
     abstract String getMessage(long value);

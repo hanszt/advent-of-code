@@ -19,6 +19,6 @@ class Day12ChallengeTest {
         final var challenge = new Part2RainRisk();
         challenge.solveChallenge();
         final var answer = challenge.getAnswer();
-        assertEquals( 71586, Integer.parseInt(answer));
+        assertEquals( 71_586, Integer.parseInt(answer));
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.SequencedCollection;
 import java.util.Set;
 
 // Credits to Johan de Jong
@@ -17,12 +18,12 @@ public class Part2CrabCombat extends Day22Challenge {
     }
 
     @Override
-    protected long play(final Deque<Integer> player1Cards, final Deque<Integer> player2Cards) {
+    protected long play(final SequencedCollection<Integer> player1Cards, final SequencedCollection<Integer> player2Cards) {
         final var player1Wins = playRecursiveGame(player1Cards, player2Cards);
         return calculateScoreWinningPlayer(player1Wins ? player1Cards : player2Cards);
     }
 
-    private static boolean playRecursiveGame(final Deque<Integer> player1Cards, final Deque<Integer> player2Cards) {
+    private static boolean playRecursiveGame(final SequencedCollection<Integer> player1Cards, final SequencedCollection<Integer> player2Cards) {
         final Set<String> configsPlayer1 = new HashSet<>();
         final Set<String> configsPlayer2 = new HashSet<>();
 
@@ -35,8 +36,8 @@ public class Part2CrabCombat extends Day22Challenge {
             }
             configsPlayer1.add(curConfigPlayer1);
             configsPlayer2.add(curConfigPlayer2);
-            final int player1TopCard = player1Cards.pop();
-            final int player2TopCard = player2Cards.pop();
+            final int player1TopCard = player1Cards.removeFirst();
+            final int player2TopCard = player2Cards.removeFirst();
 
             final boolean player1Wins;
             if (player1Cards.size() >= player1TopCard && player2Cards.size() >= player2TopCard) {
@@ -57,7 +58,7 @@ public class Part2CrabCombat extends Day22Challenge {
         return player2Cards.isEmpty();
     }
 
-    private static String configurationAsString(final Deque<Integer> playerCards) {
+    private static String configurationAsString(final SequencedCollection<Integer> playerCards) {
         final StringBuilder sb = new StringBuilder();
         playerCards.forEach(sb::append);
         return sb.toString();

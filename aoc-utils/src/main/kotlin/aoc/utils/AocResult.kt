@@ -9,7 +9,7 @@ data class AocResult(val name: String, val result: Result<String>, val solveTime
 
     private val color = dayNr.toColor(ansiColors)
 
-    private fun Int.toColor(colors: List<String>) = if (result.isSuccess) colors[this % colors.size] else RED
+    private fun Int.toColor(colors: List<Color>) = if (result.isSuccess) colors[this % colors.size] else RED
 
     override fun toString(): String = "%-40s Result: %-50s Solve time: %-7s"
         .format(name, result.getOrElse { "Failure: ${it.message}" }, solveTimeNanos.nanoTimeToFormattedDuration())

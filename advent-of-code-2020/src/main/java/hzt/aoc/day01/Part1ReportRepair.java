@@ -2,7 +2,7 @@ package hzt.aoc.day01;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
+import java.util.NavigableSet;
 
 public class Part1ReportRepair extends Day01Challenge {
 
@@ -12,12 +12,12 @@ public class Part1ReportRepair extends Day01Challenge {
     }
 
     @Override
-    protected List<Integer[]> findIntegersListThatSumTo2020(final SortedSet<Integer> integers) {
-        final List<Integer[]> entriesList = new ArrayList<>();
-        for (final Integer integer : integers) {
+    protected List<int[]> findIntegersListThatSumTo2020(final NavigableSet<Integer> integers) {
+        final List<int[]> entriesList = new ArrayList<>();
+        for (final var integer : integers) {
             final int difference = SUM_TO_BE_FOUND - integer;
             if (integers.contains(difference)) {
-                final Integer[] entries = {integer, difference};
+                final int[] entries = {integer, difference};
                 entriesList.add(entries);
                 break;
             }

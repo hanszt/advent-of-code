@@ -1,31 +1,23 @@
 package hzt.aoc.day21;
 
-import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Stream;
 
-public class Food {
+public record Food(Set<String> ingredientSet, Set<String> allergenSet) {
 
-    private final Set<String> ingredients;
-    private final Set<String> allergens;
-
-    public Food(final Set<String> ingredients, final Set<String> allergens) {
-        this.ingredients = ingredients;
-        this.allergens = allergens;
+    public Set<String> ingredientSet() {
+        return Set.copyOf(ingredientSet);
     }
 
-    public Set<String> getIngredients() {
-        return Collections.unmodifiableSet(ingredients);
+    public Stream<String> ingredients() {
+        return ingredientSet.stream();
     }
 
-    public Set<String> getAllergens() {
-        return Collections.unmodifiableSet(allergens);
+    public Set<String> allergenSet() {
+        return Set.copyOf(allergenSet);
     }
 
-    @Override
-    public String toString() {
-        return "Food{" +
-                "ingredients=" + ingredients +
-                ", allergens=" + allergens +
-                '}';
+    public Stream<String> allergens() {
+        return allergenSet.stream();
     }
 }

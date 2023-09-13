@@ -49,7 +49,8 @@ public class Day03RucksackReorganisation implements ChallengeDay {
                 .map(StringX::of)
                 .map(StringX::toMutableSet)
                 .chunked(3)
-                .map(chunk -> chunk.reduce(MutableSetX::intersect).orElseThrow().single())
+                .mapIfPresent(chunk -> chunk.reduce(MutableSetX::intersect))
+                .map(MutableSetX::single)
                 .mapToInt(Day03RucksackReorganisation::toPriority)
                 .sum();
     }

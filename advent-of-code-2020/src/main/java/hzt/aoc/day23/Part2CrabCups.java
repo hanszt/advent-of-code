@@ -1,7 +1,8 @@
 package hzt.aoc.day23;
 
+import org.hzt.utils.collections.primitives.IntList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // Credits to TurkeyDev
@@ -21,7 +22,7 @@ public class Part2CrabCups extends Day23Challenge {
     }
 
     @Override
-    protected long calculateAnswer(final List<Integer> cupLabels) {
+    protected long calculateAnswer(final IntList cupLabels) {
         final Map<Integer, LinkedNode<Integer>> labelToNodeMap = new HashMap<>();
         final LinkedNode<Integer> first = firstNode(cupLabels);
         LinkedNode<Integer> current = first;
@@ -44,7 +45,7 @@ public class Part2CrabCups extends Day23Challenge {
         return run(first, target, labelToNodeMap);
     }
 
-    private static LinkedNode<Integer> firstNode(final List<Integer> cupLabels) {
+    private static LinkedNode<Integer> firstNode(final IntList cupLabels) {
         final int label = cupLabels.get(0);
         return new LinkedNode<>(label);
     }

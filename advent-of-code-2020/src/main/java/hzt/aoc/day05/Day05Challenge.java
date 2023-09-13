@@ -2,9 +2,9 @@ package hzt.aoc.day05;
 
 import hzt.aoc.Challenge;
 import hzt.aoc.day05.model.Seat;
+import org.hzt.utils.collections.primitives.IntList;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day05Challenge extends Challenge {
 
@@ -22,7 +22,7 @@ public abstract class Day05Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Seat> seats = inputList.stream().map(this::extractSeat).collect(Collectors.toList());
+        final List<Seat> seats = inputList.stream().map(this::extractSeat).toList();
         final int result = calculateResult(seats);
         return String.valueOf(result);
     }
@@ -60,8 +60,8 @@ public abstract class Day05Challenge extends Challenge {
         return upper - ((upper - lower) / 2);
     }
 
-    int findHighestSeatID(final List<Integer> boardingPassIds) {
-        return boardingPassIds.stream().reduce(Integer::max).orElse(0);
+    int findHighestSeatID(final IntList boardingPassIds) {
+        return boardingPassIds.max();
     }
 
 }

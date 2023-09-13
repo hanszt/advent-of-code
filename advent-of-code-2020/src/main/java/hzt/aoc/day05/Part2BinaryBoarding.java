@@ -1,11 +1,10 @@
 package hzt.aoc.day05;
 
 import hzt.aoc.day05.model.Seat;
+import org.hzt.utils.collections.primitives.IntMutableSet;
+import org.hzt.utils.sequences.Sequence;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Part2BinaryBoarding extends Day05Challenge {
 
@@ -17,13 +16,13 @@ public class Part2BinaryBoarding extends Day05Challenge {
     @Override
     protected int calculateResult(final List<Seat> seats) {
         // flight completely full
-        final Set<Integer> possibleSeatIds = new HashSet<>();
-        final List<Integer> seatIds = seats.stream()
-                .map(seat -> seat.getSeatID(NUMBER_OF_COLUMNS))
-                .collect(Collectors.toList());
+        final IntMutableSet possibleSeatIds = IntMutableSet.empty();
+        final var seatIds = Sequence.of(seats)
+                .mapToInt(seat -> seat.getSeatID(NUMBER_OF_COLUMNS))
+                .toList();
 
         // Every seat id must be unique
-        for (final Integer seatId : seatIds) {
+        for (final var seatId : seatIds) {
             // Seats with id one less and one more than myId are in my list
             if (seatIds.contains(seatId - 2)) {
                 final int possibleSeatId = seatId + 1;

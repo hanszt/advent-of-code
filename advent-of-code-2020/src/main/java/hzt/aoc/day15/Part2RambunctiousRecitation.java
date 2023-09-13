@@ -1,7 +1,8 @@
 package hzt.aoc.day15;
 
+import org.hzt.utils.collections.primitives.IntMutableList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 // Credits to TurkeyDev
@@ -16,7 +17,7 @@ public class Part2RambunctiousRecitation extends Day15Challenge {
     }
 
     @Override
-    protected int getNthNumberSpoken(final List<Integer> numbers) {
+    protected int getNthNumberSpoken(final IntMutableList numbers) {
         long start = System.nanoTime();
         int index = 0;
         int last = -1;

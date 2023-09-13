@@ -1,8 +1,9 @@
 package hzt.aoc.day23;
 
 import hzt.aoc.Challenge;
+import org.hzt.utils.collections.primitives.IntList;
+import org.hzt.utils.sequences.primitives.IntSequence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Day23Challenge extends Challenge {
@@ -14,19 +15,19 @@ public abstract class Day23Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final var integers = inputList.get(0).chars()
-                .mapToObj(Character::getNumericValue)
-                .toList();
+        final var integers = IntList.of(inputList.getFirst().chars()
+                .map(Character::getNumericValue)
+                .toArray());
 
         return getMessage(calculateAnswer(integers));
     }
 
-    protected abstract long calculateAnswer(List<Integer> integers);
+    protected abstract long calculateAnswer(IntList integers);
 
     int determineTargetCupLabel(final int currentCupLabel,
                                 final int lowestCupLabel,
                                 final int highestCupLabel,
-                                final List<Integer> cups) {
+                                final IntList cups) {
         int targetCupLabel = currentCupLabel - 1;
         while (!cups.contains(targetCupLabel)) {
             targetCupLabel--;
@@ -37,18 +38,14 @@ public abstract class Day23Challenge extends Challenge {
         return targetCupLabel;
     }
 
-    List<Integer> listPickedUpCups(final int indexCurrent,
-                                   final List<Integer> cups) {
-        final List<Integer> pickedUpCups = new ArrayList<>();
-        int indexNext = indexCurrent + 1;
-        while (indexNext <= indexCurrent + CUPS_PICKED_UP) {
-            pickedUpCups.add(cups.get(indexNext % cups.size()));
-            indexNext++;
-        }
-        return pickedUpCups;
+    IntList listPickedUpCups(final int indexCurrent, final IntList cups) {
+        return IntSequence.iterate(indexCurrent + 1, i -> i + 1)
+                .takeWhile(index -> index <= indexCurrent + CUPS_PICKED_UP)
+                .map(index -> cups.get(index % cups.size()))
+                .toList();
     }
 
-    int getIndexByLabel(final int label, final List<Integer> cups) {
+    int getIndexByLabel(final int label, final IntList cups) {
         int index = 0;
         for (int i = 0; i < cups.size(); i++) {
             if (cups.get(i) == label) {

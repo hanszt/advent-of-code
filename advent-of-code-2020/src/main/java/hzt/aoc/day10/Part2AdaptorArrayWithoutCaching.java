@@ -1,7 +1,7 @@
 package hzt.aoc.day10;
 
 import java.math.BigInteger;
-import java.util.List;
+import java.util.Arrays;
 
 public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
 
@@ -13,19 +13,19 @@ public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
     }
 
     @Override
-    protected Number solveByList(final List<Integer> sortedList) {
-        return numberOfWaysToCompleteAdaptorChain(sortedList);
+    protected Number solveByArray(final int[] array) {
+        return numberOfWaysToCompleteAdaptorChain(array);
     }
 
-    private static BigInteger numberOfWaysToCompleteAdaptorChain(final List<Integer> sortedList) {
-        if (sortedList.size() == 1) {
+    private static BigInteger numberOfWaysToCompleteAdaptorChain(final int[] sortedArray) {
+        if (sortedArray.length == 1) {
             return BigInteger.ONE;
         }
         BigInteger arrangements = BigInteger.ZERO;
         int index = 1;
-        final Integer current = sortedList.get(0); // first index in sorted list
-        while (sortedList.size() > index && sortedList.get(index) - current <= MAX_STEP_APART) {
-            final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(sortedList.subList(index, sortedList.size()));
+        final var current = sortedArray[0]; // first index in sorted list
+        while (sortedArray.length > index && sortedArray[index] - current <= MAX_STEP_APART) {
+            final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(Arrays.copyOfRange(sortedArray, index, sortedArray.length));
             arrangements = arrangements.add(subArrangements);
             index++;
         }

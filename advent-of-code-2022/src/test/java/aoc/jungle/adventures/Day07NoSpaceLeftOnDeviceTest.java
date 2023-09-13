@@ -11,7 +11,7 @@ class Day07NoSpaceLeftOnDeviceTest {
     void testPart1() {
         final var day07NoSpaceLeftOnDevice = new Day07NoSpaceLeftOnDevice("input/day07.txt");
         final var result = day07NoSpaceLeftOnDevice.part1();
-        println(day07NoSpaceLeftOnDevice.root.toBFSTreeString(2));
+        println(day07NoSpaceLeftOnDevice.root.toTreeString(2));
         assertEquals(1_350_966, result);
     }
 

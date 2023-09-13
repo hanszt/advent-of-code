@@ -18,7 +18,7 @@ public abstract class Day19Challenge extends Challenge {
     }
 
     final Map<Integer, String> rulesAsStringMap = new HashMap<>();
-    final Map<Integer, List<List<Integer>>> rulesToSubRules = new HashMap<>();
+    final Map<Integer, int[][]> rulesToSubRules = new HashMap<>();
     final Map<Integer, Character> endChars = new HashMap<>();
     final List<String> messages = new ArrayList<>();
 
@@ -47,27 +47,33 @@ public abstract class Day19Challenge extends Challenge {
             endChars.put(ruleNr, subRulesAsString.replace("\"", "").charAt(0));
         } else {
             final String[] subRulesAsArray = subRulesAsString.split("\\|");
-            final List<List<Integer>> subRules = Arrays.stream(subRulesAsArray)
+            final var subRules = Arrays.stream(subRulesAsArray)
                     .map(this::stringToRuleList)
-                    .collect(Collectors.toList());
+                    .toArray(int[][]::new);
             rulesToSubRules.put(ruleNr, subRules);
         }
     }
 
-    String parsedInputAsString(final Map<Integer, List<List<Integer>>> rulesToSubRules, final List<String> messages) {
+    String parsedInputAsString(final Map<Integer, int[][]> rulesToSubRules, final List<String> messages) {
         final StringBuilder sb = new StringBuilder();
         sb.append(String.format("%nTargetRules:%n"));
         endChars.forEach((k, v) -> sb.append(k).append("->").append(v).append(String.format("%n")));
         sb.append(String.format("%nRules:%n"));
-        rulesToSubRules.forEach((k, v) -> sb.append(k).append("->").append(v).append(String.format("%n")));
+        rulesToSubRules.forEach((k, v) -> sb.append(k).append("->").append(gridToString(v)).append(String.format("%n")));
         sb.append(String.format("%nMessages:%n"));
         messages.forEach(str -> sb.append(str).append(String.format("%n")));
         return sb.toString();
     }
 
+    private static String gridToString(int[][] grid) {
+        return Arrays.stream(grid)
+                .map(Arrays::toString)
+                .collect(Collectors.joining());
+    }
 
-    private List<Integer> stringToRuleList(final String s) {
-        return Arrays.stream(s.strip().split("\\s")).map(Integer::parseInt).collect(Collectors.toList());
+
+    private int[] stringToRuleList(final String s) {
+        return Arrays.stream(s.strip().split("\\s")).mapToInt(Integer::parseInt).toArray();
     }
 
     protected abstract long countMatches();
