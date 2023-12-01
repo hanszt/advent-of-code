@@ -8,59 +8,23 @@ class Day01(
     private val lines: List<String> = fileName?.let { File(it).readLines() } ?: emptyList()
 ) : ChallengeDay {
 
-    override fun part1(): Int = lines.sumOf { "${it.first(Char::isDigit)}${it.last(Char::isDigit)}".toInt() }
+    override fun part1() = lines.sumOf { "${it.first(Char::isDigit)}${it.last(Char::isDigit)}".toInt() }
+    override fun part2() = lines.sumOf(::part2IntFromFirstAndLastDigit)
 
-    override fun part2(): Int = lines.sumOf(::toFirstAndLastDigit)
+    private val digitNames = listOf("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
-    private fun toFirstAndLastDigit(s: String): Int {
-        data class FirstAndLast(
-            val first: IndexedValue<Int> = IndexedValue(Int.MAX_VALUE, 0),
-            val last: IndexedValue<Int> = IndexedValue(Int.MIN_VALUE, 0)
-        )
-
-        val (firstInText, lastInText) = s.findAllOccurrencesOf(namesToDigits.keys)
-            .mapNotNull { namesToDigits[it]?.let { digit -> it to digit } }
-            .fold(FirstAndLast()) { result, (name, digit) ->
-                val first = IndexedValue(s.indexOf(name), digit)
-                val last = IndexedValue(s.lastIndexOf(name), digit)
-                FirstAndLast(
-                    first = if (result.first.index < first.index) result.first else first,
-                    last = if (result.last.index > last.index) result.last else last
-                )
+    private fun part2IntFromFirstAndLastDigit(line: String): Int {
+        val digits = mutableListOf<Int>()
+        for ((i, c) in line.withIndex()) {
+            if (c.isDigit()) {
+                digits.add(c.digitToInt())
             }
-
-        val firstDigit = s.withIndex().filter { it.value.isDigit() }.minByOrNull { it.index } ?: IndexedValue(Int.MAX_VALUE, '0')
-        val lastDigit = s.withIndex().filter { it.value.isDigit() }.maxByOrNull { it.index } ?: IndexedValue(Int.MIN_VALUE, '0')
-
-        val first = if (firstInText.index < firstDigit.index) firstInText.value else firstDigit.value.digitToInt()
-        val last = if (lastInText.index > lastDigit.index) lastInText.value else lastDigit.value.digitToInt()
-        return "$first$last".toInt()
-    }
-
-    private val namesToDigits = mapOf(
-        "one" to 1,
-        "two" to 2,
-        "three" to 3,
-        "four" to 4,
-        "five" to 5,
-        "six" to 6,
-        "seven" to 7,
-        "eight" to 8,
-        "nine" to 9,
-    )
-
-    private fun String.findAllOccurrencesOf(strings: Collection<String>): Sequence<String> = sequence {
-        for (i in indices) {
-            var s = this@findAllOccurrencesOf[i].toString()
-            if (s in strings) {
-                yield(s)
-            }
-            for (j in i + 1..<length) {
-                s += this@findAllOccurrencesOf[j]
-                if (s in strings) {
-                    yield(s)
+            for ((j, name) in digitNames.withIndex()) {
+                if (line.substring(i).startsWith(name)) {
+                    digits.add(j + 1)
                 }
             }
         }
+        return "${digits.first()}${digits.last()}".toInt()
     }
 }

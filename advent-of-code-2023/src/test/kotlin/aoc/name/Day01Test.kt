@@ -13,17 +13,17 @@ class Day01Test {
 
     @Test
     fun `test part 2 small`() {
-        Day01(
-            lines = listOf(
-                "two1nine",
-                "eightwothree",
-                "abcone2threexyz",
-                "xtwone3four",
-                "4nineeightseven2",
-                "zoneight234",
-                "7pqrstsixteen"
-            )
-        ).part2() shouldBe 281
+        val lines = listOf(
+            "two1nine",
+            "eightwothree",
+            "abcone2threexyz",
+            "xtwone3four",
+            "4nineeightseven2",
+            "zoneight234",
+            "7pqrstsixteen"
+        )
+
+        Day01(lines = lines).part2() shouldBe 281
     }
 
     @Test
@@ -33,6 +33,6 @@ class Day01Test {
 
     @Test
     fun `test part 2`() {
-        Day01("input/day01.txt").part2() shouldBe 54925
+        Day01("input/day01.txt").part2() shouldBe 54_925
     }
 }
