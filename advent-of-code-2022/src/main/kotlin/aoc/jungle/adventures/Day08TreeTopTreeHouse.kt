@@ -1,8 +1,12 @@
 package aoc.jungle.adventures
 
-import aoc.utils.*
+import aoc.utils.ChallengeDay
+import aoc.utils.gridCount
+import aoc.utils.mapByPoint
+import aoc.utils.max
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.toIntGrid
 import java.io.File
 
 /**
@@ -10,7 +14,7 @@ import java.io.File
  */
 class Day08TreeTopTreeHouse(fileName: String) : ChallengeDay {
 
-    private val treeGrid: Array<IntArray> = File(fileName).readLines().toIntGrid(Char::digitToInt)
+    private val treeGrid = File(fileName).readLines().toIntGrid(Char::digitToInt)
 
     override fun part1(): Int = treeGrid.gridCount { x, y -> GridPoint2D.orthoDirs.any { visibleFromOutSide(x by y, it) } }
 

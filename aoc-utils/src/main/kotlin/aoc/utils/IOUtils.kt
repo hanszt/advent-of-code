@@ -1,3 +1,4 @@
 package aoc.utils
 
-fun Any.readTextFromResource(path: String) = javaClass.getResource(path)?.readText() ?: "resource not found"
+fun Any.readTextFromResource(path: String, orElse: String = "resource not found") =
+    javaClass.getResource(path)?.readText() ?: orElse

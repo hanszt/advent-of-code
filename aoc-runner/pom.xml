@@ -34,5 +34,10 @@
             <artifactId>advent-of-code-2022</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hzt.quizes</groupId>
+            <artifactId>advent-of-code-2023</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

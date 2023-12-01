@@ -22,7 +22,7 @@ class Day10CathodeRayTube(fileName: String) : ChallengeDay {
         val crt = Array(6) { CharArray(40) }
         var cycle = 0
         for (y in crt.indices) {
-            for (x in 0 until crt[0].size) {
+            for (x in 0..<crt[0].size) {
                 val xR = xValues[x + crt[0].size * y]
                 crt[y][x] = if (x in xR - 1..xR + 1) '█' else '.'
                 cycle++

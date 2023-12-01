@@ -1,8 +1,9 @@
 package org.hzt.quizes;
 
 
-import aoc.seastories.Launcher2021Kt;
 import aoc.jungle.adventures.Launcher2022Kt;
+import aoc.name.Launcher2023Kt;
+import aoc.seastories.Launcher2021Kt;
 import aoc.spacesaga.Launcher2019Kt;
 import hzt.Launcher2020;
 
@@ -12,5 +13,6 @@ public class AocChallengesLauncher {
         Launcher2020.runOnce();
         Launcher2021Kt.main();
         Launcher2022Kt.main();
+        Launcher2023Kt.main();
     }
 }
