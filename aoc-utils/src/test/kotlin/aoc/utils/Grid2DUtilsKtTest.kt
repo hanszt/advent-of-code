@@ -2,11 +2,12 @@ package aoc.utils
 
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.gridPoint2D
+import io.kotest.matchers.shouldBe
+import java.time.Month
+import java.time.Year
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.time.Month
-import java.time.Year
 
 internal class Grid2DUtilsKtTest {
 
@@ -51,9 +52,9 @@ internal class Grid2DUtilsKtTest {
             listOf(1 by 1),
             listOf(2 by 2)
         )
-        val rotatedClockWise = input.rotate()
+        val rotatedClockWise = input.rotated()
         rotatedClockWise.forEach(::println)
-        assertEquals(expected, rotatedClockWise)
+        rotatedClockWise shouldBe expected
     }
 
     @Test

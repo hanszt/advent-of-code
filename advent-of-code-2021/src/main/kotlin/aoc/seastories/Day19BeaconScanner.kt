@@ -1,10 +1,14 @@
 package aoc.seastories
 
-import aoc.utils.*
+import aoc.utils.Transform3D
 import aoc.utils.model.GridPoint3D
 import aoc.utils.model.gridPoint3D
+import aoc.utils.orientations
+import aoc.utils.rotated
+import aoc.utils.self
+import aoc.utils.splitByBlankLine
+import aoc.utils.transform
 import java.io.File
-import kotlin.collections.max
 
 typealias ScannerData = List<Set<GridPoint3D>>
 
@@ -29,7 +33,7 @@ internal object Day19BeaconScanner : ChallengeDay {
     private fun ScannerData.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
         val detectedPoints = this[scannerIndex]
         for (orientation in orientations.indices) {
-            val rotatedPointsOther = this[otherScannerIndex].map { it.rotate(orientation) }
+            val rotatedPointsOther = this[otherScannerIndex].map { it.rotated(orientation) }
             val translation = detectedPoints.asSequence()
                 .flatMap { detected -> rotatedPointsOther.map { detected - it } }
                 .groupingBy(::self)

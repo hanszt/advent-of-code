@@ -1,6 +1,5 @@
-package aoc.name
+package aoc.snowrescuemission
 
-import aoc.Day01
 import aoc.utils.AocResult
 import aoc.utils.BRIGHT_BLUE
 import aoc.utils.ChallengeDay

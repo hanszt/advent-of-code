@@ -4,7 +4,7 @@ module advent.of.codetwenty.twenty.three {
     requires hzt.utils.core;
     requires kotlin.stdlib;
 
-    opens aoc.name;
+    opens aoc.snowrescuemission;
 
-    exports aoc.name;
+    exports aoc.snowrescuemission;
 }

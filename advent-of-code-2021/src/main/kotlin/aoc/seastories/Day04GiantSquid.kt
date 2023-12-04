@@ -8,6 +8,9 @@ import java.io.File
 
 internal object Day04GiantSquid : ChallengeDay {
 
+    override fun part1() = part1(ChallengeDay.inputDir + "/day4.txt")
+    override fun part2() = part2(ChallengeDay.inputDir + "/day4.txt")
+
     fun part1(path: String): Int {
         val (boards, allNrsToDrawList) = File(path).toBoardsAndNrsToDrawList()
         val drawnNrs = allNrsToDrawList.slice(0..3).toMutableList()
@@ -43,12 +46,9 @@ internal object Day04GiantSquid : ChallengeDay {
     private fun File.toBoardsAndNrsToDrawList(): Pair<List<Array<IntArray>>, List<Int>> =
         readText().splitByBlankLine()
             .run {
-                slice(1 until size)
+                slice(1..<size)
                     .map { it.lines().toIntGrid(oneOrMoreWhiteSpaces) } to nrsToDrawList()
             }
 
     private fun List<String>.nrsToDrawList() = first().split(",").map(String::toInt)
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day4.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day4.txt")
 }

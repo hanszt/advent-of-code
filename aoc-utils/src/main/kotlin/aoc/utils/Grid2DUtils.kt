@@ -17,6 +17,9 @@ inline fun <reified T> List<String>.toGridOf(regex: Regex, mapper: (String) -> T
 inline fun <reified T> List<String>.toGridOf(mapper: (Char) -> T): Array<Array<T>> =
     map { it.map(mapper).toTypedArray() }.toTypedArray()
 
+/**
+ * Grid converters
+ */
 inline fun <T, reified R> Array<Array<T>>.toGridOf(transform: (T) -> R): Array<Array<R>> =
     map { it.map(transform).toTypedArray() }.toTypedArray()
 
@@ -41,7 +44,8 @@ inline fun <T> Array<Array<T>>.anyInGrid(predicate: (T) -> Boolean) = any { it.a
 
 inline fun Array<IntArray>.allInGrid(predicate: (Int) -> Boolean) = all { it.all(predicate) }
 
-inline fun Array<IntArray>.gridCount(transform: (Int, Int) -> Boolean): Int = indices.sumOf { y -> this[y].indices.count { x -> transform(x, y) } }
+inline fun Array<IntArray>.gridCount(transform: (Int, Int) -> Boolean): Int =
+    indices.sumOf { y -> this[y].indices.count { x -> transform(x, y) } }
 
 inline fun <T> Array<Array<T>>.forEachInGrid(action: (T) -> Unit) = forEach { it.forEach(action) }
 
@@ -60,10 +64,12 @@ inline fun Array<IntArray>.forEachPointAndValue(action: (Int, Int, Int) -> Unit)
 /**
  * Rotation and mirroring
  */
-fun <T> List<List<T>>.rotate(): List<List<T>> =
+@JvmName("gridRotated")
+fun <T> List<List<T>>.rotated(): List<List<T>> =
     first().indices.map { col -> indices.reversed().map { row -> this[row][col] } }
 
-fun <T> List<List<T>>.rotateCc(): List<List<T>> =
+@JvmName("gridRotatedCc")
+fun <T> List<List<T>>.rotatedCc(): List<List<T>> =
     first().indices.reversed().map { col -> indices.map { row -> this[row][col] } }
 
 fun List<String>.rotated(): List<String> =

@@ -1,6 +1,5 @@
-package aoc.name
+package aoc.snowrescuemission
 
-import aoc.Day01
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

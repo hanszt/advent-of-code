@@ -1,4 +1,4 @@
-package aoc.name;
+package aoc.snowrescuemission;
 
 import org.hzt.utils.collections.ListX;
 import org.junit.jupiter.api.Test;

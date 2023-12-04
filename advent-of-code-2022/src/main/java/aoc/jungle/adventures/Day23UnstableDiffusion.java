@@ -10,11 +10,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
-import static aoc.utils.model.GridPoint2D.*;
+import static aoc.utils.model.GridPoint2D.east;
 import static aoc.utils.model.GridPoint2D.kingDirs;
+import static aoc.utils.model.GridPoint2D.north;
+import static aoc.utils.model.GridPoint2D.northeast;
+import static aoc.utils.model.GridPoint2D.northwest;
+import static aoc.utils.model.GridPoint2D.south;
+import static aoc.utils.model.GridPoint2D.southeast;
+import static aoc.utils.model.GridPoint2D.southwest;
+import static aoc.utils.model.GridPoint2D.west;
 import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
 
 /**
@@ -24,7 +31,7 @@ import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
  */
 public class Day23UnstableDiffusion implements ChallengeDay {
 
-    private static final GridPoint2D[][] MOVES = {
+    private static final GridPoint2D[][] directions = {
             {north, northeast, northwest},
             {south, southeast, southwest},
             {west, northwest, southwest},
@@ -40,76 +47,73 @@ public class Day23UnstableDiffusion implements ChallengeDay {
     @NotNull
     @Override
     public Long part1() {
-        final var elves = processInput(lines);
-        for (int round = 0; round < 10; round++) {
-            simulateRound(elves, round);
-        }
-        int minx = Integer.MAX_VALUE;
-        int maxx = Integer.MIN_VALUE;
-        int miny = Integer.MAX_VALUE;
-        int maxy = Integer.MIN_VALUE;
-        for (GridPoint2D p : elves) {
+        final var positions = toInitElfPositions(lines);
+        IntStream.range(0, 10).forEach(round -> simulateRound(positions, round));
+        var minx = Integer.MAX_VALUE;
+        var maxx = Integer.MIN_VALUE;
+        var miny = Integer.MAX_VALUE;
+        var maxy = Integer.MIN_VALUE;
+        for (final var p : positions) {
             minx = Math.min(minx, p.getX());
             maxx = Math.max(maxx, p.getX());
             miny = Math.min(miny, p.getY());
             maxy = Math.max(maxy, p.getY());
         }
-        return (maxx - minx + 1L) * (maxy - miny + 1L) - elves.size();
+        return (maxx - minx + 1L) * (maxy - miny + 1L) - positions.size();
     }
 
     @NotNull
     @Override
     public Integer part2() {
-        final var elves = processInput(lines);
-        int round = 0;
-        while (simulateRound(elves, round) > 0) {
+        final var positions = toInitElfPositions(lines);
+        var round = 0;
+        while (simulateRound(positions, round)) {
             round++;
         }
         return round + 1;
     }
 
-    private static Set<GridPoint2D> processInput(List<String> lines) {
-        Set<GridPoint2D> elves = new HashSet<>();
-        for (int row = 0; row < lines.size(); row++) {
-            String line = lines.get(row);
-            for (int col = 0; col < line.length(); col++) {
+    private static Set<GridPoint2D> toInitElfPositions(List<String> lines) {
+        final var positions = new HashSet<GridPoint2D>();
+        for (var row = 0; row < lines.size(); row++) {
+            final var line = lines.get(row);
+            for (var col = 0; col < line.length(); col++) {
                 if (line.charAt(col) == '#') {
-                    elves.add(gridPoint2D(col, row));
+                    positions.add(gridPoint2D(col, row));
                 }
             }
         }
-        return elves;
+        return positions;
     }
 
-    public int simulateRound(Set<GridPoint2D> elves, int round) {
-        Map<GridPoint2D, List<GridPoint2D[]>> moveMap = new HashMap<>();
-        for (var elf : elves) {
-            boolean free = Sequence.of(kingDirs).map(elf::plus).none(elves::contains);
+    public boolean simulateRound(final Set<GridPoint2D> positions, final int round) {
+        final var moveMap = new HashMap<GridPoint2D, List<GridPoint2D>>();
+        for (var destination : positions) {
+            var free = Sequence.of(kingDirs).map(destination::plus).none(positions::contains);
             // if free is still true, there were no elves in the 8 surrounding cells -> skip moving
             if (!free) {
-                GridPoint2D goalGridPoint2D = elf;
+                var goalGridPoint2D = destination;
                 for (int i = 0; !free && i < 4; i++) {
                     final int index = (round + i) % 4;
-                    goalGridPoint2D = elf.plus(MOVES[index][0]);
-                    GridPoint2D nb1 = elf.plus(MOVES[index][1]);
-                    GridPoint2D nb2 = elf.plus(MOVES[index][2]);
-                    free = !(elves.contains(goalGridPoint2D) || elves.contains(nb1) || elves.contains(nb2));
+                    goalGridPoint2D = destination.plus(directions[index][0]);
+                    free = !positions.contains(goalGridPoint2D) &&
+                           !positions.contains(destination.plus(directions[index][1])) &&
+                           !positions.contains(destination.plus(directions[index][2]));
                 }
                 if (free) {
-                    List<GridPoint2D[]> moveList = moveMap.computeIfAbsent(goalGridPoint2D, p -> new ArrayList<>());
-                    moveList.add(new GridPoint2D[]{elf, goalGridPoint2D});
+                    moveMap.computeIfAbsent(goalGridPoint2D, p -> new ArrayList<>()).add(destination);
                 }
             }
         }
         // now the map has either a single value for a destination, or multiple, only move in the former case
-        int moved = 0;
+        var moved = false;
         for (final var moves : moveMap.entrySet()) {
             final var position = moves.getKey();
-            List<GridPoint2D[]> elfMoves = moves.getValue();
+            final var elfMoves = moves.getValue();
             if (elfMoves.size() == 1) { // execute move
-                elves.remove(elfMoves.get(0)[0]);
-                elves.add(position);
-                moved++;
+                positions.remove(elfMoves.getFirst());
+                positions.add(position);
+                moved = true;
             }
         }
         return moved;

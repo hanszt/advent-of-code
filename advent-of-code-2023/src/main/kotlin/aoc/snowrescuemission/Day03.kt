@@ -1,4 +1,4 @@
-package aoc
+package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import aoc.utils.model.GridPoint2D

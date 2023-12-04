@@ -9,7 +9,7 @@ class Day23UnstableDiffusionTest {
     @Test
     void testPart1() {
         final var result = new Day23UnstableDiffusion("input/day23.txt").part1();
-        assertEquals(4052, result);
+        assertEquals(4_052, result);
     }
 
     @Test

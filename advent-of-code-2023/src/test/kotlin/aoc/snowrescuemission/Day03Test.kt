@@ -1,4 +1,4 @@
-package aoc
+package aoc.snowrescuemission
 
 import aoc.utils.model.gridPoint2D
 import io.kotest.matchers.shouldBe

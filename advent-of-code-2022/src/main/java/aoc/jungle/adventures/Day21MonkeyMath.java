@@ -51,9 +51,6 @@ public class Day21MonkeyMath implements ChallengeDay {
     }
 
     private static void buildTree(Monkey monkey, Map<String, Monkey> monkeyMap) {
-        if (monkey instanceof NrMonkey) {
-            return;
-        }
         if (monkey instanceof EquationMonkey equationMonkey) {
             equationMonkey.child1 = monkeyMap.get(equationMonkey.monkey1Name);
             equationMonkey.child2 = monkeyMap.get(equationMonkey.monkey2Name);
@@ -78,7 +75,7 @@ public class Day21MonkeyMath implements ChallengeDay {
         return monkeyMap;
     }
 
-    abstract static class Monkey implements TreeNode<Monkey, Monkey> {
+    abstract static sealed class Monkey implements TreeNode<Monkey, Monkey> {
 
         final String name;
 

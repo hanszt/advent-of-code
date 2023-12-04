@@ -1,22 +1,20 @@
 package aoc.jungle.adventures;
 
 import aoc.utils.ChallengeDay;
+import org.hzt.utils.collections.ListX;
 import org.hzt.utils.io.FileX;
 import org.hzt.utils.sequences.Sequence;
 import org.jetbrains.annotations.NotNull;
-import aoc.utils.AocUtilsKt;
-
-import java.util.List;
 
 /**
  * @see <a href="https://adventofcode.com/2022/day/1">Day 1: Calorie counting</a>
  */
 public class Day01CalorieCounting implements ChallengeDay {
 
-    private final List<String> foods;
+    private final ListX<String> foods;
 
     public Day01CalorieCounting(String fileName) {
-        this.foods = AocUtilsKt.splitByBlankLine(FileX.of(fileName).readText());
+        this.foods = FileX.of(fileName).readTextX().split("\n\n");
     }
 
     @Override

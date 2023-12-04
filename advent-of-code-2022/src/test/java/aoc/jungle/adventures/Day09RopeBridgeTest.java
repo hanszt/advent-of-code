@@ -2,7 +2,7 @@ package aoc.jungle.adventures;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day09RopeBridgeTest {
 
@@ -12,8 +12,7 @@ class Day09RopeBridgeTest {
     @Test
     void testPart1() {
         final var result = day09RopeBridge.part1();
-        System.out.println("result = " + result);
-        assertEquals(6522, result);
+        assertEquals(6_522, result);
     }
 
     @Test
@@ -25,7 +24,6 @@ class Day09RopeBridgeTest {
     @Test
     void testPart2() {
         final var result = day09RopeBridge.part2();
-        System.out.println("result = " + result);
         assertEquals(2717, result);
     }
 

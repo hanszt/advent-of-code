@@ -1,7 +1,7 @@
 package aoc.jungle.adventures;
 
-import aoc.utils.AocUtilsKt;
 import aoc.utils.ChallengeDay;
+import org.hzt.utils.collections.ListX;
 import org.hzt.utils.collections.primitives.LongMutableList;
 import org.hzt.utils.io.FileX;
 import org.hzt.utils.sequences.Sequence;
@@ -16,38 +16,10 @@ import java.util.function.LongUnaryOperator;
  */
 public class Day11MonkeyInTheMiddle implements ChallengeDay {
 
-    private final List<String> monkeysAsString;
+    private final ListX<String> monkeysAsString;
 
     public Day11MonkeyInTheMiddle(String fileName) {
-        monkeysAsString = AocUtilsKt.splitByBlankLine(FileX.of(fileName).readText());
-    }
-
-    private static int getCommonDivisor(List<Monkey> monkeys) {
-        return monkeys.stream()
-                .mapToInt(monkey -> monkey.divisor)
-                .reduce(1, (acc, divisor) -> acc * divisor);
-    }
-
-    @NotNull
-    private List<Monkey> getMonkeys() {
-        return monkeysAsString.stream()
-                .map(Day11MonkeyInTheMiddle::toMoney)
-                .toList();
-    }
-
-    private static Monkey toMoney(String s) {
-        final var lines = s.lines().toList();
-        final var operationLine = lines.get(2);
-        final var operation = operationLine.substring(operationLine.indexOf("old"));
-
-        final var divisor = Integer.parseInt(StringX.of(lines.get(3)).split(" by ").get(1));
-        final var monkeyNrWhenTrue = Integer.parseInt(StringX.of(lines.get(4)).split("monkey ").get(1));
-        final var monkeyNrWhenFalse = Integer.parseInt(StringX.of(lines.get(5)).split("monkey ").get(1));
-        final var items = StringX.of(lines.get(1)).splitToSequence(": ", ", ")
-                .skip(1)
-                .mapToLong(Long::parseLong)
-                .toArray();
-        return new Monkey(operation, divisor, monkeyNrWhenTrue, monkeyNrWhenFalse, items);
+        monkeysAsString = FileX.of(fileName).readTextX().split("\n\n");
     }
 
     @NotNull
@@ -60,6 +32,19 @@ public class Day11MonkeyInTheMiddle implements ChallengeDay {
     @Override
     public Long part2() {
         return executeRounds(10_000, l -> l);
+    }
+
+    private static int getCommonDivisor(List<Monkey> monkeys) {
+        return monkeys.stream()
+                .mapToInt(monkey -> monkey.divisor)
+                .reduce(1, (acc, divisor) -> acc * divisor);
+    }
+
+    @NotNull
+    private List<Monkey> getMonkeys() {
+        return monkeysAsString.stream()
+                .map(Monkey::parse)
+                .toList();
     }
 
     private long executeRounds(int nrOfRounds, LongUnaryOperator operator) {
@@ -115,6 +100,21 @@ public class Day11MonkeyInTheMiddle implements ChallengeDay {
                 case "*" -> worryLevel * value;
                 default -> throw new IllegalStateException();
             };
+        }
+
+        private static Monkey parse(String s) {
+            final var lines = s.lines().toList();
+            final var operationLine = lines.get(2);
+            final var operation = operationLine.substring(operationLine.indexOf("old"));
+
+            final var divisor = Integer.parseInt(StringX.of(lines.get(3)).split(" by ").get(1));
+            final var monkeyNrWhenTrue = Integer.parseInt(StringX.of(lines.get(4)).split("monkey ").get(1));
+            final var monkeyNrWhenFalse = Integer.parseInt(StringX.of(lines.get(5)).split("monkey ").get(1));
+            final var items = StringX.of(lines.get(1)).splitToSequence(": ", ", ")
+                    .skip(1)
+                    .mapToLong(Long::parseLong)
+                    .toArray();
+            return new Monkey(operation, divisor, monkeyNrWhenTrue, monkeyNrWhenFalse, items);
         }
     }
 }

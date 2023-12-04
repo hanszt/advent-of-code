@@ -1,4 +1,4 @@
-package aoc
+package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import java.io.File

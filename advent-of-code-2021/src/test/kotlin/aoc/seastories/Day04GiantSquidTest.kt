@@ -1,7 +1,7 @@
 package aoc.seastories
 
 import aoc.seastories.Day04GiantSquid.isWinningBoard
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -9,16 +9,24 @@ import kotlin.test.assertTrue
 internal class Day04GiantSquidTest {
 
     @Test
-    fun `part 1 test input`() = assertEquals(4_512, Day04GiantSquid.part1("input/day4test.txt"))
+    fun `part 1 test input`() {
+        Day04GiantSquid.part1("input/day4test.txt") shouldBe 4_512
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(50_008, Day04GiantSquid.part1().also(::println))
+    fun `part 1 result`() {
+        Day04GiantSquid.part1().also(::println) shouldBe 50_008
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(1_924, Day04GiantSquid.part2("input/day4test.txt"))
+    fun `part 2 test input`() {
+        Day04GiantSquid.part2("input/day4test.txt") shouldBe 1_924
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(17_408, Day04GiantSquid.part2().also(::println))
+    fun `part 2 result`() {
+        Day04GiantSquid.part2().also(::println) shouldBe 17_408
+    }
 
     @Test
     fun testWinningBoardTrueIfPresentInRow() {
