@@ -36,6 +36,42 @@ fun Long.nanoTimeToFormattedDuration(spacer: Int = 7, decimalPlaces: Int = 3): S
     }
 }
 
+/**
+ * Combines the map().toSet() operation. Reduces two iterations to one
+ *
+ * Inspired from kotlin.collections.Collections.toSet. The helper methods are also copied from that file
+ */
+fun <T, R> Iterable<T>.toSetOf(mapper: (T) -> R): Set<R> {
+    if (this is Collection) {
+        return when (size) {
+            0 -> emptySet()
+            1 -> setOf(mapper(first()))
+            else -> mapTo(LinkedHashSet(mapCapacity(size)), mapper)
+        }
+    }
+    return mapTo(LinkedHashSet(), mapper).optimizeReadOnlySet()
+}
+
+private fun <T> Set<T>.optimizeReadOnlySet() = when (size) {
+    0 -> emptySet()
+    1 -> setOf(first())
+    else -> this
+}
+
+private const val INT_MAX_POWER_OF_TWO: Int = 1 shl (Int.SIZE_BITS - 2)
+
+private fun mapCapacity(expectedSize: Int): Int = when {
+    // We are not coercing the value to a valid one and not throwing an exception. It is up to the caller to
+    // properly handle negative values.
+    expectedSize < 0 -> expectedSize
+    expectedSize < 3 -> expectedSize + 1
+    expectedSize < INT_MAX_POWER_OF_TWO -> ((expectedSize / 0.75F) + 1.0F).toInt()
+    // any large value
+    else -> Int.MAX_VALUE
+}
+
+
+
 fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
 
 fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
