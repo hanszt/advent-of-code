@@ -1,22 +1,28 @@
 package aoc.seastories
 
-import aoc.utils.*
+import aoc.utils.BRIGHT_BLUE
+import aoc.utils.BROWN_BG
+import aoc.utils.GREEN
+import aoc.utils.RED
+import aoc.utils.YELLOW
+import aoc.utils.withColor
 import java.io.File
-import java.util.*
+import java.util.PriorityQueue
+import java.util.Queue
 import kotlin.math.abs
 
-// I've not solved day 23 myself. This solution is from the repo from Elizarov. All credits go to him.
-//
-// I refactored and renamed it to understand what is going on.
-//
-// It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov
-//
-// full credits to Roman Elizarov
-//
+/**
+ * I've not solved day 23 myself. This solution is from the [repo from Elizarov](https://github.com/elizarov/AdventOfCode2021/tree/main/src).
+ * All credits go to him.
+ *
+ * I refactored and renamed it to understand what is going on.
+ *
+ * It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov.
+ */
 internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeDay {
 
     fun part1(path: String): Int = File(path).readLines()
-        .let { it.slice(1 until it.lastIndex) }
+        .let { it.slice(1..<it.lastIndex) }
         .let { Burrow(it.map(String::toCharArray).toTypedArray()) }
         .also { if (testMode) println(it) }
         .let(::calculateMinimumUsedEnergy)
@@ -33,7 +39,7 @@ internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeD
     // adapted form of Dijkstra
     private fun calculateMinimumUsedEnergy(start: Burrow): Int {
         val queue = PriorityQueue(compareBy(Burrow::usedEnergy)).apply { enqueue(start) }
-        val checkedBurrows = mutableSetOf<Burrow>()
+        val checkedBurrows = HashSet<Burrow>()
 
         while (queue.isNotEmpty()) {
             val burrow = queue.remove()
@@ -48,7 +54,7 @@ internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeD
                 checkedBurrows.add(burrow)
             }
         }
-        error("No minimum energy found")
+        error("No minimum energy found with start burrow: $start")
     }
 
     private fun Burrow.ifPossibleMoveToTargetRoom(queue: Queue<Burrow>) {
@@ -93,10 +99,12 @@ internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeD
         }
     }
 
+    private val burrowsToMinimumUsedEnergies = HashMap<Burrow, Int>()
+
     private fun Queue<Burrow>.enqueue(burrow: Burrow) {
-        val usedEnergy = Burrow.burrowToMinimumUsedEnergyMap[burrow] ?: Int.MAX_VALUE
+        val usedEnergy = burrowsToMinimumUsedEnergies[burrow] ?: Int.MAX_VALUE
         if (burrow.usedEnergy < usedEnergy) {
-            Burrow.burrowToMinimumUsedEnergyMap[burrow] = burrow.usedEnergy
+            burrowsToMinimumUsedEnergies[burrow] = burrow.usedEnergy
             add(burrow)
         }
     }
@@ -119,7 +127,7 @@ internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeD
     }
 
     //
-    //    The Burrow in it's start configuration
+    //    The Burrow in its start configuration
     //    #############
     //    #...........#
     //    ###D#A#D#C###
@@ -163,18 +171,18 @@ internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeD
             add(" ".repeat(13).withColor(BROWN_BG))
             addAll(grid
                 .map(CharArray::concatToString)
-                .map { it.map { char -> when(char) {
-                'A' -> char.withColor(RED)
-                'B' -> char.withColor(GREEN)
-                'C' -> char.withColor(BRIGHT_BLUE)
-                'D' -> char.withColor(YELLOW)
-                '#' -> ' '.withColor(BROWN_BG)
-                else -> char
-            } }.joinToString("") })
+                .map {
+                    it.map { char ->
+                        when (char) {
+                            'A' -> char.withColor(RED)
+                            'B' -> char.withColor(GREEN)
+                            'C' -> char.withColor(BRIGHT_BLUE)
+                            'D' -> char.withColor(YELLOW)
+                            '#' -> ' '.withColor(BROWN_BG)
+                            else -> char
+                        }
+                    }.joinToString("")
+                })
         }.joinToString("\n")
-
-        companion object {
-            val burrowToMinimumUsedEnergyMap = HashMap<Burrow, Int>()
-        }
     }
 }

@@ -1,12 +1,17 @@
 package aoc.seastories
 
-import aoc.utils.*
+import aoc.utils.AocResult
+import aoc.utils.GREEN
+import aoc.utils.RED
+import aoc.utils.readTextFromResource
+import aoc.utils.withColor
 
 fun main(vararg args: String) {
     ChallengeDay.inputDir = args.firstOrNull() ?: "advent-of-code-2021/input"
     println({}.readTextFromResource("/title.txt").withColor(RED))
     println("By Hans Zuidervaart")
     println("Credits to Roman Elizarov, The Turkey Dev and William Y Feng%n%n".format())
+
     val results = sequenceOf(
         Day01SonarSweep,
         Day02Dive,
@@ -36,6 +41,7 @@ fun main(vararg args: String) {
     ).flatMap(aoc.seastories.ChallengeDay::runParts)
         .onEach(::println)
         .toList()
+
     println("%nTotal solve time: %2.3f seconds%n".format(results.sumOf(AocResult::solveTimeNanos) / 1e9))
     println({}.readTextFromResource("/banner.txt").withColor(GREEN))
 }

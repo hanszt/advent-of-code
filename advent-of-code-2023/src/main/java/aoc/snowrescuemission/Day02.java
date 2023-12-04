@@ -26,7 +26,7 @@ public final class Day02 implements ChallengeDay {
         return lines
                 .map(Game::parse)
                 .filter(Game::isPossible)
-                .intSumOf(Game::id);
+                .longSumOf(Game::id);
     }
 
     @Override
