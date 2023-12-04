@@ -5,16 +5,22 @@ import aoc.utils.toSetOf
 import java.io.File
 
 class Day04(
-    fileName: String? = null,
-    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: emptyList()
+    fileName: String,
 ) : ChallengeDay {
 
-    override fun part1(): Int = lines.map(::card).sumOf(::calculatePoints)
+    private val cards = File(fileName).useLines { s -> s.map(::card).toList() }
+
+    override fun part1(): Int = cards.sumOf(::calculatePoints)
 
     override fun part2(): Int {
-        val cards = lines.map(::card)
-        copyCards(cards)
-        return cards.sumOf(Card::count)
+        val counts = IntArray(cards.size) { 1 }
+        for ((i, card) in cards.withIndex()) {
+            val matchingCount = card.nrsInHand.intersect(card.winningNrs).size
+            for (j in 0..<matchingCount) {
+                counts[i + j + 1] += counts[i]
+            }
+        }
+        return counts.sum()
     }
 
     private fun calculatePoints(card: Card): Int = card.nrsInHand.filter { it in card.winningNrs }.fold(0) { points, _ ->
@@ -28,21 +34,5 @@ class Day04(
         return Card(winningNrs, nrsInHand)
     }
 
-    data class Card(val winningNrs: Set<Int>, val nrsInHand: Set<Int>) {
-
-        var count = 1
-        fun nrOfMatchingNrs() = nrsInHand.count { it in winningNrs }
-    }
-
-    private fun copyCards(cards: List<Card>) {
-        for ((index, card) in cards.withIndex()) {
-            for (i in 0..<card.count) {
-                val matchingNrs = card.nrOfMatchingNrs()
-                for (j in 1.. matchingNrs) {
-                    val nextI = index + j
-                    cards.getOrNull(nextI)?.let { it.count++ }
-                }
-            }
-        }
-    }
+    data class Card(val winningNrs: Set<Int>, val nrsInHand: Set<Int>)
 }
