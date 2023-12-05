@@ -9,7 +9,7 @@ class Day02Test {
 
     @Test
     void testPart1() {
-        assertEquals(2679, new Day02("input/day02.txt").part1());
+        assertEquals(2_679, new Day02("input/day02.txt").part1());
     }
 
     @Test
@@ -21,11 +21,11 @@ class Day02Test {
                 "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
                 "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
         );
-        assertEquals(2286, new Day02(lines).part2());
+        assertEquals(2_286, new Day02(lines).part2());
     }
 
     @Test
     void testPart2() {
-        assertEquals(77607, new Day02("input/day02.txt").part2());
+        assertEquals(77_607, new Day02("input/day02.txt").part2());
     }
 }

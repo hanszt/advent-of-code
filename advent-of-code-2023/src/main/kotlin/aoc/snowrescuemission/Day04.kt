@@ -8,14 +8,14 @@ class Day04(
     fileName: String,
 ) : ChallengeDay {
 
-    private val cards = File(fileName).useLines { s -> s.map(::card).toList() }
+    private val cards = File(fileName).useLines { lines -> lines.map(::card).toList() }
 
     override fun part1(): Int = cards.sumOf(::calculatePoints)
 
     override fun part2(): Int {
         val counts = IntArray(cards.size) { 1 }
         for ((i, card) in cards.withIndex()) {
-            val matchingCount = card.nrsInHand.intersect(card.winningNrs).size
+            val matchingCount = (card.nrsInHand intersect card.winningNrs).size
             for (j in 0..<matchingCount) {
                 counts[i + j + 1] += counts[i]
             }

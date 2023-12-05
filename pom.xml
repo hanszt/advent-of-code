@@ -30,9 +30,9 @@
         <kotlin-maven-plugin.jvmTarget>17</kotlin-maven-plugin.jvmTarget>
         <kotlin.code.style>official</kotlin.code.style>
         <!--        dependencies-->
-        <kotlin.version>1.9.0</kotlin.version>
+        <kotlin.version>1.9.21</kotlin.version>
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
-        <kotest-assertions.version>5.6.2</kotest-assertions.version>
+        <kotest-assertions.version>5.8.0</kotest-assertions.version>
         <annotations.version>24.0.1</annotations.version>
         <hzt.utils.version>0.7.5.21</hzt.utils.version>
         <!--        plugins-->
