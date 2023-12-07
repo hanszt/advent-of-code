@@ -4,7 +4,6 @@ import hzt.aoc.Challenge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Day09Challenge extends Challenge {
 
@@ -19,7 +18,7 @@ public abstract class Day09Challenge extends Challenge {
     protected String solve(final List<String> inputList) {
         final List<Long> numbers = inputList.stream()
                 .map(Long::parseLong)
-                .collect(Collectors.toList());
+                .toList();
         return String.valueOf(solveByXmasList(numbers));
     }
 

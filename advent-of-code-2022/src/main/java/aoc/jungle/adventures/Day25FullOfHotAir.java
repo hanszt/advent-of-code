@@ -37,11 +37,11 @@ public class Day25FullOfHotAir implements ChallengeDay {
         for (int place = 0; place < line.length(); place++) {
             int pos = line.length() - 1 - place;
             char c = line.charAt(pos);
-            num += pow(5, place) * switch (c) {
+            num += (long) (pow(5, place) * switch (c) {
                 case '=' -> -2;
                 case '-' -> -1;
                 default -> (c - '0');
-            };
+            });
         }
         return num;
     }

@@ -12,8 +12,8 @@ public class Part1HandheldHalting extends Day08Challenge {
 
 
     @Override
-    protected int solveByInstructions(final List<Instruction> instructions) {
-        return testInstructions(instructions).getGlobal();
+    int solveByInstructions(final List<Instruction> instructions) {
+        return testInstructions(instructions).global();
     }
 
     @Override

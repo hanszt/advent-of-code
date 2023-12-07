@@ -1,6 +1,7 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
+import aoc.utils.group
 import java.io.File
 
 class Day07(
@@ -8,65 +9,65 @@ class Day07(
     private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No text or fileName provided")
 ) : ChallengeDay {
 
-    override fun part1(): Long {
-        return lines.asSequence()
-            .map(Hand::parse)
-            .sortedWith(compareBy(Hand::type).then(Hand::strength))
-            .withIndex()
-            .fold(0) { acc, (i, hand) -> acc + ((i + 1) * hand.bid) }
-    }
+    override fun part1(): Long = solve(compareBy(Hand::type).then(Hand::compareByStrengthPart1))
+    override fun part2(): Long = solve(compareBy(Hand::typeWithJoker).then(Hand::compareByStrengthPart2))
 
-    data class Hand(val cards: String, val bid: Int) {
-
-        constructor(cards: String) : this(cards, bid = 0)
-
-        fun type(): Int {
-            // Five of a kind
-            if (cards.toSet().size == 1) return 6
-            val groupedCards = cards.groupBy { it }
-            if (groupedCards.size == 2) {
-                // Four of a kind
-                if (groupedCards.values.any { it.size == 4 }) return 5
-                // Full house
-                if (groupedCards.values.any { it.size == 3 }) return 4
-            }
-            if (groupedCards.size == 3) {
-                // Three of a kind
-                if (groupedCards.values.any { it.size == 3 }) return 3
-                // Two pair
-                if (groupedCards.values.distinctBy(List<Char>::size).size == 2) return 2
-            }
-            // One pair
-            if (groupedCards.size == 4) return 1
-            // High card
-            return 0
+    private fun solve(handComparator: Comparator<Hand>): Long = lines.asSequence()
+        .map(Hand::parse)
+        .sortedWith(handComparator)
+        .withIndex()
+        .fold(0) { acc, (index, hand) ->
+            val rank = index + 1
+            acc + (rank * hand.bid)
         }
 
-        fun strength(other: Hand): Int {
-            for ((c, co) in cards.zip(other.cards)) {
-                val strength = cardStrengths.indexOf(c)
-                val otherStrength = cardStrengths.indexOf(co)
-                if (strength > otherStrength) {
-                    return -1
+    data class Hand(val cards: String, val bid: Int = 0) {
+
+        fun typeWithJoker(): Type = type(cards.filterNot { it == 'J' }.group
+            .maxByOrNull { it.value.size }
+            ?.key?.let { cards.replace('J', it) } ?: cards
+        )
+
+
+        fun type(cards: String = this.cards): Type {
+            if (cards.toSet().size == 1) return Type.FIVE_OF_A_KIND
+            cards.group.apply {
+                if (size == 2) {
+                    if (values.any { it.size == 4 }) return Type.FOUR_OF_A_KIND
+                    if (values.any { it.size == 3 }) return Type.FULL_HOUSE
                 }
-                if (strength < otherStrength) {
-                    return 1
+                if (size == 3) {
+                    if (values.any { it.size == 3 }) return Type.THREE_OF_A_KIND
+                    if (values.distinctBy(List<Char>::size).size == 2) return Type.TWO_PAIR
                 }
+                if (size == 4) return Type.ONE_PAIR
+            }
+            return Type.HIGH_CARD
+        }
+
+        /**
+         * Ordered by type strength the lowest first and the highest last
+         */
+        enum class Type { HIGH_CARD, ONE_PAIR, TWO_PAIR, THREE_OF_A_KIND, FULL_HOUSE, FOUR_OF_A_KIND, FIVE_OF_A_KIND }
+
+        fun compareByStrengthPart1(otherHand: Hand): Int = compareByStrength(otherHand, cardStrengthsPart1)
+        fun compareByStrengthPart2(otherHand: Hand): Int = compareByStrength(otherHand, cardStrengthsPart2)
+
+        private fun compareByStrength(otherHand: Hand, chars: List<Char>): Int {
+            for ((card, otherCard) in cards zip otherHand.cards) {
+                val strength = chars.indexOf(card)
+                val otherStrength = chars.indexOf(otherCard)
+                if (strength > otherStrength) return -1
+                if (strength < otherStrength) return 1
             }
             return 0
         }
 
         companion object {
-
             fun parse(line: String): Hand = line.split(' ').let { (cards, bit) -> Hand(cards, bit.toInt()) }
 
-            val cardStrengths = listOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
+            private val cardStrengthsPart1 = listOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2')
+            private val cardStrengthsPart2 = listOf('A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J')
         }
-
-    }
-
-
-    override fun part2(): Long {
-        TODO()
     }
 }

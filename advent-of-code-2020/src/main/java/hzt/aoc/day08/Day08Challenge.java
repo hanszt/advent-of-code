@@ -4,13 +4,12 @@ import hzt.aoc.Challenge;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 public abstract class Day08Challenge extends Challenge {
 
     static final String ACCUMULATOR = "acc";
     static final String JUMP = "jmp";
     static final String NO_OPERATION = "nop";
+
     protected Day08Challenge(final String challengeTitle, final String description) {
         super(challengeTitle, description, "20201208-input-day8.txt");
     }
@@ -20,13 +19,13 @@ public abstract class Day08Challenge extends Challenge {
         Instruction.setNext(0);
         final List<Instruction> instructions = inputList.stream()
                 .map(Instruction::fromInput)
-                .collect(toList());
+                .toList();
 
         final int global = solveByInstructions(instructions);
         return String.valueOf(global);
     }
 
-    protected abstract int solveByInstructions(List<Instruction> instructions);
+    abstract int solveByInstructions(List<Instruction> instructions);
 
     Result testInstructions(final List<Instruction> instructions) {
         int position = 0;
@@ -54,23 +53,7 @@ public abstract class Day08Challenge extends Challenge {
         return new Result(lastInstruction, global);
     }
 
-    static class Result {
-
-        private final Instruction lastInstruction;
-        private final int global;
-
-        public Result(final Instruction lastInstruction, final int global) {
-            this.lastInstruction = lastInstruction;
-            this.global = global;
-        }
-
-        public Instruction getLastInstruction() {
-            return lastInstruction;
-        }
-
-        public int getGlobal() {
-            return global;
-        }
+    record Result(Instruction lastInstruction, int global) {
     }
 
 }

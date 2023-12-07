@@ -3,6 +3,9 @@ package aoc.utils
 val oneOrMoreWhiteSpaces = "\\s+".toRegex()
 val camelRegex = "(?<=[a-zA-Z0-9])[A-Z]".toRegex()
 
+val <T> Iterable<T>.group: Map<T, List<T>> get() = groupBy { it }
+val CharSequence.group: Map<Char, List<Char>> get() = groupBy { it }
+
 inline fun <A, B, R> Pair<A, B>.mapFirst(transform: (A) -> R): Pair<R, B> = transform(first) to second
 
 inline fun <A, B, R> Pair<A, B>.mapSecond(transform: (B) -> R): Pair<A, R> = first to transform(second)
@@ -71,7 +74,6 @@ private fun mapCapacity(expectedSize: Int): Int = when {
 }
 
 
-
 fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
 
 fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
@@ -82,15 +84,15 @@ fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last
 
 fun <T> self(value: T) = value
 
-fun <R> List<String>.parts(map: (List<String>) -> R): List<R> = buildList {
+fun <R> List<String>.parts(toResult: (List<String>) -> R): List<R> = buildList {
     var cur = ArrayList<String>()
     for (s in this@parts) {
-        if (s == "") {
-            add(map(cur))
+        if (s.isEmpty()) {
+            add(toResult(cur))
             cur = ArrayList()
             continue
         }
         cur.add(s)
     }
-    if (cur.isNotEmpty()) add(map(cur))
+    if (cur.isNotEmpty()) add(toResult(cur))
 }
