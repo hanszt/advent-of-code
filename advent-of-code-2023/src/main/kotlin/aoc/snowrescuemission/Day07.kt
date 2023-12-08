@@ -6,7 +6,7 @@ import java.io.File
 
 class Day07(
     fileName: String? = null,
-    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No text or fileName provided")
+    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No lines or fileName provided")
 ) : ChallengeDay {
 
     override fun part1(): Long = solve(compareBy(Hand::type).then(Hand::compareByStrengthPart1))

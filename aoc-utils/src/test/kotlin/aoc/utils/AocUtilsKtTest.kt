@@ -1,7 +1,9 @@
 package aoc.utils
 
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -43,9 +45,37 @@ internal class AocUtilsKtTest {
     }
 
     @ParameterizedTest(name = "range {0} sums to: {1}")
-    @CsvSource(value = ["1..10 -> 55", "1..100 -> 5050", "1..1000 -> 500500"], delimiterString = " -> ")
+    @CsvSource(
+        "1..10 -> 55",
+        "1..100 -> 5050",
+        "1..1000 -> 500500",
+        delimiterString = " -> "
+    )
     fun `test sum natural nrs`(intRangeToSum: String, expected: Int) {
         val (start, end) = intRangeToSum.split("..").map(String::toInt)
-        assertEquals(expected, sumNaturalNrs(start, end))
+
+        sumNaturalNrs(start, end) shouldBe expected
+    }
+
+    @ParameterizedTest(name = "The least common multiple of {0} and {1} should be {2}")
+    @CsvSource(
+        "12, 36, 36",
+        "13, 17, 221",
+        "5, 7, 35",
+        "6, 4, 12",
+        "24, 36, 72"
+    )
+    fun testLeastCommonMultiple(nr1: Long, nr2: Long, expected: Long) {
+        nr1.lcm(nr2) shouldBe expected
+    }
+
+    @Test
+    fun leastCommonMultipleSample() {
+        24 lcm 36 shouldBe 72
+    }
+
+    @Test
+    fun greatestCommonDivisorSample() {
+        12 gcd 32 shouldBe 4
     }
 }

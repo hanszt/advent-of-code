@@ -7,7 +7,7 @@ import java.io.File
 
 class Day03(
     fileName: String? = null,
-    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: emptyList()
+    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No lines or fileName provided")
 ) : ChallengeDay {
 
     override fun part1(): Int {

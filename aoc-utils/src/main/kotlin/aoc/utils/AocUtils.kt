@@ -1,5 +1,7 @@
 package aoc.utils
 
+import kotlin.math.abs
+
 val oneOrMoreWhiteSpaces = "\\s+".toRegex()
 val camelRegex = "(?<=[a-zA-Z0-9])[A-Z]".toRegex()
 
@@ -77,6 +79,34 @@ private fun mapCapacity(expectedSize: Int): Int = when {
 fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
 
 fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
+
+
+/**
+ *
+ * Calculates the greatest common divisor using Euclides algorithm
+ *
+ * @receiver long to do a gcd with
+ * @param nr the other long
+ * @return The greatest common divisor
+ *
+ * @sample aoc.utils.AocUtilsKtTest.greatestCommonDivisorSample
+ */
+tailrec infix fun Long.gcd(nr: Long): Long = if (nr == 0L) this else nr gcd this % nr
+tailrec infix fun Int.gcd(nr: Int): Int = if (nr == 0) this else nr gcd this % nr
+
+/**
+ * Calculates the least common multiple of two numbers
+ *
+ * [Finding the Least Common Multiple in Java](https://www.baeldung.com/java-least-common-multiple)
+ *
+ * @receiver the nr
+ * @param nr the other nr
+ * @return The least common multiple
+ *
+ * @sample aoc.utils.AocUtilsKtTest.leastCommonMultipleSample
+ */
+infix fun Long.lcm(nr: Long): Long = abs((this * nr) / gcd(nr))
+infix fun Int.lcm(nr: Int): Int = abs((this * nr) / gcd(nr))
 
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 

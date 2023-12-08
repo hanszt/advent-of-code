@@ -19,6 +19,10 @@
             <artifactId>kotlin-stdlib</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-collections-immutable</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.hzt.quizes</groupId>
             <artifactId>aoc-utils</artifactId>
         </dependency>

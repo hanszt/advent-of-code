@@ -4,9 +4,7 @@ import aoc.utils.ChallengeDay
 import aoc.utils.toSetOf
 import java.io.File
 
-class Day04(
-    fileName: String,
-) : ChallengeDay {
+class Day04(fileName: String, ) : ChallengeDay {
 
     private val cards = File(fileName).useLines { lines -> lines.map(::card).toList() }
 

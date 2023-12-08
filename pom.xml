@@ -41,6 +41,7 @@
         <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
         <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+        <kotlinx-collections-immutable.version>0.3.6</kotlinx-collections-immutable.version>
     </properties>
 
     <dependencyManagement>
@@ -68,6 +69,13 @@
                 <artifactId>annotations</artifactId>
                 <version>${annotations.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-collections-immutable -->
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-collections-immutable</artifactId>
+                <version>${kotlinx-collections-immutable.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.hzt.utils</groupId>
                 <artifactId>core</artifactId>
