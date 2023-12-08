@@ -14,8 +14,8 @@ interface GridPoint2D {
     operator fun minus(other: GridPoint2D) = x - other.x by y - other.y
     operator fun times(factor: Int) = x * factor by y * factor
     operator fun unaryMinus() = gridPoint2D(-x, -y)
-    fun dotProduct(point2D: GridPoint2D): Int = x * point2D.x + y * point2D.y
-    fun crossProduct(point2D: GridPoint2D): GridPoint3D = gridPoint3D(0, 0, x * point2D.y - y * point2D.x)
+    infix fun dotProduct(other: GridPoint2D): Int = x * other.x + y * other.y
+    infix fun crossProduct(other: GridPoint2D): GridPoint3D = gridPoint3D(0, 0, x * other.y - y * other.x)
 
     fun add(other: GridPoint2D) = plus(other)
     fun add(x: Int, y: Int) = this.x + x by this.y + y
@@ -31,7 +31,7 @@ interface GridPoint2D {
         .take(times)
         .last()
 
-    fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
+    infix fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
 
     companion object {
         @JvmField

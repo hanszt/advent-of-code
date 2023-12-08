@@ -1,11 +1,15 @@
 package aoc.seastories
 
-import aoc.utils.self
+import aoc.utils.invoke
+import aoc.utils.trueCount
 import java.io.File
 
 internal object Day22ReactorReboot : ChallengeDay {
 
-    fun part1(path: String): Int {
+    override fun part1() = part1("${ChallengeDay.inputDir}/day22.txt")
+    override fun part2() = part2("${ChallengeDay.inputDir}/day22.txt")
+
+    internal fun part1(path: String): Int {
         val range = -50..50
         val rangeSize = range.toList().size
 
@@ -14,7 +18,7 @@ internal object Day22ReactorReboot : ChallengeDay {
         File(path).readLines()
             .map(::toCuboid)
             .forEach { targetRegion.update(range, it) }
-        return targetRegion.sumOf { it.sumOf { array -> array.count(::self) } }
+        return targetRegion.sumOf { it.sumOf(BooleanArray::trueCount) }
     }
 
     private fun Array<Array<BooleanArray>>.update(targetRange: IntRange, cuboid: Cuboid) {
@@ -30,38 +34,38 @@ internal object Day22ReactorReboot : ChallengeDay {
     }
 
     // credits to Roman Elizarov
-    fun part2(path: String): Long {
-        val instructions = File(path).readLines().map(::toCuboid)
+    internal fun part2(path: String): Long {
+        val cuboids = File(path).readLines().map(::toCuboid)
 
-        val ux = instructions.map(Cuboid::xRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
-        val uy = instructions.map(Cuboid::yRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
-        val uz = instructions.map(Cuboid::zRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
+        val ux = cuboids.map(Cuboid::xRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
+        val uy = cuboids.map(Cuboid::yRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
+        val uz = cuboids.map(Cuboid::zRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
 
-        val matrixX = ux.withIndex().associateBy({ it.value }, { it.index })
-        val matrixY = uy.withIndex().associateBy({ it.value }, { it.index })
-        val matrixZ = uz.withIndex().associateBy({ it.value }, { it.index })
+        val matrixX = ux.withIndex().associate { (i, x) -> x to i }
+        val matrixY = uy.withIndex().associate { (i, y) -> y to i }
+        val matrixZ = uz.withIndex().associate { (i, z) -> z to i }
 
-        val reactorOn = Array(ux.size) { Array(uy.size) { BooleanArray(uz.size) } }
-        for ((on, xRange, yRange, zRange) in instructions) {
-            for (x in matrixX[xRange.first]!! until matrixX[xRange.last + 1]!!) {
-                for (y in matrixY[yRange.first]!! until matrixY[yRange.last + 1]!!) {
-                    for (z in matrixZ[zRange.first]!! until matrixZ[zRange.last + 1]!!) {
-                        reactorOn[x][y][z] = on
+        val reactorMatrix = Array(ux.size) { Array(uy.size) { BooleanArray(uz.size) } }
+
+        for ((on, xRange, yRange, zRange) in cuboids) {
+            for (x in matrixX(xRange.first)..<matrixX(xRange.last + 1)) {
+                for (y in matrixY(yRange.first)..<matrixY(yRange.last + 1)) {
+                    for (z in matrixZ(zRange.first)..<matrixZ(zRange.last + 1)) {
+                        reactorMatrix[x][y][z] = on
                     }
                 }
             }
         }
-        return reactorOn.calculateNrOfCubesOn(ux, uy, uz)
+        return reactorMatrix.nrOfCubesOn(ux, uy, uz)
     }
 
-    private fun Array<Array<BooleanArray>>.calculateNrOfCubesOn(ux: List<Int>, uy: List<Int>, uz: List<Int>): Long {
+    private fun Array<Array<BooleanArray>>.nrOfCubesOn(ux: List<Long>, uy: List<Long>, uz: List<Long>): Long {
         var nrOfCubesOn = 0L
-        for (x in 0 until ux.lastIndex) {
-            for (y in 0 until uy.lastIndex) {
-                for (z in 0 until uz.lastIndex) {
-                    val isOn = this[x][y][z]
-                    if (isOn) {
-                        nrOfCubesOn += (ux[x + 1] - ux[x]).toLong() * (uy[y + 1] - uy[y]).toLong() * (uz[z + 1] - uz[z]).toLong()
+        for (x in 0..<ux.lastIndex) {
+            for (y in 0..<uy.lastIndex) {
+                for (z in 0..<uz.lastIndex) {
+                    if (this[x][y][z]) {
+                        nrOfCubesOn += (ux[x + 1] - ux[x]) * (uy[y + 1] - uy[y]) * (uz[z + 1] - uz[z])
                     }
                 }
             }
@@ -70,15 +74,12 @@ internal object Day22ReactorReboot : ChallengeDay {
     }
 
     private fun toCuboid(s: String): Cuboid = s.split(' ').let { (instr, ranges) ->
-        ranges.split(',').map(::toIntRange)
+        ranges.split(',').map(::toLongRange)
             .let { (xRange, yRange, zRange) -> Cuboid(instr == "on", xRange, yRange, zRange) }
     }
 
-    private fun toIntRange(xRange: String) = xRange.substring(2).split("..")
-        .map(String::toInt).let { (start, end) -> start..end }
+    private fun toLongRange(xRange: String) = xRange.substring(2).split("..")
+        .map(String::toLong).let { (start, end) -> start..end }
 
-    override fun part1() = part1(ChallengeDay.inputDir + "/day22.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day22.txt")
-
-    data class Cuboid(val on: Boolean, val xRange: IntRange, val yRange: IntRange, val zRange: IntRange)
+    data class Cuboid(val on: Boolean, val xRange: LongRange, val yRange: LongRange, val zRange: LongRange)
 }

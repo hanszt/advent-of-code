@@ -15,8 +15,8 @@ interface GridPoint3D {
     operator fun plus(other: GridPoint3D) = gridPoint3D(x + other.x, y + other.y, z + other.z)
     operator fun times(factor: Int) = gridPoint3D(x * factor, y * factor, z * factor)
     operator fun unaryMinus() = gridPoint3D(-x, -y, -z)
-    fun dotProduct(point3D: GridPoint3D): Int = x * point3D.x + y * point3D.y + z * point3D.z
-    fun manhattanDistance(other: GridPoint3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
+    infix fun dotProduct(other: GridPoint3D): Int = x * other.x + y * other.y + z * other.z
+    infix fun manhattanDistance(other: GridPoint3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
 
     companion object {
         @JvmField

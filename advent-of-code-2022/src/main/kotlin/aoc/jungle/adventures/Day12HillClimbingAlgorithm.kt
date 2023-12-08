@@ -1,6 +1,7 @@
 package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
+import aoc.utils.invoke
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
@@ -61,8 +62,8 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
                                           neighborPos: Point,
                                           postProcess: (Int, Int) -> Int): Point? {
             grid[neighborPos]?.let { gridHeight ->
-                if (gridHeight - (grid[pos] ?: error("No value for $pos")) <= 1) {
-                    val newPathLength = (this[pos] ?: error("No value for  $pos")) + 1
+                if (gridHeight - (grid(pos)) <= 1) {
+                    val newPathLength = (this(pos)) + 1
                     if (newPathLength < (this[neighborPos] ?: Int.MAX_VALUE)) {
                         this[neighborPos] = postProcess(gridHeight, newPathLength)
                         return neighborPos

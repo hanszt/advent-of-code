@@ -1,11 +1,11 @@
 package aoc.seastories
 
 import aoc.utils.Transform3D
+import aoc.utils.grouping
 import aoc.utils.model.GridPoint3D
 import aoc.utils.model.gridPoint3D
 import aoc.utils.orientations
 import aoc.utils.rotated
-import aoc.utils.self
 import aoc.utils.splitByBlankLine
 import aoc.utils.transform
 import java.io.File
@@ -36,7 +36,7 @@ internal object Day19BeaconScanner : ChallengeDay {
             val rotatedPointsOther = this[otherScannerIndex].map { it.rotated(orientation) }
             val translation = detectedPoints.asSequence()
                 .flatMap { detected -> rotatedPointsOther.map { detected - it } }
-                .groupingBy(::self)
+                .grouping
                 .eachCount()
                 .filterValues { it >= 12 }
                 .keys.firstOrNull() ?: continue

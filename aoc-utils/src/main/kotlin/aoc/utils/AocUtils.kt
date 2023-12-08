@@ -6,7 +6,14 @@ val oneOrMoreWhiteSpaces = "\\s+".toRegex()
 val camelRegex = "(?<=[a-zA-Z0-9])[A-Z]".toRegex()
 
 val <T> Iterable<T>.group: Map<T, List<T>> get() = groupBy { it }
+val <T> Sequence<T>.group: Map<T, List<T>> get() = groupBy { it }
 val CharSequence.group: Map<Char, List<Char>> get() = groupBy { it }
+
+val <T> Iterable<T>.grouping: Grouping<T, T> get() = groupingBy { it }
+val <T> Sequence<T>.grouping: Grouping<T, T> get() = groupingBy { it }
+val CharSequence.grouping: Grouping<Char, Char> get() = groupingBy { it }
+
+operator fun <K: Any, V : Any> Map<K, V>.invoke(key: K): V = get(key) ?: error("No value found for key: $key")
 
 inline fun <A, B, R> Pair<A, B>.mapFirst(transform: (A) -> R): Pair<R, B> = transform(first) to second
 
@@ -86,13 +93,13 @@ fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
  * Calculates the greatest common divisor using Euclides algorithm
  *
  * @receiver long to do a gcd with
- * @param nr the other long
+ * @param other the other long
  * @return The greatest common divisor
  *
  * @sample aoc.utils.AocUtilsKtTest.greatestCommonDivisorSample
  */
-tailrec infix fun Long.gcd(nr: Long): Long = if (nr == 0L) this else nr gcd this % nr
-tailrec infix fun Int.gcd(nr: Int): Int = if (nr == 0) this else nr gcd this % nr
+tailrec infix fun Long.gcd(other: Long): Long = if (other == 0L) this else other gcd this % other
+tailrec infix fun Int.gcd(other: Int): Int = if (other == 0) this else other gcd this % other
 
 /**
  * Calculates the least common multiple of two numbers
@@ -100,29 +107,18 @@ tailrec infix fun Int.gcd(nr: Int): Int = if (nr == 0) this else nr gcd this % n
  * [Finding the Least Common Multiple in Java](https://www.baeldung.com/java-least-common-multiple)
  *
  * @receiver the nr
- * @param nr the other nr
+ * @param other the other nr
  * @return The least common multiple
  *
  * @sample aoc.utils.AocUtilsKtTest.leastCommonMultipleSample
  */
-infix fun Long.lcm(nr: Long): Long = abs((this * nr) / gcd(nr))
-infix fun Int.lcm(nr: Int): Int = abs((this * nr) / gcd(nr))
+infix fun Long.lcm(other: Long): Long = abs((this * other) / gcd(other))
+infix fun Int.lcm(other: Int): Int = abs((this * other) / gcd(other))
 
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
 
-fun <T> self(value: T) = value
+val BooleanArray.trueCount get() = count { it }
 
-fun <R> List<String>.parts(toResult: (List<String>) -> R): List<R> = buildList {
-    var cur = ArrayList<String>()
-    for (s in this@parts) {
-        if (s.isEmpty()) {
-            add(toResult(cur))
-            cur = ArrayList()
-            continue
-        }
-        cur.add(s)
-    }
-    if (cur.isNotEmpty()) add(toResult(cur))
-}
+fun <T> self(value: T) = value

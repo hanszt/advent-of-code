@@ -1,6 +1,8 @@
 package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
+import aoc.utils.grouping
+import aoc.utils.invoke
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.GridPoint2D.Companion.down
 import aoc.utils.model.GridPoint2D.Companion.left
@@ -9,7 +11,6 @@ import aoc.utils.model.GridPoint2D.Companion.up
 import aoc.utils.model.GridPoint3D
 import aoc.utils.model.gridPoint2D
 import aoc.utils.model.gridPoint3D
-import aoc.utils.parts
 import java.io.File
 import kotlin.math.sqrt
 import aoc.utils.model.GridPoint2D as Point2D
@@ -19,29 +20,31 @@ import aoc.utils.model.GridPoint2D as Point2D
  *
  * @see <a href="https://adventofcode.com/2022/day/22">Day 22</a>
  */
-class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
+class Day22MonkeyMap(
+    fileName: String? = null,
+    text: String = File(fileName ?: error("No fileName or text provided")).readText()
+) : ChallengeDay {
 
     private val dirs = listOf(right, up, left, down)
+    private val grid: List<String>
+    private val instructions: String
 
-    constructor(fileName: String) : this(File(fileName).readLines())
+    init {
+        val (grid, instructionLines) = text.split("\n\n")
+        this.instructions = instructionLines
+        this.grid = grid.lines()
+    }
 
     override fun part1(): Int {
-        val (grid, instructions) = gridAndInstructions()
         val initPoint = gridPoint2D(grid[0].indexOf('.').also { check(it >= 0) }, 0)
         return simulate(initPoint, instructions) { x, point, facing -> facing to grid.moveAlongGrid(x, point, facing) }
     }
 
     override fun part2(): Int {
-        val (grid, instructions) = gridAndInstructions()
         val cube = Cube(grid, dirs)
         val initPoint = gridPoint2D(cube.initialFace.y * cube.faceSize, 0)
         return simulate(initPoint, instructions) { x, point, facing -> cube.moveAlongCube(x, point, facing) }
     }
-
-    private fun gridAndInstructions(): Pair<List<CharArray>, String> = lines.parts { it }
-        .let { (gridLines, instructionLines) ->
-            gridLines.map(String::toCharArray) to instructionLines[0]
-        }
 
     private fun simulate(
         initPoint: Point2D,
@@ -82,7 +85,7 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
         return 1000 * row + 4 * column + finalFacing
     }
 
-    private fun List<CharArray>.moveAlongGrid(x: Int, point: Point2D, facing: Int): Point2D {
+    private fun List<String>.moveAlongGrid(x: Int, point: Point2D, facing: Int): Point2D {
         var nextPoint = point
         for (step in 1..x) {
             var d = nextPoint + dirs[facing]
@@ -90,7 +93,7 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
                 d = when (facing) {
                     0 -> 0 by d.y
                     1 -> d.x by 0
-                    2 -> this[nextPoint.y].size - 1 by d.y
+                    2 -> this[nextPoint.y].length - 1 by d.y
                     3 -> d.x by size - 1
                     else -> error(facing)
                 }
@@ -107,7 +110,7 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
         return nextPoint
     }
 
-    private fun List<CharArray>.isInGrid(p: Point2D) =
+    private fun List<String>.isInGrid(p: Point2D) =
         p.y !in indices || p.x !in this[p.y].indices || this[p.y][p.x] == ' '
 
     private fun Cube.moveAlongCube(x: Int, point: Point2D, facing: Int): Pair<Int, Point2D> {
@@ -119,9 +122,10 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
             if (grid.isInGrid(neighbor)) {
                 // transition according to the folded cube
                 val oriFace = gridPoint2D(nextPoint.y / faceSize, nextPoint.x / faceSize) // the original face
-                val connectedFace3D = faceToNeighbors[oriFace]!![nextFacing]// basis of the next face if it was connected
-                val nextFace = normalsToFaces[connectedFace3D.point3]!!// next face (look up by the normal)
-                val newFace3D = facesToVectors[nextFace]!! // the actual basis of the new face
+
+                val connectedFace3D = faceToNeighbors(oriFace)[nextFacing] // basis of the next face if it was connected
+                val nextFace = normalsToFaces(connectedFace3D.point3)// next face (look up by the normal)
+                val newFace3D = facesToVectors(nextFace) // the actual basis of the new face
 
                 // direction on the new face
                 fun Face3D.dir2vertex(index: Int): GridPoint3D = point1 * dirs[index].y + point2 * dirs[index].x
@@ -133,8 +137,8 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
 
                 // project offset in the new basis
                 fun flipNeg(s: Int) = if (s < 0) faceSize + 1 + s else s
-                neighbor = (nextFace.y * faceSize + flipNeg(vector.dotProduct(newFace3D.point2)) - 1) by
-                        (nextFace.x * faceSize + flipNeg(vector.dotProduct(newFace3D.point1)) - 1)
+                neighbor = (nextFace.y * faceSize + flipNeg(vector dotProduct newFace3D.point2) - 1) by
+                        (nextFace.x * faceSize + flipNeg(vector dotProduct newFace3D.point1) - 1)
             }
             when (grid[neighbor.y][neighbor.x]) {
                 '.' -> {
@@ -151,7 +155,7 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
 
     data class Face3D(val point1: GridPoint3D, val point2: GridPoint3D, val point3: GridPoint3D)
 
-    private class Cube(val grid: List<CharArray>, val dirs: List<Point2D>) {
+    private class Cube(val grid: List<String>, val dirs: List<Point2D>) {
 
         val faceSize: Int
         val initialFace: Point2D
@@ -167,10 +171,15 @@ class Day22MonkeyMap(val lines: List<String>) : ChallengeDay {
                 for (x in grid.indices) for (y in grid[x].indices) if (grid[x][y] != ' ') {
                     add(gridPoint2D(x / faceSize, y / faceSize))
                 }
-            }.groupingBy { it }.eachCount()
+            }.grouping.eachCount()
+
             check(faceToCount.values.all { it == faceSize * faceSize })
             initialFace = faceToCount.keys.filter { it.x == 0 }.minBy(Point2D::y)
-            val face3D = Face3D(gridPoint3D(1, 0, 0), gridPoint3D(0, 1, 0), gridPoint3D(0, 0, 1))
+            val face3D = Face3D(
+                point1 = gridPoint3D(1, 0, 0),
+                point2 = gridPoint3D(0, 1, 0),
+                point3 = gridPoint3D(0, 0, 1)
+            )
             dfs(initialFace, face3D, faceToCount)
         }
 

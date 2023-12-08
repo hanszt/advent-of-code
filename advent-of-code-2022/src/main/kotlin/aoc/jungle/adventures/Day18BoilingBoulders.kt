@@ -26,7 +26,7 @@ class Day18BoilingBoulders(fileName: String) : ChallengeDay {
         var touchingSides = 0
         for (i in 0 ..< cubes.lastIndex) {
             for (j in i + 1 ..< cubes.size) {
-                touchingSides += if (cubes[i].manhattanDistance(cubes[j]) == 1) 2 else 0
+                touchingSides += if (cubes[i] manhattanDistance cubes[j] == 1) 2 else 0
             }
         }
         val allSides = cubes.size * 6

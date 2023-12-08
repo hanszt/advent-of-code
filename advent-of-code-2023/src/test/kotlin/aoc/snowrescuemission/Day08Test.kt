@@ -5,9 +5,13 @@ import org.junit.jupiter.api.Test
 
 class Day08Test {
 
+    companion object {
+        private val day08 = Day08("input/day08.txt")
+    }
+
     @Test
     fun `test part1`() {
-        Day08("input/day08.txt").part1() shouldBe 16_043
+        day08.part1() shouldBe 16_043
     }
 
     @Test
@@ -24,11 +28,11 @@ class Day08Test {
             22Z = (22B, 22B)
             XXX = (XXX, XXX)
         """.trimIndent()
-        Day08(text = input).part2() shouldBe 6L
+        Day08(text = input).part2() shouldBe 6
     }
 
     @Test
     fun `test part2`() {
-        Day08("input/day08.txt").part2() shouldBe 15_726_453_850_399
+        day08.part2() shouldBe 15_726_453_850_399
     }
 }

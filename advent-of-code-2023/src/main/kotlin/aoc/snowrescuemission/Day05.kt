@@ -21,6 +21,7 @@ class Day05(
             .map(String::toLong)
             .chunked(2)
             .flatMap { (start, length) -> start..(start + length) }
+        TODO("Too slow")
         return seeds.toMinimumLocation(input)
     }
 

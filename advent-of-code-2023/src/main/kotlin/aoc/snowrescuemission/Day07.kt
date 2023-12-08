@@ -2,6 +2,7 @@ package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import aoc.utils.group
+import aoc.utils.grouping
 import java.io.File
 
 class Day07(
@@ -31,14 +32,14 @@ class Day07(
 
         fun type(cards: String = this.cards): Type {
             if (cards.toSet().size == 1) return Type.FIVE_OF_A_KIND
-            cards.group.apply {
+            cards.grouping.eachCount().apply {
                 if (size == 2) {
-                    if (values.any { it.size == 4 }) return Type.FOUR_OF_A_KIND
-                    if (values.any { it.size == 3 }) return Type.FULL_HOUSE
+                    if (values.any { it == 4 }) return Type.FOUR_OF_A_KIND
+                    if (values.any { it == 3 }) return Type.FULL_HOUSE
                 }
                 if (size == 3) {
-                    if (values.any { it.size == 3 }) return Type.THREE_OF_A_KIND
-                    if (values.distinctBy(List<Char>::size).size == 2) return Type.TWO_PAIR
+                    if (values.any { it == 3 }) return Type.THREE_OF_A_KIND
+                    if (values.distinct().size == 2) return Type.TWO_PAIR
                 }
                 if (size == 4) return Type.ONE_PAIR
             }
