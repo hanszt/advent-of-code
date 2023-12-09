@@ -5,9 +5,14 @@ import org.junit.jupiter.api.Test
 
 class Day05Test {
 
+    private companion object {
+        private val day05 = Day05("input/day05.txt")
+    }
+
+
     @Test
     fun testPart1() {
-        Day05("input/day05.txt").part1() shouldBe 165_788_812
+        day05.part1() shouldBe 165_788_812
     }
 
     @Test
@@ -17,6 +22,6 @@ class Day05Test {
 
     @Test
     fun testPart2() {
-        Day05("input/day05.txt").part2() shouldBe 1_928_058
+        day05.part2() shouldBe 1_928_058
     }
 }
