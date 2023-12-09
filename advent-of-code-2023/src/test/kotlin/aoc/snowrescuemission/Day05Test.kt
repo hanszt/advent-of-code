@@ -17,6 +17,6 @@ class Day05Test {
 
     @Test
     fun testPart2() {
-        Day05("input/day05.txt").part2() shouldBe 0
+        Day05("input/day05.txt").part2() shouldBe 1_928_058
     }
 }

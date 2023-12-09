@@ -13,6 +13,19 @@ val <T> Iterable<T>.grouping: Grouping<T, T> get() = groupingBy { it }
 val <T> Sequence<T>.grouping: Grouping<T, T> get() = groupingBy { it }
 val CharSequence.grouping: Grouping<Char, Char> get() = groupingBy { it }
 
+fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C, mapper: (T, T) -> R): C {
+    val iterator = iterator()
+    if (iterator.hasNext()) {
+        var cur = iterator.next()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            destination.add(mapper(cur, next))
+            cur = next
+        }
+    }
+    return destination
+}
+
 operator fun <K, V : Any> Map<K, V>.invoke(key: K): V = get(key) ?: error("No value found for key: $key")
 
 inline fun <A, B, R> Pair<A, B>.mapFirst(transform: (A) -> R): Pair<R, B> = transform(first) to second

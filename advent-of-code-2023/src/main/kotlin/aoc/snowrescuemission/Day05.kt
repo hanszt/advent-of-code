@@ -12,42 +12,57 @@ class Day05(
         val input = text.split("\n\n")
         return input[0].substring("seeds: ".length).splitToSequence(' ')
             .map(String::toLong)
-            .toMinimumLocation(input)
+            .toDestination(input[1])
+            .toDestination(input[2])
+            .toDestination(input[3])
+            .toDestination(input[4])
+            .toDestination(input[5])
+            .toDestination(input[6])
+            .toDestination(input[7])
+            .min()
     }
 
     override fun part2(): Long {
         val input = text.split("\n\n")
-        val seeds = input[0].substring("seeds: ".length).splitToSequence(' ')
+        val seedRanges = input[0].substring("seeds: ".length).splitToSequence(' ')
             .map(String::toLong)
             .chunked(2)
-            .flatMap { (start, length) -> start..(start + length) }
-        TODO("Too slow")
-        return seeds.toMinimumLocation(input)
-    }
+            .map { (start, length) -> start..(start + length) }
+            .toList()
 
-    private fun Sequence<Long>.toMinimumLocation(input: List<String>): Long {
+        val map1 = buildMappings(input[7]) { s, d -> d to s }
+        val map2 = buildMappings(input[6]) { s, d -> d to s }
+        val map3 = buildMappings(input[5]) { s, d -> d to s }
+        val map4 = buildMappings(input[4]) { s, d -> d to s }
+        val map5 = buildMappings(input[3]) { s, d -> d to s }
+        val map6 = buildMappings(input[2]) { s, d -> d to s }
+        val map7 = buildMappings(input[1]) { s, d -> d to s }
 
-        return convert(input[1])
-            .convert(input[2])
-            .convert(input[3])
-            .convert(input[4])
-            .convert(input[5])
-            .convert(input[6])
-            .convert(input[7])
-            .min()
-    }
-
-    private fun Sequence<Long>.convert(line: String): Sequence<Long> {
-        val mappings = line.lines().drop(1) // drop title
-        val map = mutableMapOf<LongRange, LongRange>()
-        for (table in mappings) {
-            val (destStart, sourceStart, length) = table.split(' ').map(String::toLong)
-            val sourceRange = sourceStart..(sourceStart + length)
-            val destinationRange = destStart..(destStart + length)
-            map[sourceRange] = destinationRange
+        return generateSequence(0L) { it + 1 }.first { location ->
+            val source = location.toSource(map1)
+                .toSource(map2)
+                .toSource(map3)
+                .toSource(map4)
+                .toSource(map5)
+                .toSource(map6)
+                .toSource(map7)
+            seedRanges.any { source in it }
         }
+    }
+
+    private fun Long.toSource(map: Map<LongRange, LongRange>): Long {
+        for ((dest, source) in map) {
+            if (this in dest) {
+                return this + (source.first - dest.first)
+            }
+        }
+        return this
+    }
+
+    private fun Sequence<Long>.toDestination(text: String): Sequence<Long> {
+        val mappings = buildMappings(text) { s, d -> s to d }
         return this.map {
-            for ((source, dest) in map.entries) {
+            for ((source, dest) in mappings.entries) {
                 if (it in source) {
                     return@map it + (dest.first - source.first)
                 }
@@ -55,4 +70,16 @@ class Day05(
             it
         }
     }
+
+    private fun buildMappings(
+        text: String,
+        association: (LongRange, LongRange) -> Pair<LongRange, LongRange>
+    ): Map<LongRange, LongRange> = text.lineSequence()
+        .drop(1) // drop title
+        .associate {
+            val (destStart, sourceStart, length) = it.split(' ').map(String::toLong)
+            val sourceRange = sourceStart..(sourceStart + length)
+            val destinationRange = destStart..(destStart + length)
+            association(sourceRange, destinationRange)
+        }
 }
