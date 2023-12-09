@@ -13,7 +13,7 @@ val <T> Iterable<T>.grouping: Grouping<T, T> get() = groupingBy { it }
 val <T> Sequence<T>.grouping: Grouping<T, T> get() = groupingBy { it }
 val CharSequence.grouping: Grouping<Char, Char> get() = groupingBy { it }
 
-operator fun <K: Any, V : Any> Map<K, V>.invoke(key: K): V = get(key) ?: error("No value found for key: $key")
+operator fun <K, V : Any> Map<K, V>.invoke(key: K): V = get(key) ?: error("No value found for key: $key")
 
 inline fun <A, B, R> Pair<A, B>.mapFirst(transform: (A) -> R): Pair<R, B> = transform(first) to second
 
