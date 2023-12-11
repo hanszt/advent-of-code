@@ -1,0 +1,91 @@
+package aoc.snowrescuemission
+
+import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Test
+
+class Day10Test {
+
+    @Test
+    fun testPart1() {
+        Day10("input/day10.txt").part1() shouldBe 6875
+    }
+
+    @Test
+    fun testPart2() {
+        Day10("input/day10.txt").part2() shouldBe 6875
+    }
+
+    @Test
+    fun testPart1SimpleInput() {
+        Day10(
+            area = """
+                .....
+                .S-7.
+                .|.|.
+                .L-J.
+                .....
+            """.trimIndent()
+        ).part1() shouldBe 4
+    }
+
+    @Test
+    fun testPart1MoreComplexInput() {
+        Day10(
+            area = """
+                7-F7-
+                .FJ|7
+                SJLL7
+                |F--J
+                LJ.LJ
+            """.trimIndent()
+        ).part1() shouldBe 8
+    }
+
+    @Test
+    fun testPart2SimpleInput() {
+        Day10(
+            area = """
+                .....
+                .S-7.
+                .|.|.
+                .L-J.
+                .....
+            """.trimIndent()
+        ).part2() shouldBe 4
+    }
+
+    @Test
+    fun testPart2TestInput1() {
+        Day10(
+            area = """
+                ...........
+                .S-------7.
+                .|F-----7|.
+                .||.....||.
+                .||.....||.
+                .|L-7.F-J|.
+                .|..|.|..|.
+                .L--J.L--J.
+                ...........
+            """.trimIndent()
+        ).part2() shouldBe 4
+    }
+
+    @Test
+    fun testPart2ComplexTestInput() {
+        Day10(
+            area = """
+                .F----7F7F7F7F-7....
+                .|F--7||||||||FJ....
+                .||.FJ||||||||L7....
+                FJL7L7LJLJ||LJ.L-7..
+                L--J.L7...LJS7F-7L7.
+                ....F-J..F7FJ|L7L7L7
+                ....L7.F7||L7|.L7L7|
+                .....|FJLJ|FJ|F7|.LJ
+                ....FJL-7.||.||||...
+                ....L---J.LJ.LJLJ...
+            """.trimIndent()
+        ).part2() shouldBe 8
+    }
+}

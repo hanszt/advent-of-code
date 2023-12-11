@@ -24,4 +24,9 @@ class Day05Test {
     fun testPart2() {
         day05.part2() shouldBe 1_928_058
     }
+
+    @Test
+    fun testPart2HztInput() {
+        Day05("input/day05hzt.txt").part1() shouldBe 218513636
+    }
 }

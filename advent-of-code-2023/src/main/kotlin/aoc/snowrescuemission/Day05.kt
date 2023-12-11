@@ -29,7 +29,8 @@ class Day05(fileName: String) : ChallengeDay {
 
         val reverseMappings = mappingTexts.reversed().map { buildMappings(it) { s, d -> d to s } }
 
-        return generateSequence(0L) { it + 1 }.first { location ->
+        val initMinLocation = 0L
+        return generateSequence(initMinLocation) { it + 1 }.first { location ->
             val seedNr = reverseMappings.fold(location, ::transform)
             seedNrRanges.any { seedNr in it }
         }

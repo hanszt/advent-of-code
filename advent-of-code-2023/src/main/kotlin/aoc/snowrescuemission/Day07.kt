@@ -1,7 +1,6 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.group
 import aoc.utils.grouping
 import java.io.File
 
@@ -24,8 +23,8 @@ class Day07(
 
     data class Hand(val cards: String, val bid: Int = 0) {
 
-        fun typeWithJoker(): Type = type(cards.filterNot { it == 'J' }.group
-            .maxByOrNull { it.value.size }
+        fun typeWithJoker(): Type = type(cards.filterNot { it == 'J' }.grouping.eachCount()
+            .maxByOrNull { it.value }
             ?.key?.let { cards.replace('J', it) } ?: cards
         )
 

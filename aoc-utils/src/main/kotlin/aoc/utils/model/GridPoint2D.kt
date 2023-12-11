@@ -67,7 +67,7 @@ interface GridPoint2D {
         @JvmField
         val orthoDirs = listOf(up, down, right, left)
 
-        infix fun Int.by(y: Int): GridPoint2D = GridPoint2DImpl(this, y)
+        infix fun Int.by(y: Int): GridPoint2D = StandardGridPoint2D(this, y)
 
         @JvmStatic
         fun of(x: Int, y: Int): GridPoint2D = x by y
@@ -76,4 +76,6 @@ interface GridPoint2D {
 
 fun gridPoint2D(x: Int, y: Int) = GridPoint2D.of(x, y)
 
-private data class GridPoint2DImpl(override val x: Int, override val y: Int) : GridPoint2D
+private data class StandardGridPoint2D(override val x: Int, override val y: Int) : GridPoint2D {
+    override fun toString(): String = "GridPoint2D(x=$x, y=$y)"
+}

@@ -35,10 +35,12 @@ interface GridPoint3D {
         infix fun GridPoint2D.by(z: Int) = of(x, y, z)
 
         @JvmStatic
-        fun of(x: Int, y: Int, z: Int): GridPoint3D = GridPoint3DImpl(x, y, z)
+        fun of(x: Int, y: Int, z: Int): GridPoint3D = StandardGridPoint3D(x, y, z)
     }
 }
 
 fun gridPoint3D(x: Int, y: Int, z: Int) = GridPoint3D.of(x, y, z)
 
-private data class GridPoint3DImpl(override val x: Int, override val y: Int, override val z: Int) : GridPoint3D
+private data class StandardGridPoint3D(override val x: Int, override val y: Int, override val z: Int) : GridPoint3D {
+    override fun toString(): String = "GridPoint3D(x=$x, y=$y, z=$z)"
+}

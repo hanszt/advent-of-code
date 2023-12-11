@@ -27,6 +27,7 @@ class Launcher2023(inputDir: String) : Launcher {
         Day02("$inputDir/day02.txt"),
         Day03("$inputDir/day03.txt"),
         Day04("$inputDir/day04.txt"),
+        Day05("$inputDir/day05hzt.txt"),
         Day08("$inputDir/day08drillster.txt")
     )
     override fun challengeDays(): Iterable<ChallengeDay> = challengeDays.asIterable()
