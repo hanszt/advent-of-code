@@ -115,10 +115,26 @@ fun <T> Array<IntArray>.gridAsString(alignment: Int = 2, separator: String = "",
         .joinToString("\n") { it }
 
 inline fun <T, R> Array<Array<T>>.gridAsString(
-    alignment: Int = 2,
+    spacing: Int = 2,
     separator: String = "",
     crossinline selector: (T) -> R
-) = map { row -> row.joinToString(separator) { "%${alignment}s".format(selector(it)) } }.joinToString("\n") { it }
+) = map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }.joinToString("\n") { it }
 
-fun <T> Array<Array<T>>.gridAsString(alignment: Int = 2, separator: String = "") =
-    gridAsString(alignment, separator) { it }
+fun <T> Array<Array<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
+    gridAsString(spacing, separator) { it }
+
+fun <T> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
+    map { row -> row.joinToString(separator) { "%${spacing}d".format(it) } }.joinToString("\n") { it }
+
+fun <T, R> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "", selector: (T) -> R) =
+    map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }
+        .joinToString("\n") { it }
+
+@JvmName("stringListAsGrid")
+fun List<String>.gridAsString(spacing: Int = 2, separator: String = "") =
+    map { row -> row.asSequence().joinToString(separator) { "%${spacing}c".format(it) } }.joinToString("\n") { it }
+
+@JvmName("stringListAsGrid")
+fun <T> List<String>.gridAsString(spacing: Int = 2, separator: String = "", selector: (Char) -> T) =
+    map { row -> row.asSequence().joinToString(separator) { "%${spacing}s".format(selector(it)) } }
+        .joinToString("\n") { it }
