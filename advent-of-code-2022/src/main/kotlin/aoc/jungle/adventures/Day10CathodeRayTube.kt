@@ -1,5 +1,6 @@
 package aoc.jungle.adventures
 
+import aoc.utils.BLOCK
 import aoc.utils.ChallengeDay
 import java.io.File
 
@@ -24,7 +25,7 @@ class Day10CathodeRayTube(fileName: String) : ChallengeDay {
         for (y in crt.indices) {
             for (x in 0..<crt[0].size) {
                 val xR = xValues[x + crt[0].size * y]
-                crt[y][x] = if (x in xR - 1..xR + 1) '█' else '.'
+                crt[y][x] = if (x in xR - 1..xR + 1) BLOCK else '.'
                 cycle++
             }
         }

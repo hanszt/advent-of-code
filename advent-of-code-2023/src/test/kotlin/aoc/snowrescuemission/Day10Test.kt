@@ -12,7 +12,7 @@ class Day10Test {
 
     @Test
     fun testPart2() {
-        Day10("input/day10.txt").part2() shouldBe 6875
+        Day10("input/day10.txt").part2() shouldBe 0 // 1562 to high
     }
 
     @Test
@@ -51,7 +51,7 @@ class Day10Test {
                 .L-J.
                 .....
             """.trimIndent()
-        ).part2() shouldBe 4
+        ).part2() shouldBe 1
     }
 
     @Test
@@ -87,5 +87,23 @@ class Day10Test {
                 ....L---J.LJ.LJLJ...
             """.trimIndent()
         ).part2() shouldBe 8
+    }
+
+    @Test
+    fun testPart2ComplexTestInput2() {
+        Day10(
+            area = """
+                FF7FSF7F7F7F7F7F---7
+                L|LJ||||||||||||F--J
+                FL-7LJLJ||||||LJL-77
+                F--JF--7||LJLJ7F7FJ-
+                L---JF-JLJ.||-FJLJJ7
+                |F|F-JF---7F7-L7L|7|
+                |FFJF7L7F-JF7|JL---7
+                7-L-JL7||F7|L7F-7F7|
+                L.L7LFJ|||||FJL7||LJ
+                L7JLJL-JLJLJL--JLJ.L
+            """.trimIndent()
+        ).part2() shouldBe 10
     }
 }

@@ -1,8 +1,17 @@
 package aoc.snowrescuemission
 
+import aoc.utils.CYAN
 import aoc.utils.ChallengeDay
+import aoc.utils.PIPE_DOWN_LEFT
+import aoc.utils.PIPE_DOWN_RIGHT
+import aoc.utils.PIPE_LEFT_RIGHT
+import aoc.utils.PIPE_UP_DOWN
+import aoc.utils.PIPE_UP_LEFT
+import aoc.utils.PIPE_UP_RIGHT
+import aoc.utils.gridAsString
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.gridPoint2D
+import aoc.utils.withColor
 import java.io.File
 
 class Day10(
@@ -17,15 +26,40 @@ class Day10(
     override fun part1(): Int = bfs(start).last().toPath().size - 1
 
     override fun part2(): Int {
-        val mask = Array(grid.size) { IntArray(grid[0].length) }
+        val mask = grid.map { it.map(Char::toString).toTypedArray() }.toTypedArray()
         cyclesByDfs(start)
-            .map { it.toPath() }
+            .onEach { println(it.position) }
+            .map(Link::toPath)
             .maxBy(List<*>::size)
-            .onEach { println(it) }
-            .forEach { (x, y) -> mask[y][x] = 2 }
-        mask.forEach { row -> println(row.joinToString("")) }
+            .forEach { (x, y) -> mask[y][x] = grid[y][x].toPathCharacter().withColor(CYAN) }
 
-        return 0
+        println(mask.gridAsString(spacing = 1))
+
+        return countEnclosedTiles(mask)
+    }
+
+    private fun countEnclosedTiles(mask: Array<Array<String>>): Int {
+        var nrOfEnclosedTiles = 0
+        for (y in 1..<mask.lastIndex) {
+            val r = mask[y]
+            var isEnclosed = false
+            for (x in 1..<r.lastIndex) {
+                val prev = r[x - 1]
+                val tile = r[x]
+                val next = r[x + 1]
+            }
+        }
+        return nrOfEnclosedTiles
+    }
+
+    private fun Char.toPathCharacter() = when(this) {
+        'J' -> PIPE_UP_LEFT
+        'L' -> PIPE_UP_RIGHT
+        'F' -> PIPE_DOWN_RIGHT
+        '7' -> PIPE_DOWN_LEFT
+        '-' -> PIPE_LEFT_RIGHT
+        '|' -> PIPE_UP_DOWN
+        else -> this
     }
 
     private fun bfs(start: GridPoint2D): Sequence<Link> = sequence {
@@ -65,17 +99,17 @@ class Day10(
         }
     }
 
-    private fun Link.toPath(): List<GridPoint2D> {
-        var cur = this
-        val path = mutableListOf(position)
-        while (true) {
-            cur = cur.origin ?: break
-            path.addFirst(cur.position)
-        }
-        return path
-    }
+    private data class Link(val position: GridPoint2D, val origin: Link? = null) {
 
-    data class Link(val position: GridPoint2D, val origin: Link? = null)
+        fun toPath(): List<GridPoint2D> = buildList {
+            var cur = this@Link
+            add(cur.position)
+            while (true) {
+                cur = cur.origin ?: break
+                addFirst(cur.position)
+            }
+        }
+    }
 
     private fun graph(rows: List<String>): Map<GridPoint2D, Char> {
         val graph = mutableMapOf<GridPoint2D, Char>()

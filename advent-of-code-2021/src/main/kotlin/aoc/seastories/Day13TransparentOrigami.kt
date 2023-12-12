@@ -10,7 +10,7 @@ internal object Day13TransparentOrigami : ChallengeDay {
         return toGrid(coordinates, foldInstructions)
             .foldGrid(foldInstructions.first())
             .flatMap(Array<Char>::toList)
-            .count { it == '█' }
+            .count { it == BLOCK }
     }
 
     private fun getCoordinatesAndFoldInstructions(path: String): Pair<String, List<Pair<Char, Int>>> {
@@ -44,7 +44,7 @@ internal object Day13TransparentOrigami : ChallengeDay {
             .map { it.split(',').map(String::toInt) }
             .map { (x, y) -> x to y }
         val grid = Array(firstYFold * 2 + 1) { Array(firstXFold * 2 + 1) { '.' } }
-        points.forEach { (x, y) -> grid[y][x] = '█' }
+        points.forEach { (x, y) -> grid[y][x] = BLOCK }
         return grid
     }
 
