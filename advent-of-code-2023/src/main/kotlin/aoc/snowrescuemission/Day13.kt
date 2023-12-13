@@ -2,6 +2,7 @@ package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import aoc.utils.gridAsString
+import aoc.utils.rotated
 import java.io.File
 
 class Day13(
@@ -11,129 +12,60 @@ class Day13(
 
     private val patterns = text.splitToSequence("\n\n").map { Pattern(it.lines()) }
 
-    override fun part1(): Int = patterns.map(Pattern::findReflectionLine).sumOf(::toSummary)
-    override fun part2(): Int = patterns.map(Pattern::findReflectionLineWithSmudge).sumOf(::toSummary)
+    override fun part1(): Int = patterns.map(Pattern::findMirror).sumOf(::toSummary)
+    override fun part2(): Int = patterns.map(Pattern::findSmuggedMirror).sumOf(::toSummary)
 
-    private fun toSummary(it: ReflectionLine) = when (it) {
-        is HorReflectionLine -> it.yBefore * 100
-        is VerReflectionLine -> it.xBefore
+    private fun toSummary(mirror: Mirror) = when (mirror) {
+        is VerMirror -> mirror.x
+        is HorMirror -> mirror.y * 100
     }
 
     private data class Pattern(val grid: List<String>) {
 
-        private val mutableGrid = grid.map { it.toCharArray() }.toTypedArray()
+        fun findMirror(toMirrorPosition: List<String>.() -> Int? = { (1..<size).firstOrNull { isMirrorAt(it) } }): Mirror =
+            grid.toMirrorPosition()?.let(::HorMirror) ?: grid.rotated().toMirrorPosition()?.let(::VerMirror)
+            ?: error("No mirror found in ${grid.gridAsString()}")
 
-        fun findReflectionLine(): ReflectionLine =
-            findHorReflection()
-                ?: findVerReflection()
-                ?: error("No reflection line found in ${grid.gridAsString()}")
+        fun findSmuggedMirror(): Mirror = findMirror { (1..<size).firstOrNull { isSmudgedMirrorAt(it) } }
 
-        fun findReflectionLineWithSmudge(): ReflectionLine =
-            findHorReflectionWithSmudge()
-                ?: findVerReflectionWithSmudge()
-                ?: error("No reflection line found in ${grid.gridAsString()}")
-
-        fun findHorReflection(): HorReflectionLine? {
-            for (y in 1..<grid.size) {
-                val r = grid[y]
-                var yAbove = y - 1
-                var yBelow = y
-                var isHorReflectionLine = true
-                findReflection@ while (yAbove >= 0 && yBelow < grid.size) {
-                    for (x in r.indices) {
-                        if (grid[yAbove][x] != grid[yBelow][x]) {
-                            isHorReflectionLine = false
-                            break@findReflection
-                        }
+        private fun List<String>.isMirrorAt(y: Int): Boolean {
+            require(y >= 1)
+            var yAbove = y - 1
+            var yBelow = y
+            while (yAbove >= 0 && yBelow < size) {
+                for (x in this[y].indices) {
+                    if (this[yAbove][x] != this[yBelow][x]) {
+                        return false
                     }
-                    yAbove--
-                    yBelow++
                 }
-                if (isHorReflectionLine) {
-                    return HorReflectionLine(y, y + 1)
-                }
+                yAbove--
+                yBelow++
             }
-            return null
+            return true
         }
 
-        fun findVerReflection(): VerReflectionLine? {
-            for (x in 1..<grid[0].length) {
-                var xLeft = x - 1
-                var xRight = x
-                var isVertReflectionLine = true
-                findReflection@ while (xLeft >= 0 && xRight < grid[0].length) {
-                    for (y in grid.indices) {
-                        if (grid[y][xLeft] != grid[y][xRight]) {
-                            isVertReflectionLine = false
-                            break@findReflection
+        private fun List<String>.isSmudgedMirrorAt(y: Int): Boolean {
+            require(y >= 1)
+            var yAbove = y - 1
+            var yBelow = y
+            var smudges = 0
+            while (yAbove >= 0 && yBelow < size) {
+                for (x in this[y].indices) {
+                    if (this[yAbove][x] != this[yBelow][x]) {
+                        if (smudges > 1) {
+                            return false
                         }
+                        smudges++
                     }
-                    xLeft--
-                    xRight++
                 }
-                if (isVertReflectionLine) {
-                    return VerReflectionLine(x, x + 1)
-                }
+                yAbove--
+                yBelow++
             }
-            return null
+            return smudges == 1
         }
-
-        fun findHorReflectionWithSmudge(): HorReflectionLine? {
-            for (y in 1..<grid.size) {
-                val r = grid[y]
-                var yAbove = y - 1
-                var yBelow = y
-                var smudgeCount = 0
-                findReflection@ while (yAbove >= 0 && yBelow < grid.size) {
-                    for (x in r.indices) {
-                        if (mutableGrid[yAbove][x] != mutableGrid[yBelow][x]) {
-                            if (smudgeCount > 1) {
-                                smudgeCount = 0
-                                break@findReflection
-                            }
-                            smudgeCount++
-                        }
-                    }
-                    yAbove--
-                    yBelow++
-                }
-                if (smudgeCount == 1) {
-                    return HorReflectionLine(y, y + 1)
-                }
-            }
-            return null
-        }
-
-        fun findVerReflectionWithSmudge(): VerReflectionLine? {
-            for (x in 1..<grid[0].length) {
-                var xLeft = x - 1
-                var xRight = x
-                var smudgeCount = 0
-                findReflection@ while (xLeft >= 0 && xRight < grid[0].length) {
-                    for (y in grid.indices) {
-                        if (grid[y][xLeft] != grid[y][xRight]) {
-                            if (smudgeCount > 1) {
-                                smudgeCount = 0
-                                break@findReflection
-                            }
-                            smudgeCount++
-                        }
-                    }
-                    xLeft--
-                    xRight++
-                }
-                if (smudgeCount == 1) {
-                    return VerReflectionLine(x, x + 1)
-                }
-            }
-            return null
-        }
-
     }
 
-    private sealed interface ReflectionLine
-    private data class HorReflectionLine(val yBefore: Int, val yAfter: Int) : ReflectionLine
-    private data class VerReflectionLine(val xBefore: Int, val xAfter: Int) : ReflectionLine
-
-
+    private sealed interface Mirror
+    private data class HorMirror(val y: Int) : Mirror
+    private data class VerMirror(val x: Int) : Mirror
 }
