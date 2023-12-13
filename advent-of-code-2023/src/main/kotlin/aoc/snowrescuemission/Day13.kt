@@ -11,34 +11,29 @@ class Day13(
 
     private val patterns = text.splitToSequence("\n\n").map { Pattern(it.lines()) }
 
-    override fun part1(): Int = patterns.sumOf {
-        val line = it.findReflectionLine()
-        println("line = ${line}")
-        when (line) {
-            is HorReflectionLine -> line.yBefore * 100
-            is VerReflectionLine -> line.xBefore
-        }
-    }
+    override fun part1(): Int = patterns.map(Pattern::findReflectionLine).sumOf(::toSummary)
+    override fun part2(): Int = patterns.map(Pattern::findReflectionLineWithSmudge).sumOf(::toSummary)
 
-    override fun part2(): Int = patterns.sumOf {
-        val line = it
-            .fixSmudge()
-            .findReflectionLine()
-        println("line = ${line}")
-        when (line) {
-            is HorReflectionLine -> line.yBefore * 100
-            is VerReflectionLine -> line.xBefore
-        }
+    private fun toSummary(it: ReflectionLine) = when (it) {
+        is HorReflectionLine -> it.yBefore * 100
+        is VerReflectionLine -> it.xBefore
     }
 
     private data class Pattern(val grid: List<String>) {
 
-        fun findReflectionLine(withSmudge: Boolean = false): ReflectionLine =
-            findHorReflection(withSmudge)
-                ?: findVerReflection(withSmudge)
+        private val mutableGrid = grid.map { it.toCharArray() }.toTypedArray()
+
+        fun findReflectionLine(): ReflectionLine =
+            findHorReflection()
+                ?: findVerReflection()
                 ?: error("No reflection line found in ${grid.gridAsString()}")
 
-        fun findHorReflection(withSmudge: Boolean = false): HorReflectionLine? {
+        fun findReflectionLineWithSmudge(): ReflectionLine =
+            findHorReflectionWithSmudge()
+                ?: findVerReflectionWithSmudge()
+                ?: error("No reflection line found in ${grid.gridAsString()}")
+
+        fun findHorReflection(): HorReflectionLine? {
             for (y in 1..<grid.size) {
                 val r = grid[y]
                 var yAbove = y - 1
@@ -61,7 +56,7 @@ class Day13(
             return null
         }
 
-        fun findVerReflection(withSmudge: Boolean = false): VerReflectionLine? {
+        fun findVerReflection(): VerReflectionLine? {
             for (x in 1..<grid[0].length) {
                 var xLeft = x - 1
                 var xRight = x
@@ -83,8 +78,55 @@ class Day13(
             return null
         }
 
-        fun fixSmudge(): Pattern {
-            TODO()
+        fun findHorReflectionWithSmudge(): HorReflectionLine? {
+            for (y in 1..<grid.size) {
+                val r = grid[y]
+                var yAbove = y - 1
+                var yBelow = y
+                var smudgeCount = 0
+                findReflection@ while (yAbove >= 0 && yBelow < grid.size) {
+                    for (x in r.indices) {
+                        if (mutableGrid[yAbove][x] != mutableGrid[yBelow][x]) {
+                            if (smudgeCount > 1) {
+                                smudgeCount = 0
+                                break@findReflection
+                            }
+                            smudgeCount++
+                        }
+                    }
+                    yAbove--
+                    yBelow++
+                }
+                if (smudgeCount == 1) {
+                    return HorReflectionLine(y, y + 1)
+                }
+            }
+            return null
+        }
+
+        fun findVerReflectionWithSmudge(): VerReflectionLine? {
+            for (x in 1..<grid[0].length) {
+                var xLeft = x - 1
+                var xRight = x
+                var smudgeCount = 0
+                findReflection@ while (xLeft >= 0 && xRight < grid[0].length) {
+                    for (y in grid.indices) {
+                        if (grid[y][xLeft] != grid[y][xRight]) {
+                            if (smudgeCount > 1) {
+                                smudgeCount = 0
+                                break@findReflection
+                            }
+                            smudgeCount++
+                        }
+                    }
+                    xLeft--
+                    xRight++
+                }
+                if (smudgeCount == 1) {
+                    return VerReflectionLine(x, x + 1)
+                }
+            }
+            return null
         }
 
     }

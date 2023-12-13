@@ -35,7 +35,7 @@ class Day13Test {
 
     @Test
     fun testPart2() {
-        Day13("input/day13.txt").part2() shouldBe 27_502
+        Day13("input/day13.txt").part2() shouldBe 31_947
     }
 
 }
