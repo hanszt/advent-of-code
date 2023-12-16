@@ -95,6 +95,17 @@ private fun mapCapacity(expectedSize: Int): Int = when {
     else -> Int.MAX_VALUE
 }
 
+fun <T> Array<T>.swap(sourceIndex: Int, destIndex: Int) {
+    val temp = this[sourceIndex]
+    this[sourceIndex] = this[destIndex]
+    this[destIndex] = temp
+}
+
+fun CharArray.swap(sourceIndex: Int, destIndex: Int) {
+    val temp = this[sourceIndex]
+    this[sourceIndex] = this[destIndex]
+    this[destIndex] = temp
+}
 
 fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
 
