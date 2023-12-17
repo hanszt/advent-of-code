@@ -23,13 +23,9 @@ interface GridPoint2D {
     fun plusY(y: Int) = x by this.y + y
     fun toSignVector() = x.sign by y.sign
 
-    fun rot90L(times: Int): GridPoint2D = generateSequence(this) { gridPoint2D(it.y, -it.x) }
-        .take(times)
-        .last()
+    fun rot90L(): GridPoint2D = gridPoint2D(y, -x)
 
-    fun rot90R(times: Int): GridPoint2D = generateSequence(this) { gridPoint2D(-it.y, it.x) }
-        .take(times)
-        .last()
+    fun rot90R(): GridPoint2D = gridPoint2D(-y, x)
 
     infix fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
 
