@@ -107,11 +107,18 @@ inline fun <reified T> Array<Array<T>>.mirroredVertically(): Array<Array<T>> =
  *
  * Functions to convert a grid to a string representation
  */
-fun Array<IntArray>.gridAsString(alignment: Int = 2, separator: String = "") =
-    map { row -> row.joinToString(separator) { "%${alignment}d".format(it) } }.joinToString("\n") { it }
+fun Array<CharArray>.gridAsString(spacing: Int = 2, separator: String = "") =
+    map { row -> row.joinToString(separator) { "%${spacing}c".format(it) } }.joinToString("\n") { it }
 
-fun <T> Array<IntArray>.gridAsString(alignment: Int = 2, separator: String = "", selector: (Int) -> T) =
-    map { row -> row.joinToString(separator) { "%${alignment}s".format(selector(it)) } }
+fun <T> Array<CharArray>.gridAsString(spacing: Int = 2, separator: String = "", selector: (Char) -> T) =
+    map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }
+        .joinToString("\n") { it }
+
+fun Array<IntArray>.gridAsString(spacing: Int = 2, separator: String = "") =
+    map { row -> row.joinToString(separator) { "%${spacing}d".format(it) } }.joinToString("\n") { it }
+
+fun <T> Array<IntArray>.gridAsString(spacing: Int = 2, separator: String = "", selector: (Int) -> T) =
+    map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }
         .joinToString("\n") { it }
 
 inline fun <T, R> Array<Array<T>>.gridAsString(

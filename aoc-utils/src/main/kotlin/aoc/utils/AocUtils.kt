@@ -26,7 +26,7 @@ fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C
     return destination
 }
 
-operator fun <K, V : Any> Map<K, V>.invoke(key: K): V = get(key) ?: error("No value found for key: $key")
+operator fun <K, V : Any> Map<K, V>.invoke(key: K): V = getValue(key)
 
 inline fun <A, B, R> Pair<A, B>.mapFirst(transform: (A) -> R): Pair<R, B> = transform(first) to second
 

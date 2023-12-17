@@ -39,7 +39,7 @@ internal class Day05HydrothermalVentureTest {
             .countIntersections().also(::println) shouldBe 20_271
     }
 
-    private fun printGrid(grid: Array<IntArray>) = println(grid.gridAsString(alignment = 2) {
+    private fun printGrid(grid: Array<IntArray>) = println(grid.gridAsString(spacing = 2) {
         if (it > 0) it.toString().withColors(YELLOW, BROWN_BG)
         else ".".withColor(BROWN_BG)
     })
