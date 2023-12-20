@@ -17,7 +17,7 @@ class Day08(
         val (instructions, networkPart) = text.split("\n\n")
         this.instructions = instructions
 
-        network = networkPart.lines().associate { line ->
+        network = networkPart.lineSequence().associate { line ->
             val (label, lrLabel) = line.split(" = ")
             val (lLabel, rLabel) = lrLabel.slice(1..<lrLabel.lastIndex).split(", ")
             label to Node(label, lLabel, rLabel)

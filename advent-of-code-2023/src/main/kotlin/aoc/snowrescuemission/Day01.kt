@@ -17,11 +17,11 @@ class Day01(
         val digits = mutableListOf<Int>()
         for ((i, c) in line.withIndex()) {
             if (c.isDigit()) {
-                digits.add(c.digitToInt())
+                digits += c.digitToInt()
             }
             for ((j, name) in digitNames.withIndex()) {
                 if (line.substring(i).startsWith(name)) {
-                    digits.add(j + 1)
+                    digits += j + 1
                 }
             }
         }

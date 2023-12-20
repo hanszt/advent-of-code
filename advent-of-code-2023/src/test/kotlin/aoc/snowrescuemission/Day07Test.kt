@@ -5,33 +5,38 @@ import org.junit.jupiter.api.Test
 
 class Day07Test {
 
+    private companion object {
+        private val day07 = Day07("input/day07.txt")
+        private val testDay07 = Day07(
+            lines = listOf(
+                "32T3K 765",
+                "T55J5 684",
+                "KK677 28",
+                "KTJJT 220",
+                "QQQJA 483",
+            )
+        )
+    }
+
     @Test
     fun part1Test() {
-        Day07("input/day07.txt").part1() shouldBe 253_910_319
+        day07.part1() shouldBe 253_910_319
     }
 
     @Test
     fun part2Test() {
-        Day07("input/day07.txt").part2() shouldBe 254_083_736
+        day07.part2() shouldBe 254_083_736
     }
-
-    private val testInput = listOf(
-        "32T3K 765",
-        "T55J5 684",
-        "KK677 28",
-        "KTJJT 220",
-        "QQQJA 483",
-    )
 
     @Test
     fun testPart1Test() {
-        Day07(lines = testInput).part1() shouldBe 6_440
+        testDay07.part1() shouldBe 6_440
     }
 
 
     @Test
     fun testPart2Test() {
-        Day07(lines = testInput).part2() shouldBe 5_905
+        testDay07.part2() shouldBe 5_905
     }
 
 

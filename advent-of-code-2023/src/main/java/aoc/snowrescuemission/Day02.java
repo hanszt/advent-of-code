@@ -11,29 +11,26 @@ import static java.lang.Math.max;
 
 public final class Day02 implements ChallengeDay {
 
-    private final ListX<String> lines;
+    private final ListX<Game> games;
 
     public Day02(String fileName) {
-        this(FileX.of(fileName).readLines());
+        this.games = FileX.of(fileName).useLines(s -> s.map(Game::parse).toListX());
     }
 
     public Day02(ListX<String> lines) {
-        this.lines = lines;
+        this.games = lines.map(Game::parse);
     }
 
     @Override
     public Long part1() {
-        return lines
-                .map(Game::parse)
+        return games
                 .filter(Game::isPossible)
                 .longSumOf(Game::id);
     }
 
     @Override
     public Long part2() {
-        return lines
-                .map(Game::parse)
-                .longSumOf(Game::toPowerFewestCubes);
+        return games.longSumOf(Game::toPowerFewestCubes);
     }
 
     record Game(int id, List<String> rounds) {

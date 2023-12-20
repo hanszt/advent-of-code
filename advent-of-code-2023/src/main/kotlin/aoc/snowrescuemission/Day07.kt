@@ -6,17 +6,18 @@ import java.io.File
 
 class Day07(
     fileName: String? = null,
-    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No lines or fileName provided")
+    lines: List<String> = emptyList()
 ) : ChallengeDay {
+
+    private val hands = fileName?.let { File(it).useLines { s -> s.map(Hand::parse).toList() } }
+        ?: lines.map(Hand::parse)
 
     override fun part1(): Long = solve(compareBy(Hand::type).then(Hand::compareByStrengthPart1))
     override fun part2(): Long = solve(compareBy(Hand::typeWithJoker).then(Hand::compareByStrengthPart2))
 
-    private fun solve(handComparator: Comparator<Hand>): Long = lines.asSequence()
-        .map(Hand::parse)
-        .sortedWith(handComparator)
-        .withIndex()
-        .fold(0) { acc, (index, hand) ->
+    private fun solve(comparator: Comparator<Hand>): Long = hands
+        .sortedWith(comparator)
+        .foldIndexed(0) { index, acc, hand ->
             val rank = index + 1
             acc + (rank * hand.bid)
         }
