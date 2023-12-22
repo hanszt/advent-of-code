@@ -131,7 +131,7 @@ fun <T> Array<Array<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
     gridAsString(spacing, separator) { it }
 
 fun <T> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
-    map { row -> row.joinToString(separator) { "%${spacing}d".format(it) } }.joinToString("\n") { it }
+    map { row -> row.joinToString(separator) { "%${spacing}s".format(it) } }.joinToString("\n") { it }
 
 fun <T, R> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "", selector: (T) -> R) =
     map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }

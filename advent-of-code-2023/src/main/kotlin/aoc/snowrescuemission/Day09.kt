@@ -1,14 +1,13 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
+import aoc.utils.mapLines
 import aoc.utils.zipWithNextTo
 import java.io.File
 
 class Day09(fileName: String) : ChallengeDay {
 
-    private val input = File(fileName).useLines {
-        it.map { line -> line.splitToSequence(' ').map(String::toInt) }.toList()
-    }
+    private val input = File(fileName).mapLines { it.splitToSequence(' ').map(String::toInt) }
 
     override fun part1(): Int = input.sumOf { it.extrapolate { next -> addLast(last() + next.last()) }.last() }
     override fun part2(): Int = input.sumOf { it.extrapolate { next -> addFirst(first() - next.first()) }.first() }

@@ -12,7 +12,7 @@ class Day10Test {
 
     @Test
     fun testPart2() {
-        Day10("input/day10.txt").part2() shouldBe -1 // 1562 to high
+        Day10("input/day10.txt").part2() shouldBe 471
     }
 
     @Test

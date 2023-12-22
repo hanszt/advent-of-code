@@ -18,7 +18,9 @@ import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
 import static java.util.function.Predicate.not;
 
 /**
- * Credits to Angelo Wentzel
+ * Credits to Angelo Wentzler
+ *
+ * @see <a href="https://www.linkedin.com/in/angelowentzler/?originalSubdomain=nl"></a>
  *
  * @see <a href="https://adventofcode.com/2022/day/15">Day 15: Beacon exclusion zone</a>
  */

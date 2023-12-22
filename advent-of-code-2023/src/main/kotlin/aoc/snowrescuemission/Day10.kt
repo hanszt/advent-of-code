@@ -8,6 +8,7 @@ import aoc.utils.PIPE_LEFT_RIGHT
 import aoc.utils.PIPE_UP_DOWN
 import aoc.utils.PIPE_UP_LEFT
 import aoc.utils.PIPE_UP_RIGHT
+import aoc.utils.YELLOW_BG
 import aoc.utils.gridAsString
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.gridPoint2D
@@ -19,40 +20,60 @@ class Day10(
     area: String = File(fileName ?: error("No fileName or text provided")).readText()
 ) : ChallengeDay {
 
+    private companion object {
+        private const val START_CHAR = 'S'
+        private const val ENCLOSED = ' '
+        val pathComponents =
+            setOf(PIPE_UP_DOWN, PIPE_UP_RIGHT, PIPE_UP_LEFT, PIPE_LEFT_RIGHT, PIPE_DOWN_LEFT, PIPE_DOWN_RIGHT, START_CHAR)
+    }
+
     private val grid = area.lines()
     private val graph = graph(grid)
-    private val start = graph.entries.first { (_, c) -> c == 'S' }.key
+    private val start = graph.entries.first { (_, c) -> c == START_CHAR }.key
 
     override fun part1(): Int = bfs(start).last().toPath().size - 1
 
     override fun part2(): Int {
-        val mask = grid.map { it.map(Char::toString).toTypedArray() }.toTypedArray()
+        val mask = grid.map { CharArray(it.length) { '.' } }.toTypedArray()
         cyclesByDfs(start)
-            .onEach { println(it.position) }
             .map(Link::toPath)
             .maxBy(List<*>::size)
-            .forEach { (x, y) -> mask[y][x] = grid[y][x].toPathCharacter().withColor(CYAN) }
-
-        println(mask.gridAsString(spacing = 1))
-
-        return countEnclosedTiles(mask)
+            .forEach { (x, y) -> mask[y][x] = grid[y][x].toPathCharacter() }
+        return countEnclosedTiles(mask).also { println(mask.toColoredMap()) }
     }
 
-    private fun countEnclosedTiles(mask: Array<Array<String>>): Int {
+    private fun Array<CharArray>.toColoredMap(): String = map { row ->
+        row.map {
+            when (it) {
+                in pathComponents -> it.withColor(CYAN)
+                ENCLOSED -> it.withColor(YELLOW_BG)
+                else -> it.toString()
+            }
+        }
+    }.gridAsString(spacing = 1)
+
+    private fun countEnclosedTiles(mask: Array<CharArray>): Int {
+        // Included when looking horizontally below middle
+        val downConnected = setOf(PIPE_UP_DOWN, PIPE_DOWN_LEFT, PIPE_DOWN_RIGHT)
+        val lowerWallTiles = if (startDownConnected()) downConnected.plus(START_CHAR) else downConnected
         var nrOfEnclosedTiles = 0
         for (y in 1..<mask.lastIndex) {
-            val r = mask[y]
-            var isEnclosed = false
-            for (x in 1..<r.lastIndex) {
-                val prev = r[x - 1]
-                val tile = r[x]
-                val next = r[x + 1]
+            val row = mask[y]
+            for (x in 1..<row.lastIndex) {
+                val c = row[x]
+                if (c !in pathComponents) {
+                    val isEnclosed = (x..<row.size).count { row[it] in lowerWallTiles } % 2 != 0
+                    if (isEnclosed) {
+                        mask[y][x] = ENCLOSED
+                        nrOfEnclosedTiles++
+                    }
+                }
             }
         }
         return nrOfEnclosedTiles
     }
 
-    private fun Char.toPathCharacter() = when(this) {
+    private fun Char.toPathCharacter() = when (this) {
         'J' -> PIPE_UP_LEFT
         'L' -> PIPE_UP_RIGHT
         'F' -> PIPE_DOWN_RIGHT
@@ -61,6 +82,9 @@ class Day10(
         '|' -> PIPE_UP_DOWN
         else -> this
     }
+
+    private fun startDownConnected(): Boolean =
+        grid.getOrNull(start.y + 1)?.getOrNull(start.x)?.toPathCharacter() in setOf(PIPE_UP_DOWN, PIPE_UP_LEFT, PIPE_UP_RIGHT)
 
     private fun bfs(start: GridPoint2D): Sequence<Link> = sequence {
         val queue = mutableListOf(Link(start))
@@ -92,8 +116,7 @@ class Day10(
                     if (neighbor == this@Day10.start) {
                         yield(cur)
                     }
-                    val link = Link(neighbor, cur)
-                    stack.addLast(link)
+                    stack.addLast(Link(neighbor, cur))
                 }
             }
         }
@@ -111,33 +134,28 @@ class Day10(
         }
     }
 
-    private fun graph(rows: List<String>): Map<GridPoint2D, Char> {
-        val graph = mutableMapOf<GridPoint2D, Char>()
+    private fun graph(rows: List<String>): Map<GridPoint2D, Char> = buildMap {
         for ((y, row) in rows.withIndex()) {
             for ((x, c) in row.withIndex()) {
-                val position = gridPoint2D(x, y)
-                graph[position] = c
+                this[gridPoint2D(x, y)] = c
             }
         }
-        return graph
     }
 
-    private fun GridPoint2D.neighbors(): Set<GridPoint2D> {
-        val neighbors = mutableSetOf<GridPoint2D>()
+    private fun GridPoint2D.neighbors(): Set<GridPoint2D> = buildSet {
         for (dir in GridPoint2D.orthoDirs) {
             val nx = x + dir.x
             val ny = y + dir.y
             grid.getOrNull(ny)?.getOrNull(nx)?.let {
                 if (it isNeighbor dir) {
-                    neighbors += gridPoint2D(nx, ny)
+                    this += gridPoint2D(nx, ny)
                 }
             }
         }
-        return neighbors
     }
 
     private infix fun Char.isNeighbor(dir: GridPoint2D) = when {
-        this == 'S' -> true
+        this == START_CHAR -> true
         dir.x == 1 -> this == '-' || this == '7' || this == 'J'
         dir.x == -1 -> this == '-' || this == 'F' || this == 'L'
         dir.y == 1 -> this == '|' || this == 'L' || this == 'J'
