@@ -10,6 +10,7 @@ import aoc.utils.PIPE_UP_LEFT
 import aoc.utils.PIPE_UP_RIGHT
 import aoc.utils.YELLOW_BG
 import aoc.utils.gridAsString
+import aoc.utils.linkedListOf
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.gridPoint2D
 import aoc.utils.withColor
@@ -87,8 +88,8 @@ class Day10(
         grid.getOrNull(start.y + 1)?.getOrNull(start.x)?.toPathCharacter() in setOf(PIPE_UP_DOWN, PIPE_UP_LEFT, PIPE_UP_RIGHT)
 
     private fun bfs(start: GridPoint2D): Sequence<Link> = sequence {
-        val queue = mutableListOf(Link(start))
         val visited = mutableSetOf(start)
+        val queue = linkedListOf(Link(start))
         while (queue.isNotEmpty()) {
             val cur = queue.removeFirst()
             val neighbors = cur.position.neighbors()

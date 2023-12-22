@@ -1,10 +1,10 @@
 package aoc.seastories
 
 import aoc.utils.allPathsByDfs
+import aoc.utils.linkedListOf
 import aoc.utils.model.Node
 import aoc.utils.toBiDiGraph
 import java.io.File
-import java.util.*
 
 
 internal object Day12PassagePathing : ChallengeDay {
@@ -31,8 +31,7 @@ internal object Day12PassagePathing : ChallengeDay {
     private fun findPathsByBfs(src: Node<Cave>, goal: Node<Cave>, caveAllowedToVisitTwice: Node<Cave>): Set<String> {
         val uniquePaths = mutableSetOf<String>()
 
-        val pathsQueue: Queue<List<Node<Cave>>> = LinkedList()
-        pathsQueue.offer(mutableListOf(src))
+        val pathsQueue = linkedListOf(listOf(src))
         while (pathsQueue.isNotEmpty()) {
             val currentPath = pathsQueue.poll()
             val currentCave = currentPath.last()

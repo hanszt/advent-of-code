@@ -1,5 +1,6 @@
 package aoc.utils
 
+import java.util.LinkedList
 import kotlin.math.abs
 
 val oneOrMoreWhiteSpaces = "\\s+".toRegex()
@@ -12,6 +13,8 @@ val CharSequence.group: Map<Char, List<Char>> get() = groupBy { it }
 val <T> Iterable<T>.grouping: Grouping<T, T> get() = groupingBy { it }
 val <T> Sequence<T>.grouping: Grouping<T, T> get() = groupingBy { it }
 val CharSequence.grouping: Grouping<Char, Char> get() = groupingBy { it }
+
+fun <T> linkedListOf(first: T): LinkedList<T> = LinkedList<T>().apply { add(first) }
 
 fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C, mapper: (T, T) -> R): C {
     val iterator = iterator()
