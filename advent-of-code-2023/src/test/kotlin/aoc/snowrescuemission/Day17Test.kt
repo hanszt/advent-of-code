@@ -5,9 +5,13 @@ import org.junit.jupiter.api.Test
 
 class Day17Test {
 
+    private companion object {
+        private val day17 = Day17("input/day17.txt")
+    }
+
     @Test
     fun testPart1() {
-        Day17().part1() shouldBe 0
+        day17.part1() shouldBe 0
     }
 
     @Test
@@ -31,7 +35,7 @@ class Day17Test {
 
     @Test
     fun testPart2() {
-        Day17().part2() shouldBe 0
+        day17.part2() shouldBe 0
     }
 
 }

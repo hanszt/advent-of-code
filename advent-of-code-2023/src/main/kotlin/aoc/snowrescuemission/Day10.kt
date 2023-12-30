@@ -24,8 +24,9 @@ class Day10(
     private companion object {
         private const val START_CHAR = 'S'
         private const val ENCLOSED = ' '
-        val pathComponents =
-            setOf(PIPE_UP_DOWN, PIPE_UP_RIGHT, PIPE_UP_LEFT, PIPE_LEFT_RIGHT, PIPE_DOWN_LEFT, PIPE_DOWN_RIGHT, START_CHAR)
+        val pathComponents = setOf(
+            PIPE_UP_DOWN, PIPE_UP_RIGHT, PIPE_UP_LEFT, PIPE_LEFT_RIGHT, PIPE_DOWN_LEFT, PIPE_DOWN_RIGHT, START_CHAR
+        )
     }
 
     private val grid = area.lines()
@@ -84,8 +85,9 @@ class Day10(
         else -> this
     }
 
-    private fun startDownConnected(): Boolean =
-        grid.getOrNull(start.y + 1)?.getOrNull(start.x)?.toPathCharacter() in setOf(PIPE_UP_DOWN, PIPE_UP_LEFT, PIPE_UP_RIGHT)
+    private fun startDownConnected(): Boolean = grid.getOrNull(start.y + 1)
+        ?.getOrNull(start.x)
+        ?.toPathCharacter() in setOf(PIPE_UP_DOWN, PIPE_UP_LEFT, PIPE_UP_RIGHT)
 
     private fun bfs(start: GridPoint2D): Sequence<Link> = sequence {
         val visited = mutableSetOf(start)

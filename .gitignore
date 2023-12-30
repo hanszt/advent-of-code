@@ -45,3 +45,8 @@ Thumbs.db
 # IDE generated files #
 ######################
 target
+
+# Dart #
+########
+.dart_tool/
+

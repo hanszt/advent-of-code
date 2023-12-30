@@ -16,6 +16,11 @@ val CharSequence.grouping: Grouping<Char, Char> get() = groupingBy { it }
 
 fun <T> linkedListOf(first: T): LinkedList<T> = LinkedList<T>().apply { add(first) }
 
+fun sum(add: (Int) -> Int): Int {
+    var initial = 0
+    return add(initial)
+}
+
 fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C, mapper: (T, T) -> R): C {
     val iterator = iterator()
     if (iterator.hasNext()) {

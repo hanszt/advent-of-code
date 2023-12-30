@@ -10,8 +10,7 @@ class Day03(
     private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No lines or fileName provided")
 ) : ChallengeDay {
 
-    override fun part1(): Int {
-        var sum = 0
+    override fun part1(): Int = sequence {
         for ((y, line) in lines.withIndex()) {
             var x = 0
             while (x < line.length) {
@@ -22,46 +21,44 @@ class Day03(
                         cdx = line.getOrNull(++x) ?: break
                     }
                 }
-                sum += toPartNrOrZero(digit, y, x)
+                yield(toPartNrOrZero(digit, y, x))
                 x++
             }
         }
-        return sum
-    }
+    }.sum()
 
     private fun toPartNrOrZero(digit: String, y: Int, x: Int): Int {
         for (i in digit.indices) {
             for (dir in GridPoint2D.kingDirs) {
-                lines.getOrNull(y + dir.y)?.getOrNull(x - digit.length + i + dir.x)?.let {
-                    if (!it.isLetterOrDigit() && it != '.') {
-                        return digit.toInt()
+                lines.getOrNull(y + dir.y)
+                    ?.getOrNull(x - digit.length + i + dir.x)
+                    ?.let {
+                        if (!it.isLetterOrDigit() && it != '.') {
+                            return digit.toInt()
+                        }
                     }
-                }
             }
         }
         return 0
     }
 
 
-    override fun part2(): Long {
-        var sum = 0L
+    override fun part2(): Int = sequence {
         for ((y, line) in lines.withIndex()) {
             for ((x, c) in line.withIndex()) {
                 if (c == '*') {
-                    val locations = findAdjacentNrs(x, y)
+                    val locations = findAdjacentNrLocations(x, y)
                     val isGear = locations.size == 2
                     if (isGear) {
                         val (pos1, pos2) = locations
-                        sum += (toNr(pos1) * toNr(pos2))
+                        yield(toNr(pos1) * toNr(pos2))
                     }
                 }
             }
         }
-        return sum
-    }
+    }.sum()
 
-    private fun findAdjacentNrs(x: Int, y: Int): MutableList<GridPoint2D> {
-        val positions = mutableListOf<GridPoint2D>()
+    private fun findAdjacentNrLocations(x: Int, y: Int): List<GridPoint2D> = buildList {
         val nrs = HashSet<Int>()
         for (dir in GridPoint2D.kingDirs) {
             val dx = x + dir.x
@@ -71,11 +68,10 @@ class Day03(
                 val nr = toNr(gridPoint2D)
                 if (nr !in nrs) {
                     nrs.add(nr)
-                    positions += gridPoint2D
+                    this += gridPoint2D
                 }
             }
         }
-        return positions
     }
 
     internal fun toNr(pos: GridPoint2D): Int = buildString {
