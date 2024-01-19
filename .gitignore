@@ -42,11 +42,15 @@ help
 ehthumbs.db
 Thumbs.db
 
-# IDE generated files #
-######################
+# build result #
+################
 target
 
 # Dart #
 ########
 .dart_tool/
+
+# Rust #
+########
+Cargo.lock
 
