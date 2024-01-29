@@ -1,5 +1,6 @@
 package aoc.jungle.adventures;
 
+import aoc.utils.AocUtils;
 import aoc.utils.ChallengeDay;
 import org.hzt.utils.collections.ListX;
 import org.hzt.utils.io.FileX;
@@ -14,7 +15,7 @@ public class Day01CalorieCounting implements ChallengeDay {
     private final ListX<String> foods;
 
     public Day01CalorieCounting(String fileName) {
-        this.foods = FileX.of(fileName).readTextX().split("\n\n");
+        this.foods = FileX.of(fileName).readTextX().split(AocUtils.doubleLineSeparator);
     }
 
     @Override

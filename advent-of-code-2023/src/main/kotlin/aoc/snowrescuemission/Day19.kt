@@ -1,5 +1,6 @@
 package aoc.snowrescuemission
 
+import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
 import aoc.utils.mapLines
 import java.io.File
@@ -13,7 +14,7 @@ class Day19(
     private val parts: List<Part>
 
     init {
-        val (workFlows, ratings) = text.split("\n\n")
+        val (workFlows, ratings) = text.split(AocUtils.doubleLineSeparator)
         this.workFlows = workFlows.mapLines { WorkFlow.parse(it) }
         this.parts = ratings.mapLines { Part.parse(it) }
     }

@@ -1,5 +1,6 @@
 package aoc.jungle.adventures;
 
+import aoc.utils.AocUtils;
 import aoc.utils.ChallengeDay;
 import org.hzt.utils.collections.ListX;
 import org.hzt.utils.collections.primitives.LongMutableList;
@@ -19,7 +20,7 @@ public class Day11MonkeyInTheMiddle implements ChallengeDay {
     private final ListX<String> monkeysAsString;
 
     public Day11MonkeyInTheMiddle(String fileName) {
-        monkeysAsString = FileX.of(fileName).readTextX().split("\n\n");
+        monkeysAsString = FileX.of(fileName).readTextX().split(AocUtils.doubleLineSeparator);
     }
 
     @NotNull

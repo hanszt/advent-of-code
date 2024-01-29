@@ -1,5 +1,6 @@
 package aoc.snowrescuemission
 
+import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
 import aoc.utils.invoke
 import aoc.utils.lcm
@@ -14,7 +15,7 @@ class Day08(
     private val network: Map<String, Node>
 
     init {
-        val (instructions, networkPart) = text.split("\n\n")
+        val (instructions, networkPart) = text.split(AocUtils.doubleLineSeparator)
         this.instructions = instructions
 
         network = networkPart.lineSequence().associate { line ->

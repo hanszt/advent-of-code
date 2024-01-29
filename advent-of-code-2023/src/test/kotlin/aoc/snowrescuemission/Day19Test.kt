@@ -38,6 +38,6 @@ class Day19Test {
 
     @Test
     fun testPart2() {
-
+        Day19("input/day19.txt").part1() shouldBe 0
     }
 }

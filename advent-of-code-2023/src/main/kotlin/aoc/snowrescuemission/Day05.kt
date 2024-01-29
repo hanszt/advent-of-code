@@ -1,5 +1,6 @@
 package aoc.snowrescuemission
 
+import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
 import java.io.File
 
@@ -10,7 +11,7 @@ class Day05(fileName: String) : ChallengeDay {
 
     init {
         val text = File(fileName).readText()
-        val input = text.split("\n\n")
+        val input = text.split(AocUtils.doubleLineSeparator)
         seedSequence = input[0].substring("seeds: ".length).splitToSequence(' ').map(String::toLong)
         mappingTexts = input.drop(1)
     }

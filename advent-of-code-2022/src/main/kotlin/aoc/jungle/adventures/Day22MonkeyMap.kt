@@ -1,5 +1,6 @@
 package aoc.jungle.adventures
 
+import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
 import aoc.utils.grouping
 import aoc.utils.invoke
@@ -30,7 +31,7 @@ class Day22MonkeyMap(
     private val instructions: String
 
     init {
-        val (grid, instructionLines) = text.split("\n\n")
+        val (grid, instructionLines) = text.split(AocUtils.doubleLineSeparator)
         this.instructions = instructionLines
         this.grid = grid.lines()
     }
