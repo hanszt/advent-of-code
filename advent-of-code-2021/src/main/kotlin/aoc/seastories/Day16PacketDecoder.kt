@@ -5,10 +5,12 @@ import aoc.utils.min
 import java.io.File
 
 // Credits to Turkey dev
-internal class Day16PacketDecoder(private val inputPath: String) : ChallengeDay {
+internal class Day16PacketDecoder(inputPath: String) : ChallengeDay {
 
-    override fun part1() = File(inputPath).readText().hexToBinaryPacket().toVersionNrSum()
-    override fun part2() = File(inputPath).readText().hexToBinaryPacket().parseBinary()
+    private val text = File(inputPath).readText()
+
+    override fun part1() = text.hexToBinaryPacket().toVersionNrSum()
+    override fun part2() = text.hexToBinaryPacket().parseBinary()
 
     class Packet(val binary: String) {
 

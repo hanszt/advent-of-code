@@ -2,31 +2,28 @@ package aoc.seastories
 
 import java.io.File
 
-internal class Day03BinaryDiagnostic(private val filePath: String) : ChallengeDay {
+internal class Day03BinaryDiagnostic(filePath: String) : ChallengeDay {
 
-    override fun part1(): Int = File(filePath).readLines()
-        .map(String::toCharArray)
-        .calculatePowerConsumption()
+    private val lines = File(filePath).readLines()
 
-    private fun List<CharArray>.calculatePowerConsumption(): Int {
+    override fun part1(): Int = lines.calculatePowerConsumption()
+    override fun part2(): Int = lines.run { toLiftSupportRating() * toCo2ScrubbingRating() }
+
+    private fun List<String>.calculatePowerConsumption(): Int {
         val gammaRateBinary = sumOnesBinaryDigits().map { if (it * 2 > size) '1' else '0' }
         val gammaRate = gammaRateBinary.joinToString("").toInt(radix = 2)
         val epsilonRate = gammaRateBinary.map { if (it == '1') '0' else '1' }.joinToString("").toInt(radix = 2)
         return gammaRate * epsilonRate
     }
 
-    private fun List<CharArray>.sumOnesBinaryDigits(): List<Int> = map { binary -> binary.map(Char::digitToInt) }
+    private fun List<String>.sumOnesBinaryDigits(): List<Int> = map { binary -> binary.map(Char::digitToInt) }
         .reduce { result, curBinary -> result.indices.map { result[it] + curBinary[it]} }
 
-    override fun part2(): Int = File(filePath).readLines()
-        .map(String::toCharArray)
-        .run { toLiftSupportRating() * toCo2ScrubbingRating() }
+    private fun List<String>.toLiftSupportRating() = toMutableList().calculate { ones, zeros -> ones >= zeros }
 
-    private fun List<CharArray>.toLiftSupportRating() = toMutableList().calculate { ones, zeros -> ones >= zeros }
+    private fun List<String>.toCo2ScrubbingRating() = toMutableList().calculate { ones, zeros -> ones < zeros }
 
-    private fun List<CharArray>.toCo2ScrubbingRating() = toMutableList().calculate { ones, zeros -> ones < zeros }
-
-    private inline fun MutableList<CharArray>.calculate(biPredicate: (Int, Int) -> Boolean): Int {
+    private inline fun MutableList<String>.calculate(biPredicate: (Int, Int) -> Boolean): Int {
         var index = 0
         while (size > 1) {
             val sumAtIndex = sumOnesBinaryDigits()[index]
@@ -34,6 +31,6 @@ internal class Day03BinaryDiagnostic(private val filePath: String) : ChallengeDa
             removeIf { it[index] != binaryDigit }
             index++
         }
-        return first().joinToString("").toInt(radix = 2)
+        return first().toInt(radix = 2)
     }
 }

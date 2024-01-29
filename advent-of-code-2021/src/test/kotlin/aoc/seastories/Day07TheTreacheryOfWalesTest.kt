@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test
 
 internal class Day07TheTreacheryOfWalesTest {
 
-    private val day07TheTreacheryOfWalesTestInput = Day07TheTreacheryOfWales("input/day7test.txt")
-    private val day07TheTreacheryOfWales = Day07TheTreacheryOfWales("input/day7.txt")
+    private companion object {
+        private val day07TheTreacheryOfWalesTestInput = Day07TheTreacheryOfWales("input/day7test.txt")
+        private val day07TheTreacheryOfWales = Day07TheTreacheryOfWales("input/day7.txt")
+    }
 
     @Test
     fun `part 1 test input`() = assertEquals(37, day07TheTreacheryOfWalesTestInput.part1())

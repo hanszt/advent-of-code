@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test
 
 internal class Day16PacketDecoderTest {
 
-    private val day16PacketDecoderTestInput = Day16PacketDecoder("input/day16test.txt")
-    private val day16PacketDecoder = Day16PacketDecoder("input/day16.txt")
+    private companion object {
+        private val day16PacketDecoderTestInput = Day16PacketDecoder("input/day16test.txt")
+        private val day16PacketDecoder = Day16PacketDecoder("input/day16.txt")
+    }
 
     @Test
     fun `part 1 test input`() = assertEquals(16, day16PacketDecoderTestInput.part1())

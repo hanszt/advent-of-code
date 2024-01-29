@@ -18,7 +18,7 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
     private val snailNrs = File(inputPath).readLines().map(::toSnailNr)
 
     override fun part1(): Int = snailNrs
-        .reduce(SnailNr::plus)
+        .reduce { snailNr, other -> snailNr + other }
         .magnitude()
 
     override fun part2(): Int = snailNrs.findLargestSum()
@@ -111,22 +111,22 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
 
     companion object {
 
-        fun toSnailNr(snailNrAsString: String): SnailNr {
+        fun toSnailNr(input: String): SnailNr {
             var cursor = 0
             fun parse(): SnailNr {
-                if (snailNrAsString[cursor] == '[') {
+                if (input[cursor] == '[') {
                     cursor++
                     val left = parse()
-                    check(snailNrAsString[cursor++] == ',')
+                    check(input[cursor++] == ',')
                     val right = parse()
-                    check(snailNrAsString[cursor++] == ']')
+                    check(input[cursor++] == ']')
                     return Pair(left, right)
                 }
                 val start = cursor
-                while (snailNrAsString[cursor] in '0'..'9') cursor++
-                return Regular(snailNrAsString.substring(start, cursor).toInt())
+                while (input[cursor] in '0'..'9') cursor++
+                return Regular(input.substring(start, cursor).toInt())
             }
-            return parse().also { check(cursor == snailNrAsString.length) }
+            return parse().also { check(cursor == input.length) }
         }
     }
 }

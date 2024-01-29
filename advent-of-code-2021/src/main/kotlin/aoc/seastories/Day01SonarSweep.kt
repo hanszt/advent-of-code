@@ -2,14 +2,15 @@ package aoc.seastories
 
 import java.io.File
 
-internal class Day01SonarSweep(private val filePath: String) : ChallengeDay {
+internal class Day01SonarSweep(filePath: String) : ChallengeDay {
 
-    override fun part1() = File(filePath).readLines().map(String::toInt).toDepthIncreaseCount()
+    private val depths = File(filePath).readLines().map(String::toInt)
 
-    override fun part2() = File(filePath).readLines().map(String::toInt).toWindowIncreaseCount()
+    override fun part1() = depths.toDepthIncreaseCount()
+    override fun part2() = depths.toWindowIncreaseCount()
+
     private fun List<Int>.toDepthIncreaseCount(): Int =
         (0 until lastIndex).count { this[it] < this[it + 1] }
-
 
     private fun List<Int>.toWindowIncreaseCount(): Int = (0 until size - 3).count {
         val window1 = this[it] + this[it + 1] + this[it + 2]

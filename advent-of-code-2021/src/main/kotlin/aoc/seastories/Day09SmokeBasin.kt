@@ -5,12 +5,15 @@ import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.toIntGrid
 import java.io.File
 
-internal class Day09SmokeBasin(private val inputPath: String) : ChallengeDay {
+internal class Day09SmokeBasin(inputPath: String) : ChallengeDay {
 
-    override fun part1() = File(inputPath).readLines().toIntGrid(Char::digitToInt).toLowPoints().sumOf { (_, height) -> height + 1 }
+    private val grid = File(inputPath).readLines().toIntGrid(Char::digitToInt)
 
-    override fun part2() = File(inputPath).readLines().toIntGrid(Char::digitToInt).findBassinSizes().sortedDescending()
-        .slice(0 ..< 3).reduce { thisSize, otherSize -> thisSize * otherSize }
+    override fun part1() = grid.toLowPoints().sumOf { (_, height) -> height + 1 }
+    override fun part2() = grid.findBassinSizes()
+        .sortedDescending()
+        .slice(0 ..< 3)
+        .reduce { thisSize, otherSize -> thisSize * otherSize }
 
     private fun Array<IntArray>.findBassinSizes() =
         toLowPoints().map { (lowPoint) ->

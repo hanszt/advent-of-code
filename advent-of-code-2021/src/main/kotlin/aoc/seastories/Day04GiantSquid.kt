@@ -6,26 +6,34 @@ import aoc.utils.splitByBlankLine
 import aoc.utils.toIntGrid
 import java.io.File
 
-internal class Day04GiantSquid(private val inputPath: String) : ChallengeDay {
+internal class Day04GiantSquid(inputPath: String) : ChallengeDay {
+
+    private val boards: List<Array<IntArray>>
+    private val allNrsToBeDrawn: List<Int>
+
+    init {
+        val (boards, allNrsToDrawList) = File(inputPath).toBoardsAndNrsToDrawList()
+        this.allNrsToBeDrawn = allNrsToDrawList
+        this.boards = boards
+
+    }
 
     override fun part1(): Int {
-        val (boards, allNrsToDrawList) = File(inputPath).toBoardsAndNrsToDrawList()
-        val drawnNrs = allNrsToDrawList.slice(0..3).toMutableList()
+        val drawnNrs = allNrsToBeDrawn.slice(0..3).toMutableList()
         var firstWinning: Array<IntArray> = emptyArray()
         while (firstWinning.isEmpty()) {
-            drawnNrs.add(allNrsToDrawList[drawnNrs.size])
+            drawnNrs.add(allNrsToBeDrawn[drawnNrs.size])
             firstWinning = boards.firstOrNull { it.isWinningBoard(drawnNrs) } ?: emptyArray()
         }
         return firstWinning.sumUnmarkedNrs(drawnNrs) * drawnNrs.last()
     }
 
     override fun part2(): Int {
-        val (boards, allNrToBeDrawn) = File(inputPath).toBoardsAndNrsToDrawList()
-        val drawnNrs = allNrToBeDrawn.slice(0..3).toMutableList()
+        val drawnNrs = allNrsToBeDrawn.slice(0..3).toMutableList()
         val boardsInGame = boards.toMutableList()
         val boardsWon = LinkedHashSet<Array<IntArray>>()
         while (boardsWon.size != boards.size) {
-            drawnNrs.add(allNrToBeDrawn[drawnNrs.size])
+            drawnNrs.add(allNrsToBeDrawn[drawnNrs.size])
             boardsInGame.filterTo(boardsWon) { it.isWinningBoard(drawnNrs) }
             boardsInGame.removeAll(boardsWon)
         }

@@ -5,13 +5,15 @@ import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
 import kotlin.math.max
 
-internal class Day05HydrothermalVenture(private val filePath: String) : ChallengeDay {
+internal class Day05HydrothermalVenture(filePath: String) : ChallengeDay {
 
-    override fun part1(): Int = File(filePath).useLines { it.toVentureLines() }
+    private val lines = File(filePath).useLines { it.toVentureLines() }
+
+    override fun part1(): Int = lines
         .filter { it.isHorizontal() or it.isVertical() }.asGrid()
         .countIntersections()
 
-    override fun part2(): Int = File(filePath).useLines { it.toVentureLines() }.asGrid().countIntersections()
+    override fun part2(): Int = lines.asGrid().countIntersections()
 
     companion object {
         fun Sequence<String>.toVentureLines() = map(::toBeginAndEndPoint).map { (begin, end) -> Line(begin, end) }.toSet()
