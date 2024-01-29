@@ -1,25 +1,28 @@
 package aoc.seastories
 
-import aoc.seastories.Day16PacketDecoder.hexToBinaryPacket
+import aoc.seastories.Day16PacketDecoder.Companion.hexToBinaryPacket
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class Day16PacketDecoderTest {
 
-    @Test
-    fun `part 1 test input`() = assertEquals(16, Day16PacketDecoder.part1("input/day16test.txt"))
+    private val day16PacketDecoderTestInput = Day16PacketDecoder("input/day16test.txt")
+    private val day16PacketDecoder = Day16PacketDecoder("input/day16.txt")
 
     @Test
-    fun `part 1 result`() = assertEquals(866, Day16PacketDecoder.part1().also(::println))
+    fun `part 1 test input`() = assertEquals(16, day16PacketDecoderTestInput.part1())
 
     @Test
-    fun `part 2 test input`() = assertEquals(15, Day16PacketDecoder.part2("input/day16test.txt"))
+    fun `part 1 result`() = assertEquals(866, day16PacketDecoder.part1().also(::println))
 
     @Test
-    fun `part 2 result`() = assertEquals(1_392_637_195_518, Day16PacketDecoder.part2().also(::println))
+    fun `part 2 test input`() = assertEquals(15, day16PacketDecoderTestInput.part2())
 
     @Test
-    fun `part 2 result other input`() = assertEquals(10_185_143_721_112, Day16PacketDecoder.part2("input/day16-2.txt"))
+    fun `part 2 result`() = assertEquals(1_392_637_195_518, day16PacketDecoder.part2().also(::println))
+
+    @Test
+    fun `part 2 result other input`() = assertEquals(10_185_143_721_112, Day16PacketDecoder("input/day16-2.txt").part2())
 
     @Test
     fun `test from hexadecimal to binary`() =

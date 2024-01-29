@@ -21,7 +21,19 @@ typealias ScannerData = List<Set<GridPoint3D>>
  *
  * @see <a href="https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day19.kt">Day19 elizarov solution</a>
  */
-internal object Day19BeaconScanner : ChallengeDay {
+internal class Day19BeaconScanner(inputPath: String) : ChallengeDay {
+
+    private val beaconCount: Int
+    private val scannerPositions: Array<GridPoint3D>
+
+    init {
+        val (beaconCount, scannerPositions) = calculateBeaconCountAndScannerPositions(inputPath)
+        this.beaconCount = beaconCount
+        this.scannerPositions = scannerPositions
+    }
+
+    override fun part1(): Int = beaconCount
+    override fun part2(): Int = scannerPositions.largestDistance()
 
     private fun String.toScannerDataSets(): ScannerData =
         splitByBlankLine().map { s -> s.lines().filter { "scanner" !in it }.map(::toPoint3D).toSet() }
@@ -71,10 +83,4 @@ internal object Day19BeaconScanner : ChallengeDay {
         }
         return beacons.size to scannerPositions
     }
-
-    fun part1(path: String): Int = calculateBeaconCountAndScannerPositions(path).first
-    fun part2(path: String): Int = calculateBeaconCountAndScannerPositions(path).second.largestDistance()
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day19.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day19.txt")
 }

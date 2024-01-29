@@ -5,7 +5,7 @@ import aoc.utils.model.GridPoint2D.Companion.by
 
 internal object Day17TrickShot : ChallengeDay {
 
-    private const val upperSearchBoundY = 1000
+    private const val UPPER_SEARCH_BOUND_Y = 1000
 
     fun part1(targetRangeX: IntRange, targetRangeY: IntRange): Int =
         probesInTargetArea(targetRangeX, targetRangeY).maxOf { it.highestPosition.y }
@@ -13,7 +13,7 @@ internal object Day17TrickShot : ChallengeDay {
     private fun probesInTargetArea(targetAreaX: IntRange, targetAreaY: IntRange) =
         (0..targetAreaX.last).asSequence()
             .flatMap { initVelocityX ->
-                (0 until upperSearchBoundY)
+                (0 until UPPER_SEARCH_BOUND_Y)
                     .map { initVelocityY -> Probe(initVelocityX by initVelocityY) }
                     .filter { it.endsUpInTargetArea(targetAreaX, targetAreaY) }
             }
@@ -21,7 +21,7 @@ internal object Day17TrickShot : ChallengeDay {
     fun part2(targetRangeX: IntRange, targetRangeY: IntRange): Int {
         val successfulInitVelocityVals = mutableSetOf<GridPoint2D>()
         for (initVelX in 1..targetRangeX.last) {
-            for (initVelY in targetRangeY.first until upperSearchBoundY) {
+            for (initVelY in targetRangeY.first until UPPER_SEARCH_BOUND_Y) {
                 val probe = Probe(initVelX by initVelY)
                 val endsUpInTargetArea = probe.endsUpInTargetArea(targetRangeX, targetRangeY)
                 if (endsUpInTargetArea) {

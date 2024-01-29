@@ -5,9 +5,9 @@ import aoc.utils.splitByBlankLine
 import aoc.utils.toIntGrid
 import java.io.File
 
-internal object Day20TrenchTrap : ChallengeDay {
+internal class Day20TrenchTrap(private val inputPath: String) : ChallengeDay {
 
-    fun part1(path: String): Int = File(path).toAlgoAndImage()
+    override fun part1(): Int = File(inputPath).toAlgoAndImage()
             .let { (algo, image) -> image.enhance(algo, 2).sumOf { it.count { char -> char == 1 } }  }
 
     private fun Array<IntArray>.enhance(algo: List<Int>, times: Int): Array<IntArray> =
@@ -37,7 +37,7 @@ internal object Day20TrenchTrap : ChallengeDay {
 
     fun File.toEnhancedImage() = toAlgoAndImage().let { (algo, image) -> image.enhance(algo, 50) }
 
-    fun part2(path: String): Int = File(path).toEnhancedImage().flatMap(IntArray::toList).count { it == 1 }
+    override fun part2(): Int = File(inputPath).toEnhancedImage().flatMap(IntArray::toList).count { it == 1 }
 
     private fun File.toAlgoAndImage(): Pair<List<Int>, Array<IntArray>> {
         val (enhancementAlgo, imageAsString) = readText().splitByBlankLine()
@@ -45,7 +45,4 @@ internal object Day20TrenchTrap : ChallengeDay {
         val image = imageAsString.lines().toIntGrid { char -> if (char == '#') 1 else 0 }
         return Pair(algo, image)
     }
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day20.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day20.txt")
 }

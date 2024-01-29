@@ -1,6 +1,6 @@
 package aoc.seastories
 
-import aoc.seastories.Day04GiantSquid.isWinningBoard
+import aoc.seastories.Day04GiantSquid.Companion.isWinningBoard
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
@@ -8,24 +8,27 @@ import kotlin.test.assertTrue
 
 internal class Day04GiantSquidTest {
 
+    private val day04GiantSquid = Day04GiantSquid("input/day4.txt")
+    private val day04GiantSquidTestInput = Day04GiantSquid("input/day4test.txt")
+
     @Test
     fun `part 1 test input`() {
-        Day04GiantSquid.part1("input/day4test.txt") shouldBe 4_512
+        day04GiantSquidTestInput.part1() shouldBe 4_512
     }
 
     @Test
     fun `part 1 result`() {
-        Day04GiantSquid.part1().also(::println) shouldBe 50_008
+        day04GiantSquid.part1().also(::println) shouldBe 50_008
     }
 
     @Test
     fun `part 2 test input`() {
-        Day04GiantSquid.part2("input/day4test.txt") shouldBe 1_924
+        day04GiantSquidTestInput.part2() shouldBe 1_924
     }
 
     @Test
     fun `part 2 result`() {
-        Day04GiantSquid.part2().also(::println) shouldBe 17_408
+        day04GiantSquid.part2().also(::println) shouldBe 17_408
     }
 
     @Test

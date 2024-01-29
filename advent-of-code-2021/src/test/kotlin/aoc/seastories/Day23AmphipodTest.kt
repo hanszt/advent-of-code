@@ -5,16 +5,17 @@ import org.junit.jupiter.api.Test
 
 internal class Day23AmphipodTest {
 
-    private val day23Amphipod = Day23Amphipod(testMode = true)
+    private val day23Amphipod = Day23Amphipod("input/day23.txt", testMode = true)
+    private val day23AmphipodTestInput = Day23Amphipod("input/day23test.txt", testMode = true)
 
     @Test
     fun `part 1 test input`() {
-        day23Amphipod.part1("input/day23test.txt") shouldBe 12_521
+        day23AmphipodTestInput.part1() shouldBe 12_521
     }
 
     @Test
     fun `least energy rooms three deep`() {
-        day23Amphipod.part1("input/day23deep.txt") shouldBe 26_284
+        Day23Amphipod("input/day23deep.txt", testMode = true).part1() shouldBe 26_284
     }
 
     @Test
@@ -24,7 +25,7 @@ internal class Day23AmphipodTest {
 
     @Test
     fun `part 2 test input`() {
-        day23Amphipod.part2("input/day23test.txt") shouldBe 44_169
+        day23AmphipodTestInput.part2() shouldBe 44_169
     }
 
     @Test

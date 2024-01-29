@@ -1,38 +1,34 @@
 package aoc.seastories
 
-import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.seastories.model.Line
+import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
 import kotlin.math.max
 
-internal object Day05HydrothermalVenture : ChallengeDay {
+internal class Day05HydrothermalVenture(private val filePath: String) : ChallengeDay {
 
-    fun part1(path: String): Int = File(path).toVentureLines()
+    override fun part1(): Int = File(filePath).useLines { it.toVentureLines() }
         .filter { it.isHorizontal() or it.isVertical() }.asGrid()
         .countIntersections()
 
-    fun Array<IntArray>.countIntersections(): Int = asSequence()
-        .flatMap(IntArray::asSequence)
-        .filter { it > 1 }
-        .count()
+    override fun part2(): Int = File(filePath).useLines { it.toVentureLines() }.asGrid().countIntersections()
 
-    fun File.toVentureLines(): Set<Line> =
-        useLines { it.map(::toBeginAndEndPoint).map { (begin, end) -> Line(begin, end) }.toSet() }
+    companion object {
+        fun Sequence<String>.toVentureLines() = map(::toBeginAndEndPoint).map { (begin, end) -> Line(begin, end) }.toSet()
+        private fun toBeginAndEndPoint(line: String) = line.split("->").map(String::trim).map(::toGridPoint)
+        private fun toGridPoint(s: String) = s.split(',').map(String::toInt).let { (x, y) -> x by y }
 
-    private fun toBeginAndEndPoint(line: String) = line.split("->").map(String::trim).map(::toGridPoint)
+        fun Iterable<Line>.asGrid(): Array<IntArray> {
+            val nrOfRows = maxOf { (begin, end) -> max(begin.y, end.y) } + 1
+            val nrOfCols = maxOf { (begin, end) -> max(begin.x, end.x) } + 1
+            val grid: Array<IntArray> = Array(nrOfRows) { IntArray(nrOfCols) }
+            flatMap(Line::coordinates).forEach { (col, row) -> grid[row][col]++ }
+            return grid
+        }
 
-    private fun toGridPoint(s: String) = s.split(',').map(String::toInt).let { (x, y) -> x by y }
-
-    fun part2(path: String): Int = File(path).toVentureLines().asGrid().countIntersections()
-
-    fun Iterable<Line>.asGrid(): Array<IntArray> {
-        val nrOfRows = maxOf { (begin, end) -> max(begin.y, end.y) } + 1
-        val nrOfCols = maxOf { (begin, end) -> max(begin.x, end.x) } + 1
-        val grid: Array<IntArray> = Array(nrOfRows) { IntArray(nrOfCols) }
-        flatMap(Line::coordinates).forEach { (col, row) -> grid[row][col]++ }
-        return grid
+        fun Array<IntArray>.countIntersections(): Int = asSequence()
+            .flatMap(IntArray::asSequence)
+            .filter { it > 1 }
+            .count()
     }
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day5.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day5.txt")
 }

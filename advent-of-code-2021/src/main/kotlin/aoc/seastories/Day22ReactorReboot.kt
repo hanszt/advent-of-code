@@ -4,18 +4,15 @@ import aoc.utils.invoke
 import aoc.utils.trueCount
 import java.io.File
 
-internal object Day22ReactorReboot : ChallengeDay {
+internal class Day22ReactorReboot(private val inputPath: String) : ChallengeDay {
 
-    override fun part1() = part1("${ChallengeDay.inputDir}/day22.txt")
-    override fun part2() = part2("${ChallengeDay.inputDir}/day22.txt")
-
-    internal fun part1(path: String): Int {
+    override fun part1(): Int {
         val range = -50..50
         val rangeSize = range.toList().size
 
         val targetRegion = Array(rangeSize) { Array(rangeSize) { BooleanArray(rangeSize) } }
 
-        File(path).readLines()
+        File(inputPath).readLines()
             .map(::toCuboid)
             .forEach { targetRegion.update(range, it) }
         return targetRegion.sumOf { it.sumOf(BooleanArray::trueCount) }
@@ -34,8 +31,8 @@ internal object Day22ReactorReboot : ChallengeDay {
     }
 
     // credits to Roman Elizarov
-    internal fun part2(path: String): Long {
-        val cuboids = File(path).readLines().map(::toCuboid)
+    override fun part2(): Long {
+        val cuboids = File(inputPath).readLines().map(::toCuboid)
 
         val ux = cuboids.map(Cuboid::xRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()
         val uy = cuboids.map(Cuboid::yRange).flatMap { listOf(it.first, it.last + 1) }.distinct().sorted()

@@ -7,9 +7,9 @@ import aoc.utils.toBiDiGraph
 import java.io.File
 
 
-internal object Day12PassagePathing : ChallengeDay {
+internal class Day12PassagePathing(private val inputPath: String) : ChallengeDay {
 
-    fun part1(path: String): Int = File(path).readLines().toBiDiGraph('-').countDistinctPaths()
+    override fun part1(): Int = File(inputPath).readLines().toBiDiGraph('-').countDistinctPaths()
 
     private fun Map<String, Node<String>>.countDistinctPaths(): Int = let { graph ->
         val start = graph["start"] ?: error("start not found")
@@ -17,8 +17,8 @@ internal object Day12PassagePathing : ChallengeDay {
         return allPathsByDfs(start, end) { it.value?.all(Char::isLowerCase) ?: false }.count()
     }
 
-    fun part2(path: String): Int {
-        val graph = File(path).readLines().toBiDiGraph("-") { label -> Cave(label, false) }
+    override fun part2(): Int {
+        val graph = File(inputPath).readLines().toBiDiGraph("-") { label -> Cave(label, false) }
         val start = graph["start"] ?: error("start not found")
         val end = graph["end"] ?: error("end not found")
 
@@ -55,9 +55,6 @@ internal object Day12PassagePathing : ChallengeDay {
         }
         return uniquePaths
     }
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day12.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day12.txt")
 
     internal data class Cave(val label: String, var allowedToVisitTwice: Boolean)
 }

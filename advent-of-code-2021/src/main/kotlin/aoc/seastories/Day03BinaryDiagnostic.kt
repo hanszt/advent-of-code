@@ -2,9 +2,9 @@ package aoc.seastories
 
 import java.io.File
 
-internal object Day03BinaryDiagnostic : ChallengeDay {
+internal class Day03BinaryDiagnostic(private val filePath: String) : ChallengeDay {
 
-    fun part1(path: String): Int = File(path).readLines()
+    override fun part1(): Int = File(filePath).readLines()
         .map(String::toCharArray)
         .calculatePowerConsumption()
 
@@ -18,7 +18,7 @@ internal object Day03BinaryDiagnostic : ChallengeDay {
     private fun List<CharArray>.sumOnesBinaryDigits(): List<Int> = map { binary -> binary.map(Char::digitToInt) }
         .reduce { result, curBinary -> result.indices.map { result[it] + curBinary[it]} }
 
-    fun part2(path: String): Int = File(path).readLines()
+    override fun part2(): Int = File(filePath).readLines()
         .map(String::toCharArray)
         .run { toLiftSupportRating() * toCo2ScrubbingRating() }
 
@@ -36,7 +36,4 @@ internal object Day03BinaryDiagnostic : ChallengeDay {
         }
         return first().joinToString("").toInt(radix = 2)
     }
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day3.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day3.txt")
 }

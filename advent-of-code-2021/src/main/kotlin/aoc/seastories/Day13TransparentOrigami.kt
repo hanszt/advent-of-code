@@ -3,15 +3,17 @@ package aoc.seastories
 import aoc.utils.*
 import java.io.File
 
-internal object Day13TransparentOrigami : ChallengeDay {
+internal class Day13TransparentOrigami(private val inputPath: String) : ChallengeDay {
 
-    fun part1(path: String): Int {
-        val (coordinates, foldInstructions) = getCoordinatesAndFoldInstructions(path)
+    override fun part1(): Int {
+        val (coordinates, foldInstructions) = getCoordinatesAndFoldInstructions(inputPath)
         return toGrid(coordinates, foldInstructions)
             .foldGrid(foldInstructions.first())
             .flatMap(Array<Char>::toList)
             .count { it == BLOCK }
     }
+
+    override fun part2() = part2GridAsString().toExpectedTextOrElseThrow()
 
     private fun getCoordinatesAndFoldInstructions(path: String): Pair<String, List<Pair<Char, Int>>> {
         val (coordinatesAsString, foldInstr) = File(path).readText().splitByBlankLine()
@@ -48,18 +50,20 @@ internal object Day13TransparentOrigami : ChallengeDay {
         return grid
     }
 
-    fun part2GridAsString(path: String): String {
-        val (coordinates, foldInstructions) = getCoordinatesAndFoldInstructions(path)
+    fun part2GridAsString(): String {
+        val (coordinates, foldInstructions) = getCoordinatesAndFoldInstructions(inputPath)
         return toGrid(coordinates, foldInstructions)
             .foldByInstructions(foldInstructions)
             .gridAsString(1)
     }
 
-    fun part2(path: String) = part2GridAsString(path).toExpectedTextOrElseThrow()
+    private fun Array<Array<Char>>.foldByInstructions(instructions: List<Pair<Char, Int>>): Array<Array<Char>> =
+        instructions.fold(this) { grid, instruction -> grid.foldGrid(instruction) }
 
-    //later added to display result as text when launched from aoc.main
-    internal fun String.toExpectedTextOrElseThrow(): String {
-        val expected = """
+    companion object {
+        //later added to display result as text when launched from aoc.main
+        internal fun String.toExpectedTextOrElseThrow(): String {
+            val expected = """
             .██..███..████.█....███..████.████.█....
             █..█.█..█....█.█....█..█.█.......█.█....
             █....█..█...█..█....█..█.███....█..█....
@@ -67,16 +71,12 @@ internal object Day13TransparentOrigami : ChallengeDay {
             █..█.█....█....█....█....█....█....█....
             .██..█....████.████.█....█....████.████.
         """.trimIndent().trim()
-        val text = "CPZLPFZL"
-        if (this == expected) return text else {
-            val cause = "The expected grid for $text is: %n%n$expected%n%n but found %n%n${this}%n%n".format()
-            throw IllegalArgumentException("No matching text found", IllegalArgumentException(cause))
+            val text = "CPZLPFZL"
+            if (this == expected) return text else {
+                val cause = "The expected grid for $text is: %n%n$expected%n%n but found %n%n${this}%n%n".format()
+                throw IllegalArgumentException("No matching text found", IllegalArgumentException(cause))
+            }
         }
     }
 
-    private fun Array<Array<Char>>.foldByInstructions(instructions: List<Pair<Char, Int>>): Array<Array<Char>> =
-        instructions.fold(this) { grid, instruction -> grid.foldGrid(instruction)}
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day13.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day13.txt")
 }

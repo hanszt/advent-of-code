@@ -10,17 +10,20 @@ import kotlin.test.assertTrue
 
 internal class Day10SyntaxScoringTest {
 
-    @Test
-    fun `part 1 test input`() = assertEquals(26_397, Day10SyntaxScoring.part1("input/day10test.txt"))
+    private val day10SyntaxScoring = Day10SyntaxScoring("input/day10.txt")
+    private val day10SyntaxScoringTestInput = Day10SyntaxScoring("input/day10test.txt")
 
     @Test
-    fun `part 1 result`() = assertEquals(290_691, Day10SyntaxScoring.part1().also(::println))
+    fun `part 1 test input`() = assertEquals(26_397, day10SyntaxScoringTestInput.part1())
 
     @Test
-    fun `part 2 test input`() = assertEquals(288_957, Day10SyntaxScoring.part2("input/day10test.txt"))
+    fun `part 1 result`() = assertEquals(290_691, day10SyntaxScoring.part1().also(::println))
 
     @Test
-    fun `part 2 result`() = assertEquals(2_768_166_558, Day10SyntaxScoring.part2().also(::println))
+    fun `part 2 test input`() = assertEquals(288_957, day10SyntaxScoringTestInput.part2())
+
+    @Test
+    fun `part 2 result`() = assertEquals(2_768_166_558, day10SyntaxScoring.part2().also(::println))
 
     @ParameterizedTest
     @ValueSource(strings = ["[]", "([])", "<([{}])>", "{()()()}"])
@@ -33,7 +36,7 @@ internal class Day10SyntaxScoringTest {
         )
     }
 
-    @ParameterizedTest(name ="The first wrong closing char of {0} should be: {1}")
+    @ParameterizedTest(name = "The first wrong closing char of {0} should be: {1}")
     @CsvSource(
         value = ["(] : ]", "{()()()> : >", "<([]){()}[{}]) : )", "{([(<{}[<>[]}>{[]{[(<()> : }"],
         delimiter = ':'

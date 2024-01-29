@@ -9,7 +9,10 @@ import kotlin.math.absoluteValue
 // His repo can be visited here: https://github.com/womogenes/AoC-2021-Solutions/tree/main/day_24
 //
 //
-internal object Day24ArithmeticLogicUnit : ChallengeDay {
+internal class Day24ArithmeticLogicUnit(private val inputPath: String) : ChallengeDay {
+
+    override fun part1() = solve(9 downTo 1, inputPath)
+    override fun part2() = solve(1..9, inputPath)
 
     private fun createInputSpace(intProgression: IntProgression) = buildList {
         intProgression.forEach { i1 ->
@@ -49,12 +52,6 @@ internal object Day24ArithmeticLogicUnit : ChallengeDay {
         }
         return result
     }
-
-    fun part1(path: String) = solve(9 downTo 1, path)
-    fun part2(path: String) = solve(1..9, path)
-
-    override fun part1() = part1( ChallengeDay.inputDir + "/day24.txt")
-    override fun part2() = part2( ChallengeDay.inputDir + "/day24.txt")
 
     private fun solve(intProgression: IntProgression, path: String): Long {
         val incrementToRequired = extractKeyValues(path)

@@ -1,6 +1,6 @@
 package aoc.seastories.model
 
-import aoc.seastories.Day08SevenSegmentSearch.toSignalEntry
+import aoc.seastories.Day08SevenSegmentSearch.Companion.toSignalEntry
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.params.ParameterizedTest

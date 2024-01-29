@@ -7,17 +7,22 @@ import org.junit.jupiter.params.provider.CsvSource
 
 internal class Day18SnailFishTest {
 
-    @Test
-    fun `part 1 test input`() = assertEquals(4_140, Day18SnailFish.part1("input/day18test.txt"))
+    private companion object {
+        private val day18SnailFishTestInput = Day18SnailFish("input/day18test.txt")
+        private val day18SnailFish = Day18SnailFish("input/day18.txt")
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(3_486, Day18SnailFish.part1().also(::println))
+    fun `part 1 test input`() = assertEquals(4_140, day18SnailFishTestInput.part1())
 
     @Test
-    fun `part 2 test input`() = assertEquals(3_993, Day18SnailFish.part2("input/day18test.txt"))
+    fun `part 1 result`() = assertEquals(3_486, day18SnailFish.part1().also(::println))
 
     @Test
-    fun `part 2 result`() = assertEquals(4_747, Day18SnailFish.part2().also(::println))
+    fun `part 2 test input`() = assertEquals(3_993, day18SnailFishTestInput.part2())
+
+    @Test
+    fun `part 2 result`() = assertEquals(4_747, day18SnailFish.part2().also(::println))
 
     @ParameterizedTest(name = "{0} should reduce to: {1}")
     @CsvSource(
@@ -42,7 +47,7 @@ internal class Day18SnailFishTest {
             "[[[[0,7],4],[[7,8],[6,0]]],[8,1]] -> 1384",
             "[[[[1,1],[2,2]],[3,3]],[4,4]] -> 445",
             "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]] -> 3488"],
-         delimiterString = " -> "
+        delimiterString = " -> "
     )
     fun `calculate magnitude of snail numbers`(snailNr: String, expected: Int) {
         val magnitude = Day18SnailFish.toSnailNr(snailNr).magnitude()

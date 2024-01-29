@@ -1,8 +1,8 @@
 package aoc.seastories
 
 import aoc.utils.max
-import org.hzt.graph.TreeNode
 import java.io.File
+import org.hzt.graph.TreeNode
 
 /**
  * I've not been able to solve this day myself. This solution is from the repo Elizarov
@@ -13,7 +13,15 @@ import java.io.File
  *
  * @see <a href="https://github.com/elizarov/AdventOfCode2021">Advent of code 2021 Elizarov</a>
  */
-internal object Day18SnailFish : ChallengeDay {
+internal class Day18SnailFish(inputPath: String) : ChallengeDay {
+
+    private val snailNrs = File(inputPath).readLines().map(::toSnailNr)
+
+    override fun part1(): Int = snailNrs
+        .reduce(SnailNr::plus)
+        .magnitude()
+
+    override fun part2(): Int = snailNrs.findLargestSum()
 
     sealed class SnailNr : TreeNode<SnailNr, SnailNr> {
 
@@ -93,24 +101,6 @@ internal object Day18SnailFish : ChallengeDay {
         override fun toString(): String = "[$left,$right]"
     }
 
-    fun toSnailNr(snailNrAsString: String): SnailNr {
-        var cursor = 0
-        fun parse(): SnailNr {
-            if (snailNrAsString[cursor] == '[') {
-                cursor++
-                val left = parse()
-                check(snailNrAsString[cursor++] == ',')
-                val right = parse()
-                check(snailNrAsString[cursor++] == ']')
-                return Pair(left, right)
-            }
-            val start = cursor
-            while (snailNrAsString[cursor] in '0'..'9') cursor++
-            return Regular(snailNrAsString.substring(start, cursor).toInt())
-        }
-        return parse().also { check(cursor == snailNrAsString.length) }
-    }
-
     private fun List<SnailNr>.findLargestSum() = let { snailNrs ->
         snailNrs.indices.flatMap { index ->
             snailNrs.indices
@@ -119,15 +109,24 @@ internal object Day18SnailFish : ChallengeDay {
         }.max()
     }
 
-    fun part1(path: String): Int = File(path).readLines()
-        .map(::toSnailNr)
-        .reduce(SnailNr::plus)
-        .magnitude()
+    companion object {
 
-    fun part2(path: String): Int = File(path).readLines()
-        .map(::toSnailNr)
-        .findLargestSum()
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day18.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day18.txt")
+        fun toSnailNr(snailNrAsString: String): SnailNr {
+            var cursor = 0
+            fun parse(): SnailNr {
+                if (snailNrAsString[cursor] == '[') {
+                    cursor++
+                    val left = parse()
+                    check(snailNrAsString[cursor++] == ',')
+                    val right = parse()
+                    check(snailNrAsString[cursor++] == ']')
+                    return Pair(left, right)
+                }
+                val start = cursor
+                while (snailNrAsString[cursor] in '0'..'9') cursor++
+                return Regular(snailNrAsString.substring(start, cursor).toInt())
+            }
+            return parse().also { check(cursor == snailNrAsString.length) }
+        }
+    }
 }

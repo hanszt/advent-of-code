@@ -14,17 +14,17 @@ import kotlin.test.assertTrue
 internal class Day15ChitonTest {
 
     @Test
-    fun `part 1 test input`() = assertEquals(40, Day15Chiton.part1("input/day15test.txt"))
+    fun `part 1 test input`() = assertEquals(40, Day15Chiton("input/day15test.txt").part1())
 
     @Test
-    fun `part 1 result`() = assertEquals(592, Day15Chiton.part1())
+    fun `part 1 result`() = assertEquals(592, Day15Chiton("input/day15.txt").part1())
 
     @Test
-    fun `part 2 test input`() = assertEquals(315, Day15Chiton.part2("input/day15test.txt"))
+    fun `part 2 test input`() = assertEquals(315, Day15Chiton("input/day15test.txt").part2())
 
     @Test
     @Timeout(value = 8_000, unit = TimeUnit.MILLISECONDS)
-    fun `part 2 result`() = assertEquals(2897, Day15Chiton.part2())
+    fun `part 2 result`() = assertEquals(2897, Day15Chiton("input/day15.txt").part2())
 
     @Test
     fun `part 2 result as grid`() {

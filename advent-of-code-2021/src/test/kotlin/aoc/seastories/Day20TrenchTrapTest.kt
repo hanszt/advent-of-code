@@ -1,6 +1,5 @@
 package aoc.seastories
 
-import aoc.seastories.Day20TrenchTrap.toEnhancedImage
 import aoc.utils.BROWN_BG
 import aoc.utils.GREEN
 import aoc.utils.gridAsString
@@ -16,16 +15,18 @@ import kotlin.test.assertTrue
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class Day20TrenchTrapTest {
 
-    private val resultImage by lazy { File("input/day20.txt").toEnhancedImage() }
+    private val day20TrenchTrap = Day20TrenchTrap("input/day20.txt")
+
+    private val resultImage by lazy { with(day20TrenchTrap) { File("input/day20.txt").toEnhancedImage() } }
 
     @Test
-    fun `part 1 test input`() = assertEquals(35, Day20TrenchTrap.part1("input/day20test.txt"))
+    fun `part 1 test input`() = assertEquals(35, Day20TrenchTrap("input/day20test.txt").part1())
 
     @Test
-    fun `part 1 result`() = assertEquals(5_291, Day20TrenchTrap.part1().also(::println))
+    fun `part 1 result`() = assertEquals(5_291, day20TrenchTrap.part1().also(::println))
 
     @Test
-    fun `part 2 test input`() = assertEquals(3_351, Day20TrenchTrap.part2("input/day20test.txt"))
+    fun `part 2 test input`() = assertEquals(3_351, Day20TrenchTrap("input/day20test.txt").part2())
 
     @Test
     fun `part 2 result`() = assertEquals(16_665, resultImage.flatMap(IntArray::toList).count { it == 1 }.also(::println))

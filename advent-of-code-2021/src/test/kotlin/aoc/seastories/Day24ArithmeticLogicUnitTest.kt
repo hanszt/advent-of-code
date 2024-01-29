@@ -7,22 +7,22 @@ internal class Day24ArithmeticLogicUnitTest {
 
     @Test
     fun `part 1 result`() {
-        Day24ArithmeticLogicUnit.part1().also(::println) shouldBe 99_598_963_999_971
+        Day24ArithmeticLogicUnit("input/day24.txt").part1().also(::println) shouldBe 99_598_963_999_971
     }
 
     @Test
     fun `part 1 second input`() {
-        Day24ArithmeticLogicUnit.part1("input/day24-2.txt") shouldBe 94_992_992_796_199
+        Day24ArithmeticLogicUnit("input/day24-2.txt").part1() shouldBe 94_992_992_796_199
     }
 
     @Test
     fun `part 2 result`() {
-        Day24ArithmeticLogicUnit.part2().also(::println) shouldBe 93_151_411_711_211
+        Day24ArithmeticLogicUnit("input/day24.txt").part2().also(::println) shouldBe 93_151_411_711_211
     }
 
     @Test
     fun `part 2 second input`() {
-        Day24ArithmeticLogicUnit.part2("input/day24-2.txt") shouldBe 11_931_881_141_161
+        Day24ArithmeticLogicUnit("input/day24-2.txt").part2() shouldBe 11_931_881_141_161
     }
 
     @Test

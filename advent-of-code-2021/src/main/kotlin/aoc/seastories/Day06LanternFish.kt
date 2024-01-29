@@ -3,14 +3,16 @@ package aoc.seastories
 import java.io.File
 import java.math.BigInteger as BigInt
 
-internal object Day06LanternFish : ChallengeDay {
+internal class Day06LanternFish(private val inputPath: String) : ChallengeDay {
 
-    private const val INIT_TIMER_VAL_NEW_BORN = 8
-    private const val TIMER_VAL_AFTER_SPAWN = 6
+    private companion object {
+        private const val INIT_TIMER_VAL_NEW_BORN = 8
+        private const val TIMER_VAL_AFTER_SPAWN = 6
+    }
 
-    fun part1(path: String): BigInt = File(path).toFishCount(days = 80)
+    override fun part1(): BigInt = File(inputPath).toFishCount(days = 80)
 
-    fun part2(path: String): BigInt = File(path).toFishCount(days = 256)
+    override fun part2(): BigInt = File(inputPath).toFishCount(days = 256)
 
     private fun File.toFishCount(days: Int): BigInt {
         val daysLeftTillNewSpawnCounts = toCountsArray()
@@ -33,7 +35,4 @@ internal object Day06LanternFish : ChallengeDay {
             .forEach { daysLeft -> daysLeftTillNewSpawn[daysLeft]++ }
         return daysLeftTillNewSpawn
     }
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day6.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day6.txt")
 }

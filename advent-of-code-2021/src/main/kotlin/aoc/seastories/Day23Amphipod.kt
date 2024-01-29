@@ -19,22 +19,24 @@ import kotlin.math.abs
  *
  * It is very educational to see how such a solution can be solved. Many thanks to Roman Elizarov.
  */
-internal class Day23Amphipod(private val testMode: Boolean = false) : ChallengeDay {
+internal class Day23Amphipod(
+    inputPath: String,
+    private val testMode: Boolean = false
+) : ChallengeDay {
 
-    fun part1(path: String): Int = File(path).readLines()
+    private val lines = File(inputPath).readLines()
+
+    override fun part1(): Int = lines
         .let { it.slice(1..<it.lastIndex) }
         .let { Burrow(it.map(String::toCharArray).toTypedArray()) }
         .also { if (testMode) println(it) }
         .let(::calculateMinimumUsedEnergy)
 
-    fun part2(path: String): Int = File(path).readLines().subList(1, 4)
+    override fun part2(): Int = lines.subList(1, 4)
         .let { (first, second, bottom) -> listOf(first, second, "  #D#C#B#A#  ", "  #D#B#A#C#  ", bottom) }
         .let { Burrow(it.map(String::toCharArray).toTypedArray()) }
         .also { if (testMode) println(it) }
         .let(::calculateMinimumUsedEnergy)
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day23.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day23.txt")
 
     // adapted form of Dijkstra
     private fun calculateMinimumUsedEnergy(start: Burrow): Int {

@@ -1,28 +1,30 @@
 package aoc.seastories
 
-import aoc.seastories.Day09SmokeBasin.findBassinPoints
-import aoc.seastories.Day09SmokeBasin.toLowPoints
-import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import aoc.utils.model.GridPoint2D
+import aoc.seastories.Day09SmokeBasin.Companion.findBassinPoints
+import aoc.seastories.Day09SmokeBasin.Companion.toLowPoints
 import aoc.utils.CYAN
-import aoc.utils.withColor
+import aoc.utils.model.GridPoint2D
 import aoc.utils.toIntGrid
+import aoc.utils.withColor
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 internal class Day09SmokeBasinTest {
 
-    @Test
-    fun `part 1 test input`() = assertEquals(15, Day09SmokeBasin.part1("input/day9test.txt"))
+    private val day09SmokeBasinTestInput = Day09SmokeBasin("input/day9test.txt")
+    private val day09SmokeBasin = Day09SmokeBasin("input/day9.txt")
 
     @Test
-    fun `part 1 result`() = assertEquals(530, Day09SmokeBasin.part1().also(::println))
+    fun `part 1 test input`() = assertEquals(15, day09SmokeBasinTestInput.part1())
 
     @Test
-    fun `part 2 test input`() = assertEquals(1_134, Day09SmokeBasin.part2("input/day9test.txt"))
+    fun `part 1 result`() = assertEquals(530, day09SmokeBasin.part1().also(::println))
 
     @Test
-    fun `part 2 result`() = assertEquals(1_019_494, Day09SmokeBasin.part2().also(::println))
+    fun `part 2 test input`() = assertEquals(1_134, day09SmokeBasinTestInput.part2())
+
+    @Test
+    fun `part 2 result`() = assertEquals(1_019_494, day09SmokeBasin.part2().also(::println))
 
     @Test
     fun testFindBasinPoints() {

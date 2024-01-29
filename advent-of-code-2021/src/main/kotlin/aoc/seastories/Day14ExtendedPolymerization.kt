@@ -4,9 +4,10 @@ import aoc.utils.self
 import aoc.utils.splitByBlankLine
 import java.io.File
 
-internal object Day14ExtendedPolymerization : ChallengeDay {
+internal class Day14ExtendedPolymerization(private val inputPath: String) : ChallengeDay {
 
-    fun part1(path: String) = solve(path, 10)
+    override fun part1(): Long = solve(inputPath, 10)
+    override fun part2(): Long = solve(inputPath, 40)
 
     private fun parseInput(path: String): Pair<List<Pair<String, Char>>, String> {
         val (polymerTemplate, insertions) = File(path).readText().splitByBlankLine()
@@ -14,8 +15,6 @@ internal object Day14ExtendedPolymerization : ChallengeDay {
             .map { it.split(" -> ").let { (pair, toBeInserted) -> pair to toBeInserted.first() } }
         return instructions to polymerTemplate
     }
-
-    fun part2(path: String): Long = solve(path, 40)
 
     private fun solve(path: String, steps: Int) = parseInput(path)
         .let { (instructions, initPolymer) ->
@@ -59,7 +58,4 @@ internal object Day14ExtendedPolymerization : ChallengeDay {
         }
         return charToCountMap.values.run { maxOf(::self) to minOf(::self) }
     }
-
-    override fun part1() = part1(ChallengeDay.inputDir + "/day14.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day14.txt")
 }

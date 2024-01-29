@@ -6,13 +6,10 @@ import aoc.utils.splitByBlankLine
 import aoc.utils.toIntGrid
 import java.io.File
 
-internal object Day04GiantSquid : ChallengeDay {
+internal class Day04GiantSquid(private val inputPath: String) : ChallengeDay {
 
-    override fun part1() = part1(ChallengeDay.inputDir + "/day4.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day4.txt")
-
-    fun part1(path: String): Int {
-        val (boards, allNrsToDrawList) = File(path).toBoardsAndNrsToDrawList()
+    override fun part1(): Int {
+        val (boards, allNrsToDrawList) = File(inputPath).toBoardsAndNrsToDrawList()
         val drawnNrs = allNrsToDrawList.slice(0..3).toMutableList()
         var firstWinning: Array<IntArray> = emptyArray()
         while (firstWinning.isEmpty()) {
@@ -22,12 +19,8 @@ internal object Day04GiantSquid : ChallengeDay {
         return firstWinning.sumUnmarkedNrs(drawnNrs) * drawnNrs.last()
     }
 
-    fun Array<IntArray>.isWinningBoard(drawnNumbers: List<Int>): Boolean =
-        any { row -> row.all(drawnNumbers::contains) } or
-                rotated().any { col -> col.all(drawnNumbers::contains) }
-
-    fun part2(path: String): Int {
-        val (boards, allNrToBeDrawn) = File(path).toBoardsAndNrsToDrawList()
+    override fun part2(): Int {
+        val (boards, allNrToBeDrawn) = File(inputPath).toBoardsAndNrsToDrawList()
         val drawnNrs = allNrToBeDrawn.slice(0..3).toMutableList()
         val boardsInGame = boards.toMutableList()
         val boardsWon = LinkedHashSet<Array<IntArray>>()
@@ -51,4 +44,10 @@ internal object Day04GiantSquid : ChallengeDay {
             }
 
     private fun List<String>.nrsToDrawList() = first().split(",").map(String::toInt)
+
+    companion object {
+        fun Array<IntArray>.isWinningBoard(drawnNumbers: List<Int>): Boolean =
+            any { row -> row.all(drawnNumbers::contains) } or
+                    rotated().any { col -> col.all(drawnNumbers::contains) }
+    }
 }

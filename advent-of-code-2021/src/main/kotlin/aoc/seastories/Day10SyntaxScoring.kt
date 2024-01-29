@@ -2,53 +2,23 @@ package aoc.seastories
 
 import java.io.File
 
-internal object Day10SyntaxScoring : ChallengeDay {
+internal class Day10SyntaxScoring(private val inputPath: String) : ChallengeDay {
 
     private val closingToScoresPart1 = mapOf(')' to 3, ']' to 57, '}' to 1197, '>' to 25137)
 
-    fun part1(path: String): Int =
-        File(path).readLines().sumOf {
-            val (corrupted) = toCorruptedClosingCharAndRemainingChars(it)
-            closingToScoresPart1[corrupted] ?: 0
-        }
-
-    tailrec fun toCorruptedClosingCharAndRemainingChars(
-        s: String, chars: MutableList<Char> = s.toMutableList()
-    ): Pair<Char, List<Char>> {
-        val prevSize = chars.size
-        val closingChar = chars.removeValidUnitChunk()
-        if (chars.size == prevSize) {
-            return closingChar to chars
-        }
-        return toCorruptedClosingCharAndRemainingChars(s, chars)
+    override fun part1(): Int = File(inputPath).readLines().sumOf {
+        val (corrupted) = toCorruptedClosingCharAndRemainingChars(it)
+        closingToScoresPart1[corrupted] ?: 0
     }
 
-    private val openingToClosingChars = mapOf('(' to ')', '[' to ']', '{' to '}', '<' to '>')
-
-    private fun MutableList<Char>.removeValidUnitChunk(): Char {
-        for (index in 0 until lastIndex) {
-            val current = this[index]
-            val next = this[index + 1]
-            if (current in openingToClosingChars.keys && next in openingToClosingChars.values) {
-                val expectedClosing = openingToClosingChars[current]
-                return if (next == expectedClosing) {
-                    removeAt(index + 1)
-                    removeAt(index)
-                    next
-                } else next
-            }
+    override fun part2(): Long =
+        File(inputPath).useLines { lines ->
+            lines.map(::toCorruptedClosingCharAndRemainingChars)
+                .filter { (closing) -> isIncomplete(closing) }
+                .map { (_, chars) -> chars.reversed().mapNotNull(openingToClosingChars::get) }
+                .map(::toCompletionListScore)
+                .toMiddleScore()
         }
-        return ' '
-    }
-
-    fun part2(path: String): Long =
-        File(path).useLines { lines ->
-        lines.map(::toCorruptedClosingCharAndRemainingChars)
-            .filter { (closing) -> isIncomplete(closing) }
-            .map { (_, chars) -> chars.reversed().mapNotNull(openingToClosingChars::get) }
-            .map(::toCompletionListScore)
-            .toMiddleScore()
-    }
 
     private fun Sequence<Long>.toMiddleScore() = sorted().toList().let { it[it.size / 2] }
 
@@ -59,6 +29,35 @@ internal object Day10SyntaxScoring : ChallengeDay {
     private fun toCompletionListScore(chars: List<Char>): Long =
         chars.mapNotNull(closingToScorePart2::get).map(Int::toLong).reduce { score, cur -> score * 5 + cur }
 
-    override fun part1() = part1(ChallengeDay.inputDir + "/day10.txt")
-    override fun part2() = part2(ChallengeDay.inputDir + "/day10.txt")
+    companion object {
+
+        private val openingToClosingChars = mapOf('(' to ')', '[' to ']', '{' to '}', '<' to '>')
+
+        tailrec fun toCorruptedClosingCharAndRemainingChars(
+            s: String, chars: MutableList<Char> = s.toMutableList()
+        ): Pair<Char, List<Char>> {
+            val prevSize = chars.size
+            val closingChar = chars.removeValidUnitChunk()
+            if (chars.size == prevSize) {
+                return closingChar to chars
+            }
+            return toCorruptedClosingCharAndRemainingChars(s, chars)
+        }
+
+        private fun MutableList<Char>.removeValidUnitChunk(): Char {
+            for (index in 0 until lastIndex) {
+                val current = this[index]
+                val next = this[index + 1]
+                if (current in openingToClosingChars.keys && next in openingToClosingChars.values) {
+                    val expectedClosing = openingToClosingChars[current]
+                    return if (next == expectedClosing) {
+                        removeAt(index + 1)
+                        removeAt(index)
+                        next
+                    } else next
+                }
+            }
+            return ' '
+        }
+    }
 }

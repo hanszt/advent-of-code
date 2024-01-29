@@ -4,13 +4,17 @@ import aoc.utils.wrapBack
 import java.io.File
 import kotlin.math.min
 
-internal object Day21DiracDice : ChallengeDay {
+internal class Day21DiracDice(inputPath: String) : ChallengeDay {
 
-    fun part1(path: String): Int = File(path).toStartingPositions()
+    private val startingPositions = File(inputPath).toStartingPositions()
+
+    override fun part1(): Int = startingPositions
         .map { Player(0, position = it) }
         .let { (player1, player2) -> playGame(player1, player2) }
 
-    override fun part1() = part1(ChallengeDay.inputDir + "/day21.txt")
+    override fun part2(): Long =
+        startingPositions.let { (player1, player2) -> findMaxWinningCount(player1, player2, 21) }
+
 
     private fun playGame(player1: Player, player2: Player, winningScore: Int = 1000): Int {
         var round = 0
@@ -28,42 +32,6 @@ internal object Day21DiracDice : ChallengeDay {
 
     fun File.toStartingPositions() = readLines().map { it.last().digitToInt() }
 
-    fun findMaxWinningCount(player1: Player, player2: Player, winningThreshold: Int): Long {
-        val winningCounts = WinCount(0, 0)
-        for (newDiceValue in 1..3) {
-            playGameUsingDiracDice(player1.copy(), player2.copy(), 0, newDiceValue, winningCounts, winningThreshold)
-        }
-        return maxOf(winningCounts.player1Winnings, winningCounts.player2Winnings)
-    }
-
-    // not working
-    private fun playGameUsingDiracDice(
-        player1: Player,
-        player2: Player,
-        round: Int,
-        diceValue: Int,
-        winningCounts: WinCount,
-        threshold: Int
-    ) {
-        if (round != 0 && round % 3 == 0) {
-            if (player1Playing(round - 1)) player1.updateScore() else player2.updateScore()
-        }
-        if (player1Playing(round)) player1.move(diceValue) else player2.move(diceValue)
-        if (player1.score >= threshold || player2.score >= threshold) {
-            if (player1.score > player2.score) winningCounts.player1Winnings++ else winningCounts.player2Winnings++
-            return
-        }
-        for (newDiceValue in 1..3) {
-            playGameUsingDiracDice(player1.copy(), player2.copy(), round + 1, newDiceValue, winningCounts, threshold)
-        }
-    }
-
-    fun player1Playing(round: Int): Boolean = ((round) / 3) % 2 == 0
-
-    fun part2(path: String): Long =
-        File(path).toStartingPositions().let { (player1, player2) -> findMaxWinningCount(player1, player2, 21) }
-
-    override fun part2() = part2(ChallengeDay.inputDir + "/day21.txt")
 
     // I've not been able to solve part 2 of day 21 myself. This solution is from the repo from Elizarov. All credits go to him.
     //
@@ -119,4 +87,8 @@ internal object Day21DiracDice : ChallengeDay {
     }
 
     data class WinCount(var player1Winnings: Long, var player2Winnings: Long)
+
+    companion object {
+        fun player1Playing(round: Int): Boolean = ((round) / 3) % 2 == 0
+    }
 }
