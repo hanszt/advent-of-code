@@ -1,8 +1,8 @@
 package aoc.utils
 
-import org.junit.jupiter.api.Test
+import io.kotest.matchers.shouldBe
 import java.io.File
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
 
 internal class GraphUtilsTest {
 
@@ -12,6 +12,6 @@ internal class GraphUtilsTest {
         val resource = this::class.java.getResource(name) ?: error("$name not found")
         val graph = File(resource.file).readLines().toBiDiGraph("-").onEach(::println)
         val startNode = graph["start"] ?: error("start not found")
-        assertEquals(startNode.neighbors, setOf(graph["my"], graph["PK"], graph["lj"]))
+        setOf(graph["my"], graph["PK"], graph["lj"]) shouldBe startNode.neighbors
     }
 }

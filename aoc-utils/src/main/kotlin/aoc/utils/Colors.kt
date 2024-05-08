@@ -1,5 +1,7 @@
 package aoc.utils
 
+import kotlin.random.Random
+
 /**
  * A utility for coloring command line interface text
  *
@@ -55,7 +57,7 @@ infix fun <T> T.withColor(color: Color) = "${color.ansiCode}$this${RESET.ansiCod
 fun <T> T.withColors(textColor: TextColor, backgroundColor: BgColor) =
     "${backgroundColor.ansiCode}${textColor.ansiCode}$this${RESET.ansiCode}"
 
-fun random16BitColor() = colorTable16Bit.values.random()
+fun random16BitColor(random: Random) = colorTable16Bit.values.random(random)
 
 /**
  * [ANSI escape code](https://en.wikipedia.org/wiki/ANSI_escape_code)

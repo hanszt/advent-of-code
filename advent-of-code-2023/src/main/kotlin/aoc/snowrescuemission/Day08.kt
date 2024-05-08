@@ -15,7 +15,7 @@ class Day08(
     private val network: Map<String, Node>
 
     init {
-        val (instructions, networkPart) = text.split(AocUtils.doubleLineSeparator)
+        val (instructions, networkPart) = text.split(AocUtils.DOUBLE_LINE_SEPARATOR)
         this.instructions = instructions
 
         network = networkPart.lineSequence().associate { line ->

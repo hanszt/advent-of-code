@@ -11,7 +11,7 @@ class Day05(fileName: String) : ChallengeDay {
 
     init {
         val text = File(fileName).readText()
-        val input = text.split(AocUtils.doubleLineSeparator)
+        val input = text.split(AocUtils.DOUBLE_LINE_SEPARATOR)
         seedSequence = input[0].substring("seeds: ".length).splitToSequence(' ').map(String::toLong)
         mappingTexts = input.drop(1)
     }

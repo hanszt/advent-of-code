@@ -31,7 +31,7 @@ class Day22MonkeyMap(
     private val instructions: String
 
     init {
-        val (grid, instructionLines) = text.split(AocUtils.doubleLineSeparator)
+        val (grid, instructionLines) = text.split(AocUtils.DOUBLE_LINE_SEPARATOR)
         this.instructions = instructionLines
         this.grid = grid.lines()
     }

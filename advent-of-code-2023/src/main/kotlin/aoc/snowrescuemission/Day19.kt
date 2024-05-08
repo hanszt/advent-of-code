@@ -14,7 +14,7 @@ class Day19(
     private val parts: List<Part>
 
     init {
-        val (workFlows, ratings) = text.split(AocUtils.doubleLineSeparator)
+        val (workFlows, ratings) = text.split(AocUtils.DOUBLE_LINE_SEPARATOR)
         this.workFlows = workFlows.mapLines { WorkFlow.parse(it) }
         this.parts = ratings.mapLines { Part.parse(it) }
     }

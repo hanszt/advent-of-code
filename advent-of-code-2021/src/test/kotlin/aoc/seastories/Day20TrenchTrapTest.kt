@@ -1,15 +1,11 @@
 package aoc.seastories
 
-import aoc.utils.BROWN_BG
-import aoc.utils.GREEN
-import aoc.utils.gridAsString
-import aoc.utils.random16BitColor
-import aoc.utils.withColor
-import aoc.utils.withColors
+import aoc.utils.*
+import io.kotest.matchers.shouldBe
 import java.io.File
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import kotlin.random.Random
 import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -20,22 +16,30 @@ internal class Day20TrenchTrapTest {
     private val resultImage by lazy { with(day20TrenchTrap) { File("input/day20.txt").toEnhancedImage() } }
 
     @Test
-    fun `part 1 test input`() = assertEquals(35, Day20TrenchTrap("input/day20test.txt").part1())
+    fun `part 1 test input`() {
+        Day20TrenchTrap("input/day20test.txt").part1() shouldBe 35
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(5_291, day20TrenchTrap.part1().also(::println))
+    fun `part 1 result`() {
+        day20TrenchTrap.part1().also(::println) shouldBe 5_291
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(3_351, Day20TrenchTrap("input/day20test.txt").part2())
+    fun `part 2 test input`() {
+        Day20TrenchTrap("input/day20test.txt").part2() shouldBe 3_351
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(16_665, resultImage.flatMap(IntArray::toList).count { it == 1 }.also(::println))
+    fun `part 2 result`() {
+        resultImage.flatMap(IntArray::toList).count { it == 1 }.also(::println) shouldBe 16_665
+    }
 
     @Test
     fun `part 2 print resulting image`() {
         val result = resultImage.gridAsString {
             if (it == 1) "#".withColors(GREEN, BROWN_BG)
-            else ".".withColor(random16BitColor()) }
+            else ".".withColor(random16BitColor(Random)) }
         println(result)
         assertTrue { result.isNotBlank() }
     }

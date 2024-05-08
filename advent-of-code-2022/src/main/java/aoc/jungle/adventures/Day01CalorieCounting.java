@@ -15,7 +15,7 @@ public class Day01CalorieCounting implements ChallengeDay {
     private final ListX<String> foods;
 
     public Day01CalorieCounting(String fileName) {
-        this.foods = FileX.of(fileName).readTextX().split(AocUtils.doubleLineSeparator);
+        this.foods = FileX.of(fileName).readTextX().split(AocUtils.DOUBLE_LINE_SEPARATOR);
     }
 
     @Override

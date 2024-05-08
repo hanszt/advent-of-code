@@ -4,7 +4,7 @@ import aoc.jungle.adventures.Day10CathodeRayTube.Companion.toExpectedTextOrElseT
 import aoc.utils.BRIGHT_BLUE
 import aoc.utils.withColor
 import io.kotest.matchers.shouldBe
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class Day10CathodeRayTubeTest {
 

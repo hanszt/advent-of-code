@@ -1,8 +1,8 @@
 package aoc.utils
 
-import org.junit.jupiter.api.Test
+import io.kotest.matchers.shouldBe
 import java.io.File
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
 
 internal class IoUtilsKtTest {
 
@@ -10,7 +10,7 @@ internal class IoUtilsKtTest {
     fun `test read lines`() {
         val actual = File("input/iotest.txt").readLines().map(String::trim)
         val expected = listOf("hallo", "dit", "is", "een", "test")
-        assertEquals(expected, actual)
+        actual shouldBe expected
     }
 
     @Test
@@ -20,13 +20,13 @@ internal class IoUtilsKtTest {
             .map(String::length)
             .toList()
         }
-        assertEquals(listOf(5, 3, 2, 3, 4), actual)
+        actual shouldBe listOf(5, 3, 2, 3, 4)
     }
 
     @Test
     fun `test read text from resource file`() {
         val actual = this::class.java.getResource("/test.txt")?.readText() ?: ""
-        assertEquals("hello this is a test", actual.trim())
+        actual.trim() shouldBe "hello this is a test"
     }
 
     @Test
@@ -35,7 +35,7 @@ internal class IoUtilsKtTest {
             ?.let { File(it.file).readLines() }
             ?: emptyList()
 
-        assertEquals(listOf("hello this is a test"), list)
+        list shouldBe listOf("hello this is a test")
     }
 
 }

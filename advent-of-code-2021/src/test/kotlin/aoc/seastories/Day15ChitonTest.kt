@@ -4,33 +4,41 @@ import aoc.utils.*
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.WeightedNode
+import io.kotest.matchers.shouldBe
 import java.io.File
 import java.util.concurrent.TimeUnit
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
-import kotlin.test.assertTrue
+import kotlin.random.Random
 
 internal class Day15ChitonTest {
 
     @Test
-    fun `part 1 test input`() = assertEquals(40, Day15Chiton("input/day15test.txt").part1())
+    fun `part 1 test input`() {
+        Day15Chiton("input/day15test.txt").part1() shouldBe 40
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(592, Day15Chiton("input/day15.txt").part1())
+    fun `part 1 result`() {
+        Day15Chiton("input/day15.txt").part1() shouldBe 592
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(315, Day15Chiton("input/day15test.txt").part2())
+    fun `part 2 test input`() {
+        Day15Chiton("input/day15test.txt").part2() shouldBe 315
+    }
 
     @Test
     @Timeout(value = 8_000, unit = TimeUnit.MILLISECONDS)
-    fun `part 2 result`() = assertEquals(2897, Day15Chiton("input/day15.txt").part2())
+    fun `part 2 result`() {
+        Day15Chiton("input/day15.txt").part2() shouldBe 2897
+    }
 
     @Test
     fun `part 2 result as grid`() {
         val pathInGridAsString = File("input/day15-2.txt").readLines().toIntGrid(Char::digitToInt).pathInGridAsString()
         println(pathInGridAsString)
-        assertTrue(pathInGridAsString.isNotBlank())
+        pathInGridAsString.isNotBlank() shouldBe true
     }
 
     private fun Array<IntArray>.pathInGridAsString(): String {
@@ -44,7 +52,7 @@ internal class Day15ChitonTest {
             .mapNotNull(WeightedNode<GridPoint2D>::value)
             .forEach { (x, y) -> grid[y][x] = "%2s".format(grid[y][x]).withColors(BRIGHT_YELLOW, YELLOW_BG) }
 
-        return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(random16BitColor(), BROWN_BG) else it }
+        return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(random16BitColor(Random), BROWN_BG) else it }
     }
 
 }

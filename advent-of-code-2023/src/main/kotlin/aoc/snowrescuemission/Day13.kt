@@ -11,7 +11,7 @@ class Day13(
     text: String = File(fileName ?: error("No fileName or text provided")).readText()
 ) : ChallengeDay {
 
-    private val patterns = text.splitToSequence(AocUtils.doubleLineSeparator).map { Pattern(it.lines()) }
+    private val patterns = text.splitToSequence(AocUtils.DOUBLE_LINE_SEPARATOR).map { Pattern(it.lines()) }
 
     override fun part1(): Int = patterns.map(Pattern::findMirror).sumOf(::toSummary)
     override fun part2(): Int = patterns.map(Pattern::findSmuggedMirror).sumOf(::toSummary)

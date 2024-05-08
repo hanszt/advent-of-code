@@ -20,7 +20,7 @@ public class Day11MonkeyInTheMiddle implements ChallengeDay {
     private final ListX<String> monkeysAsString;
 
     public Day11MonkeyInTheMiddle(String fileName) {
-        monkeysAsString = FileX.of(fileName).readTextX().split(AocUtils.doubleLineSeparator);
+        monkeysAsString = FileX.of(fileName).readTextX().split(AocUtils.DOUBLE_LINE_SEPARATOR);
     }
 
     @NotNull

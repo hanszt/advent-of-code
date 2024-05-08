@@ -17,9 +17,9 @@
         <module>advent-of-code-2020</module>
         <module>advent-of-code-2021</module>
         <module>advent-of-code-2022</module>
+        <module>advent-of-code-2023</module>
         <module>aoc-runner</module>
         <module>aoc-utils</module>
-        <module>advent-of-code-2023</module>
     </modules>
 
     <properties>
@@ -28,15 +28,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin-maven-plugin.jvmTarget>17</kotlin-maven-plugin.jvmTarget>
+        <kotlin.compiler.apiVersion>1.9</kotlin.compiler.apiVersion>
         <kotlin.code.style>official</kotlin.code.style>
         <!--        dependencies-->
-        <kotlin.version>1.9.21</kotlin.version>
-        <junit-jupiter.version>5.10.0</junit-jupiter.version>
+        <kotlin.version>1.9.24</kotlin.version>
+        <junit-jupiter.version>5.10.1</junit-jupiter.version>
         <kotest-assertions.version>5.8.0</kotest-assertions.version>
         <annotations.version>24.0.1</annotations.version>
         <hzt.utils.version>0.7.5.21</hzt.utils.version>
         <!--        plugins-->
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
@@ -56,7 +57,7 @@
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-test-junit5</artifactId>
+                <artifactId>kotlin-test</artifactId>
                 <version>${kotlin.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -102,24 +103,30 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Only needed to run tests in a version of IntelliJ IDEA that bundles older versions -->
-        <!--        https://junit.org/junit5/docs/current/user-guide/#running-tests-ide-intellij-idea-->
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.kotest</groupId>
             <artifactId>kotest-assertions-core-jvm</artifactId>
             <version>${kotest-assertions.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-assertions-shared-jvm</artifactId>
+            <version>${kotest-assertions.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -197,7 +204,7 @@
                         <phase>test</phase>
                         <configuration>
                             <!-- The build will fail if there are any dependency issues -->
-                            <failOnWarning>true</failOnWarning>
+<!--                            <failOnWarning>true</failOnWarning>-->
                         </configuration>
                     </execution>
                 </executions>

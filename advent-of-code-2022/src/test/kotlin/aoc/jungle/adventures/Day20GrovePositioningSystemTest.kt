@@ -1,7 +1,7 @@
 package aoc.jungle.adventures
 
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 internal class Day20GrovePositioningSystemTest {
 
@@ -9,28 +9,25 @@ internal class Day20GrovePositioningSystemTest {
     @Test
     fun `test part 1`() {
         val result = day20GrovePositioningSystem.part1()
-        println(result)
-        assertEquals(2622, result)
+        result shouldBe 2622
     }
 
     @Test
     fun `test part 1 test`() {
         val result = Day20GrovePositioningSystem("input/day20test.txt").part1()
-        println(result)
-        assertEquals(3, result)
+        result shouldBe 3
     }
 
     @Test
     fun `test part 2`() {
         val result = day20GrovePositioningSystem.part2()
-        println(result)
-        assertEquals(1538773034088, result)
+        result shouldBe 1_538_773_034_088
     }
 
     @Test
     fun `test part 2 test`() {
         val result = Day20GrovePositioningSystem("input/day20test.txt").part2()
         println(result)
-        assertEquals(1623178306, result)
+        result shouldBe 1_623_178_306
     }
 }
