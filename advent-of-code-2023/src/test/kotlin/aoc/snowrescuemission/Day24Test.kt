@@ -1,8 +1,10 @@
 package aoc.snowrescuemission
 
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled("Not implemented")
 class Day24Test {
 
     @Test

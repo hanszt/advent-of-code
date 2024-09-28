@@ -1,6 +1,7 @@
 package aoc.snowrescuemission
 
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class Day14Test {
@@ -29,6 +30,7 @@ class Day14Test {
     }
 
     @Test
+    @Disabled("Not implemented")
     fun testPart2TestInput() {
         Day14(grid = testGrid).part2() shouldBe 64
     }

@@ -16,11 +16,6 @@ val CharSequence.grouping: Grouping<Char, Char> get() = groupingBy { it }
 
 fun <T> linkedListOf(first: T): LinkedList<T> = LinkedList<T>().apply { add(first) }
 
-fun sum(add: (Int) -> Int): Int {
-    var initial = 0
-    return add(initial)
-}
-
 fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C, mapper: (T, T) -> R): C {
     val iterator = iterator()
     if (iterator.hasNext()) {
@@ -101,12 +96,6 @@ private fun mapCapacity(expectedSize: Int): Int = when {
     expectedSize < INT_MAX_POWER_OF_TWO -> ((expectedSize / 0.75F) + 1.0F).toInt()
     // any large value
     else -> Int.MAX_VALUE
-}
-
-fun <T> Array<T>.swap(sourceIndex: Int, destIndex: Int) {
-    val temp = this[sourceIndex]
-    this[sourceIndex] = this[destIndex]
-    this[destIndex] = temp
 }
 
 fun CharArray.swap(sourceIndex: Int, destIndex: Int) {

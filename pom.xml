@@ -23,27 +23,26 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <kotlin-maven-plugin.jvmTarget>17</kotlin-maven-plugin.jvmTarget>
-        <kotlin.compiler.apiVersion>1.9</kotlin.compiler.apiVersion>
+        <kotlin-maven-plugin.jvmTarget>21</kotlin-maven-plugin.jvmTarget>
         <kotlin.code.style>official</kotlin.code.style>
         <!--        dependencies-->
-        <kotlin.version>1.9.24</kotlin.version>
-        <junit-jupiter.version>5.10.1</junit-jupiter.version>
-        <kotest-assertions.version>5.8.0</kotest-assertions.version>
+        <kotlin.version>2.0.20</kotlin.version>
+        <kotlinx-collections-immutable.version>0.3.6</kotlinx-collections-immutable.version>
+        <junit-jupiter.version>5.11.0</junit-jupiter.version>
+        <kotest-assertions.version>5.9.1</kotest-assertions.version>
         <annotations.version>24.0.1</annotations.version>
         <hzt.utils.version>0.7.5.21</hzt.utils.version>
         <!--        plugins-->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
         <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
-        <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
-        <kotlinx-collections-immutable.version>0.3.6</kotlinx-collections-immutable.version>
+        <maven-dependency-plugin.version>3.8.0</maven-dependency-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -149,6 +148,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>--enable-preview</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -189,6 +191,7 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
