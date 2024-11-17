@@ -18,6 +18,7 @@
         <module>advent-of-code-2021</module>
         <module>advent-of-code-2022</module>
         <module>advent-of-code-2023</module>
+        <module>advent-of-code-2024</module>
         <module>aoc-runner</module>
         <module>aoc-utils</module>
     </modules>

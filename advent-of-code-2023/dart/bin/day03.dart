@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'ChallengeDay.dart';
+import 'challenge_day.dart';
 import 'utils.dart';
 
 class Day03 implements ChallengeDay {

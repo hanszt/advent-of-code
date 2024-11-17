@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'ChallengeDay.dart';
+import 'challenge_day.dart';
 
 class Day02 implements ChallengeDay {
   final List<String> _lines;

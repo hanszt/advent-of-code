@@ -1,16 +1,21 @@
 package aoc.jungle.adventures
 
 import aoc.utils.*
+import kotlin.time.Duration.Companion.nanoseconds
 
 fun main(vararg args: String) {
     println({}.readTextFromResource("/title.txt").withColor(BRIGHT_BLUE))
-    val inputDir = args.firstOrNull() ?: "advent-of-code-2022/input"
+    val inputDir = args.firstOrNull() ?: {}.defaultInput(
+        resourcePath = "/title.txt",
+        rootFileName = "advent-of-code-2022",
+        inputFileName = "input"
+    )
     val results = Launcher2022(inputDir).challengeDaySequence()
         .flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()
 
-    println("%nTotal solve time: %2.3f seconds%n".format(results.sumOf(AocResult::solveTimeNanos) / 1e9))
+    println("%nTotal solve time: %s%n".format(results.sumOf(AocResult::solveTimeNanos).nanoseconds))
     println({}.readTextFromResource("/banner.txt").withColor(GREEN))
 }
 
