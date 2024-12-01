@@ -17,14 +17,13 @@ fun Any.resourcePath(path: String): Path? = javaClass.getResource(path)?.let { F
 fun <R> File.mapLines(mapper: (String) -> R): List<R> = useLines { it.map(mapper).toList() }
 
 @OptIn(ExperimentalPathApi::class)
-fun Any.defaultInput(resourcePath: String, rootFileName: String, inputFileName: String): String =
+fun Any.relativeToResources(resourcePath: String, rootFileName: String, inputFileName: String): String =
     (resourcePath(resourcePath) ?: error("Resource $resourcePath not found"))
         .parents
         .first { it.fileName.name.endsWith(rootFileName) }
         .walk(BREADTH_FIRST, INCLUDE_DIRECTORIES)
         .first { it.fileName.name == inputFileName }
         .absolutePathString()
-
 
 val Path.parents: Sequence<Path>
     get() = sequence {

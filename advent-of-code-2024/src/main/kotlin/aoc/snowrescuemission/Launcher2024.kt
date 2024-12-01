@@ -5,7 +5,7 @@ import kotlin.time.Duration.Companion.nanoseconds
 
 fun main(vararg args: String) {
     println({}.readTextFromResource("/title.txt", orElse = "Advent of code 2024") withColor BRIGHT_BLUE)
-    val inputDir = args.firstOrNull() ?: {}.defaultInput(
+    val inputDir = args.firstOrNull() ?: {}.relativeToResources(
         resourcePath = "/app-props.txt",
         rootFileName = "advent-of-code-2024",
         inputFileName = "input"

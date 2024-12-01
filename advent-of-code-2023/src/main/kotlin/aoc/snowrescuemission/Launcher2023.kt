@@ -4,7 +4,7 @@ import aoc.utils.*
 
 fun main(vararg args: String) {
     println({}.readTextFromResource("/title.txt", orElse = "Advent of code 2023") withColor BRIGHT_BLUE)
-    val inputDir = args.firstOrNull() ?: {}.defaultInput(
+    val inputDir = args.firstOrNull() ?: {}.relativeToResources(
         resourcePath = "/app-props.txt",
         rootFileName = "advent-of-code-2023",
         inputFileName = "input"
