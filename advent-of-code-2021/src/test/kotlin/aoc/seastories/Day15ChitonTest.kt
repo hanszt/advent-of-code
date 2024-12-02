@@ -5,6 +5,7 @@ import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.WeightedNode
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldNotBeBlank
 import java.io.File
 import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.Test
@@ -38,7 +39,7 @@ internal class Day15ChitonTest {
     fun `part 2 result as grid`() {
         val pathInGridAsString = File("input/day15-2.txt").readLines().toIntGrid(Char::digitToInt).pathInGridAsString()
         println(pathInGridAsString)
-        pathInGridAsString.isNotBlank() shouldBe true
+        pathInGridAsString.shouldNotBeBlank()
     }
 
     private fun Array<IntArray>.pathInGridAsString(): String {

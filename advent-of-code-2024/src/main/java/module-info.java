@@ -4,8 +4,9 @@ module advent.of.codetwenty.twenty.three {
     requires hzt.utils.core;
     requires kotlin.stdlib;
     requires kotlinx.collections.immutable;
+    requires org.jetbrains.annotations;
 
-    opens aoc.snowrescuemission;
+    opens aoc.historianhysteria;
 
-    exports aoc.snowrescuemission;
+    exports aoc.historianhysteria;
 }

@@ -1,4 +1,4 @@
-package aoc.snowrescuemission
+package aoc.historianhysteria
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test

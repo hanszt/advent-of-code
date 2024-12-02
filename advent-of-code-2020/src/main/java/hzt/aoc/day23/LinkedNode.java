@@ -1,36 +1,32 @@
 package hzt.aoc.day23;
 
-public class LinkedNode<T> {
+public class LinkedNode {
 
-    private T value;
-    private LinkedNode<T> next;
+    private int value;
+    private LinkedNode next;
 
-    public LinkedNode() {
-        this(null);
-    }
-
-    public LinkedNode(final T value) {
+    public LinkedNode(final int value) {
         this.value = value;
     }
 
-    public T getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(final T value) {
+    public void setValue(final int value) {
         this.value = value;
     }
 
-    public LinkedNode<T> getNext() {
+    public LinkedNode getNext() {
         return next;
     }
 
-    public void setNext(final LinkedNode<T> next) {
+    public void setNext(final LinkedNode next) {
         this.next = next;
     }
 
     @Override
     public String toString() {
-        return "CustomLinkedNode{" + getValue() + '}';
+        return "LinkedNode{" + getValue() + '}';
     }
 }

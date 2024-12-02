@@ -180,7 +180,7 @@ public class Launcher2020 implements Runnable {
                 new Part1ComboBreaker()));
     }
 
-    public static void main(final String... args) {
+    public static void main() {
         new Launcher2020().run();
     }
 

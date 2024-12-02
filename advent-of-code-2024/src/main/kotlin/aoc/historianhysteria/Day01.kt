@@ -1,4 +1,4 @@
-package aoc.snowrescuemission
+package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
 import java.io.File
@@ -16,7 +16,7 @@ class Day01(
         val l1Sorted = l1.sorted()
         val l2Sorted = l2.sorted()
 
-        return l1Sorted.zip(l2Sorted).sumOf { (l1, l2) -> abs(l1 - l2) }
+        return l1Sorted.zip(l2Sorted).sumOf { (n1, n2) -> abs(n1 - n2) }
     }
 
     override fun part2(): Int {

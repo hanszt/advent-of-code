@@ -23,15 +23,15 @@ public class Part2CrabCups extends Day23Challenge {
 
     @Override
     protected long calculateAnswer(final IntList cupLabels) {
-        final Map<Integer, LinkedNode<Integer>> labelToNodeMap = new HashMap<>();
-        final LinkedNode<Integer> first = firstNode(cupLabels);
-        LinkedNode<Integer> current = first;
-        LinkedNode<Integer> target = new LinkedNode<>();
-        LinkedNode<Integer> next;
+        final Map<Integer, LinkedNode> labelToNodeMap = new HashMap<>();
+        final LinkedNode first = firstNode(cupLabels);
+        LinkedNode current = first;
+        LinkedNode target = new LinkedNode(0);
+        LinkedNode next;
         for (int i = 0; i < cupLabels.size(); i++) {
             final int label = cupLabels.get(i);
             if (i != 0) {
-                next = new LinkedNode<>(label);
+                next = new LinkedNode(label);
                 current.setNext(next);
                 current = next;
             }
@@ -45,15 +45,18 @@ public class Part2CrabCups extends Day23Challenge {
         return run(first, target, labelToNodeMap);
     }
 
-    private static LinkedNode<Integer> firstNode(final IntList cupLabels) {
+    private static LinkedNode firstNode(final IntList cupLabels) {
         final int label = cupLabels.get(0);
-        return new LinkedNode<>(label);
+        return new LinkedNode(label);
     }
 
-    private static LinkedNode<Integer> fillRestOfTheMap(
-            final Map<Integer, LinkedNode<Integer>> labelToNodeMap, LinkedNode<Integer> current) {
+    private static LinkedNode fillRestOfTheMap(
+            final Map<Integer, LinkedNode> labelToNodeMap,
+            final LinkedNode initial
+    ) {
+        var current = initial;
         for (int label = labelToNodeMap.size() + 1; label <= CUP_AMOUNT; label++) {
-            final LinkedNode<Integer> next = new LinkedNode<>(label);
+            final LinkedNode next = new LinkedNode(label);
             labelToNodeMap.put(label, next);
             current.setNext(next);
             current = next;
@@ -61,14 +64,14 @@ public class Part2CrabCups extends Day23Challenge {
         return current;
     }
 
-    public static long run(LinkedNode<Integer> current, final LinkedNode<Integer> target,
-                    final Map<Integer, LinkedNode<Integer>> indexToLabelNodeMap) {
+    public static long run(LinkedNode current, final LinkedNode target,
+                    final Map<Integer, LinkedNode> indexToLabelNodeMap) {
         for (int i = 0; i < NR_OF_MOVES; i++) {
-            final LinkedNode<Integer> moved = current.getNext();
+            final LinkedNode moved = current.getNext();
             current.setNext(current.getNext().getNext().getNext().getNext());
             final int destinationCupLabel = determineTargetCupLabel(current, moved, indexToLabelNodeMap);
 
-            final LinkedNode<Integer> nodeToBeInserted = indexToLabelNodeMap.get(destinationCupLabel);
+            final LinkedNode nodeToBeInserted = indexToLabelNodeMap.get(destinationCupLabel);
             moved.getNext().getNext().setNext(nodeToBeInserted.getNext());
             nodeToBeInserted.setNext(moved);
 
@@ -79,10 +82,10 @@ public class Part2CrabCups extends Day23Challenge {
         return num1 * num2;
     }
 
-    private static int determineTargetCupLabel(final LinkedNode<Integer> current,
-                                        final LinkedNode<Integer> removed,
-                                        final Map<Integer, LinkedNode<Integer>> indexToLabelNodeMap) {
-        int destinationCupLabel = current.getValue().equals(TARGET_VAL) ? indexToLabelNodeMap.size() : (current.getValue() - 1);
+    private static int determineTargetCupLabel(final LinkedNode current,
+                                        final LinkedNode removed,
+                                        final Map<Integer, LinkedNode> indexToLabelNodeMap) {
+        int destinationCupLabel = current.getValue() == TARGET_VAL ? indexToLabelNodeMap.size() : (current.getValue() - 1);
         while (inRange(removed, destinationCupLabel)) {
             destinationCupLabel--;
             if (destinationCupLabel == 0) {
@@ -92,7 +95,7 @@ public class Part2CrabCups extends Day23Challenge {
         return destinationCupLabel;
     }
 
-    private static boolean inRange(final LinkedNode<Integer> removed, final int destination) {
+    private static boolean inRange(final LinkedNode removed, final int destination) {
         final int current = removed.getValue();
         final int next = removed.getNext().getValue();
         final int secondNext = removed.getNext().getNext().getValue();

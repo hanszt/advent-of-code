@@ -8,30 +8,41 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import aoc.utils.*
 import aoc.utils.model.GridPoint2D.Companion.by
+import io.kotest.assertions.assertSoftly
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.shouldBe
 
 internal class Day17TrickShotTest {
 
     @Test
-    fun `part 1 test input`() = assertEquals(45, Day17TrickShot.part1(20..30, -10..-5))
+    fun `part 1 test input`() {
+        Day17TrickShot.part1(20..30, -10..-5) shouldBe 45
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(7_381, Day17TrickShot.part1().also(::println))
+    fun `part 1 result`() {
+        Day17TrickShot.part1().also(::println) shouldBe 7_381
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(112, Day17TrickShot.part2(20..30, -10..-5))
+    fun `part 2 test input`() {
+        Day17TrickShot.part2(20..30, -10..-5) shouldBe 112
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(3_019, Day17TrickShot.part2().also(::println))
+    fun `part 2 result`() {
+        Day17TrickShot.part2().also(::println) shouldBe 3_019
+    }
 
     @Test
     fun `part 1 answer analytical`() {
         val highestPosYTest = calculateHighestPosition(-10)
         val highestPosY = calculateHighestPosition(-122)
 
-        assertAll(
-            { assertEquals(45, highestPosYTest) },
-            { assertEquals(7_381, highestPosY) }
-        )
+        assertSoftly {
+            highestPosYTest shouldBe 45
+            highestPosY shouldBe 7_381
+        }
     }
 
     /**
@@ -55,6 +66,6 @@ internal class Day17TrickShotTest {
         println(grid.mirroredHorizontally().gridAsString(1,"") {
             if (it == 0) ".".withColors(BRIGHT_BLUE, ICY_BG) else "#".withColors(RED, ICY_BG) })
 
-        assertTrue(path.isNotEmpty())
+        path.shouldNotBeEmpty()
     }
 }

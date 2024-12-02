@@ -68,6 +68,9 @@
                 </executions>
                 <configuration>
                     <jvmTarget>${kotlin-maven-plugin.jvmTarget}</jvmTarget>
+                    <args>
+                        <arg>-Xwhen-guards</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>

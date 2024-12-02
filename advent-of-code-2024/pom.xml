@@ -62,6 +62,7 @@
                     <!--https://kotlinlang.org/docs/java-to-kotlin-interop.html#default-methods-in-interfaces-->
                     <!--https://kotlinlang.org/docs/maven.html#specifying-compiler-options-->
                     <args>
+                        <arg>-Xwhen-guards</arg>
                         <arg>-Xjvm-default=all</arg>
                     </args>
                 </configuration>

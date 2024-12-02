@@ -1,6 +1,6 @@
 package aoc.seastories
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class Day12PassagePathingTest {
@@ -10,20 +10,32 @@ internal class Day12PassagePathingTest {
     private val day12PassagePathing = Day12PassagePathing("input/day12.txt")
 
     @Test
-    fun `part 1 test input small`() = assertEquals(10, day12PassagePathingTestInput.part1())
+    fun `part 1 test input small`() {
+        day12PassagePathingTestInput.part1() shouldBe 10
+    }
 
     @Test
-    fun `part 1 test input medium`() = assertEquals(19, day12PassagePathingMediumInput.part1())
+    fun `part 1 test input medium`() {
+        day12PassagePathingMediumInput.part1() shouldBe 19
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(3_298, day12PassagePathing.part1().also(::println))
+    fun `part 1 result`() {
+        day12PassagePathing.part1().also(::println) shouldBe 3_298
+    }
 
     @Test
-    fun `part 2 test input small`() = assertEquals(36, day12PassagePathingTestInput.part2())
+    fun `part 2 test input small`() {
+        day12PassagePathingTestInput.part2() shouldBe 36
+    }
 
     @Test
-    fun `part 2 test input medium`() = assertEquals(103, day12PassagePathingMediumInput.part2())
+    fun `part 2 test input medium`() {
+        day12PassagePathingMediumInput.part2() shouldBe 103
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(93_572, day12PassagePathing.part2().also(::println))
+    fun `part 2 result`() {
+        day12PassagePathing.part2().also(::println) shouldBe 93_572
+    }
 }

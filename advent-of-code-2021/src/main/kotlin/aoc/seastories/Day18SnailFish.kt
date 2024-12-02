@@ -1,8 +1,7 @@
 package aoc.seastories
 
-import aoc.utils.max
-import java.io.File
 import org.hzt.graph.TreeNode
+import java.io.File
 
 /**
  * I've not been able to solve this day myself. This solution is from the repo Elizarov
@@ -15,7 +14,7 @@ import org.hzt.graph.TreeNode
  */
 internal class Day18SnailFish(inputPath: String) : ChallengeDay {
 
-    private val snailNrs = File(inputPath).readLines().map(::toSnailNr)
+    private val snailNrs = File(inputPath).useLines { it.map(SnailNr::parse).toList() }
 
     override fun part1(): Int = snailNrs
         .reduce { snailNr, other -> snailNr + other }
@@ -26,7 +25,7 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
     sealed class SnailNr : TreeNode<SnailNr, SnailNr> {
 
         private fun findPair(nesting: Int): Pair? {
-            if (nesting == 0) return this as? Pair?
+            if (nesting == 0) return this as? Pair
             if (this is Pair) {
                 left.findPair(nesting - 1)?.let { return it }
                 right.findPair(nesting - 1)?.let { return it }
@@ -35,7 +34,7 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
         }
 
         private fun findRegular(limit: Int): Regular? = when (this) {
-            is Regular -> if (value >= limit) this else null
+            is Regular -> takeIf { value >= limit }
             is Pair -> {
                 left.findRegular(limit)?.let { return it }
                 right.findRegular(limit)?.let { return it }
@@ -45,37 +44,30 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
 
         private fun traverse(keep: Pair): List<SnailNr> = when (this) {
             is Regular -> listOf(this)
-            is Pair -> if (this == keep) listOf(this) else left.traverse(keep) + right.traverse(keep)
+            is Pair if this == keep -> listOf(this)
+            is Pair -> left.traverse(keep) + right.traverse(keep)
         }
 
-        private fun replace(fromSnailNrToSnailNrMap: Map<SnailNr, SnailNr>): SnailNr {
-            fromSnailNrToSnailNrMap[this]?.let { return it }
+        private fun replace(map: Map<SnailNr, SnailNr>): SnailNr {
+            map[this]?.let { return it }
             return when (this) {
                 is Regular -> this
-                is Pair -> Pair(left.replace(fromSnailNrToSnailNrMap), right.replace(fromSnailNrToSnailNrMap))
+                is Pair -> Pair(left.replace(map), right.replace(map))
             }
         }
 
-        private fun buildReplaceMap(): Map<SnailNr, SnailNr>? {
-            val pair = findPair(4)
-            if (pair != null) {
-                check(pair.left is Regular)
-                check(pair.right is Regular)
-                val pairToRegularMap = mutableMapOf<SnailNr, SnailNr>(pair to Regular(0))
+        private fun buildReplaceMap(): Map<SnailNr, SnailNr>? = findPair(4)?.let { pair ->
+            check(pair.left is Regular)
+            check(pair.right is Regular)
+            buildMap {
+                put(pair, Regular(0))
                 val snailNrs = traverse(pair)
                 val i = snailNrs.indexOf(pair)
-                (snailNrs.getOrNull(i - 1) as? Regular)
-                    ?.let { pairToRegularMap[it] = Regular(it.value + pair.left.value) }
-                (snailNrs.getOrNull(i + 1) as? Regular)
-                    ?.let { pairToRegularMap[it] = Regular(it.value + pair.right.value) }
-                return pairToRegularMap
+                (snailNrs.getOrNull(i - 1) as? Regular)?.let { this[it] = Regular(it.value + pair.left.value) }
+                (snailNrs.getOrNull(i + 1) as? Regular)?.let { this[it] = Regular(it.value + pair.right.value) }
             }
-            val regular = findRegular(10)
-            if (regular != null) {
-                val splitPair = Pair(Regular(regular.value / 2), Regular((regular.value + 1) / 2))
-                return mapOf(regular to splitPair)
-            }
-            return null
+        } ?: findRegular(10)?.let {
+            mapOf(it to Pair(Regular(it.value / 2), Regular((it.value + 1) / 2)))
         }
 
         operator fun plus(other: SnailNr): SnailNr = Pair(this, other).reduce()
@@ -90,7 +82,27 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
         }
 
         override fun childrenIterator(): Iterator<SnailNr> =
-            (if (this is Pair) listOf(left, right) else emptyList()).iterator()
+            (if (this is Pair) sequenceOf(left, right) else emptySequence()).iterator()
+
+        companion object {
+            fun parse(input: String): SnailNr {
+                var cursor = 0
+                fun parse(): SnailNr {
+                    if (input[cursor] == '[') {
+                        cursor++
+                        val left = parse()
+                        check(input[cursor++] == ',')
+                        val right = parse()
+                        check(input[cursor++] == ']')
+                        return Pair(left, right)
+                    }
+                    val start = cursor
+                    while (input[cursor] in '0'..'9') cursor++
+                    return Regular(input.substring(start, cursor).toInt())
+                }
+                return parse().also { check(cursor == input.length) }
+            }
+        }
     }
 
     private class Regular(val value: Int) : SnailNr() {
@@ -101,32 +113,14 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
         override fun toString(): String = "[$left,$right]"
     }
 
-    private fun List<SnailNr>.findLargestSum() = let { snailNrs ->
-        snailNrs.indices.flatMap { index ->
-            snailNrs.indices
-                .filter { index != it }
-                .map { (snailNrs[index] + snailNrs[it]).magnitude() }
-        }.max()
-    }
-
-    companion object {
-
-        fun toSnailNr(input: String): SnailNr {
-            var cursor = 0
-            fun parse(): SnailNr {
-                if (input[cursor] == '[') {
-                    cursor++
-                    val left = parse()
-                    check(input[cursor++] == ',')
-                    val right = parse()
-                    check(input[cursor++] == ']')
-                    return Pair(left, right)
+    private fun List<SnailNr>.findLargestSum(): Int = sequence {
+        val nrs = this@findLargestSum
+        for (i in 0..lastIndex) {
+            for (j in 0..lastIndex) {
+                if (i != j) {
+                    yield((nrs[i] + nrs[j]).magnitude())
                 }
-                val start = cursor
-                while (input[cursor] in '0'..'9') cursor++
-                return Regular(input.substring(start, cursor).toInt())
             }
-            return parse().also { check(cursor == input.length) }
         }
-    }
+    }.max()
 }

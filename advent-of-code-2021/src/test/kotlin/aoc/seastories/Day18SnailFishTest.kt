@@ -1,6 +1,7 @@
 package aoc.seastories
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import aoc.seastories.Day18SnailFish.SnailNr
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -13,16 +14,24 @@ internal class Day18SnailFishTest {
     }
 
     @Test
-    fun `part 1 test input`() = assertEquals(4_140, day18SnailFishTestInput.part1())
+    fun `part 1 test input`() {
+        day18SnailFishTestInput.part1() shouldBe 4_140
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(3_486, day18SnailFish.part1().also(::println))
+    fun `part 1 result`() {
+        day18SnailFish.part1() shouldBe 3_486
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(3_993, day18SnailFishTestInput.part2())
+    fun `part 2 test input`() {
+        day18SnailFishTestInput.part2() shouldBe 3_993
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(4_747, day18SnailFish.part2().also(::println))
+    fun `part 2 result`() {
+        day18SnailFish.part2() shouldBe 4_747
+    }
 
     @ParameterizedTest(name = "{0} should reduce to: {1}")
     @CsvSource(
@@ -33,11 +42,11 @@ internal class Day18SnailFishTest {
         ], delimiterString = " -> "
     )
     fun `test reduce nr`(snailNr: String, expected: String) {
-        val toSnailNr = Day18SnailFish.toSnailNr(snailNr)
-        println(toSnailNr.toTreeString(1))
+        val toSnailNr = SnailNr.parse(snailNr)
+        println(toSnailNr.toTreeString(2))
         println()
         val reducedNr = toSnailNr.reduce()
-        assertEquals(expected, reducedNr.toString())
+        reducedNr.toString() shouldBe expected
     }
 
     @ParameterizedTest(name = "{0} should have a magnitude of {1}")
@@ -50,8 +59,7 @@ internal class Day18SnailFishTest {
         delimiterString = " -> "
     )
     fun `calculate magnitude of snail numbers`(snailNr: String, expected: Int) {
-        val magnitude = Day18SnailFish.toSnailNr(snailNr).magnitude()
-        assertEquals(expected, magnitude)
+        SnailNr.parse(snailNr).magnitude() shouldBe expected
     }
 
     @ParameterizedTest(name = "{0} = {1}")
@@ -64,9 +72,9 @@ internal class Day18SnailFishTest {
     )
     fun `add two snail nrs`(nrsToAdd: String, expected: String) {
         val result = nrsToAdd.split(" + ")
-            .map(Day18SnailFish::toSnailNr)
-            .reduce(Day18SnailFish.SnailNr::plus)
+            .map(SnailNr::parse)
+            .reduce(SnailNr::plus)
 
-        assertEquals(expected, result.toString())
+        result.toString() shouldBe expected
     }
 }

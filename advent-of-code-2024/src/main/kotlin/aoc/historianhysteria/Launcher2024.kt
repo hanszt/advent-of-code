@@ -1,4 +1,4 @@
-package aoc.snowrescuemission
+package aoc.historianhysteria
 
 import aoc.utils.*
 import kotlin.time.Duration.Companion.nanoseconds
