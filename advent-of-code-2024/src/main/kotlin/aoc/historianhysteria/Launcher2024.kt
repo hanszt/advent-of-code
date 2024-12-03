@@ -22,7 +22,7 @@ class Launcher2023(inputDir: String) : Launcher {
 
     internal val challengeDays = sequenceOf(
         Day01("$inputDir/day01.txt"),
-        Day02("$inputDir/day02.txt"),
+        Day02("$inputDir/day02-dr.txt"),
     )
 
     override fun challengeDays(): Iterable<ChallengeDay> = challengeDays.asIterable()

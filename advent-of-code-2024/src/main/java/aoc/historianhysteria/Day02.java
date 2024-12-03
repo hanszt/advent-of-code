@@ -3,7 +3,6 @@ package aoc.historianhysteria;
 import aoc.utils.ChallengeDay;
 import org.hzt.utils.collections.ListX;
 import org.hzt.utils.collections.primitives.IntList;
-import org.hzt.utils.collections.primitives.IntMutableList;
 import org.hzt.utils.io.FileX;
 import org.hzt.utils.sequences.Sequence;
 import org.hzt.utils.strings.StringX;
@@ -42,15 +41,16 @@ public final class Day02 implements ChallengeDay {
     }
 
     private static boolean isSafeAfterDampening(IntList report) {
-        var unsafeIndices = IntMutableList.empty();
-        int windowIndex = 0;
-        for (var w : report.asSequence().windowed(3)) {
-            if (!isSafe(w)) {
-                unsafeIndices.addAll(windowIndex, windowIndex + 1, windowIndex + 2);
-                break;
+        final var unsafeIndices = IntList.build(ml -> {
+            int windowIndex = 0;
+            for (var w : report.asSequence().windowed(3)) {
+                if (!isSafe(w)) {
+                    ml.addAll(windowIndex, windowIndex + 1, windowIndex + 2);
+                    break;
+                }
+                windowIndex++;
             }
-            windowIndex++;
-        }
+        });
         if (unsafeIndices.isEmpty()) {
             return true;
         }

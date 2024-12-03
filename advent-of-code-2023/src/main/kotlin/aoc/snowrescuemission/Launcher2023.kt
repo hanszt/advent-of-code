@@ -26,7 +26,7 @@ class Launcher2023(inputDir: String) : Launcher {
         Day03("$inputDir/day03.txt"),
         Day04("$inputDir/day04.txt"),
         Day05("$inputDir/day05hzt.txt"),
-        Day08("$inputDir/day08drillster.txt"),
+        Day08("$inputDir/day08-dr.txt"),
         Day09("$inputDir/day09.txt"),
         Day10("$inputDir/day10.txt"),
     )

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day02Test {
 
+    private static final Day02 day02dr = new Day02("input/day02-dr.txt");
     private static final Day02 day02 = new Day02("input/day02.txt");
     private static final String TEST_INPUT = """
             7 6 4 2 1
@@ -27,12 +28,22 @@ class Day02Test {
     }
 
     @Test
+    void testPart1Dr() {
+        assertEquals(369, day02dr.part1());
+    }
+
+    @Test
+    void testPart2Dr() {
+        assertEquals(428, day02dr.part2());
+    }
+
+    @Test
     void testPart1() {
-        assertEquals(369, day02.part1());
+        assertEquals(502, day02.part1());
     }
 
     @Test
     void testPart2() {
-        assertEquals(428, day02.part2());
+        assertEquals(544, day02.part2());
     }
 }
