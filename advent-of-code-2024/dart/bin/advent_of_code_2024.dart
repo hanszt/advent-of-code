@@ -1,5 +1,5 @@
 import 'challenge_day.dart';
-import 'day01.dart';
+import 'day04.dart';
 
 void main(List<String> arguments) {
   void printResult(ChallengeDay day) {
@@ -9,7 +9,7 @@ void main(List<String> arguments) {
   }
 
   final List<ChallengeDay> days = [
-    Day01.using("input/day01.txt"),
+    Day04.using("input/day04.txt"),
   ];
   for (var day in days) {
     printResult(day);

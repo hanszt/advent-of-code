@@ -55,6 +55,9 @@ inline fun <T> Array<Array<T>>.forEachPointAndValue(action: (Int, Int, T) -> Uni
 inline fun <T> Array<Array<T>>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
+inline fun List<String>.forEachPoint(action: (Int, Int) -> Unit) =
+    indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
+
 inline fun Array<IntArray>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 

@@ -1,4 +1,4 @@
-# Advent of code 2023 in Dart
+# Advent of code 2024 in Dart
 
 ---
 
