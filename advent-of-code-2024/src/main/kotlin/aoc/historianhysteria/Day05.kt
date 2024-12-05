@@ -58,8 +58,7 @@ class Day05(input: String) : ChallengeDay {
         .toList()
 
     /**
-     * Shift the first element to the left if the second element should be after the first element.
+     * Put item [i1] before item [i2], if item [i2] should be after item [i1] according to the rules.
      */
-    private fun compareByOrderingRules(i1: Int, i2: Int): Int =
-        if (orderingRules[i1]?.contains(i2) == true) -1 else 0
+    private fun compareByOrderingRules(i1: Int, i2: Int): Int = if (orderingRules[i1]?.contains(i2) == true) -1 else 0
 }

@@ -43,9 +43,9 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
     public Integer part1() {
         final int TARGET_Y = 2_000_000;
 
-        final Set<GridPoint2D> beacons = new HashSet<>();
-        final Set<GridPoint2D> sensors = new HashSet<>();
-        final Set<GridPoint2D> areaChecked = new HashSet<>();
+        final var beacons = new HashSet<>();
+        final var sensors = new HashSet<>();
+        final var areaChecked = new HashSet<>();
 
         for (var entry : sensorBeaconMap.entrySet()) {
             final var sensor = entry.getKey();
@@ -72,7 +72,7 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
         for (var entry : sensorBeaconMap.entrySet()) {
             final var sensor = entry.getKey();
             final var radius = sensor.manhattanDistance(entry.getValue()) + 1;
-            final Set<GridPoint2D> ring = new HashSet<>();
+            final var ring = new HashSet<GridPoint2D>();
             for (var i = 0; i < radius; i++) {
                 addToRingIfInLimit(ring, sensor.getX() + radius - i, sensor.getY() + i);
                 addToRingIfInLimit(ring, sensor.getX() - radius + i, sensor.getY() - i);

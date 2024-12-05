@@ -56,7 +56,13 @@ inline fun <T> Array<Array<T>>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
 inline fun List<String>.forEachPoint(action: (Int, Int) -> Unit) =
-    indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
+    withIndex().forEach { (y, row) -> row.indices.forEach { x -> action(x, y) } }
+
+inline fun <R> List<String>.foldByPoint(initial: R, action: (R, Int, Int) -> R): R {
+    var acc = initial
+    forEachPoint { x, y -> acc = action(acc, x, y) }
+    return acc
+}
 
 inline fun Array<IntArray>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }

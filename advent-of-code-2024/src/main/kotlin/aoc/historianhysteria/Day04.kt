@@ -1,7 +1,7 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
-import aoc.utils.forEachPoint
+import aoc.utils.foldByPoint
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.northeast
 import aoc.utils.model.GridPoint2D.Companion.northwest
@@ -18,10 +18,10 @@ class Day04(private val input: String) : ChallengeDay {
     }
 
     override fun part1(): Int {
-        var result = 0
         val target = "XMAS"
         val lines = input.lines()
-        lines.forEachPoint { x, y ->
+        return lines.foldByPoint(0) { acc, x, y ->
+            var result = acc
             for (dir in GridPoint2D.kingDirs) {
                 val found = buildString {
                     for (k in target.indices) {
@@ -34,15 +34,15 @@ class Day04(private val input: String) : ChallengeDay {
                     result++
                 }
             }
+            result
         }
-        return result
     }
 
     override fun part2(): Int {
-        var result = 0
         val target = "MAS"
         val lines = input.lines()
-        lines.forEachPoint { x, y ->
+        return lines.foldByPoint(0) { acc, x, y ->
+            var result = acc
             var r = 0
             for (dir in diagDirs) {
                 if (r == 2) {
@@ -62,7 +62,7 @@ class Day04(private val input: String) : ChallengeDay {
             if (r == 2) {
                 result++
             }
+            result
         }
-        return result
     }
 }

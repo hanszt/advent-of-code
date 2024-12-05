@@ -8,20 +8,21 @@ import java.io.File
 internal class Day20TrenchTrap(private val inputPath: String) : ChallengeDay {
 
     override fun part1(): Int = File(inputPath).toAlgoAndImage()
-            .let { (algo, image) -> image.enhance(algo, 2).sumOf { it.count { char -> char == 1 } }  }
+        .let { (algo, image) -> image.enhance(algo, 2).sumOf { it.count { char -> char == 1 } } }
 
     private fun Array<IntArray>.enhance(algo: List<Int>, times: Int): Array<IntArray> =
-        (0 until times).fold(this) { image, step -> image.enhance(step, algo)}
+        (0 until times).fold(this) { image, step -> image.enhance(step, algo) }
 
     private fun Array<IntArray>.enhance(step: Int, algo: List<Int>): Array<IntArray> {
-        val pixelValueOutsideImage = if (algo[0] == 1 && step % 2 != 0) 1  else 0
+        val pixelValueOutsideImage = if (algo[0] == 1 && step % 2 != 0) 1 else 0
         val enhanced = Array(this.size + 2) { IntArray(first().size + 2) { pixelValueOutsideImage } }
         this.forEachPoint { x, y -> enhanced[y + 1][x + 1] = this[y][x] }
-        val map = mutableMapOf<Pair<Int, Int>, Int>()
-        for (row in enhanced.indices) {
-            for (col in 0 until enhanced.first().size) {
-                val index = enhanced.findIndex(row, col, pixelValueOutsideImage)
-                map[row to col] = algo[index]
+        val map = buildMap {
+            for (row in enhanced.indices) {
+                for (col in 0 until enhanced.first().size) {
+                    val index = enhanced.findIndex(row, col, pixelValueOutsideImage)
+                    this[row to col] = algo[index]
+                }
             }
         }
         enhanced.forEachPoint { x, y -> enhanced[y][x] = map.getOrDefault(y to x, 0) }

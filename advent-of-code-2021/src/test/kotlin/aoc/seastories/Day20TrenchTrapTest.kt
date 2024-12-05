@@ -22,7 +22,7 @@ internal class Day20TrenchTrapTest {
 
     @Test
     fun `part 1 result`() {
-        day20TrenchTrap.part1().also(::println) shouldBe 5_291
+        day20TrenchTrap.part1() shouldBe 5_291
     }
 
     @Test
@@ -32,7 +32,7 @@ internal class Day20TrenchTrapTest {
 
     @Test
     fun `part 2 result`() {
-        resultImage.flatMap(IntArray::toList).count { it == 1 }.also(::println) shouldBe 16_665
+        resultImage.flatMap(IntArray::toList).count { it == 1 } shouldBe 16_665
     }
 
     @Test

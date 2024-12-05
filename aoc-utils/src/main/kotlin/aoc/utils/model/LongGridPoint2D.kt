@@ -31,7 +31,7 @@ interface LongGridPoint2D {
         .take(times)
         .last()
 
-    infix fun manhattanDistance(other: LongGridPoint2D) = abs(x - other.x) + abs(y - other.y)
+    fun manhattanDistance(other: LongGridPoint2D) = abs(x - other.x) + abs(y - other.y)
 
     companion object {
         @JvmField

@@ -24,7 +24,7 @@ interface GridPoint2D {
     fun toSignVector() = x.sign by y.sign
     fun rot90L(): GridPoint2D = gridPoint2D(y, -x)
     fun rot90R(): GridPoint2D = gridPoint2D(-y, x)
-    infix fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
+    fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
 
     companion object {
         @JvmField
