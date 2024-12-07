@@ -2,6 +2,9 @@
 
 package aoc.utils
 
+import aoc.utils.model.GridPoint2D
+import aoc.utils.model.gridPoint2D
+
 /**
  * from list of strings to grid converters
  */
@@ -69,6 +72,20 @@ inline fun Array<IntArray>.forEachPoint(action: (Int, Int) -> Unit) =
 
 inline fun Array<IntArray>.forEachPointAndValue(action: (Int, Int, Int) -> Unit) =
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
+
+/**
+ * Find first point matching the predicate
+ */
+fun List<String>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
+    for ((y, line) in this.withIndex()) {
+        for ((x, c) in line.withIndex()) {
+            if (predicate(c)) {
+                return gridPoint2D(x, y)
+            }
+        }
+    }
+    return null
+}
 
 /**
  * Rotation and mirroring

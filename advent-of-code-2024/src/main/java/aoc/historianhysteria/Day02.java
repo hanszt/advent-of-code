@@ -42,13 +42,12 @@ public final class Day02 implements ChallengeDay {
 
     private static boolean isSafeAfterDampening(IntList report) {
         final var unsafeIndices = IntList.build(ml -> {
-            int windowIndex = 0;
-            for (var w : report.asSequence().windowed(3)) {
-                if (!isSafe(w)) {
+            for (var w : report.asSequence().windowed(3).withIndex()) {
+                if (!isSafe(w.value())) {
+                    final var windowIndex = w.index();
                     ml.addAll(windowIndex, windowIndex + 1, windowIndex + 2);
                     break;
                 }
-                windowIndex++;
             }
         });
         if (unsafeIndices.isEmpty()) {
