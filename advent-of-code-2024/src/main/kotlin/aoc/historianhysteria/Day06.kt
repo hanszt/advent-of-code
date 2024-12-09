@@ -3,10 +3,8 @@ package aoc.historianhysteria
 import aoc.utils.ChallengeDay
 import aoc.utils.findPoint
 import aoc.utils.forEachPoint
-import aoc.utils.gridAsString
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.gridPoint2D
-import aoc.utils.toGridOf
 import java.nio.file.Path
 import kotlin.io.path.readText
 
@@ -48,7 +46,7 @@ class Day06(input: String) : ChallengeDay {
         map.forEachPoint { x, y ->
             val ch = map[y][x]
             if (ch == '.') {
-                if (isCycle(start = guardStartPos, extraObstaclePos = gridPoint2D(x, y))) {
+                if (isCycle(extraObstaclePos = gridPoint2D(x, y))) {
                     result++
                 }
             }
@@ -56,36 +54,36 @@ class Day06(input: String) : ChallengeDay {
         return result
     }
 
-    private fun isCycle(start: GridPoint2D, extraObstaclePos: GridPoint2D): Boolean {
+    private fun isCycle(extraObstaclePos: GridPoint2D): Boolean {
         val obstacle = '#'
-        var cur = start
+        var curPos = guardStartPos
         var curDir = gridPoint2D(0, -1)
         val set = HashSet<Heading>()
-        while (map.getOrNull(cur.y)?.getOrNull(cur.x) != null) {
-            if (!set.add(Heading(cur, curDir))) {
+        while (map.getOrNull(curPos.y)?.getOrNull(curPos.x) != null) {
+            if (!set.add(Heading(position = curPos, dir = orientationMap[curDir]!!))) {
 //                println(loopToString(set, extraObstaclePos))
 //                println()
                 return true
             }
-            val inFront = cur + curDir
+            val inFront = curPos + curDir
             if (map.getOrNull(inFront.y)?.getOrNull(inFront.x) == obstacle || inFront == extraObstaclePos) {
                 curDir = curDir.rot90R()
             }
-            cur = cur + curDir
+            curPos += curDir
         }
         return false
     }
 
-    private fun loopToString(headings: HashSet<Heading>, extraObstaclePos: GridPoint2D): String {
-        val grid = map.toGridOf { it }
-        for (heading in headings) {
-            val position = heading.position
-            val dir = heading.dir
-            grid[position.y][position.x] = orientationMap[dir]!!
-            grid[extraObstaclePos.y][extraObstaclePos.x] = 'O'
-        }
-        return grid.gridAsString()
-    }
+//    private fun loopToString(headings: Set<Heading>, extraObstaclePos: GridPoint2D): String {
+//        val grid = map.toGridOf { it }
+//        for (heading in headings) {
+//            val position = heading.position
+//            val dir = heading.dir
+//            grid[position.y][position.x] = orientationMap[dir]!!
+//            grid[extraObstaclePos.y][extraObstaclePos.x] = 'O'
+//        }
+//        return grid.gridAsString()
+//    }
 
-    data class Heading(val position: GridPoint2D, val dir: GridPoint2D)
+    data class Heading(val position: GridPoint2D, val dir: Char)
 }

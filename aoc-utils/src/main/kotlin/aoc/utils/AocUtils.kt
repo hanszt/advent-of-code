@@ -1,6 +1,6 @@
 package aoc.utils
 
-import java.util.LinkedList
+import java.util.*
 import kotlin.math.abs
 
 val oneOrMoreWhiteSpaces = "\\s+".toRegex()
@@ -74,7 +74,7 @@ fun <T, R> Iterable<T>.toSetOf(mapper: (T) -> R): Set<R> {
         return when (size) {
             0 -> emptySet()
             1 -> setOf(mapper(first()))
-            else -> mapTo(LinkedHashSet(mapCapacity(size)), mapper)
+            else -> buildSet(mapCapacity(size)) { this@toSetOf.forEach { add(mapper(it)) } }
         }
     }
     return mapTo(LinkedHashSet(), mapper).optimizeReadOnlySet()
