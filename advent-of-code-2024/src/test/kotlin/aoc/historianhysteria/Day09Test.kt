@@ -25,7 +25,7 @@ class Day09Test {
 
     @Test
     fun part1dr() {
-        day09dr.part1() shouldBe 975_671_981_569
+        day09dr.part1() shouldBe 6_390_180_901_651 // 90994085674 too low, 6_390_444_967_413 too high
     }
 
     @Test

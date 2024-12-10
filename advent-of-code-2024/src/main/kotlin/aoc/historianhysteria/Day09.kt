@@ -6,70 +6,66 @@ import kotlin.io.path.readText
 
 /**
  * What is the resulting filesystem checksum?
+ *
+ * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day09_1.kt to see what the right answer should have been
  */
 class Day09(diskMap: String) : ChallengeDay {
-
-    private val diskSpaces = getDiskSpaces(diskMap)
-    private val diskSpaces2 = joinToString(diskMap)
-
-    private fun joinToString(diskMap: String): String {
-        var index = 0
-        val string = diskMap.withIndex().joinToString("") { (i, c) ->
-            val size = c.digitToInt()
-            val space = if (i % 2 == 0) (0..<size).joinToString("") { "${i / 2}"} else (0..<size).joinToString("") { "." }
-            index += size
-            space
-        }
-        return string
-    }
-
-    private fun getDiskSpaces(diskMap: String): List<DiskSpace> {
-        var index = 0L
-        return diskMap.mapIndexed { i, size ->
-            val size = size.digitToInt()
-            val space = if (i % 2 == 0) File(id = i / 2, startIndex = index, size = size) else Empty(startIndex = index, size = size)
-            index += size
-            space
-        }
-    }
-
     constructor(path: Path) : this(path.readText())
 
+    private val diskSegments = toSegments(diskMap)
+
+    private fun toSegments(diskMap: String): List<DiskSegment> {
+        var index = 0L
+        val segments = diskMap.flatMapIndexed { i, c ->
+            val size = c.digitToInt()
+            val space = if (i % 2 == 0) (0..<size).map { FileSegment(i / 2) }
+            else (0..<size).map { EmptySegment }
+            index += size
+            space
+        }
+        return segments
+    }
+
     override fun part1(): Long {
-        println(diskSpaces2)
-        return idsToPositions(diskSpaces)
-            .entries
-            .sumOf { (id, positions) -> positions.sumOf { id * it.toLong() } }
+        val deFragmented = deFragment(diskSegments)
+        var sum = 0L
+        for ((i, fs) in deFragmented.withIndex()) {
+            sum += (i * fs.id).toLong()
+        }
+        return sum
     }
 
     override fun part2(): Int {
         TODO()
     }
 
-    private fun idsToPositions(spaces: List<DiskSpace>): Map<Int, List<Int>> = buildMap {
-        val empties = spaces.filterIsInstance<Empty>().mapTo(HashSet()) {}
-        var indexFront = 0
-        var indexBack = spaces.lastIndex
-        while (true) {
-            val space = spaces[indexFront]
-            if (space is Empty) {
-                for (i in 1..space.size) {
-
+    private fun deFragment(memory: List<DiskSegment>): List<FileSegment> = buildList {
+        var i1 = 0
+        var i2 = memory.lastIndex
+        while (i1 <= i2) {
+            val segment = memory[i1]
+            if (segment !is FileSegment) {
+                var other = memory[i2]
+                while (other !is FileSegment) {
+                    other = memory[--i2]
                 }
+                add(other)
+                i2--
+            } else {
+                add(segment)
             }
-            when (spaces[indexBack]) {
-                is File -> TODO()
-                is Empty -> TODO()
-            }
-            indexFront++
+            i1++
         }
+        if (size % 2 != 0) removeLast()
     }
 
-    sealed interface DiskSpace {
-        val startIndex: Long
-        val size: Int
+    sealed interface DiskSegment
+
+    data class FileSegment(val id: Int) : DiskSegment {
+        override fun toString(): String = "$id"
     }
 
-    data class File(val id: Int, override val startIndex: Long, override val size: Int) : DiskSpace
-    data class Empty(override val size: Int, override val startIndex: Long) : DiskSpace
+    data object EmptySegment : DiskSegment {
+        override fun toString(): String = "."
+    }
 }
