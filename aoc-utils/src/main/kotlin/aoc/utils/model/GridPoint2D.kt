@@ -31,9 +31,9 @@ interface GridPoint2D {
         val ZERO = 0 by 0
 
         @JvmField
-        val up = gridPoint2D(0, 1)
+        val down = gridPoint2D(0, 1)
         @JvmField
-        val down = gridPoint2D(0, -1)
+        val up = gridPoint2D(0, -1)
         @JvmField
         val right = gridPoint2D(1, 0)
         @JvmField
@@ -58,7 +58,7 @@ interface GridPoint2D {
         val kingDirs = listOf(north, northeast, east, southeast, south, southwest, west, northwest)
 
         @JvmField
-        val orthoDirs = listOf(up, down, right, left)
+        val orthoDirs = listOf(up, right, down, left)
 
         infix fun Int.by(y: Int): GridPoint2D = StandardGridPoint2D(this, y)
 

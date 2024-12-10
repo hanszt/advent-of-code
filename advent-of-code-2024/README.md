@@ -45,7 +45,7 @@ pause
 
 ### Dart
 
-#### Advent of code 2023 in Dart
+#### Advent of code 2024 in Dart
 
 ---
 
@@ -67,9 +67,17 @@ A small project to do some advent of code days in Dart
 
 ---
 
+## Blog
+
+Day 9 part 1: I was off by one. The stop condition was wrong which got me stuck
+Day 10 part 1: Eventually solved. Also viewed Elizarov's solution
+Day 10 part 2: Viewed solution of Elizarov. Not solved myself. Only refactored
+
+---
+
 ## Sources
 
-- [Advent of code 2022!](http://patorjk.com/software/taag/#p=display&f=Cursive&t=Advent%20of%20code%202022!)
+- [Advent of code 2024!](http://patorjk.com/software/taag/#p=display&f=Cursive&t=Advent%20of%20code%202024!)
 - [Kotlin docs](https://kotlinlang.org/docs/home.html)
 - [Powered by Kotlin and Java Banner](http://patorjk.com/software/taag/#p=display&f=Cursive&t=Powered%20by%20Kotlin%20and%20Java)
 

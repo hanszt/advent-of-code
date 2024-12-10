@@ -21,18 +21,22 @@ infix fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
     error("no path to $goal found")
 }
 
-fun <T> allPathsByDfs(start: Node<T>, goal: Node<T>, predicate: (Node<T>) -> Boolean): List<List<Node<T>>> =
-    mutableListOf<List<Node<T>>>().apply { dfsRecursive(start, goal, predicate = predicate) }
+/**
+ * See https://www.geeksforgeeks.org/find-paths-given-source-destination/
+ */
+fun <T> allPathsByDfs(start: Node<T>, goal: Node<T>, predicate: (Node<T>) -> Boolean): Sequence<List<Node<T>>> = sequence {
+    dfsRecursive(start, goal, predicate = predicate)
+}
 
-private fun <T> MutableList<List<Node<T>>>.dfsRecursive(
+private suspend fun <T> SequenceScope<List<Node<T>>>.dfsRecursive(
     current: Node<T>,
     goal: Node<T>,
-    visited: MutableSet<Node<T>> = mutableSetOf(),
-    localPathList: MutableList<Node<T>> = mutableListOf(current),
+    visited: MutableSet<Node<T>> = HashSet(),
+    localPath: MutableList<Node<T>> = mutableListOf(current),
     predicate: (Node<T>) -> Boolean
 ) {
     if (current == goal) {
-        this += localPathList.toList()
+        yield(localPath.toList())
         return
     }
     if (predicate(current)) {
@@ -40,9 +44,9 @@ private fun <T> MutableList<List<Node<T>>>.dfsRecursive(
     }
     for (neighbor in current.neighbors) {
         if (neighbor !in visited) {
-            localPathList += neighbor
-            dfsRecursive(neighbor, goal, visited, localPathList, predicate)
-            localPathList -= neighbor
+            localPath += neighbor
+            dfsRecursive(neighbor, goal, visited, localPath, predicate)
+            localPath -= neighbor
         }
     }
     if (predicate(current)) {

@@ -5,10 +5,10 @@ import aoc.utils.ChallengeDay
 import aoc.utils.grouping
 import aoc.utils.invoke
 import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.GridPoint2D.Companion.down
+import aoc.utils.model.GridPoint2D.Companion.up
 import aoc.utils.model.GridPoint2D.Companion.left
 import aoc.utils.model.GridPoint2D.Companion.right
-import aoc.utils.model.GridPoint2D.Companion.up
+import aoc.utils.model.GridPoint2D.Companion.down
 import aoc.utils.model.GridPoint3D
 import aoc.utils.model.gridPoint2D
 import aoc.utils.model.gridPoint3D
@@ -26,7 +26,7 @@ class Day22MonkeyMap(
     text: String = File(fileName ?: error("No fileName or text provided")).readText()
 ) : ChallengeDay {
 
-    private val dirs = listOf(right, up, left, down)
+    private val dirs = listOf(right, down, left, up)
     private val grid: List<String>
     private val instructions: String
 

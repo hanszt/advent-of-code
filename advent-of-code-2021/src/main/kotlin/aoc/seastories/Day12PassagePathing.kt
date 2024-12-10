@@ -14,11 +14,11 @@ internal class Day12PassagePathing(private val inputPath: String) : ChallengeDay
     private fun Map<String, Node<String>>.countDistinctPaths(): Int = let { graph ->
         val start = graph["start"] ?: error("start not found")
         val end = graph["end"] ?: error("end not found")
-        return allPathsByDfs(start, end) { it.value?.all(Char::isLowerCase) ?: false }.count()
+        return allPathsByDfs(start, end) { it.value?.all(Char::isLowerCase) == true }.count()
     }
 
     override fun part2(): Int {
-        val graph = File(inputPath).readLines().toBiDiGraph("-") { label -> Cave(label, false) }
+        val graph = File(inputPath).readLines().toBiDiGraph("-") { label -> Cave(label, allowedToVisitTwice = false) }
         val start = graph["start"] ?: error("start not found")
         val end = graph["end"] ?: error("end not found")
 
@@ -43,8 +43,8 @@ internal class Day12PassagePathing(private val inputPath: String) : ChallengeDay
                 caveAllowedToVisitTwice.value?.allowedToVisitTwice = true
             }
             for (neighbor in currentCave.neighbors) {
-                val isBigCave = neighbor.value?.label?.all(Char::isUpperCase) ?: false
-                val allowedToVisitTwice = neighbor.value?.allowedToVisitTwice ?: false &&
+                val isBigCave = neighbor.value?.label?.all(Char::isUpperCase) == true
+                val allowedToVisitTwice = neighbor.value?.allowedToVisitTwice == true &&
                         currentPath.count { it == caveAllowedToVisitTwice } < 2
                 if (neighbor !in currentPath || isBigCave || allowedToVisitTwice) {
                     val newPath = currentPath.plus(neighbor)
