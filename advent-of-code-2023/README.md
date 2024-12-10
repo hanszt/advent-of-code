@@ -69,7 +69,7 @@ A small project to do some advent of code days in Dart
 
 ## Sources
 
-- [Advent of code 2022!](http://patorjk.com/software/taag/#p=display&f=Cursive&t=Advent%20of%20code%202022!)
+- [Advent of code 2023!](http://patorjk.com/software/taag/#p=display&f=Cursive&t=Advent%20of%20code%202023!)
 - [Kotlin docs](https://kotlinlang.org/docs/home.html)
 - [Powered by Kotlin and Java Banner](http://patorjk.com/software/taag/#p=display&f=Cursive&t=Powered%20by%20Kotlin%20and%20Java)
 

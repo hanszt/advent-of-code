@@ -4,7 +4,6 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled("Not fully implemented")
 class Day17Test {
 
     private companion object {
@@ -13,7 +12,7 @@ class Day17Test {
 
     @Test
     fun testPart1() {
-        day17.part1() shouldBe 0
+        day17.part1() shouldBe 1260
     }
 
     @Test

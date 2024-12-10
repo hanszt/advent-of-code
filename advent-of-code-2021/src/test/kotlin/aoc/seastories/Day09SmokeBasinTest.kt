@@ -6,7 +6,8 @@ import aoc.utils.CYAN
 import aoc.utils.model.GridPoint2D
 import aoc.utils.toIntGrid
 import aoc.utils.withColor
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class Day09SmokeBasinTest {
@@ -15,16 +16,24 @@ internal class Day09SmokeBasinTest {
     private val day09SmokeBasin = Day09SmokeBasin("input/day9.txt")
 
     @Test
-    fun `part 1 test input`() = assertEquals(15, day09SmokeBasinTestInput.part1())
+    fun `part 1 test input`() {
+        day09SmokeBasinTestInput.part1() shouldBe 15
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(530, day09SmokeBasin.part1().also(::println))
+    fun `part 1 result`() {
+        day09SmokeBasin.part1().also(::println) shouldBe 530
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(1_134, day09SmokeBasinTestInput.part2())
+    fun `part 2 test input`() {
+        day09SmokeBasinTestInput.part2() shouldBe 1_134
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(1_019_494, day09SmokeBasin.part2().also(::println))
+    fun `part 2 result`() {
+        day09SmokeBasin.part2().also(::println) shouldBe 1_019_494
+    }
 
     @Test
     fun testFindBasinPoints() {
@@ -51,7 +60,7 @@ internal class Day09SmokeBasinTest {
 
         basinPoints.forEach { (x, y) -> println("x=$x, y=$y, value=${intGrid[y][x]}".withColor(CYAN)) }
 
-        assertEquals(5, intGrid[lowestPoint.y][lowestPoint.x])
-        assertEquals(expectedSize, basinPoints.size)
+        intGrid[lowestPoint.y][lowestPoint.x] shouldBe 5
+        basinPoints shouldHaveSize expectedSize
     }
 }

@@ -1,6 +1,7 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
+import aoc.utils.CharGrid
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.ZERO
 import aoc.utils.model.GridPoint2D.Companion.east
@@ -8,6 +9,7 @@ import aoc.utils.model.GridPoint2D.Companion.north
 import aoc.utils.model.GridPoint2D.Companion.south
 import aoc.utils.model.GridPoint2D.Companion.west
 import aoc.utils.model.gridPoint2D
+import aoc.utils.toCharGrid
 import java.io.File
 
 class Day16(
@@ -57,14 +59,14 @@ class Day16(
     }.max()
 
     private fun energizedLevel(startPos: GridPoint2D, startDir: GridPoint2D): Int {
-        val mutableGrid = Array(grid.size) { grid[it].toCharArray() }
+        val mutableGrid = grid.toCharGrid()
         propagateBeam(target = mutableGrid, startPos = startPos, startDir = startDir)
         return mutableGrid.flatMap(CharArray::toList).count { it == '#' }
     }
 
 
     private fun propagateBeam(
-        target: Array<CharArray>,
+        target: CharGrid,
         startPos: GridPoint2D,
         startDir: GridPoint2D,
         visitedSplitters: MutableSet<GridPoint2D> = HashSet()
@@ -77,7 +79,7 @@ class Day16(
             when {
                 c == '\\' -> dir = gridPoint2D(dir.y, dir.x)
                 c == '/' -> dir = gridPoint2D(-dir.y, -dir.x)
-                c isSplitter dir -> {
+                c.isSplitter(dir) -> {
                     if (!visitedSplitters.add(pos)) break
                     val newDirL = dir.rot90L()
                     val newDirR = dir.rot90R()
@@ -90,5 +92,5 @@ class Day16(
         }
     }
 
-    private infix fun Char.isSplitter(dir: GridPoint2D) = (this == '|' && dir.x != 0) || (this == '-' && dir.y != 0)
+    private fun Char.isSplitter(dir: GridPoint2D) = (this == '|' && dir.x != 0) || (this == '-' && dir.y != 0)
 }

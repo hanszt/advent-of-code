@@ -8,6 +8,7 @@ import aoc.utils.model.GridPoint2D.Companion.north
 import aoc.utils.model.GridPoint2D.Companion.south
 import aoc.utils.model.GridPoint2D.Companion.west
 import aoc.utils.model.gridPoint2D
+import aoc.utils.toSetOf
 import java.io.File
 
 /**
@@ -42,11 +43,11 @@ class Day24BlizzardBasin(fileName: String) : ChallengeDay {
                 finish = start.also { start = finish }
                 currentPoints += start
             }
-            val nextBlizzard = blizzards.map { blizzard ->
+            val nextBlizzard = blizzards.toSetOf { blizzard ->
                 val dir = dirs[blizzard.state]
                 val (nx, ny) = blizzard.plus(dir.times(minutes + 1)).minus(1 by 1)
                 gridPoint2D(nx.mod(width - 2) + 1, ny.mod(height - 2) + 1)
-            }.toSet()
+            }
 
             currentPoints = nextPoints(currentPoints, nextBlizzard) {
                 this !in nextBlizzard &&

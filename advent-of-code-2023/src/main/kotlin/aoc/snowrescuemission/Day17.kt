@@ -12,7 +12,7 @@ class Day17(
     private val grid: List<String> = File(fileName ?: error("No fileName or text provided")).readLines()
 ) : ChallengeDay {
 
-    private val positionsToNodes = grid
+    private val position2Node = grid
         .flatMapIndexed { y, n ->
             n.mapIndexed { x, c ->
                 val point2D = gridPoint2D(x, y)
@@ -22,8 +22,9 @@ class Day17(
         .associate { it }
 
     override fun part1(): Int {
-        dijkstra(positionsToNodes(GridPoint2D.ZERO))
-        return positionsToNodes(gridPoint2D(grid[0].lastIndex, grid.lastIndex)).distance
+//        dijkstra(start = position2Node(GridPoint2D.ZERO))
+//        return position2Node(gridPoint2D(grid[0].lastIndex, grid.lastIndex)).distance
+        return day17Part1(input = grid)
     }
 
     private fun dijkstra(start: Node) {
@@ -50,7 +51,7 @@ class Day17(
     }
 
     private fun GridPoint2D.neighbors(): List<Node> = GridPoint2D.orthoDirs.mapNotNull {
-        positionsToNodes[gridPoint2D(x + it.x, y + it.y)]
+        position2Node[gridPoint2D(x + it.x, y + it.y)]
     }
 
     data class Node(
