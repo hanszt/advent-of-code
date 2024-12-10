@@ -1,20 +1,23 @@
 package aoc.snowrescuemission
 
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import kotlin.io.path.Path
 
-@Disabled("Not implemented")
 class Day15Test {
+
+    private companion object {
+        private val day15 = Day15(Path("input/day15.txt"))
+    }
 
     @Test
     fun testPart1() {
-        Day15().part1() shouldBe 0
+        day15.part1() shouldBe 494980
     }
 
     @Test
     fun testPart2() {
-        Day15().part2() shouldBe 0
+        day15.part2() shouldBe 247933L
     }
 
 }

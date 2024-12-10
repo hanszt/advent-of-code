@@ -11,15 +11,7 @@ class Day14(
 ) : ChallengeDay {
 
     override fun part1(): Int = grid.rotated().fold(0, ::addLoadOfColumn)
-    override fun part2(): Any {
-//        repeat(1_000_000_000) {
-//            var cur = grid.rotated()
-//            repeat(4) {
-//                addLoadOfColumn()
-//            }
-//        }
-        TODO()
-    }
+    override fun part2(): Int = day14part2(grid)
 
     private fun addLoadOfColumn(curLoad: Int, col: String): Int {
         var load = curLoad

@@ -4,7 +4,7 @@ import aoc.utils.model.GridPoint2D
 import aoc.utils.model.gridPoint2D
 
 /**
- * Source: https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day10_2.kt
+ * [Source](https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day10_2.kt)
  *
  * Only refactored to understand it better
  */

@@ -1,14 +1,22 @@
 package aoc.snowrescuemission
 
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class Day14Test {
 
+    private companion object {
+        private val day14 = Day14("input/day14.txt")
+    }
+
     @Test
     fun testPart1() {
-        Day14("input/day14.txt").part1() shouldBe 108_826
+        day14.part1() shouldBe 108_826
+    }
+
+    @Test
+    fun testPart2() {
+        day14.part2() shouldBe 99_291
     }
 
     private val testGrid = """
@@ -30,7 +38,6 @@ class Day14Test {
     }
 
     @Test
-    @Disabled("Not implemented")
     fun testPart2TestInput() {
         Day14(grid = testGrid).part2() shouldBe 64
     }

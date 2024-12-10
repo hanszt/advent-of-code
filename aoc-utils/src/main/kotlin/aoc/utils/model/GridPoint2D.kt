@@ -56,6 +56,8 @@ interface GridPoint2D {
         val northwest = gridPoint2D(-1, -1)
         @JvmField
         val kingDirs = listOf(north, northeast, east, southeast, south, southwest, west, northwest)
+        @JvmField
+        val rookDirs = listOf(northeast, southeast, southwest, northwest)
 
         @JvmField
         val orthoDirs = listOf(up, right, down, left)

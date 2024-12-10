@@ -8,11 +8,15 @@ import aoc.utils.model.gridPoint2D
 /**
  * from list of strings to grid converters
  */
+typealias CharGrid = Array<CharArray>
+
 fun List<String>.toIntGrid(regex: Regex): Array<IntArray> =
     map { it.trim().split(regex).map(String::toInt).toIntArray() }.toTypedArray()
 
 fun List<String>.toIntGrid(transform: (Char) -> Int): Array<IntArray> =
     map { it.map(transform).toIntArray() }.toTypedArray()
+
+fun List<String>.toCharGrid(): CharGrid = map { it.toCharArray() }.toTypedArray()
 
 inline fun <reified T> List<String>.toGridOf(regex: Regex, mapper: (String) -> T): Array<Array<T>> =
     map { it.split(regex).map(mapper).toTypedArray() }.toTypedArray()
