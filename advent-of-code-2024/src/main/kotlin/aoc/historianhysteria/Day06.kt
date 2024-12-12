@@ -42,6 +42,7 @@ class Day06(input: String) : ChallengeDay {
     }
 
     override fun part2(): Int {
+        return day06P2(map)
         var result = 0
         map.forEachPoint { x, y ->
             val ch = map[y][x]
@@ -60,9 +61,7 @@ class Day06(input: String) : ChallengeDay {
         var curDir = gridPoint2D(0, -1)
         val set = HashSet<Heading>()
         while (map.getOrNull(curPos.y)?.getOrNull(curPos.x) != null) {
-            if (!set.add(Heading(position = curPos, dir = orientationMap[curDir]!!))) {
-//                println(loopToString(set, extraObstaclePos))
-//                println()
+            if (!set.add(Heading(position = curPos, dir = curDir))) {
                 return true
             }
             val inFront = curPos + curDir
@@ -85,5 +84,5 @@ class Day06(input: String) : ChallengeDay {
 //        return grid.gridAsString()
 //    }
 
-    data class Heading(val position: GridPoint2D, val dir: Char)
+    data class Heading(val position: GridPoint2D, val dir: GridPoint2D)
 }

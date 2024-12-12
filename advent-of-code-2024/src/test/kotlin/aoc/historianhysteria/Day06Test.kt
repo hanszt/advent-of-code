@@ -41,7 +41,7 @@ class Day06Test {
 
     @Test
     fun part2dr() {
-        day06dr.part2() shouldBe 0 // 1778 too low
+        day06dr.part2() shouldBe 1939 // 1778 too low
     }
 
     @Test

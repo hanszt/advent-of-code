@@ -1,4 +1,6 @@
-package aoc.snowrescuemission
+package aoc.utils
+
+import kotlin.collections.get
 
 @Suppress("UNCHECKED_CAST")
 class Heap<K, V : Comparable<V>> {
@@ -11,6 +13,9 @@ class Heap<K, V : Comparable<V>> {
 
     fun isEmpty() = size == 0
 
+    /**
+     * @return a pair containing the key and the minimum value.
+     */
     fun removeMin(): Pair<K, V> {
         val resK = h[0] as K
         val resV = d[resK]!!.v
@@ -50,6 +55,9 @@ class Heap<K, V : Comparable<V>> {
         return resK to resV
     }
 
+    /**
+     * @return true if a new value was added or the value of an existing key was updated else false.
+     */
     fun putBetter(k: K, v: V): Boolean {
         val kd0 = d[k]
         var i: Int

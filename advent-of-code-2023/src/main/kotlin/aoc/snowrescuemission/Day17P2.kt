@@ -1,29 +1,46 @@
 package aoc.snowrescuemission
 
 import aoc.utils.Heap
+import aoc.utils.gridAsString
 import aoc.utils.model.GridPoint2D
+import aoc.utils.toCharGrid
 
 /**
  * https://github.com/elizarov/AdventOfCode2023/blob/main/src/Day17_1.kt
  */
-fun day17Part1(input: List<String>): Int {
+fun day17Part2(input: List<String>): Int {
     val towerDirs = listOf(GridPoint2D.down, GridPoint2D.right, GridPoint2D.up, GridPoint2D.left)
-    val maxStraightLength = 3
 
     data class Pos(
         override val x: Int,
         override val y: Int,
         val dir: Int, // 0 north, 1 east, 2 south, 3 west
-        val straightLength: Int
+        val straightLength: Int,
+        val prev: GridPoint2D? = null
     ) : GridPoint2D
 
     val heap = Heap<Pos, Int>()
     val visited = HashSet<Pos>()
-    fun enq(x: Int, y: Int, dir: Int, straightLength: Int, heatLoss: Int) {
-        val position = Pos(x, y, dir, straightLength)
+    fun enq(x: Int, y: Int, dir: Int, straightLength: Int, heatLoss: Int, prev: GridPoint2D? = null) {
+        val position = Pos(x, y, dir, straightLength, prev)
         if (position in visited) return
         heap.putBetter(position, heatLoss)
     }
+    fun gridToString(input: List<String>, p: Pos): String {
+        val grid = input.toCharGrid()
+        var cur: GridPoint2D? = p
+        var c = 0
+        while (cur != null) {
+            println(cur)
+            grid[cur.x][cur.y] = 'X'
+            if (cur == GridPoint2D.ZERO) break
+            cur = p.prev
+            if (c == 100) break
+            c++
+        }
+        return grid.gridAsString()
+    }
+
     enq(0, 0, 0, 0, 0)
     val n = input.size
     val m = input[0].length
@@ -31,10 +48,15 @@ fun day17Part1(input: List<String>): Int {
         val (p, minHeatLoss) = heap.removeMin()
         visited += p
         if (p.x == n - 1 && p.y == m - 1) {
+//            println("grid")
+//            println(gridToString(input, p))
             return minHeatLoss
         }
         for (dir in -1..1) {
-            if (dir == 0 && p.straightLength == maxStraightLength) continue
+            when (dir) {
+                0 -> if (p.straightLength == 10) continue
+                else -> if (p.straightLength < 4) continue
+            }
             val nextDir = (p.dir + dir).mod(4)
             val straightLength = if (dir == 0) p.straightLength + 1 else 1
             val neighbor = p + towerDirs[nextDir]
@@ -44,7 +66,8 @@ fun day17Part1(input: List<String>): Int {
                     y = neighbor.y,
                     dir = nextDir,
                     straightLength = straightLength,
-                    heatLoss = minHeatLoss + (it - '0')
+                    heatLoss = minHeatLoss + (it - '0'),
+                    prev = p
                 )
             }
         }
