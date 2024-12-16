@@ -31,8 +31,8 @@ final class Day13DistressSignal implements ChallengeDay {
     public Integer part1() {
         var sum = 0;
         for (var i = 0; i < input.size(); i += 3) {
-            var list1 = CompList.parse(new Parser(input.get(i)));
-            var list2 = CompList.parse(new Parser(input.get(i + 1)));
+            var list1 = CompList.parse(input.get(i));
+            var list2 = CompList.parse(input.get(i + 1));
             if (list1.compareTo(list2) > 0) {
                 final var index = (i / 3) + 1;
                 sum += index;
@@ -44,10 +44,10 @@ final class Day13DistressSignal implements ChallengeDay {
     @NotNull
     @Override
     public Integer part2() {
-        final var targets = Sequence.of("[[2]]", "[[6]]").map(nr -> CompList.parse(new Parser(nr)));
+        final var targets = Sequence.of("[[2]]", "[[6]]").map(CompList::parse);
         return Sequence.of(input)
-                .filterIndexed((i, _s) -> i % 3 != 2)
-                .map(line -> CompList.parse(new Parser(line)))
+                .filterIndexed((i, _) -> i % 3 != 2)
+                .map(CompList::parse)
                 .plus(targets)
                 .sortedDescending()
                 .withIndex()
@@ -56,11 +56,11 @@ final class Day13DistressSignal implements ChallengeDay {
                 .reduce(1, (product, next) -> product * next);
     }
 
-    static final class Parser {
+    private static final class Parser {
         private final String s;
         private int index = 0;
 
-        Parser(String s) {
+        private Parser(String s) {
             this.s = s;
         }
 
@@ -73,15 +73,12 @@ final class Day13DistressSignal implements ChallengeDay {
 
         @Override
         default int compareTo(@NotNull CompNode o) {
-            if (this instanceof CompNumber num1 && o instanceof CompNumber num2) {
-                return num2.value - num1.value;
-            } else if (this instanceof CompList l1 && o instanceof CompList l2) {
-                return compareLists(l1, l2);
-            } else if (this instanceof CompNumber num1) {
-                return new CompList(num1).compareTo(o);
-            } else {
-                return compareTo(new CompList(o));
-            }
+            return switch (this) {
+                case CompNumber(int v1) when o instanceof CompNumber(int v2) -> v2 - v1;
+                case CompList l when o instanceof CompList l2 -> compareLists(l, l2);
+                case CompNumber n -> new CompList(n).compareTo(o);
+                case CompList l -> l.compareTo(new CompList(o));
+            };
         }
 
         private static int compareLists(CompList l1, CompList l2) {
@@ -96,11 +93,6 @@ final class Day13DistressSignal implements ChallengeDay {
             }
             return l1.nodes.size() < l2.nodes.size() ? 1 : 0;
         }
-
-        @Override
-        default Iterator<CompNode> childrenIterator() {
-            return this instanceof CompList l ? l.nodes.iterator() : Collections.emptyIterator();
-        }
     }
 
     record CompList(List<CompNode> nodes) implements CompNode {
@@ -109,7 +101,11 @@ final class Day13DistressSignal implements ChallengeDay {
             this(new ArrayList<>(List.of(nodes)));
         }
 
-        static CompList parse(Parser parser) {
+        static CompList parse(String s) {
+            return parse(new Parser(s));
+        }
+
+        private static CompList parse(Parser parser) {
             var list = new CompList();
             parser.index++;
             var c = parser.nextChar();
@@ -126,6 +122,11 @@ final class Day13DistressSignal implements ChallengeDay {
             parser.index++;
             return list;
         }
+
+        @Override
+        public Iterator<CompNode> childrenIterator() {
+            return nodes.iterator();
+        }
     }
 
     record CompNumber(int value) implements CompNode {
@@ -138,6 +139,11 @@ final class Day13DistressSignal implements ChallengeDay {
                     sqrBracketIndex < 0 ? parser.s.length() : sqrBracketIndex));
             parser.index += numStr.length();
             return new CompNumber(Integer.parseInt(numStr));
+        }
+
+        @Override
+        public Iterator<CompNode> childrenIterator() {
+            return Collections.emptyIterator();
         }
     }
 }

@@ -21,7 +21,7 @@ class Day07(private val equations: List<Equation>) : ChallengeDay {
                 val s = operation.toString(radix = 2)
                 val prefix = (s.length..<others.size).joinToString("") { "0" }
                 val o = prefix + s
-                val combinations = o.map { i -> i.digitToInt() }
+                val combinations = o.map(Char::digitToInt)
                 for ((i,other) in others.withIndex()) {
                     when (combinations[i]) {
                         0 -> answer += other

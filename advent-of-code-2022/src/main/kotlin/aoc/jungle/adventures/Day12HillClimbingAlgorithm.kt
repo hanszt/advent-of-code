@@ -45,7 +45,7 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
         val queue = ArrayDeque<Point>().apply { add(start) }
         while (queue.isNotEmpty()) {
             val pos = queue.removeFirst()
-            for (dir in GridPoint2D.orthoDirs) {
+            for (dir in GridPoint2D.towerDirs) {
                 val neighborPos = pos + dir
                 shortestPaths.update(pos, neighborPos, postProcess)?.also(queue::add)
             }

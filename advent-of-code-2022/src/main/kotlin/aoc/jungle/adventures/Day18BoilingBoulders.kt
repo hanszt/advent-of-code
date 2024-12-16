@@ -14,25 +14,35 @@ import aoc.utils.model.gridPoint3D as cube
 class Day18BoilingBoulders(fileName: String) : ChallengeDay {
 
     private val cubes = File(fileName).useLines {
-        it.map { line -> line.split(",").map(String::toInt) }
+        it.map { line -> line.splitToSequence(",").map(String::toInt).toList() }
             .map { (x, y, z) -> cube(x, y, z) }
             .toList()
     }
 
+    /**
+     * What is the surface area of your scanned lava droplet?
+     */
     override fun part1(): Int = calcSurfaceArea(cubes)
+
+    /**
+     * What is the exterior surface area of your scanned lava droplet?
+     */
     override fun part2(): Int = part2ElizarovRefactored()
 
     private fun calcSurfaceArea(cubes: List<Cube>): Int {
         var touchingSides = 0
-        for (i in 0 ..< cubes.lastIndex) {
-            for (j in i + 1 ..< cubes.size) {
-                touchingSides += if (cubes[i] manhattanDistance cubes[j] == 1) 2 else 0
+        for (i in 0..<cubes.lastIndex) {
+            for (j in i + 1..<cubes.size) {
+                touchingSides += if (cubes[i].manhattanDistance(cubes[j]) == 1) 2 else 0
             }
         }
         val allSides = cubes.size * 6
         return allSides - touchingSides
     }
 
+    /**
+     * [Source](https://github.com/elizarov/AdventOfCode2022/blob/main/src/Day18.kt)
+     */
     private fun part2ElizarovRefactored(): Int {
         val cubes = HashSet(cubes)
 
@@ -43,10 +53,9 @@ class Day18BoilingBoulders(fileName: String) : ChallengeDay {
 
         fun MutableSet<Cube>.scan(cube: Cube): Boolean {
             cubesCoveredMap[cube]?.let { return it }
-            if (cube.x !in minPoint.x..maxPoint.x ||
-                cube.y !in minPoint.y..maxPoint.y ||
-                cube.z !in minPoint.z..maxPoint.z
-            ) return true
+            if (!(cube.x in minPoint.x..maxPoint.x && cube.y in minPoint.y..maxPoint.y && cube.z in minPoint.z..maxPoint.z)) {
+                return true
+            }
             cubesCoveredMap[cube] = false
             add(cube)
             return GridPoint3D.orthoDirs

@@ -2,6 +2,7 @@ package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import aoc.utils.CharGrid
+import aoc.utils.getOrNull
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.ZERO
 import aoc.utils.model.GridPoint2D.Companion.east
@@ -10,6 +11,7 @@ import aoc.utils.model.GridPoint2D.Companion.south
 import aoc.utils.model.GridPoint2D.Companion.west
 import aoc.utils.model.gridPoint2D
 import aoc.utils.toCharGrid
+import aoc.utils.set
 import java.io.File
 
 class Day16(
@@ -74,8 +76,8 @@ class Day16(
         var dir = startDir
         var pos = startPos
         while (true) {
-            val c = grid.getOrNull(pos.y)?.getOrNull(pos.x) ?: break
-            target[pos.y][pos.x] = '#'
+            val c = grid.getOrNull(pos) ?: break
+            target[pos] = '#'
             when {
                 c == '\\' -> dir = gridPoint2D(dir.y, dir.x)
                 c == '/' -> dir = gridPoint2D(-dir.y, -dir.x)

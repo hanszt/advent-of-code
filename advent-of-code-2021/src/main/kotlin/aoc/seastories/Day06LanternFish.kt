@@ -16,7 +16,7 @@ internal class Day06LanternFish(private val inputPath: String) : ChallengeDay {
 
     private fun File.toFishCount(days: Int): BigInt {
         val daysLeftTillNewSpawnCounts = toCountsArray()
-        for (day in 1..days) {
+        repeat (days) {
             val curDaysLeftTillNewSpawnCounts = daysLeftTillNewSpawnCounts.copyOf()
             val nrOfNewBorns = curDaysLeftTillNewSpawnCounts.first()
             daysLeftTillNewSpawnCounts[INIT_TIMER_VAL_NEW_BORN] = nrOfNewBorns

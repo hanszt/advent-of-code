@@ -21,9 +21,9 @@ public class Part2RainRisk extends Day12Challenge {
             final char instruction = line.charAt(0);
             final int amount = Integer.parseInt(line.substring(1));
             wayPoint = rotateWayPointRoundShip(wayPoint, instruction, amount);
-            wayPoint = wayPoint.add(getTranslationInWindDirection(instruction, amount));
+            wayPoint = wayPoint.plus(getTranslationInWindDirection(instruction, amount));
             if (instruction == MOVE_FORWARD) {
-                ship = ship.add(wayPoint.getX() * amount, wayPoint.getY() * amount);
+                ship = ship.plus(wayPoint.times(amount));
             }
         }
         return getMessage(Math.abs(ship.getX()) + Math.abs(ship.getY()));

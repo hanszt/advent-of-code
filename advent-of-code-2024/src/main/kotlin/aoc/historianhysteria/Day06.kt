@@ -1,9 +1,8 @@
 package aoc.historianhysteria
 
-import aoc.utils.ChallengeDay
-import aoc.utils.findPoint
-import aoc.utils.forEachPoint
+import aoc.utils.*
 import aoc.utils.model.GridPoint2D
+import aoc.utils.model.Vec2
 import aoc.utils.model.gridPoint2D
 import java.nio.file.Path
 import kotlin.io.path.readText
@@ -17,12 +16,15 @@ class Day06(input: String) : ChallengeDay {
     constructor(path: Path) : this(path.readText())
 
     private val orientationMap = mapOf(
-         gridPoint2D(0, -1) to '^',
-         gridPoint2D(1, 0) to '>',
-         gridPoint2D(0, 1) to 'v',
-         gridPoint2D(-1, 0) to '<',
+        gridPoint2D(0, -1) to '^',
+        gridPoint2D(1, 0) to '>',
+        gridPoint2D(0, 1) to 'v',
+        gridPoint2D(-1, 0) to '<',
     )
 
+    /**
+     * How many distinct positions will the guard visit before leaving the mapped area?
+     */
     override fun part1(): Int {
         return walkedPath(guardStartPos).distinct().count()
     }
@@ -31,7 +33,7 @@ class Day06(input: String) : ChallengeDay {
         val obstacle = '#'
         var cur = start
         var curDir = gridPoint2D(0, -1)
-        while (map.getOrNull(cur.y)?.getOrNull(cur.x) != null) {
+        while (map.getOrNull(cur) != null) {
             yield(cur)
             val inFront = cur + curDir
             if (map.getOrNull(inFront.y)?.getOrNull(inFront.x) == obstacle) {
@@ -41,6 +43,9 @@ class Day06(input: String) : ChallengeDay {
         }
     }
 
+    /**
+     * How many different positions could you choose for this obstruction?
+     */
     override fun part2(): Int {
         return day06P2(map)
         var result = 0
@@ -65,7 +70,7 @@ class Day06(input: String) : ChallengeDay {
                 return true
             }
             val inFront = curPos + curDir
-            if (map.getOrNull(inFront.y)?.getOrNull(inFront.x) == obstacle || inFront == extraObstaclePos) {
+            if (map.getOrNull(inFront) == obstacle || inFront == extraObstaclePos) {
                 curDir = curDir.rot90R()
             }
             curPos += curDir
@@ -73,16 +78,15 @@ class Day06(input: String) : ChallengeDay {
         return false
     }
 
-//    private fun loopToString(headings: Set<Heading>, extraObstaclePos: GridPoint2D): String {
-//        val grid = map.toGridOf { it }
-//        for (heading in headings) {
-//            val position = heading.position
-//            val dir = heading.dir
-//            grid[position.y][position.x] = orientationMap[dir]!!
-//            grid[extraObstaclePos.y][extraObstaclePos.x] = 'O'
-//        }
-//        return grid.gridAsString()
-//    }
+    private fun loopToString(headings: Set<Heading>, extraObstaclePos: GridPoint2D): String {
+        val grid = map.toCharGrid()
+        for (heading in headings) {
+            val position = heading.position
+            grid[position.y][position.x] = orientationMap[heading.dir]!!
+        }
+        grid[extraObstaclePos.y][extraObstaclePos.x] = 'O'
+        return grid.gridAsString()
+    }
 
-    data class Heading(val position: GridPoint2D, val dir: GridPoint2D)
+    data class Heading(val position: GridPoint2D, val dir: Vec2)
 }

@@ -16,7 +16,7 @@ class Day08TreeTopTreeHouse(fileName: String) : ChallengeDay {
 
     private val treeGrid = File(fileName).readLines().toIntGrid(Char::digitToInt)
 
-    override fun part1(): Int = treeGrid.gridCount { x, y -> GridPoint2D.orthoDirs.any { visibleFromOutSide(x by y, it) } }
+    override fun part1(): Int = treeGrid.gridCount { x, y -> GridPoint2D.towerDirs.any { visibleFromOutSide(x by y, it) } }
 
     private fun visibleFromOutSide(spot: GridPoint2D, delta: GridPoint2D): Boolean {
         val tree = treeGrid[spot.y][spot.x]
@@ -30,7 +30,7 @@ class Day08TreeTopTreeHouse(fileName: String) : ChallengeDay {
     }
 
     override fun part2(): Int =
-        treeGrid.mapByPoint { x, y -> GridPoint2D.orthoDirs.map { toScore(x by y, it) }.reduce { total, score -> total * score } }
+        treeGrid.mapByPoint { x, y -> GridPoint2D.towerDirs.map { toScore(x by y, it) }.reduce { total, score -> total * score } }
             .flatten()
             .max()
 

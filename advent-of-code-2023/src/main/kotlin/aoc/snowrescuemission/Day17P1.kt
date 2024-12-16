@@ -1,6 +1,7 @@
 package aoc.snowrescuemission
 
 import aoc.utils.Heap
+import aoc.utils.getOrNull
 import aoc.utils.model.GridPoint2D
 
 /**
@@ -38,7 +39,7 @@ fun day17Part1(input: List<String>): Int {
             val nextDir = (p.dir + dir).mod(4)
             val straightLength = if (dir == 0) p.straightLength + 1 else 1
             val neighbor = p + towerDirs[nextDir]
-            input.getOrNull(neighbor.x)?.getOrNull(neighbor.y)?.let {
+            input.getOrNull(neighbor)?.let {
                 enq(
                     x = neighbor.x,
                     y = neighbor.y,

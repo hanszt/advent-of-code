@@ -5,6 +5,7 @@ module advent.of.codetwenty.twenty.three {
     requires kotlin.stdlib;
     requires kotlinx.collections.immutable;
     requires org.jetbrains.annotations;
+    requires java.desktop;
 
     opens aoc.historianhysteria;
 

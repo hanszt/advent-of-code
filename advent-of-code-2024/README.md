@@ -1,10 +1,10 @@
-# Advent of code 2023
+# Advent of code 2024
 
 ---
 
 ## Introduction
 
-This is a project to participate in [AdventOfCode 2023](https://adventofcode.com/2023)
+This is a project to participate in [AdventOfCode 2024](https://adventofcode.com/2024)
 
 Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can
 be solved in any programming language you like. People use them as a speed contest, interview prep, company training,
@@ -69,9 +69,13 @@ A small project to do some advent of code days in Dart
 
 ## Blog
 
+All the solution where a source is referenced, I didn't solve myself or at least not fully.
+
 Day 9 part 1: I was off by one. The stop condition was wrong which got me stuck
 Day 10 part 1: Eventually solved. Also viewed Elizarov's solution
 Day 10 part 2: Viewed solution of Elizarov. Not solved myself. Only refactored
+
+Mainly credits for Roman Elizarov for his amazing work!
 
 ---
 

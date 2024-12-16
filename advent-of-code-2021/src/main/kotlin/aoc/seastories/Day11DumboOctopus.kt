@@ -1,6 +1,8 @@
 package aoc.seastories
 
 import aoc.utils.*
+import aoc.utils.model.GridPoint2D
+import aoc.utils.model.GridPoint2D.Companion.by
 import java.io.File
 
 internal class Day11DumboOctopus(private val inputPath: String) : ChallengeDay {
@@ -16,20 +18,20 @@ internal class Day11DumboOctopus(private val inputPath: String) : ChallengeDay {
         .toGridOf { Octopus(it.digitToInt()) }
         .findSynchronizationStep()
 
-    private fun Array<Array<Octopus>>.findSynchronizationStep(): Int = generateSequence { simulateStep() }
+    private fun Grid<Octopus>.findSynchronizationStep(): Int = generateSequence { simulateStep() }
         .takeWhile { anyInGrid { it.energyLevel != 1 } }
         .count()
 
-    private fun Array<Array<Octopus>>.simulateEnergyLevels(steps: Int): Array<Array<Octopus>> =
+    private fun Grid<Octopus>.simulateEnergyLevels(steps: Int): Grid<Octopus> =
         apply { (1..steps).map { simulateStep() } }
 
     companion object {
-        internal fun Array<Array<Octopus>>.simulateStep() {
+        internal fun Grid<Octopus>.simulateStep() {
             forEachInGrid(Octopus::incrementEnergy)
             updateEnergyLevelsNeighbors()
         }
 
-        private fun Array<Array<Octopus>>.updateEnergyLevelsNeighbors() {
+        private fun Grid<Octopus>.updateEnergyLevelsNeighbors() {
             val differences = Array(size) { IntArray(first().size) }
             forEachPoint { x, y -> updateDifferencesNeighbors(x, y, differences) }
             if (differences.allInGrid { it == 0 }) return
@@ -37,14 +39,12 @@ internal class Day11DumboOctopus(private val inputPath: String) : ChallengeDay {
             updateEnergyLevelsNeighbors()
         }
 
-        private val dirs = listOf(0 to 1, 1 to 1, 1 to 0, 1 to -1, 0 to -1, -1 to -1, -1 to 0, -1 to 1)
-
-        private fun Array<Array<Octopus>>.updateDifferencesNeighbors(x: Int, y: Int, differences: Array<IntArray>) {
+        private fun Grid<Octopus>.updateDifferencesNeighbors(x: Int, y: Int, differences: IntGrid) {
             val octopus = this[y][x]
             if (octopus.isFlashing()) {
                 octopus.incrementFlashes()
-                dirs.map { (dx, dy) -> x + dx to y + dy }
-                    .forEach { (nx, ny) -> getOrNull(ny)?.getOrNull(nx)?.run { differences[ny][nx]++ } }
+                GridPoint2D.kingDirs.map { (dx, dy) -> x + dx by y + dy }
+                    .forEach { p -> getOrNull(p)?.run { differences[p]++ } }
             }
         }
     }

@@ -51,7 +51,7 @@ class Day06Test {
 
     @Test
     fun part2() {
-        day06.part2() shouldBe 0 // 1455 too low
+        day06.part2() shouldBe 1575 // 1455 too low
     }
 
 }

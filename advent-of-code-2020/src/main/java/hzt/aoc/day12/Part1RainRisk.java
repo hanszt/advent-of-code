@@ -19,9 +19,9 @@ public class Part1RainRisk extends Day12Challenge {
             final char instruction = line.charAt(0);
             final int amount = Integer.parseInt(line.substring(1));
             orientation = rotateShip(orientation, instruction, amount);
-            position = position.add(getTranslationInWindDirection(instruction, amount));
+            position = position.plus(getTranslationInWindDirection(instruction, amount));
             if (instruction == MOVE_FORWARD) {
-                position = position.add(orientation.getX() * amount, orientation.getY() * amount);
+                position = position.plus(orientation.times(amount));
             }
         }
         return getMessage(position.manhattanDistance(GridPoint2D.ZERO));

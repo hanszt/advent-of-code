@@ -26,7 +26,7 @@ fun part1Elizarov(map: List<String>): Long {
                         sum++
                         continue
                     }
-                    for (dir in GridPoint2D.orthoDirs) {
+                    for (dir in GridPoint2D.towerDirs) {
                         val neighbor = p + dir
                         // check if in grid and current height
                         map.getOrNull(neighbor.y)?.getOrNull(neighbor.x)?.takeIf { it == height + 1 } ?: continue

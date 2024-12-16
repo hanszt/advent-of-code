@@ -146,7 +146,7 @@ class Day10(
     }
 
     private fun GridPoint2D.neighbors(): Set<GridPoint2D> = buildSet {
-        for (dir in GridPoint2D.orthoDirs) {
+        for (dir in GridPoint2D.towerDirs) {
             val nx = x + dir.x
             val ny = y + dir.y
             grid.getOrNull(ny)?.getOrNull(nx)?.let {

@@ -49,7 +49,7 @@ class Day10(private val map: List<String>) : ChallengeDay {
             yield(localPath.toList())
 //            return
         }
-        for (dir in GridPoint2D.orthoDirs) {
+        for (dir in GridPoint2D.towerDirs) {
             val neighbor = current + dir
             val neighborHeight = toHeight(neighbor)
             neighborHeight?.takeIf { it == curHeight + 1 } ?: continue

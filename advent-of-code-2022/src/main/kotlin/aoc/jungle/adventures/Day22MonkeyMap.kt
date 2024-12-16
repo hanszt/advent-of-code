@@ -138,8 +138,8 @@ class Day22MonkeyMap(
 
                 // project offset in the new basis
                 fun flipNeg(s: Int) = if (s < 0) faceSize + 1 + s else s
-                neighbor = (nextFace.y * faceSize + flipNeg(vector dotProduct newFace3D.point2) - 1) by
-                        (nextFace.x * faceSize + flipNeg(vector dotProduct newFace3D.point1) - 1)
+                neighbor = (nextFace.y * faceSize + flipNeg(vector.dotProduct(newFace3D.point2)) - 1) by
+                        (nextFace.x * faceSize + flipNeg(vector.dotProduct(newFace3D.point1)) - 1)
             }
             when (grid[neighbor.y][neighbor.x]) {
                 '.' -> {

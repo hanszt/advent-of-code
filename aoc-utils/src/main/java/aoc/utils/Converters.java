@@ -12,8 +12,4 @@ public final class Converters {
     public static long toLong(String s) {
         return Long.parseLong(s.strip());
     }
-
-    public static double toDouble(String s) {
-        return Double.parseDouble(s.strip());
-    }
 }

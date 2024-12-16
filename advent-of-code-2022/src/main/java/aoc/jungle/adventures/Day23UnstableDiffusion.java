@@ -2,6 +2,7 @@ package aoc.jungle.adventures;
 
 import aoc.utils.ChallengeDay;
 import aoc.utils.model.GridPoint2D;
+import org.hzt.utils.collections.ListX;
 import org.hzt.utils.io.FileX;
 import org.hzt.utils.sequences.Sequence;
 import org.jetbrains.annotations.NotNull;
@@ -38,10 +39,10 @@ public class Day23UnstableDiffusion implements ChallengeDay {
             {east, northeast, southeast}
     };
 
-    private final List<String> lines;
+    private final ListX<String> lines;
 
     public Day23UnstableDiffusion(String fileName) {
-        lines = FileX.of(fileName).useLines(Sequence::toList);
+        lines = FileX.of(fileName).readLines();
     }
 
     @NotNull
@@ -73,7 +74,7 @@ public class Day23UnstableDiffusion implements ChallengeDay {
         return round + 1;
     }
 
-    private static Set<GridPoint2D> toInitElfPositions(List<String> lines) {
+    private static Set<GridPoint2D> toInitElfPositions(ListX<String> lines) {
         final var positions = new HashSet<GridPoint2D>();
         for (var row = 0; row < lines.size(); row++) {
             final var line = lines.get(row);
@@ -101,7 +102,7 @@ public class Day23UnstableDiffusion implements ChallengeDay {
                            !positions.contains(destination.plus(directions[index][2]));
                 }
                 if (free) {
-                    moveMap.computeIfAbsent(goalGridPoint2D, p -> new ArrayList<>()).add(destination);
+                    moveMap.computeIfAbsent(goalGridPoint2D, _ -> new ArrayList<>()).add(destination);
                 }
             }
         }

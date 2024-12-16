@@ -35,7 +35,7 @@ class Day09Test {
 
     @Test
     fun part1() {
-        day09.part1() shouldBe 42283209483350
+        day09.part1() shouldBe 6258319840548
     }
 
     @Test

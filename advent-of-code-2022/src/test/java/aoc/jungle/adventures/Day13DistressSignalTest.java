@@ -51,12 +51,12 @@ class Day13DistressSignalTest {
     private DynamicTest parseNrTest(String nrAsString, int listSize, int expectedNrCount) {
         final var displayName = "%s should contain %d nrs and parse to compList of size %d".formatted(nrAsString, expectedNrCount, listSize);
 
-        final var list = CompList.parse(new Parser(nrAsString));
-        println(list.toTreeString(2, n -> n instanceof CompNumber nr ? String.valueOf(nr.value()) : "List:"));
+        final var list = CompList.parse(nrAsString);
+        println(list.toTreeString(2, n -> n instanceof CompNumber(int value) ? String.valueOf(value) : "List:"));
 
         final var nrCount = list.depthFirstSequence().count(s -> s instanceof CompNumber);
         final var treeString = list.toTreeString("[", ",", "]",
-                n -> n instanceof CompNumber nr ? String.valueOf(nr.value()) : n.isLeaf() ? "[]" : "");
+                n -> n instanceof CompNumber(int v) ? String.valueOf(v) : n.isLeaf() ? "[]" : "");
 
         return dynamicTest(displayName, () -> assertAll(
                 () -> assertEquals(listSize, list.childrenSequence().count()),
