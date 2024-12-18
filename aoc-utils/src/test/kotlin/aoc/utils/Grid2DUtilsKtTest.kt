@@ -3,11 +3,9 @@ package aoc.utils
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.gridPoint2D
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Test
 import java.time.Month
 import java.time.Year
-import org.junit.jupiter.api.Assertions.assertArrayEquals
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 
 internal class Grid2DUtilsKtTest {
 
@@ -23,8 +21,8 @@ internal class Grid2DUtilsKtTest {
             intArrayOf(6, 3)
         )
         val rotatedClockWise = input.rotated()
-        println(rotatedClockWise.gridAsString())
-        assertArrayEquals(expected, rotatedClockWise)
+
+        rotatedClockWise shouldBe expected
     }
 
     @Test
@@ -39,8 +37,8 @@ internal class Grid2DUtilsKtTest {
             intArrayOf(1, 4)
         )
         val rotatedCounterClockWise = input.rotatedCc()
-        println(rotatedCounterClockWise.gridAsString())
-        assertArrayEquals(expected, rotatedCounterClockWise)
+
+        rotatedCounterClockWise shouldBe expected
     }
 
     @Test
@@ -53,7 +51,7 @@ internal class Grid2DUtilsKtTest {
             listOf(2 by 2)
         )
         val rotatedClockWise = input.rotated()
-        rotatedClockWise.forEach(::println)
+
         rotatedClockWise shouldBe expected
     }
 
@@ -68,8 +66,8 @@ internal class Grid2DUtilsKtTest {
             arrayOf(4 by 4, 2 by 2)
         )
         val rotatedClockWise = input.rotated()
-        println(rotatedClockWise.gridAsString(1))
-        assertArrayEquals(expected, rotatedClockWise)
+
+        rotatedClockWise shouldBe expected
     }
 
     @Test
@@ -85,27 +83,12 @@ internal class Grid2DUtilsKtTest {
             "wq"
         )
         val rotatedClockWise = input.rotated()
-        rotatedClockWise.forEach(::println)
-        assertEquals(expected, rotatedClockWise)
+
+        rotatedClockWise shouldBe expected
     }
 
     @Test
     fun `int grid mirrored horizontally`() {
-        val expected = arrayOf(
-            intArrayOf(4, 5, 6),
-            intArrayOf(1, 2, 3)
-        )
-        val input = arrayOf(
-            intArrayOf(1, 2, 3),
-            intArrayOf(4, 5, 6)
-        )
-        val mirrored = input.mirroredHorizontally()
-        println(mirrored.gridAsString().withColor(BRIGHT_GREEN))
-        assertArrayEquals(expected, mirrored)
-    }
-
-    @Test
-    fun `int grid mirrored vertically`() {
         val expected = arrayOf(
             intArrayOf(3, 2, 1),
             intArrayOf(6, 5, 4)
@@ -114,9 +97,24 @@ internal class Grid2DUtilsKtTest {
             intArrayOf(1, 2, 3),
             intArrayOf(4, 5, 6)
         )
+        val mirrored = input.mirroredHorizontally()
+
+        mirrored shouldBe expected
+    }
+
+    @Test
+    fun `int grid mirrored vertically`() {
+        val expected = arrayOf(
+            intArrayOf(4, 5, 6),
+            intArrayOf(1, 2, 3)
+        )
+        val input = arrayOf(
+            intArrayOf(1, 2, 3),
+            intArrayOf(4, 5, 6)
+        )
         val mirrored = input.mirroredVertically()
-        println(mirrored.gridAsString().withColor(YELLOW))
-        assertArrayEquals(expected, mirrored)
+
+        mirrored shouldBe expected
     }
 
     @Test
@@ -130,8 +128,8 @@ internal class Grid2DUtilsKtTest {
             arrayOf(Year.of(4), Year.of(5), Year.of(6))
         )
         val mirrored = input.mirroredVertically()
-        println(mirrored.gridAsString())
-        assertArrayEquals(expected, mirrored)
+
+        mirrored shouldBe expected
     }
 
     @Test
@@ -145,8 +143,8 @@ internal class Grid2DUtilsKtTest {
             arrayOf("4", "5", "6")
         )
         val mirrored = input.mirroredHorizontally()
-        println(mirrored.gridAsString())
-        assertArrayEquals(expected, mirrored)
+
+        mirrored shouldBe expected
     }
 
     @Test
@@ -160,8 +158,8 @@ internal class Grid2DUtilsKtTest {
         val copy = originalGrid.copyGrid()
         originalGrid[0][0] = 'a'
 
-        assertEquals('a', originalGrid[0][0])
-        assertEquals('1', copy[0][0])
+        originalGrid[0][0] shouldBe 'a'
+        copy[0][0] shouldBe '1'
     }
 
     @Test
@@ -175,6 +173,6 @@ internal class Grid2DUtilsKtTest {
 
         monthGrid.gridAsString(separator = " ")
 
-        assertEquals(Month.DECEMBER, monthGrid[0][0])
+        monthGrid[0][0] shouldBe Month.DECEMBER
     }
 }

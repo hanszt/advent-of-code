@@ -1,16 +1,18 @@
 package aoc.seastories
 
 import aoc.utils.Transform3D
-import aoc.utils.grouping
 import aoc.utils.model.GridPoint3D
 import aoc.utils.model.gridPoint3D
-import aoc.utils.orientations
-import aoc.utils.rotated
+import aoc.utils.rotations
 import aoc.utils.splitByBlankLine
+import aoc.utils.toSetOf
 import aoc.utils.transform
 import java.io.File
+import kotlin.math.max
 
 typealias ScannerData = List<Set<GridPoint3D>>
+
+private const val OVERLAPPING_BEACON_COUNT = 12
 
 /**
  * I've not been able to solve this day myself. This solution is from the repo from Elizarov. All credits go to him.
@@ -36,28 +38,35 @@ internal class Day19BeaconScanner(inputPath: String) : ChallengeDay {
     override fun part2(): Int = scannerPositions.largestDistance()
 
     private fun String.toScannerDataSets(): ScannerData =
-        splitByBlankLine().map { s -> s.lines().filter { "scanner" !in it }.map(::toPoint3D).toSet() }
+        splitByBlankLine().map { s -> s.lines().filter { "scanner" !in it }.toSetOf(::toPoint3D) }
 
     private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> gridPoint3D(x, y, z) }
 
-    private fun Array<GridPoint3D>.largestDistance(): Int = flatMap { map(it::manhattanDistance) }.max()
+    private fun Array<GridPoint3D>.largestDistance(): Int {
+        var max = 0
+        for (i in indices) {
+            for (j in i + 1..<size) {
+                max = max(max, this[i].manhattanDistance(this[j]))
+            }
+        }
+        return max
+    }
 
     private fun ScannerData.findMatch(scannerIndex: Int, otherScannerIndex: Int): Transform3D? {
         val detectedPoints = this[scannerIndex]
-        for (orientation in orientations.indices) {
-            val rotatedPointsOther = this[otherScannerIndex].map { it.rotated(orientation) }
+        for (rotation in rotations) {
+            val rotatedPointsOther = this[otherScannerIndex].map(rotation)
             val translation = detectedPoints.asSequence()
                 .flatMap { detected -> rotatedPointsOther.map { detected - it } }
-                .grouping
+                .groupingBy { it }
                 .eachCount()
-                .filterValues { it >= 12 }
-                .keys.firstOrNull() ?: continue
-            return Transform3D(orientation, translation)
+                .filterValues { it >= OVERLAPPING_BEACON_COUNT }
+                .keys.singleOrNull() ?: continue
+            return Transform3D(rotation, translation)
         }
         return null
     }
 
-    @Suppress("kotlin:S1481")
     private fun calculateBeaconCountAndScannerPositions(path: String): Pair<Int, Array<GridPoint3D>> {
         val scannerDataSets = File(path).readText().toScannerDataSets()
 
@@ -68,7 +77,7 @@ internal class Day19BeaconScanner(inputPath: String) : ChallengeDay {
         val found = ArrayDeque<Int>().apply { add(0) }
         val remaining = (1 until scannerDataSets.size).toMutableSet()
 
-        val transform3Ds = Array<List<Transform3D>>(scannerDataSets.size) { emptyList() }
+        val transform3Ds = Array(scannerDataSets.size) { emptyList<Transform3D>() }
         while (remaining.isNotEmpty()) {
             val firstFound = found.removeFirst()
             for (remainingScanner in remaining.toList()) {

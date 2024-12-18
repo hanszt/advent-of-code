@@ -1,12 +1,17 @@
 package aoc.utils.model
 
 import kotlin.math.abs
+import kotlin.math.sign
+
+typealias Vec3 = GridPoint3D
 
 interface GridPoint3D {
 
     val x: Int
     val y: Int
     val z: Int
+
+    val sign get(): Vec3 = gridPoint3D(x.sign, y.sign, z.sign)
 
     operator fun component1(): Int = x
     operator fun component2(): Int = y

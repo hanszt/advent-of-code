@@ -1,5 +1,7 @@
 package aoc.jungle.adventures
 
+import aoc.utils.IntGrid
+
 @Suppress("kotlin:S134", "kotlin:S3776")
 fun day19Part(input: List<String>, part: Int): Int {
     var ans = if (part == 1) 0 else 1
@@ -83,7 +85,7 @@ fun day19Part(input: List<String>, part: Int): Int {
     return ans
 }
 
-private fun List<String>.createCostTable(rules: List<String>): Array<IntArray> {
+private fun List<String>.createCostTable(rules: List<String>): IntGrid {
     val robotCosts = Array(size) { i ->
         val prefix = "Each ${this[i]} robot costs "
         val rule = rules[i].trim()

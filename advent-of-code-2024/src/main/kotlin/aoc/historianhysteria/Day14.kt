@@ -18,7 +18,7 @@ class Day14(input: List<String>, val width: Int = 101, val height: Int = 103) : 
 
     private val regex = Regex("""p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)""")
 
-    private val robots = input.mapIndexed { i, it ->
+    internal val robots = input.mapIndexed { i, it ->
         val groups = regex.find(it)?.groups ?: error("Not found in $it")
         Robot(
             id = i,
@@ -59,7 +59,7 @@ class Day14(input: List<String>, val width: Int = 101, val height: Int = 103) : 
      * What is the fewest number of seconds that must elapse for the robots to display the Easter egg?
      */
     override fun part2(): Int {
-        val target = elizarovDay14Part2(robots)
+        val target = elizarovDay14Part2(robots = robots, searchRange = 0..10_000)
         val robots = robots.toTypedArray()
         repeat(target) {
             for (i in 0..<robots.size) {

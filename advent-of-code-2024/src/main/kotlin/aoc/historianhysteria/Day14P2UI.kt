@@ -1,12 +1,14 @@
 package aoc.historianhysteria
 
+import aoc.utils.get
 import aoc.utils.model.GridPoint2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.model.dimension2D
+import aoc.utils.model.mod
 import aoc.utils.relativeToResources
+import aoc.utils.set
 import java.awt.*
 import javax.swing.*
 import kotlin.io.path.Path
-import kotlin.io.path.readLines
 
 /**
  * A small ui to visually verify the solution
@@ -18,20 +20,14 @@ fun main() {
         inputFileName = "input"
     )
 
-    val input = Path("$base/day14.txt").readLines()
-    val m = 101
-    val n = 103
+    val robots = Day14(Path("$base/day14.txt")).robots
+    val dimension = dimension2D(101, 103)
+    val m = dimension.width
+    val n = dimension.height
 
-    data class RD(val x: Int, val y: Int, val vx: Int, val vy: Int)
+    val nrOfRobots = Array(n) { IntArray(m) }
+    var positions: List<GridPoint2D> = emptyList()
 
-    val rd = input.map { s ->
-        val (x, y, vx, vy) = Regex("""p=(\d+),(\d+) v=(-?[0-9]+),(-?[0-9]+)""")
-            .matchEntire(s)!!.destructured.toList()
-            .map { it.toInt() }
-        RD(x, y, vx, vy)
-    }
-    val c = Array(n) { IntArray(m) }
-    var p: List<GridPoint2D> = emptyList()
     val dim = 7
     val label = JLabel("Start")
     val canvas = object : JPanel() {
@@ -43,23 +39,24 @@ fun main() {
             g.color = Color.WHITE
             g.fillRect(0, 0, dim * m, dim * n)
             g.color = Color.BLACK
-            for (x0 in 0..<m) for (y0 in 0..<n) if (c[y0][x0] > 0) {
-                val x = x0 * dim
-                val y = y0 * dim
-                g.fillRect(x, y, dim, dim)
+            dimension.forEach {
+                if (nrOfRobots[it] > 0) {
+                    val d = it * dim
+                    g.fillRect(d.x, d.y, dim, dim)
+                }
             }
         }
     }
     var k = 0
     fun update() {
-        for ((x, y) in p) {
-            c[y][x] = 0
+        for (point in positions) {
+            nrOfRobots[point] = 0
         }
-        p = rd.map { (x, y, vx, vy) ->
-            gridPoint2D((x + vx * k).mod(m), (y + vy * k).mod(n))
+        positions = robots.map { (_, pos, vel) ->
+            (pos + vel * k).mod(m, n)
         }
-        for ((x, y) in p) {
-            c[y][x]++
+        for ((x, y) in positions) {
+            nrOfRobots[y][x]++
         }
         label.text = "Step $k"
         canvas.repaint()
@@ -83,20 +80,21 @@ fun main() {
             update()
         }
     }
-    val magicButton = JButton("Christmas!").apply {
+    val searchRangeField = JTextField("0..10000")
+    val nrField = JTextField("0").apply {
         addActionListener {
-            k = 7709
+            k = text.toInt()
             update()
         }
     }
-    val textBox = JTextField(k.toString()).apply {
+    val christmas = JButton("Christmas!").apply {
         addActionListener {
-            val newK = (it.source as JTextField).text
-            k = newK.toInt()
+            val (start, endInclusive) = searchRangeField.text.split("..")
+            k = elizarovDay14Part2(robots = robots, start.toInt()..endInclusive.toInt())
             update()
         }
     }
-    JFrame("Day12_2").apply {
+    JFrame("Day14_2").apply {
         contentPane = JPanel(BorderLayout())
         contentPane.add(canvas, BorderLayout.CENTER)
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
@@ -106,11 +104,13 @@ fun main() {
             add(prevButton)
             add(nextButton)
             add(next101Button)
-            add(magicButton)
-            add(textBox)
+            add(nrField)
+            add(searchRangeField)
+            add(christmas)
         }
         contentPane.add(bottomPanel, BorderLayout.SOUTH)
         pack()
+        update()
         isVisible = true
     }
 }

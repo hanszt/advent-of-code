@@ -9,6 +9,30 @@ class Day16Test {
     private companion object {
         private val day16 by lazy { Day16(Path("input/day16.txt")) }
         private val day16dr by lazy { Day16(Path("input/day16-dr.txt")) }
+        private val day16Test by lazy { Day16(
+            """
+                ###############
+                #.......#....E#
+                #.#.###.#.###.#
+                #.....#.#...#.#
+                #.###.#####.#.#
+                #.#.#.......#.#
+                #.#.#####.###.#
+                #...........#.#
+                ###.#.#####.#.#
+                #...#.....#.#.#
+                #.#.#.###.#.#.#
+                #.....#...#.#.#
+                #.###.#.#.#.#.#
+                #S..#.....#...#
+                ###############
+            """.trimIndent().lines()
+        ) }
+    }
+
+    @Test
+    fun part1Test() {
+        day16Test.part1() shouldBe 0
     }
 
     @Test

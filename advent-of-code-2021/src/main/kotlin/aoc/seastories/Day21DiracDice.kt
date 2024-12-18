@@ -56,7 +56,12 @@ internal class Day21DiracDice(inputPath: String) : ChallengeDay {
                         if (player1NewScore >= threshold) {
                             winCount.player1Winnings++
                         } else {
-                            val otherWinCount = playDiracDice(player2Pos, player1newPos, player2Score, player1NewScore)
+                            val otherWinCount = playDiracDice(
+                                player1Pos = player2Pos,
+                                player2Pos = player1newPos,
+                                player1Score = player2Score,
+                                player2Score = player1NewScore
+                            )
                             winCount.player1Winnings += otherWinCount.player2Winnings
                             winCount.player2Winnings += otherWinCount.player1Winnings
                         }
@@ -66,7 +71,12 @@ internal class Day21DiracDice(inputPath: String) : ChallengeDay {
             solveSpace[player1Pos][player2Pos][player1Score][player2Score] = winCount
             return winCount
         }
-        val (player1Winnings, player2Winnings) = playDiracDice(player1InitPos, player2InitPos, 0, 0)
+        val (player1Winnings, player2Winnings) = playDiracDice(
+            player1Pos = player1InitPos,
+            player2Pos = player2InitPos,
+            player1Score = 0,
+            player2Score = 0
+        )
         return maxOf(player1Winnings, player2Winnings)
     }
 

@@ -15,7 +15,7 @@ internal data class Line(val begin: GridPoint2D, val end: GridPoint2D) {
 
     private fun toLineCoordinates(begin: GridPoint2D, end: GridPoint2D): Set<GridPoint2D> {
         if (isVertical() or isHorizontal() or isDiagonal()) {
-            val dir = (end - begin).toSignVector()
+            val dir = (end - begin).sign
             return (0..abs(begin.x - end.x).coerceAtLeast(abs(begin.y - end.y)))
                 .map { step -> begin + dir * step }
                 .toSet()

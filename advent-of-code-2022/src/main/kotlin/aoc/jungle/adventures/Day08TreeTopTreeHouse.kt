@@ -1,12 +1,7 @@
 package aoc.jungle.adventures
 
-import aoc.utils.ChallengeDay
-import aoc.utils.gridCount
-import aoc.utils.mapByPoint
-import aoc.utils.max
+import aoc.utils.*
 import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.toIntGrid
 import java.io.File
 
 /**
@@ -16,33 +11,37 @@ class Day08TreeTopTreeHouse(fileName: String) : ChallengeDay {
 
     private val treeGrid = File(fileName).readLines().toIntGrid(Char::digitToInt)
 
-    override fun part1(): Int = treeGrid.gridCount { x, y -> GridPoint2D.towerDirs.any { visibleFromOutSide(x by y, it) } }
+    /**
+     * How many trees are visible from outside the grid?
+     */
+    override fun part1(): Int = treeGrid.gridCount { s -> GridPoint2D.towerDirs.any { visibleFromOutSide(s, it) } }
 
     private fun visibleFromOutSide(spot: GridPoint2D, delta: GridPoint2D): Boolean {
-        val tree = treeGrid[spot.y][spot.x]
+        val tree = treeGrid[spot]
         var cur = spot
-        while (cur.y in 1 until treeGrid.lastIndex && cur.x in 1 until treeGrid[0].lastIndex) {
-            val other = treeGrid[cur.y + delta.y][cur.x + delta.x]
+        while (true) {
+            val other = treeGrid.getOrNull(cur + delta) ?: return true
             if (other >= tree) return false
             cur += delta
         }
-        return true
     }
 
-    override fun part2(): Int =
-        treeGrid.mapByPoint { x, y -> GridPoint2D.towerDirs.map { toScore(x by y, it) }.reduce { total, score -> total * score } }
-            .flatten()
-            .max()
+    /**
+     * What is the highest scenic score possible for any tree?
+     */
+    override fun part2(): Int = treeGrid.gridMaxOf { p ->
+        GridPoint2D.towerDirs.fold(1) { product, dir -> product * toScore(p, dir) }
+    }
 
     private fun toScore(spot: GridPoint2D, delta: GridPoint2D): Int {
+        val tree = treeGrid[spot]
         var score = 0
         var cur = spot
-        while (cur.y in 1 until treeGrid.lastIndex && cur.x in 1 until treeGrid[0].lastIndex) {
-            val other = treeGrid[cur.y + delta.y][cur.x + delta.x]
+        do {
+            val other = treeGrid.getOrNull(cur + delta) ?: break
             score++
             cur += delta
-            if (other >= treeGrid[spot.y][spot.x]) break
-        }
+        } while (other < tree)
         return score
     }
 }

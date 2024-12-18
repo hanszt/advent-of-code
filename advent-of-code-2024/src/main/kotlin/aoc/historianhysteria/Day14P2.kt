@@ -1,46 +1,66 @@
 package aoc.historianhysteria
 
+import aoc.utils.get
 import aoc.utils.model.GridPoint2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.model.dimension2D
+import aoc.utils.model.mod
+import aoc.utils.set
 
 /**
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day14_2.kt
+ *
+ * The idea is to, for each iteration look at the robot positions and see how many neighbor positions ara also occupied by a robot.
+ *
+ * The iteration where most robots have neighbors has the highest chance of forming the Christmas tree and therefore is the best option.
  */
-internal fun elizarovDay14Part2(input: List<Robot>): Int {
-    val m = 101
-    val n = 103
+internal fun elizarovDay14Part2(robots: List<Robot>, searchRange: IntRange): Int {
+    val dimension = dimension2D(width = 101, height = 103)
+    val openEndedRange = dimension.toOpenEndedRange()
 
-    data class RD(val x: Int, val y: Int, val vx: Int, val vy: Int)
-    val rd = input.map { RD(it.position.x, it.position.y, it.velocity.x, it.velocity.y) }
-    val c = Array(n) { IntArray(m) }
+    val nrOfRobots = Array(dimension.height) { IntArray(dimension.width) }
     var best = 0
     var bestK = -1
     val q = ArrayDeque<GridPoint2D>()
-    fun enq(x: Int, y: Int) {
-        if (x !in 0..<m || y !in 0..<n) return
-        if (c[y][x] <= 0) return
-        c[y][x] = -1
-        q += gridPoint2D(x, y)
+
+    /**
+     * Store only if the nr of robots at a point is greater than 0
+     */
+    fun enq(point: GridPoint2D) {
+        if (point !in openEndedRange) return
+        if (nrOfRobots[point] <= 0) return
+        nrOfRobots[point] = -1
+        q += point
     }
-    for (k in 1..m * n) {
-        val p = rd.map { (x, y, vx, vy) ->
-            gridPoint2D((x + vx * k).mod(m), (y + vy * k).mod(n))
+    for (k in searchRange) {
+        val robotPositions = robots.map { (_, pos, vel) ->
+            (pos + vel * k).mod(dimension)
         }
-        for ((x, y) in p) c[y][x]++
-        for (x0 in 0..<m) for (y0 in 0..<n) if (c[y0][x0] > 0) {
-            q.clear()
-            var h = 0
-            enq(x0, y0)
-            while (h < q.size) {
-                val (x, y) = q[h++]
-                for (dx in -1..1) for (dy in -1..1) enq(x + dx, y + dy)
-            }
-            if (q.size > best) {
-                best = q.size
-                bestK = k
+        for (p in robotPositions) nrOfRobots[p]++
+        dimension.forEach { point ->
+            if (nrOfRobots[point] > 0) {
+                q.clear()
+                var h = 0
+                enq(point)
+                /**
+                 * Not using a regular while q.isNotEmpty, then q.poll() approach because we need to see how many items where enqueued in total.
+                 */
+                while (h < q.size) {
+                    val p = q[h++]
+                    /**
+                     * Look at all neighbors
+                     */
+                    GridPoint2D.kingDirs.forEach { enq(p + it) }
+                }
+                val size = q.size
+                if (size > best) {
+                    println("size = ${size}")
+                    best = size
+                    bestK = k
+                }
             }
         }
-        for ((x, y) in p) c[y][x] = 0
+        // reset positions for next iteration
+        for (point in robotPositions) nrOfRobots[point] = 0
     }
     return bestK
 }

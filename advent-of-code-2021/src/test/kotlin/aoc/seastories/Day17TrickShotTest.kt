@@ -1,22 +1,19 @@
 package aoc.seastories
 
 import aoc.seastories.Day17TrickShot.Probe
-import aoc.utils.model.GridPoint2D
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertAll
 import aoc.utils.*
+import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Test
 
 internal class Day17TrickShotTest {
 
     @Test
     fun `part 1 test input`() {
-        Day17TrickShot.part1(20..30, -10..-5) shouldBe 45
+        Day17TrickShot.part1(20..30 by -10..-5) shouldBe 45
     }
 
     @Test
@@ -26,7 +23,7 @@ internal class Day17TrickShotTest {
 
     @Test
     fun `part 2 test input`() {
-        Day17TrickShot.part2(20..30, -10..-5) shouldBe 112
+        Day17TrickShot.part2(20..30 by -10..-5) shouldBe 112
     }
 
     @Test
@@ -63,7 +60,7 @@ internal class Day17TrickShotTest {
 
         val grid = Array(yPosStats.max - yPosStats.min + 1) { IntArray(maxX + 1) }
         path.forEach { (x, y) -> grid[y - yPosStats.min][x] = 1 }
-        println(grid.mirroredHorizontally().gridAsString(1,"") {
+        println(grid.mirroredVertically().gridAsString(1,"") {
             if (it == 0) ".".withColors(BRIGHT_BLUE, ICY_BG) else "#".withColors(RED, ICY_BG) })
 
         path.shouldNotBeEmpty()

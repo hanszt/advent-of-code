@@ -4,12 +4,12 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
 
-class Day17Test {
+class Day19Test {
 
     private companion object {
-        private val day17 by lazy { Day17(Path("input/day17.txt")) }
-        private val day17dr by lazy { Day17(Path("input/day17-dr.txt")) }
-        private val day17Test by lazy { Day16(
+        private val day19 by lazy { Day19(Path("input/day19.txt")) }
+        private val day19dr by lazy { Day19(Path("input/day19-dr.txt")) }
+        private val day19Test by lazy { Day16(
             """""".trimIndent().lines()
         ) }
 
@@ -17,17 +17,17 @@ class Day17Test {
 
     @Test
     fun part1Test() {
-        day17Test.part1() shouldBe 0
+        day19Test.part1() shouldBe 0
     }
 
     @Test
     fun part1dr() {
-        day17dr.part1() shouldBe 0
+        day19dr.part1() shouldBe 0
     }
 
     @Test
     fun part1() {
-        day17.part1() shouldBe 0
+        day19.part1() shouldBe 0
     }
 
 }

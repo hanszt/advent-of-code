@@ -24,7 +24,7 @@ class Day16ProboscideaVolcanium(fileName: String) : ChallengeDay {
         val targetMinute = 30
         val valveMap = parseInput()
         val graph = valveMap.buildGraph(targetMinute)
-        return graph[targetMinute].map(Map.Entry<Tunnel, Int>::value).max()
+        return graph[targetMinute].maxOf { it.value }
     }
 
     /**

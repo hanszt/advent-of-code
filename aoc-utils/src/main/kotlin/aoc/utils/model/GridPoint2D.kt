@@ -10,6 +10,8 @@ interface GridPoint2D {
     val x: Int
     val y: Int
 
+    val sign get(): Vec2 = x.sign by y.sign
+
     operator fun component1(): Int = x
     operator fun component2(): Int = y
     operator fun plus(other: GridPoint2D) = x + other.x by y + other.y
@@ -23,7 +25,6 @@ interface GridPoint2D {
     fun plus(x: Int, y: Int) = this.x + x by this.y + y
     fun plusX(x: Int) = this.x + x by y
     fun plusY(y: Int) = x by this.y + y
-    fun toSignVector(): Vec2 = x.sign by y.sign
     fun rot90L(): GridPoint2D = gridPoint2D(y, -x)
     fun rot90R(): GridPoint2D = gridPoint2D(-y, x)
     fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
@@ -91,6 +92,7 @@ interface GridPoint2D {
  * A function to make sure the coordinate jumps to the other side of the grid when over the edge.
  */
 fun GridPoint2D.mod(width: Int, height: Int): GridPoint2D = gridPoint2D(x.mod(width), y.mod(height))
+fun GridPoint2D.mod(dimension2D: Dimension2D): GridPoint2D = gridPoint2D(x.mod(dimension2D.width), y.mod(dimension2D.height))
 fun gridPoint2D(x: Int, y: Int) = GridPoint2D.of(x, y)
 
 private data class StandardGridPoint2D(override val x: Int, override val y: Int) : GridPoint2D {

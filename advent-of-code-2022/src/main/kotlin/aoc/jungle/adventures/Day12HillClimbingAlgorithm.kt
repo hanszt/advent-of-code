@@ -40,6 +40,9 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
         return Grid(grid, start, end)
     }
 
+    /**
+     * Also a form of Dijkstra
+     */
     private fun Grid.floodFill(postProcess: (Int, Int) -> (Int) = { _, length -> length }): Int {
         val shortestPaths = mutableMapOf(start to 0)
         val queue = ArrayDeque<Point>().apply { add(start) }

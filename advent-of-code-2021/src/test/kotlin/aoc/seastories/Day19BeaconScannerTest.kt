@@ -1,6 +1,6 @@
 package aoc.seastories
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class Day19BeaconScannerTest {
@@ -11,14 +11,22 @@ internal class Day19BeaconScannerTest {
     }
 
     @Test
-    fun `part 1 test input`() = assertEquals(79, day19BeaconScannerTestInput.part1())
+    fun `part 1 test input`() {
+        day19BeaconScannerTestInput.part1() shouldBe 79
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(376, day19BeaconScanner.part1().also(::println))
+    fun `part 1 result`() {
+        day19BeaconScanner.part1() shouldBe 376
+    }
 
     @Test
-    fun `part 2 test input`() = assertEquals(3_621, day19BeaconScannerTestInput.part2())
+    fun `part 2 test input`() {
+        day19BeaconScannerTestInput.part2() shouldBe 3_621
+    }
 
     @Test
-    fun `part 2 result`() = assertEquals(10_772, day19BeaconScanner.part2().also(::println))
+    fun `part 2 result`() {
+        day19BeaconScanner.part2() shouldBe 10_772
+    }
 }

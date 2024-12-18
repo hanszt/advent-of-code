@@ -9,10 +9,13 @@ import aoc.utils.PIPE_UP_DOWN
 import aoc.utils.PIPE_UP_LEFT
 import aoc.utils.PIPE_UP_RIGHT
 import aoc.utils.YELLOW_BG
+import aoc.utils.get
 import aoc.utils.gridAsString
 import aoc.utils.linkedListOf
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.gridPoint2D
+import aoc.utils.set
+import aoc.utils.toCharGrid
 import aoc.utils.withColor
 import java.io.File
 
@@ -36,11 +39,11 @@ class Day10(
     override fun part1(): Int = bfs(start).last().toPath().size - 1
 
     override fun part2(): Int {
-        val mask = grid.map { CharArray(it.length) { '.' } }.toTypedArray()
+        val mask = grid.toCharGrid { '.' }
         cyclesByDfs(start)
             .map(Link::toPath)
             .maxBy(List<*>::size)
-            .forEach { (x, y) -> mask[y][x] = grid[y][x].toPathCharacter() }
+            .forEach { mask[it] = grid[it].toPathCharacter() }
         return countEnclosedTiles(mask).also { println(mask.toColoredMap()) }
     }
 

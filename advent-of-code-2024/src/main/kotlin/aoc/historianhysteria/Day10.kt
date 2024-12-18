@@ -47,7 +47,6 @@ class Day10(private val map: List<String>) : ChallengeDay {
         val curHeight = toHeight(current) ?: error("value at $current not found")
         if (curHeight == 9) {
             yield(localPath.toList())
-//            return
         }
         for (dir in GridPoint2D.towerDirs) {
             val neighbor = current + dir

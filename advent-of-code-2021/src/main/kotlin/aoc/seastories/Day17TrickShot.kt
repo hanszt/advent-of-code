@@ -1,5 +1,7 @@
 package aoc.seastories
 
+import aoc.utils.GridPoint2DRange
+import aoc.utils.by
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 
@@ -7,23 +9,23 @@ internal object Day17TrickShot : ChallengeDay {
 
     private const val UPPER_SEARCH_BOUND_Y = 1000
 
-    fun part1(targetRangeX: IntRange, targetRangeY: IntRange): Int =
-        probesInTargetArea(targetRangeX, targetRangeY).maxOf { it.highestPosition.y }
+    fun part1(targetArea: GridPoint2DRange): Int =
+        probesInTargetArea(targetArea).maxOf { it.highestPosition.y }
 
-    private fun probesInTargetArea(targetAreaX: IntRange, targetAreaY: IntRange) =
-        (0..targetAreaX.last).asSequence()
+    private fun probesInTargetArea(targetArea: GridPoint2DRange) =
+        (0..targetArea.start.x).asSequence()
             .flatMap { initVelocityX ->
                 (0 until UPPER_SEARCH_BOUND_Y)
                     .map { initVelocityY -> Probe(initVelocityX by initVelocityY) }
-                    .filter { it.endsUpInTargetArea(targetAreaX, targetAreaY) }
+                    .filter { it.endsUpInTargetArea(targetArea) }
             }
 
-    fun part2(targetRangeX: IntRange, targetRangeY: IntRange): Int {
+    fun part2(targetRange: GridPoint2DRange): Int {
         val successfulInitVelocityVals = mutableSetOf<GridPoint2D>()
-        for (initVelX in 1..targetRangeX.last) {
-            for (initVelY in targetRangeY.first until UPPER_SEARCH_BOUND_Y) {
+        for (initVelX in 1..targetRange.endInclusive.x) {
+            for (initVelY in targetRange.start.y until UPPER_SEARCH_BOUND_Y) {
                 val probe = Probe(initVelX by initVelY)
-                val endsUpInTargetArea = probe.endsUpInTargetArea(targetRangeX, targetRangeY)
+                val endsUpInTargetArea = probe.endsUpInTargetArea(targetRange)
                 if (endsUpInTargetArea) {
                     successfulInitVelocityVals.add(initVelX by initVelY)
                 }
@@ -32,8 +34,8 @@ internal object Day17TrickShot : ChallengeDay {
         return successfulInitVelocityVals.size
     }
 
-    override fun part1() = part1(185..221, -122..-74)
-    override fun part2() = part2(185..221, -122..-74)
+    override fun part1() = part1(185..221 by -122..-74)
+    override fun part2() = part2(185..221 by -122..-74)
 
     internal class Probe(var velocity: GridPoint2D = GridPoint2D.ZERO) {
 
@@ -57,10 +59,10 @@ internal object Day17TrickShot : ChallengeDay {
             return path
         }
 
-        fun endsUpInTargetArea(targetRangeX: IntRange, targetRangeY: IntRange): Boolean {
-            while (position.x < targetRangeX.last && position.y > targetRangeY.first) {
+        fun endsUpInTargetArea(targetRange: GridPoint2DRange): Boolean {
+            while (position.x < targetRange.endInclusive.x && position.y > targetRange.start.y) {
                 val nextPosition = updatePosition()
-                if (nextPosition.x in targetRangeX && nextPosition.y in targetRangeY) {
+                if (nextPosition in targetRange) {
                     return true
                 }
             }

@@ -44,7 +44,7 @@ public class Day09RopeBridge implements ChallengeDay {
         var headPos = GridPoint2D.ZERO;
         var tailPos = GridPoint2D.ZERO;
         for (final var move : moveInstructions) {
-            final var curDir = move.toSignVector();
+            final var curDir = move.getSign();
             final var magnitude = move.manhattanDistance(GridPoint2D.ZERO);
             for (int j = 0; j < magnitude; j++) {
                 headPos = headPos.plus(curDir);
@@ -67,7 +67,7 @@ public class Day09RopeBridge implements ChallengeDay {
         Set<GridPoint2D> tailPositions = new HashSet<>();
         GridPoint2D[] knotPos = ArraysX.generateArray(10, i -> GridPoint2D.ZERO, GridPoint2D[]::new);
         for (final var move : moveInstructions) {
-            final var curDir = move.toSignVector();
+            final var curDir = move.getSign();
             final var magnitude = move.manhattanDistance(GridPoint2D.ZERO);
             for (int j = 0; j < magnitude; j++) {
                 knotPos[0] = knotPos[0].plus(curDir);
@@ -85,7 +85,7 @@ public class Day09RopeBridge implements ChallengeDay {
             final var case1 = distance == 2 && (posHead.getX() == posTail.getX() || posHead.getY() == posTail.getY());
             final var case2 = distance > 2 && posHead.getX() != posTail.getX() && posHead.getY() != posTail.getY();
             if (case1 || case2) {
-                knotPos[i + 1] = posTail.plus(posHead.minus(posTail).toSignVector());
+                knotPos[i + 1] = posTail.plus(posHead.minus(posTail).getSign());
             }
         }
         return knotPos[knotPos.length - 1];

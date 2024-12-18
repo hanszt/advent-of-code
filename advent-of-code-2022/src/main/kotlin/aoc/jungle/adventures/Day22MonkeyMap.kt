@@ -2,7 +2,6 @@ package aoc.jungle.adventures
 
 import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
-import aoc.utils.grouping
 import aoc.utils.invoke
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.GridPoint2D.Companion.up
@@ -117,7 +116,7 @@ class Day22MonkeyMap(
     private fun Cube.moveAlongCube(x: Int, point: Point2D, facing: Int): Pair<Int, Point2D> {
         var nextPoint = point
         var nextFacing = facing
-        for (step in 1..x) {
+        for (s in 1..x) {
             var neighbor = nextPoint + dirs[nextFacing]
             var curFacing = nextFacing
             if (grid.isInGrid(neighbor)) {
@@ -172,7 +171,7 @@ class Day22MonkeyMap(
                 for (x in grid.indices) for (y in grid[x].indices) if (grid[x][y] != ' ') {
                     add(gridPoint2D(x / faceSize, y / faceSize))
                 }
-            }.grouping.eachCount()
+            }.groupingBy { it }.eachCount()
 
             check(faceToCount.values.all { it == faceSize * faceSize })
             initialFace = faceToCount.keys.filter { it.x == 0 }.minBy(Point2D::y)

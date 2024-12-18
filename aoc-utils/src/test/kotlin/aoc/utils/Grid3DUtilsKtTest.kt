@@ -10,11 +10,12 @@ internal class Grid3DUtilsKtTest {
     @Test
     fun `test reorient`() {
         val point = gridPoint3D(1, 2, 3)
-        val newOrientations = orientations.map { reorient -> reorient(point) }.toList()
-        for (orientation in orientations.indices) {
-            val newOrientation = point.rotate(orientation)
+        val newOrientations = rotations.map { reorient -> reorient(point) }.toList()
+
+        for (i in rotations.indices) {
+            val newOrientation = point.rotate(i)
             println("newOrientation = $newOrientation")
-            newOrientations[orientation] shouldBe newOrientation
+            newOrientations[i] shouldBe newOrientation
         }
     }
 
