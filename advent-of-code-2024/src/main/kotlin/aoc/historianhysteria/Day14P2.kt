@@ -53,7 +53,6 @@ internal fun elizarovDay14Part2(robots: List<Robot>, searchRange: IntRange): Int
                 }
                 val size = q.size
                 if (size > best) {
-                    println("size = ${size}")
                     best = size
                     bestK = k
                 }

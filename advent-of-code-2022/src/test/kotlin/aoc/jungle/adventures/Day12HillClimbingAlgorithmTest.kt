@@ -24,6 +24,6 @@ internal class Day12HillClimbingAlgorithmTest {
 
     @Test
     fun `test part 2 test`() {
-        Day12HillClimbingAlgorithm("input/day12test.txt").part2().also(::println) shouldBe 29
+        Day12HillClimbingAlgorithm("input/day12test.txt").part2() shouldBe 29
     }
 }

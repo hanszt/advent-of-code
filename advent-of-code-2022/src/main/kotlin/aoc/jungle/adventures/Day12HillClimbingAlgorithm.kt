@@ -41,7 +41,7 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
     }
 
     /**
-     * Also a form of Dijkstra
+     * Also a form of Breadth first search
      */
     private fun Grid.floodFill(postProcess: (Int, Int) -> (Int) = { _, length -> length }): Int {
         val shortestPaths = mutableMapOf(start to 0)
@@ -50,7 +50,16 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
             val pos = queue.removeFirst()
             for (dir in GridPoint2D.towerDirs) {
                 val neighborPos = pos + dir
-                shortestPaths.update(pos, neighborPos, postProcess)?.also(queue::add)
+                grid[neighborPos]?.let { gridHeight ->
+                    if (gridHeight - grid(pos) <= 1) {
+                        val newPathLength = shortestPaths(pos) + 1
+                        val pathLength = shortestPaths[neighborPos] ?: Int.MAX_VALUE
+                        if (newPathLength < pathLength) {
+                            shortestPaths[neighborPos] = postProcess(gridHeight, newPathLength)
+                            queue.add(neighborPos)
+                        }
+                    }
+                }
             }
         }
         return shortestPaths[goal] ?: error("No path found...")
@@ -59,21 +68,5 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
     override fun part1(): Int = createGrid(lines).floodFill()
     override fun part2(): Int = createGrid(lines).floodFill { height, length -> if (height == 0) 0 else length }
 
-    data class Grid(val grid: Map<Point, Int>, val start: Point, val goal: Point) {
-
-        fun MutableMap<Point, Int>.update(pos: Point,
-                                          neighborPos: Point,
-                                          postProcess: (Int, Int) -> Int): Point? {
-            grid[neighborPos]?.let { gridHeight ->
-                if (gridHeight - (grid(pos)) <= 1) {
-                    val newPathLength = (this(pos)) + 1
-                    if (newPathLength < (this[neighborPos] ?: Int.MAX_VALUE)) {
-                        this[neighborPos] = postProcess(gridHeight, newPathLength)
-                        return neighborPos
-                    }
-                }
-            }
-            return null
-        }
-    }
+    data class Grid(val grid: Map<Point, Int>, val start: Point, val goal: Point)
 }
