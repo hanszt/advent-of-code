@@ -11,7 +11,9 @@ import javax.swing.*
 import kotlin.io.path.Path
 
 /**
- * A small ui to visually verify the solution
+ * A small ui to visually verify the solution.
+ *
+ * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day14_2_ui.kt
  */
 fun main() {
     val base = {}.relativeToResources(
@@ -52,7 +54,7 @@ fun main() {
         for (point in positions) {
             nrOfRobots[point] = 0
         }
-        positions = robots.map { (_, pos, vel) ->
+        positions = robots.map { (pos, vel) ->
             (pos + vel * k).mod(m, n)
         }
         for ((x, y) in positions) {
@@ -90,7 +92,7 @@ fun main() {
     val christmas = JButton("Christmas!").apply {
         addActionListener {
             val (start, endInclusive) = searchRangeField.text.split("..")
-            k = elizarovDay14Part2(robots = robots, start.toInt()..endInclusive.toInt())
+            k = elizarovDay14Part2(robots = robots, start.toInt()..endInclusive.toInt(), dimension)
             update()
         }
     }

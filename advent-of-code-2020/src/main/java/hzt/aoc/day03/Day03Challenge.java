@@ -1,5 +1,6 @@
 package hzt.aoc.day03;
 
+import aoc.utils.Grid2DUtilsKt;
 import aoc.utils.model.GridPoint2D;
 import hzt.aoc.Challenge;
 
@@ -18,7 +19,7 @@ public abstract class Day03Challenge extends Challenge {
     @Override
     protected String solve(final List<String> inputList) {
         final List<List<Boolean>> grid = !inputList.isEmpty() ? buildGrid(inputList) : Collections.emptyList();
-        LOGGER.trace(() -> booleanGrid2DAsString(grid));
+        LOGGER.trace(() -> Grid2DUtilsKt.gridAsString(grid));
         return String.valueOf(calculateResult(grid));
     }
 

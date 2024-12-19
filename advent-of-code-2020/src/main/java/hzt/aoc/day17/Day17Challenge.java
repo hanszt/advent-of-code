@@ -1,5 +1,6 @@
 package hzt.aoc.day17;
 
+import aoc.utils.Grid2DUtilsKt;
 import hzt.aoc.Challenge;
 
 import java.util.ArrayList;
@@ -26,10 +27,10 @@ public abstract class Day17Challenge extends Challenge {
     List<List<List<Boolean>>> getInitGrid3D(final List<String> inputList) {
         final List<List<List<Boolean>>> grid3D = new ArrayList<>();
         final List<List<Boolean>> grid2D = new ArrayList<>();
-        for (final String line : inputList) {
-            final char[] charRow = line.toCharArray();
+        for (final var line : inputList) {
+            final var charRow = line.toCharArray();
             final List<Boolean> row = new ArrayList<>();
-            for (final char state : charRow) {
+            for (final var state : charRow) {
                 row.add(state == ACTIVE);
             }
             grid2D.add(row);
@@ -40,9 +41,9 @@ public abstract class Day17Challenge extends Challenge {
 
     List<List<List<Boolean>>> copyGrid3D(final List<List<List<Boolean>>> grid3d) {
         final List<List<List<Boolean>>> copy = new ArrayList<>();
-        for (final List<List<Boolean>> gridXY : grid3d) {
+        for (final var gridXY : grid3d) {
             final List<List<Boolean>> newGridXY = new ArrayList<>();
-            for (final List<Boolean> rowX : gridXY) {
+            for (final var rowX : gridXY) {
                 final List<Boolean> newRowX = new ArrayList<>(rowX);
                 newGridXY.add(newRowX);
             }
@@ -52,31 +53,31 @@ public abstract class Day17Challenge extends Challenge {
     }
 
     void addInactiveOuterLayer3D(final List<List<List<Boolean>>> grid3d) {
-        for (final List<List<Boolean>> gridXY : grid3d) {
-            for (final List<Boolean> rowX : gridXY) {
-                rowX.add(0, false);
+        for (final var gridXY : grid3d) {
+            for (final var rowX : gridXY) {
+                rowX.addFirst(false);
                 rowX.add(false);
             }
-            final var size = gridXY.get(0).size();
-            gridXY.add(0, createInActiveRow(size));
+            final var size = gridXY.getFirst().size();
+            gridXY.addFirst(createInActiveRow(size));
             gridXY.add(createInActiveRow(size));
         }
-        final var firstPlane = grid3d.get(0);
-        final int newWidth = firstPlane.get(0).size();
-        final int newHeight = firstPlane.size();
-        grid3d.add(0, createInActiveXYPlane(newWidth, newHeight));
+        final var firstPlane = grid3d.getFirst();
+        final var newWidth = firstPlane.getFirst().size();
+        final var newHeight = firstPlane.size();
+        grid3d.addFirst(createInActiveXYPlane(newWidth, newHeight));
         grid3d.add(createInActiveXYPlane(newWidth, newHeight));
     }
 
     List<Boolean> createInActiveRow(final int width) {
         return IntStream.range(0, width)
-                .mapToObj(x -> false)
+                .mapToObj(_ -> false)
                 .collect(Collectors.toList());
     }
 
     List<List<Boolean>> createInActiveXYPlane(final int width, final int height) {
         final List<List<Boolean>> inActiveGridXY = new ArrayList<>();
-        for (int y = 0; y < height; y++) {
+        for (var y = 0; y < height; y++) {
             inActiveGridXY.add(createInActiveRow(width));
         }
         return inActiveGridXY;
@@ -84,29 +85,28 @@ public abstract class Day17Challenge extends Challenge {
 
     List<List<List<Boolean>>> createInActiveXYZGrid(final int width, final int height, final int depth) {
         final List<List<List<Boolean>>> inActiveGridXYZ = new ArrayList<>();
-        for (int z = 0; z < depth; z++) {
+        for (var z = 0; z < depth; z++) {
             inActiveGridXYZ.add(createInActiveXYPlane(width, height));
         }
         return inActiveGridXYZ;
     }
 
     String grid3DAsString(final List<List<List<Boolean>>> grid3d) {
-        final StringBuilder sb = new StringBuilder();
-        int z = -(grid3d.size() - 1) / 2;
-        for (final List<List<Boolean>> gridXY : grid3d) {
+        final var sb = new StringBuilder();
+        var z = -(grid3d.size() - 1) / 2;
+        for (final var gridXY : grid3d) {
             sb.append(String.format("%nSlice at z = %d", z));
-            sb.append(booleanGrid2DAsString(gridXY));
+            sb.append(Grid2DUtilsKt.gridAsString(gridXY));
             z++;
         }
         return sb.toString();
     }
 
 
-
-    /*
-     If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
-     If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
- */
+    /**
+     * If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
+     * If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
+     */
     boolean applyRules(final boolean active, final int activeNeighbors) {
         final var remainActive = active && (activeNeighbors == 2 || activeNeighbors == 3);
         final var becomeActive = !active && activeNeighbors == 3;

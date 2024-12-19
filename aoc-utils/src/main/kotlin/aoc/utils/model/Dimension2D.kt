@@ -1,11 +1,13 @@
 package aoc.utils.model
 
-import aoc.utils.ClosedGridPoint2DRange
 import aoc.utils.OpenEndedGridPoint2DRange
 
-interface Dimension2D : ClosedGridPoint2DRange, Iterable<GridPoint2D> {
+interface Dimension2D : OpenEndedGridPoint2DRange, Iterable<GridPoint2D> {
     val width: Int
     val height: Int
+
+    operator fun component1() = width
+    operator fun component2() = height
 
     val surfaceArea: Int get() = width * height
 
@@ -29,18 +31,13 @@ interface Dimension2D : ClosedGridPoint2DRange, Iterable<GridPoint2D> {
         }
 
     }
-
-    fun toOpenEndedRange(): OpenEndedGridPoint2DRange = object : OpenEndedGridPoint2DRange {
-        override val start: GridPoint2D = gridPoint2D(0, 0)
-        override val endExclusive: GridPoint2D = gridPoint2D(width - 1, height - 1)
-    }
 }
 
 fun dimension2D(width: Int, height: Int): Dimension2D = StandardDimension2D(width, height)
 
 private data class StandardDimension2D(override val width: Int, override val height: Int) : Dimension2D {
     override val start: GridPoint2D = gridPoint2D(0, 0)
-    override val endInclusive: GridPoint2D = gridPoint2D(width, height)
+    override val endExclusive: GridPoint2D = gridPoint2D(width - 1, height - 1)
 
     init {
         require(width >= 0)

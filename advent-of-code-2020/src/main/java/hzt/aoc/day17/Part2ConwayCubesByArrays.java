@@ -47,7 +47,6 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
         return newGrid4d;
     }
 
-    @SuppressWarnings("squid:S134")
     private boolean[][][][] applyRules4D(final boolean[][][][] grid4d) {
         final var newGrid4d = deepCopyGrid4D(grid4d);
         for (var w = 0; w < grid4d.length; w++) {
@@ -58,7 +57,7 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
                     final var row = grid2d[y];
                     for (var x = 0; x < row.length; x++) {
                         final var activeNeighbors = countActiveNeighbors(GridPoint4D.of(x, y, z, w), grid4d);
-                        newGrid4d[w][z][y][x] = applyRules(row[x], activeNeighbors);
+                        newGrid4d[w][z][y][x] = isActive(row[x], activeNeighbors);
                     }
                 }
             }
@@ -76,7 +75,6 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
         return copy;
     }
 
-    @SuppressWarnings({"squid:S134", "squid:S3776"})
     private int countActiveNeighbors(final GridPoint4D cur, final boolean[][][][] curGrid4d) {
         var activeNeighbors = 0;
         for (var w = Math.max(cur.w() - 1, 0); w <= upperBound(cur.w(), curGrid4d.length); w++) {

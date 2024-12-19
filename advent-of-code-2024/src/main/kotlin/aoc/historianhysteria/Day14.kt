@@ -2,26 +2,27 @@ package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
 import aoc.utils.gridAsString
+import aoc.utils.model.Dimension2D
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.Vec2
+import aoc.utils.model.dimension2D
 import aoc.utils.model.gridPoint2D
 import aoc.utils.model.mod
 import java.nio.file.Path
 import kotlin.io.path.readLines
 
-class Day14(input: List<String>, val width: Int = 101, val height: Int = 103) : ChallengeDay {
+class Day14(input: List<String>, private val dimension2D: Dimension2D = dimension2D(101, 103)) : ChallengeDay {
 
-    private val rx1 = 0..<width / 2
-    private val ry1 = 0..<height / 2
-    private val rx2 = (width / 2) + 1..width
-    private val ry2 = (height / 2) + 1..height
+    private val rx1 = 0..<dimension2D.width / 2
+    private val ry1 = 0..<dimension2D.height / 2
+    private val rx2 = (dimension2D.width / 2) + 1..dimension2D.width
+    private val ry2 = (dimension2D.height / 2) + 1..dimension2D.height
 
     private val regex = Regex("""p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)""")
 
-    internal val robots = input.mapIndexed { i, it ->
+    internal val robots = input.map { it ->
         val groups = regex.find(it)?.groups ?: error("Not found in $it")
         Robot(
-            id = i,
             position = gridPoint2D(groups[1]!!.value.toInt(), groups[2]!!.value.toInt()),
             velocity = gridPoint2D(groups[3]!!.value.toInt(), groups[4]!!.value.toInt())
         )
@@ -53,13 +54,13 @@ class Day14(input: List<String>, val width: Int = 101, val height: Int = 103) : 
         return q1 * q2 * q3 * q4
     }
 
-    private fun moved(robot: Robot): Robot = robot.copy(position = (robot.position + robot.velocity).mod(width, height))
+    private fun moved(robot: Robot): Robot = robot.copy(position = (robot.position + robot.velocity).mod(dimension2D))
 
     /**
      * What is the fewest number of seconds that must elapse for the robots to display the Easter egg?
      */
     override fun part2(): Int {
-        val target = elizarovDay14Part2(robots = robots, searchRange = 0..10_000)
+        val target = elizarovDay14Part2(robots = robots, searchRange = 0..10_000, dimension = dimension2D)
         val robots = robots.toTypedArray()
         repeat(target) {
             for (i in 0..<robots.size) {
@@ -71,7 +72,7 @@ class Day14(input: List<String>, val width: Int = 101, val height: Int = 103) : 
     }
 
     internal fun toPicture(robots: Array<Robot>): String {
-        val grid = Array(height) { CharArray(width) { '.' } }
+        val grid = Array(dimension2D.height) { CharArray(dimension2D.width) { '.' } }
         for (r in robots) {
             val x = r.position.x
             val y = r.position.y
@@ -81,4 +82,4 @@ class Day14(input: List<String>, val width: Int = 101, val height: Int = 103) : 
     }
 }
 
-internal data class Robot(val id: Int, val position: GridPoint2D, val velocity: Vec2)
+internal data class Robot(val position: GridPoint2D, val velocity: Vec2)

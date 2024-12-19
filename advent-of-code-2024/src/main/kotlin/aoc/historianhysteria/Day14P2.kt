@@ -1,8 +1,8 @@
 package aoc.historianhysteria
 
 import aoc.utils.get
+import aoc.utils.model.Dimension2D
 import aoc.utils.model.GridPoint2D
-import aoc.utils.model.dimension2D
 import aoc.utils.model.mod
 import aoc.utils.set
 
@@ -13,10 +13,7 @@ import aoc.utils.set
  *
  * The iteration where most robots have neighbors has the highest chance of forming the Christmas tree and therefore is the best option.
  */
-internal fun elizarovDay14Part2(robots: List<Robot>, searchRange: IntRange): Int {
-    val dimension = dimension2D(width = 101, height = 103)
-    val openEndedRange = dimension.toOpenEndedRange()
-
+internal fun elizarovDay14Part2(robots: List<Robot>, searchRange: IntRange, dimension: Dimension2D): Int {
     val nrOfRobots = Array(dimension.height) { IntArray(dimension.width) }
     var best = 0
     var bestK = -1
@@ -26,13 +23,13 @@ internal fun elizarovDay14Part2(robots: List<Robot>, searchRange: IntRange): Int
      * Store only if the nr of robots at a point is greater than 0
      */
     fun enq(point: GridPoint2D) {
-        if (point !in openEndedRange) return
+        if (point !in dimension) return
         if (nrOfRobots[point] <= 0) return
         nrOfRobots[point] = -1
         q += point
     }
     for (k in searchRange) {
-        val robotPositions = robots.map { (_, pos, vel) ->
+        val robotPositions = robots.map { (pos, vel) ->
             (pos + vel * k).mod(dimension)
         }
         for (p in robotPositions) nrOfRobots[p]++

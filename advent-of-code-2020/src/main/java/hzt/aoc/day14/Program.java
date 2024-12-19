@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Program implements Iterable<Program.Pair> {
+public class Program implements Iterable<Program.Entry> {
 
     private static final int BITMASK_LENGTH = 36;
 
     private final String bitMask;
-    private final List<Pair> integerAsBinaryStringsToMemorySpotList = new ArrayList<>();
+    private final List<Entry> integerAsBinaryStringsToMemorySpotList = new ArrayList<>();
 
 
     public Program(final String bitMask) {
@@ -21,11 +21,11 @@ public class Program implements Iterable<Program.Pair> {
     }
 
     public void put(final int value, final int memSpot) {
-        integerAsBinaryStringsToMemorySpotList.add(new Pair(value, memSpot));
+        integerAsBinaryStringsToMemorySpotList.add(new Entry(value, memSpot));
     }
 
     @Override
-    public Iterator<Pair> iterator() {
+    public Iterator<Entry> iterator() {
         return integerAsBinaryStringsToMemorySpotList.iterator();
     }
 
@@ -78,7 +78,7 @@ public class Program implements Iterable<Program.Pair> {
                 '}';
     }
 
-    record Pair(int binNr, int memSpot) {
+    public record Entry(int binNr, int memSpot) {
     }
 
 }

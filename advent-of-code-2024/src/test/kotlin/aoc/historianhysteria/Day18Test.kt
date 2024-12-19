@@ -3,6 +3,7 @@ package aoc.historianhysteria
 import aoc.utils.model.dimension2D
 import aoc.utils.model.gridPoint2D
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
 
@@ -75,6 +76,25 @@ class Day18Test {
     @Test
     fun part2() {
         day18.part2() shouldBe gridPoint2D(51, 40)
+    }
+
+    @Nested
+    inner class ElizarovSolutionsTest {
+
+        @Test
+        fun part1drElizarov() {
+            day18dr.part1Elizarov() shouldBe 372
+        }
+
+        @Test
+        fun part2drElizarov() {
+            day18dr.part2Elizarov() shouldBe gridPoint2D(25, 6)
+        }
+
+        @Test
+        fun part2drElizarovRaw() {
+            day18dr.part2ElizarovRaw() shouldBe "25,6"
+        }
     }
 
 }

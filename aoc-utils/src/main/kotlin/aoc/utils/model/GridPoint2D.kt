@@ -81,6 +81,9 @@ interface GridPoint2D {
         @JvmField
         val towerDirs = listOf(right, down, left, up)
 
+        @JvmField
+        val orthoDirs = towerDirs
+
         infix fun Int.by(y: Int): GridPoint2D = StandardGridPoint2D(this, y)
 
         @JvmStatic

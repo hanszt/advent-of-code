@@ -51,11 +51,15 @@ class Day18(
                 }
             }
         }
-        return shortestPaths[dimension2D.toOpenEndedRange().endExclusive] ?: error("No shortest path found")
+        return shortestPaths[dimension2D.endExclusive] ?: error("No shortest path found")
     }
 
     /**
      * What are the coordinates of the first byte that will prevent the exit from being reachable from your starting position?
+     *
+     * My own slow, but working solution.
+     *
+     * The idea is to check for each extra fallen byte if a closed `wall` of bytes can be made that separates the upper left corner form the lower right.
      */
     override fun part2(): GridPoint2D {
         val lastX = dimension2D.width - 1
@@ -64,7 +68,7 @@ class Day18(
         val horBottomRange = gridPoint2D(1, lastY)..gridPoint2D(dimension2D.width - 2, lastY)
         val leftRange = gridPoint2D(0, 1)..gridPoint2D(0, dimension2D.height - 2)
         val rightRange = gridPoint2D(lastX, 1)..gridPoint2D(lastX, dimension2D.height - 2)
-        val startToEnd = listOf(horBottomRange to rightRange, leftRange to horTopRange)
+        val startsToEnds = listOf(horBottomRange to rightRange, leftRange to horTopRange)
 
         for (fallenBytes in nrOfFallenBytes..input.size) {
             val memoryGrid = dimension2D.toCharGrid { '.' }
@@ -73,7 +77,7 @@ class Day18(
             }
             bytePositions.forEach { memoryGrid[it] = '#' }
 
-            for ((startRange, endRange) in startToEnd) {
+            for ((startRange, endRange) in startsToEnds) {
                 for (start in startRange) {
                     if (memoryGrid[start] == '#') {
                         // Dfs
@@ -101,4 +105,8 @@ class Day18(
         }
         error("Not found")
     }
+
+    fun part1Elizarov() = day18Part1(input, dimension2D, nrOfFallenBytes)
+    fun part2Elizarov() = day18Part2(input, dimension2D)
+    fun part2ElizarovRaw() = day18Part2Raw(input)
 }

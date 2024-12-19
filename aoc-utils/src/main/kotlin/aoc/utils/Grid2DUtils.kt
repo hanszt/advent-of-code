@@ -2,12 +2,14 @@
 
 package aoc.utils
 
+import aoc.utils.model.Dimension2D
 import aoc.utils.model.GridPoint2D
 import aoc.utils.model.GridPoint2D.Companion.by
 import aoc.utils.model.gridPoint2D
 
 typealias CharGrid = Array<CharArray>
 typealias IntGrid = Array<IntArray>
+typealias BooleanGrid = Array<BooleanArray>
 typealias Grid<T> = Array<Array<T>>
 
 /**
@@ -108,8 +110,8 @@ inline fun <T> Grid<T>.forEachPointAndValue(action: (Int, Int, T) -> Unit) =
 inline fun <T> Grid<T>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
-fun ClosedGridPoint2DRange.toCharGrid(transform: (GridPoint2D) -> Char): CharGrid = Array(endInclusive.y - start.y) { y ->
-    CharArray(endInclusive.x - start.x) { x -> transform(gridPoint2D(x, y)) }
+fun Dimension2D.toCharGrid(transform: (GridPoint2D) -> Char): CharGrid = Array(height) { y ->
+    CharArray(width) { x -> transform(gridPoint2D(x, y)) }
 }
 
 inline fun List<String>.forEachPoint(action: (Int, Int) -> Unit) =
@@ -150,9 +152,13 @@ fun List<String>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
 operator fun List<String>.get(point: GridPoint2D): Char = this[point.y][point.x]
 operator fun CharGrid.get(point: GridPoint2D): Char = this[point.y][point.x]
 operator fun IntGrid.get(point: GridPoint2D): Int = this[point.y][point.x]
+operator fun BooleanGrid.get(point: GridPoint2D): Boolean = this[point.y][point.x]
+operator fun <T> Grid<T>.get(point: GridPoint2D): T = this[point.y][point.x]
+
 fun List<String>.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
 fun CharGrid.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
 fun IntGrid.getOrNull(point: GridPoint2D): Int? = getOrNull(point.y)?.getOrNull(point.x)
+fun BooleanGrid.getOrNull(point: GridPoint2D): Boolean? = getOrNull(point.y)?.getOrNull(point.x)
 fun <T> Grid<T>.getOrNull(point: GridPoint2D): T? = getOrNull(point.y)?.getOrNull(point.x)
 
 /**
@@ -166,6 +172,18 @@ operator fun IntGrid.set(point: GridPoint2D, int: Int) {
     this[point.y][point.x] = int
 }
 
+operator fun BooleanGrid.set(point: GridPoint2D, bool: Boolean) {
+    this[point.y][point.x] = bool
+}
+
+/**
+ * Edges
+ */
+val IntGrid.upperLeft get() = GridPoint2D.ZERO
+val IntGrid.lowerLeft get() = gridPoint2D(0, lastIndex)
+val IntGrid.upperRight get() = gridPoint2D(this[0].lastIndex, 0)
+val IntGrid.lowerRight get() = gridPoint2D(this[0].lastIndex, lastIndex)
+
 /**
  * Ranges
  */
@@ -173,6 +191,11 @@ operator fun GridPoint2D.rangeTo(other: GridPoint2D): GridPoint2DRange = GridPoi
     start = this,
     endInclusive = other,
 )
+
+operator fun GridPoint2D.rangeUntil(other: GridPoint2D): OpenEndedGridPoint2DRange = object : OpenEndedGridPoint2DRange {
+    override val start: GridPoint2D = this@rangeUntil
+    override val endExclusive: GridPoint2D = other
+}
 
 infix fun IntRange.by(other: IntRange): GridPoint2DRange {
     return GridPoint2DRange(gridPoint2D(start, other.start), gridPoint2D(endInclusive, other.endInclusive))
@@ -250,6 +273,7 @@ inline fun <T, R> Grid<T>.gridAsString(
 fun <T> Grid<T>.gridAsString(spacing: Int = 2, separator: String = "") =
     gridAsString(spacing, separator) { it }
 
+@JvmOverloads
 fun <T> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
     map { row -> row.joinToString(separator) { "%${spacing}s".format(it) } }.joinToString("\n") { it }
 

@@ -22,12 +22,12 @@ public abstract class Day17ChallengeByArrays extends Challenge {
     protected abstract long solveByGrid(List<String> inputList);
 
     boolean[][][] inputListToInitGrid3D(final List<String> inputList) {
-        final boolean[][] grid2D = new boolean[inputList.size()][];
-        for (int rowi = 0; rowi < inputList.size(); rowi++) {
-            String line = inputList.get(rowi);
+        final var grid2D = new boolean[inputList.size()][];
+        for (var rowi = 0; rowi < inputList.size(); rowi++) {
+            var line = inputList.get(rowi);
             final var length = line.length();
-            final boolean[] row = new boolean[length];
-            for (int coli = 0; coli < length; coli++) {
+            final var row = new boolean[length];
+            for (var coli = 0; coli < length; coli++) {
                 row[coli] = line.charAt(coli) == ACTIVE;
             }
             grid2D[rowi] = row;
@@ -37,10 +37,10 @@ public abstract class Day17ChallengeByArrays extends Challenge {
 
     boolean[][][] deepCopyGrid3D(final boolean[][][] grid3d) {
         final var copy = Arrays.copyOf(grid3d, grid3d.length);
-        for (int y = 0; y < grid3d.length; y++) {
+        for (var y = 0; y < grid3d.length; y++) {
             final var gridXY = grid3d[y];
             final var newGridXY = Arrays.copyOf(gridXY, gridXY.length);
-            for (int x = 0; x < gridXY.length; x++) {
+            for (var x = 0; x < gridXY.length; x++) {
                 final var rowX = gridXY[x];
                 newGridXY[x] = Arrays.copyOf(rowX, rowX.length);
             }
@@ -50,16 +50,16 @@ public abstract class Day17ChallengeByArrays extends Challenge {
     }
 
     static boolean[][][] addInactiveOuterLayer3D(final boolean[][][] grid3d) {
-        boolean[][][] newGrid3d = new boolean[grid3d.length + 2][][];
+        var newGrid3d = new boolean[grid3d.length + 2][][];
         System.arraycopy(grid3d, 0, newGrid3d, 1, grid3d.length);
-        for (int y = 0; y < grid3d.length; y++) {
-            boolean[][] gridXY = grid3d[y];
-            boolean[][] newGridXY = addInactiveOuterLayer2D(gridXY);
+        for (var y = 0; y < grid3d.length; y++) {
+            var gridXY = grid3d[y];
+            var newGridXY = addInactiveOuterLayer2D(gridXY);
             newGrid3d[y + 1] = newGridXY;
         }
         final var firstPlane = newGrid3d[1];
-        final int newWidth = firstPlane[1].length;
-        final int newHeight = firstPlane.length;
+        final var newWidth = firstPlane[1].length;
+        final var newHeight = firstPlane.length;
 
         newGrid3d[0] = createInActiveXYPlane(newWidth, newHeight);
         newGrid3d[newGrid3d.length - 1] = createInActiveXYPlane(newWidth, newHeight);
@@ -67,11 +67,11 @@ public abstract class Day17ChallengeByArrays extends Challenge {
     }
 
     static boolean[][] addInactiveOuterLayer2D(boolean[][] gridXY) {
-        boolean[][] newGridXY = new boolean[gridXY.length + 2][];
+        var newGridXY = new boolean[gridXY.length + 2][];
         System.arraycopy(gridXY, 0, newGridXY, 1, gridXY.length);
-        for (int x = 0; x < gridXY.length; x++) {
-            boolean[] rowX = gridXY[x];
-            boolean[] newRowX = new boolean[rowX.length + 2];
+        for (var x = 0; x < gridXY.length; x++) {
+            var rowX = gridXY[x];
+            var newRowX = new boolean[rowX.length + 2];
             System.arraycopy(rowX, 0, newRowX, 1, rowX.length);
             newGridXY[x + 1] = newRowX;
         }
@@ -82,23 +82,23 @@ public abstract class Day17ChallengeByArrays extends Challenge {
     }
 
     static boolean[][] createInActiveXYPlane(final int width, final int height) {
-        final boolean[][] inActiveGridXY = new boolean[height][];
+        final var inActiveGridXY = new boolean[height][];
         Arrays.fill(inActiveGridXY, new boolean[width]);
         return inActiveGridXY;
     }
 
     static boolean[][][] createInActiveXYZGrid(final int width, final int height, final int depth) {
-        final boolean[][][] inActiveGridXYZ = new boolean[depth][][];
-        for (int z = 0; z < depth; z++) {
+        final var inActiveGridXYZ = new boolean[depth][][];
+        for (var z = 0; z < depth; z++) {
             inActiveGridXYZ[z] = createInActiveXYPlane(width, height);
         }
         return inActiveGridXYZ;
     }
 
     String grid3DAsString(final boolean[][][] grid3d) {
-        final StringBuilder sb = new StringBuilder();
-        int z = -(grid3d.length - 1) / 2;
-        for (final boolean[][] gridXY : grid3d) {
+        final var sb = new StringBuilder();
+        var z = -(grid3d.length - 1) / 2;
+        for (final var gridXY : grid3d) {
             sb.append(String.format("%nSlice at z = %d", z));
             sb.append(booleanGrid2DAsString(gridXY));
             z++;
@@ -110,7 +110,7 @@ public abstract class Day17ChallengeByArrays extends Challenge {
      If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
      If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
  */
-    boolean applyRules(final boolean active, final int activeNeighbors) {
+    boolean isActive(final boolean active, final int activeNeighbors) {
         final var remainActive = active && (activeNeighbors == 2 || activeNeighbors == 3);
         final var becomeActive = !active && activeNeighbors == 3;
         return remainActive || becomeActive;

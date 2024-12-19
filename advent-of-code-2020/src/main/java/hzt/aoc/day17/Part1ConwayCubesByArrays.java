@@ -51,14 +51,13 @@ public class Part1ConwayCubesByArrays extends Day17ChallengeByArrays {
                 final var row = grid2d[y];
                 for (var x = 0; x < row.length; x++) {
                     final var activeNeighbors = countActiveNeighbors(GridPoint3D.of(x, y, z), grid3d);
-                    newGrid3d[z][y][x] = applyRules(row[x], activeNeighbors);
+                    newGrid3d[z][y][x] = isActive(row[x], activeNeighbors);
                 }
             }
         }
         return addInactiveOuterLayer3D(newGrid3d);
     }
 
-    @SuppressWarnings("squid:S134")
     int countActiveNeighbors(final GridPoint3D cur, final boolean[][][] curGrid3d) {
         var activeNeighbors = 0;
         for (var z = Math.max(cur.getZ() - 1, 0); z <= upperBound(cur.getZ(), curGrid3d.length); z++) {

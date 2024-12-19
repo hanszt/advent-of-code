@@ -1,5 +1,6 @@
 package aoc.historianhysteria
 
+import aoc.utils.model.dimension2D
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
@@ -22,7 +23,7 @@ class Day14Test {
             p=7,3 v=-1,2
             p=2,4 v=2,-3
             p=9,5 v=-3,-3
-        """.trimIndent().lines(), width = 11, height = 7)
+        """.trimIndent().lines(), dimension2D(width = 11, height = 7))
     }
 
     @Test

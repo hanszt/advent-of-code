@@ -7,11 +7,19 @@ import aoc.utils.model.WeightedNode
 import java.io.File
 import java.util.*
 
-internal class Day15Chiton(private val inputPath: String) : ChallengeDay {
+internal class Day15Chiton(inputPath: String) : ChallengeDay {
 
-    override fun part1(): Int = File(inputPath).readLines().toIntGrid(Char::digitToInt).calculateTotalRisk<Any>()
+    private val grid = File(inputPath).readLines()
 
-    override fun part2() = File(inputPath).readLines()
+    /**
+     * What is the lowest total risk of any path from the top left to the bottom right?
+     */
+    override fun part1(): Int = grid.toIntGrid(Char::digitToInt).calculateTotalRisk<Any>()
+
+    /**
+     * what is the lowest total risk of any path from the top left to the bottom right?
+     */
+    override fun part2() = grid
         .toIntGrid(Char::digitToInt)
         .enlarge(times = 5)
         .calculateTotalRisk<Any>()
@@ -41,4 +49,14 @@ internal class Day15Chiton(private val inputPath: String) : ChallengeDay {
         }
         return enlarged
     }
+
+    /**
+     * Added for comparison
+     */
+    fun part1Elizarov() = day15Part1(grid)
+
+    /**
+     * Added for comparison
+     */
+    fun part2Elizarov() = day15Part2(grid)
 }

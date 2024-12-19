@@ -14,7 +14,7 @@ public class Part1DockingData extends Day14Challenge {
     long count(final List<Program> programs) {
         final Map<Integer, Long> valuesInMemory =  new HashMap<>();
         for (final Program program : programs) {
-            for (Program.Pair pair : program) {
+            for (Program.Entry pair : program) {
                 valuesInMemory.put(pair.memSpot(), program.getValueStoredAfterBitMaskApplication(pair.binNr()));
             }
         }

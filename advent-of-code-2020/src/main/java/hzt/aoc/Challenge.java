@@ -71,19 +71,6 @@ public abstract class Challenge {
         return sb.toString();
     }
 
-    protected String booleanGrid2DAsString(final List<List<Boolean>> grid) {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%n"));
-        for (final List<Boolean> row : grid) {
-            for (final boolean active : row) {
-                sb.append(active ? 1 : 0).append(", ");
-            }
-            sb.append(String.format("%n"));
-        }
-        sb.append(String.format("%n"));
-        return sb.toString();
-    }
-
     protected String booleanGrid2DAsString(final boolean[][] grid) {
         final StringBuilder sb = new StringBuilder();
         sb.append(String.format("%n"));

@@ -14,25 +14,40 @@ import kotlin.random.Random
 
 internal class Day15ChitonTest {
 
+    private companion object {
+        private val day15Test = Day15Chiton("input/day15test.txt")
+        private val day15 = Day15Chiton("input/day15.txt")
+    }
+
     @Test
     fun `part 1 test input`() {
-        Day15Chiton("input/day15test.txt").part1() shouldBe 40
+        day15Test.part1() shouldBe 40
     }
 
     @Test
     fun `part 1 result`() {
-        Day15Chiton("input/day15.txt").part1() shouldBe 592
+        day15.part1() shouldBe 592
     }
 
     @Test
     fun `part 2 test input`() {
-        Day15Chiton("input/day15test.txt").part2() shouldBe 315
+        day15Test.part2() shouldBe 315
     }
 
     @Test
     @Timeout(value = 8_000, unit = TimeUnit.MILLISECONDS)
     fun `part 2 result`() {
-        Day15Chiton("input/day15.txt").part2() shouldBe 2897
+        day15.part2() shouldBe 2897
+    }
+
+    @Test
+    fun `part 1 result Elizarov`() {
+        day15.part1Elizarov() shouldBe 592
+    }
+
+    @Test
+    fun `part 2 result Elizarov`() {
+        day15.part2Elizarov() shouldBe 2897
     }
 
     @Test
