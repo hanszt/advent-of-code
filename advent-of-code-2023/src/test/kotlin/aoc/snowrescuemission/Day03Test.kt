@@ -1,6 +1,6 @@
 package aoc.snowrescuemission
 
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.gridPoint2D
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

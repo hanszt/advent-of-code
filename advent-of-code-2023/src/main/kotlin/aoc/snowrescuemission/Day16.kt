@@ -1,17 +1,17 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.CharGrid
-import aoc.utils.getOrNull
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.ZERO
-import aoc.utils.model.GridPoint2D.Companion.east
-import aoc.utils.model.GridPoint2D.Companion.north
-import aoc.utils.model.GridPoint2D.Companion.south
-import aoc.utils.model.GridPoint2D.Companion.west
-import aoc.utils.model.gridPoint2D
-import aoc.utils.toCharGrid
-import aoc.utils.set
+import aoc.utils.grid2d.MutableCharGrid
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.ZERO
+import aoc.utils.grid2d.GridPoint2D.Companion.east
+import aoc.utils.grid2d.GridPoint2D.Companion.north
+import aoc.utils.grid2d.GridPoint2D.Companion.south
+import aoc.utils.grid2d.GridPoint2D.Companion.west
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.toMutableCharGrid
+import aoc.utils.grid2d.set
 import java.io.File
 
 class Day16(
@@ -61,14 +61,14 @@ class Day16(
     }.max()
 
     private fun energizedLevel(startPos: GridPoint2D, startDir: GridPoint2D): Int {
-        val mutableGrid = grid.toCharGrid()
+        val mutableGrid = grid.toMutableCharGrid()
         propagateBeam(target = mutableGrid, startPos = startPos, startDir = startDir)
         return mutableGrid.flatMap(CharArray::toList).count { it == '#' }
     }
 
 
     private fun propagateBeam(
-        target: CharGrid,
+        target: MutableCharGrid,
         startPos: GridPoint2D,
         startDir: GridPoint2D,
         visitedSplitters: MutableSet<GridPoint2D> = HashSet()

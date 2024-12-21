@@ -1,11 +1,11 @@
 package aoc.seastories
 
-import aoc.utils.toGridOf
+import aoc.utils.grid2d.toMutableGrid
 import java.io.File
 
 internal class Day25SeaCucumber(private val inputPath: String) : ChallengeDay {
 
-    override fun part1(): Int = File(inputPath).readLines().toGridOf { it }.simulateAndCount()
+    override fun part1(): Int = File(inputPath).readLines().toMutableGrid { it }.simulateAndCount()
     override fun part2() = "To get the key, all fifty stars are required"
 
     private fun Array<Array<Char>>.move(cucumber: Char, dx: Int, dy: Int): Boolean {

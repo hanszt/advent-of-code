@@ -1,6 +1,6 @@
-package aoc.utils.model
+package aoc.utils.graph
 
-import java.util.*
+import java.util.Collections
 
 class Node<T>(val value: T? = null) {
 
@@ -8,8 +8,6 @@ class Node<T>(val value: T? = null) {
     val neighbors: Set<Node<T>> get() = Collections.unmodifiableSet(neighborsInternal)
 
     fun addNeighbor(neighbor: Node<T>) = neighborsInternal.add(neighbor)
-    fun addNeighbors(neighbors: Iterable<Node<T>>) = neighbors.forEach(neighborsInternal::add)
-
 
     override fun toString(): String = "Node(value=$value, neighbors=${neighborsInternal.map(Node<T>::value)})"
 }

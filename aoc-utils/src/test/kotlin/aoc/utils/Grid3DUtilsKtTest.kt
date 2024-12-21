@@ -1,7 +1,8 @@
 package aoc.utils
 
-import aoc.utils.model.GridPoint3D
-import aoc.utils.model.gridPoint3D
+import aoc.utils.grid3d.GridPoint3D
+import aoc.utils.grid3d.gridPoint3D
+import aoc.utils.grid3d.rotations
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

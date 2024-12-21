@@ -1,7 +1,7 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.rotated
+import aoc.utils.grid2d.rotated
 import aoc.utils.swap
 import java.io.File
 

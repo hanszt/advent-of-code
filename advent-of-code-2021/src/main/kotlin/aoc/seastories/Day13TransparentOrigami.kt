@@ -1,6 +1,11 @@
 package aoc.seastories
 
 import aoc.utils.*
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.mapByPoint
+import aoc.utils.grid2d.mirroredVertically
+import aoc.utils.grid2d.rotated
+import aoc.utils.grid2d.rotatedCc
 import java.io.File
 
 internal class Day13TransparentOrigami(private val inputPath: String) : ChallengeDay {

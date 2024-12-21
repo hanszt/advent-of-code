@@ -5,7 +5,7 @@ import aoc.seastories.Day05HydrothermalVenture.Companion.countIntersections
 import aoc.seastories.Day05HydrothermalVenture.Companion.toVentureLines
 import aoc.utils.BROWN_BG
 import aoc.utils.YELLOW
-import aoc.utils.gridAsString
+import aoc.utils.grid2d.gridAsString
 import aoc.utils.withColor
 import aoc.utils.withColors
 import io.kotest.matchers.shouldBe

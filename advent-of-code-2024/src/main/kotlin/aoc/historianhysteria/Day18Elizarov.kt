@@ -1,7 +1,12 @@
 package aoc.historianhysteria
 
-import aoc.utils.*
-import aoc.utils.model.*
+import aoc.utils.grid2d.Dimension2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.lowerRight
+import aoc.utils.grid2d.set
 
 /**
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day18_1.kt

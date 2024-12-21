@@ -1,7 +1,8 @@
 package aoc.utils
 
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.rangeTo
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

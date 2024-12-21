@@ -1,12 +1,12 @@
 package aoc.seastories
 
-import aoc.utils.Transform3D
-import aoc.utils.model.GridPoint3D
-import aoc.utils.model.gridPoint3D
-import aoc.utils.rotations
+import aoc.utils.grid3d.Transform3D
+import aoc.utils.grid3d.GridPoint3D
+import aoc.utils.grid3d.gridPoint3D
+import aoc.utils.grid3d.rotations
 import aoc.utils.splitByBlankLine
 import aoc.utils.toSetOf
-import aoc.utils.transform
+import aoc.utils.grid3d.transform
 import java.io.File
 import kotlin.math.max
 

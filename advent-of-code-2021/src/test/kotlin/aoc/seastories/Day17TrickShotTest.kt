@@ -2,8 +2,11 @@ package aoc.seastories
 
 import aoc.seastories.Day17TrickShot.Probe
 import aoc.utils.*
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.by
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.mirroredVertically
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe

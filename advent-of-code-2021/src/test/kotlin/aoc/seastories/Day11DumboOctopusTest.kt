@@ -3,9 +3,9 @@ package aoc.seastories
 import aoc.seastories.Day11DumboOctopus.Companion.simulateStep
 import aoc.seastories.Day11DumboOctopus.Octopus
 import aoc.utils.BRIGHT_YELLOW
-import aoc.utils.gridAsString
-import aoc.utils.toGridOf
-import aoc.utils.toIntGrid
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.toMutableGrid
+import aoc.utils.grid2d.toMutableIntGrid
 import aoc.utils.withColor
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -36,14 +36,14 @@ internal class Day11DumboOctopusTest {
             50005
             40004
             34543
-        """.trimIndent().lines().toIntGrid(Char::digitToInt).toGridOf(::Octopus)
+        """.trimIndent().lines().toMutableIntGrid(Char::digitToInt).toMutableGrid(::Octopus)
         val grid = """
             11111
             19991
             19191
             19991
             11111
-        """.trimIndent().lines().toIntGrid(Char::digitToInt).toGridOf(::Octopus)
+        """.trimIndent().lines().toMutableIntGrid(Char::digitToInt).toMutableGrid(::Octopus)
 
         grid.simulateStep()
 

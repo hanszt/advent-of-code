@@ -1,6 +1,6 @@
 package aoc.jungle.adventures
 
-import aoc.utils.IntGrid
+import aoc.utils.grid2d.MutableIntGrid
 
 @Suppress("kotlin:S134", "kotlin:S3776")
 fun day19Part(input: List<String>, part: Int): Int {
@@ -85,7 +85,7 @@ fun day19Part(input: List<String>, part: Int): Int {
     return ans
 }
 
-private fun List<String>.createCostTable(rules: List<String>): IntGrid {
+private fun List<String>.createCostTable(rules: List<String>): MutableIntGrid {
     val robotCosts = Array(size) { i ->
         val prefix = "Each ${this[i]} robot costs "
         val rule = rules[i].trim()

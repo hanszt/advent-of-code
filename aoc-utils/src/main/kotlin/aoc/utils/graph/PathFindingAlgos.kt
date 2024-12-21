@@ -1,7 +1,4 @@
-package aoc.utils
-
-import aoc.utils.model.Node
-import aoc.utils.model.WeightedNode
+package aoc.utils.graph
 
 infix fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
     val settled = mutableSetOf<WeightedNode<T>>()

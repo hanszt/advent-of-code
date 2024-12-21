@@ -1,8 +1,7 @@
 package aoc.utils.model
 
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class GridPoint2DTest {

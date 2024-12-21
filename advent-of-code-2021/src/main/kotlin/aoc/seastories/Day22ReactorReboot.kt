@@ -1,7 +1,6 @@
 package aoc.seastories
 
 import aoc.utils.invoke
-import aoc.utils.trueCount
 import java.io.File
 
 internal class Day22ReactorReboot(private val inputPath: String) : ChallengeDay {
@@ -15,7 +14,7 @@ internal class Day22ReactorReboot(private val inputPath: String) : ChallengeDay 
         File(inputPath).readLines()
             .map(::toCuboid)
             .forEach { targetRegion.update(range, it) }
-        return targetRegion.sumOf { it.sumOf(BooleanArray::trueCount) }
+        return targetRegion.sumOf { it.sumOf { it.count { it } } }
     }
 
     private fun Array<Array<BooleanArray>>.update(targetRange: IntRange, cuboid: Cuboid) {

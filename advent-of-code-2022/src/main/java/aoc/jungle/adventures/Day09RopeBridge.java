@@ -1,7 +1,7 @@
 package aoc.jungle.adventures;
 
 import aoc.utils.ChallengeDay;
-import aoc.utils.model.GridPoint2D;
+import aoc.utils.grid2d.GridPoint2D;
 import org.hzt.utils.arrays.ArraysX;
 import org.hzt.utils.io.FileX;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
 
 /**
  * @see <a href="https://adventofcode.com/2022/day/9">Day 9: Rope bridge</a>

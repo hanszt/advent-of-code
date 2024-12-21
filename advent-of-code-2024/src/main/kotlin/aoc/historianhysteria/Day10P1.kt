@@ -1,9 +1,9 @@
 package aoc.historianhysteria
 
-import aoc.utils.forEachPoint
-import aoc.utils.get
-import aoc.utils.getOrNull
-import aoc.utils.model.GridPoint2D
+import aoc.utils.grid2d.forEachPoint
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.GridPoint2D
 
 /**
  * Source: https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day10_1.kt

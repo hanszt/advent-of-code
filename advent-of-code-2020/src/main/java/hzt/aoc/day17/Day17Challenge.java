@@ -1,6 +1,6 @@
 package hzt.aoc.day17;
 
-import aoc.utils.Grid2DUtilsKt;
+import aoc.utils.grid2d.Grid2DUtilsKt;
 import hzt.aoc.Challenge;
 
 import java.util.ArrayList;

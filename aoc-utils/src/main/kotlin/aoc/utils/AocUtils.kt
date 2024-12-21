@@ -131,7 +131,3 @@ infix fun Int.lcm(other: Int): Int = abs((this * other) / gcd(other))
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
-
-val BooleanArray.trueCount get() = count { it }
-
-fun <T> self(value: T) = value

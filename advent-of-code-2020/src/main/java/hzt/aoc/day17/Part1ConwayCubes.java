@@ -1,6 +1,6 @@
 package hzt.aoc.day17;
 
-import aoc.utils.model.GridPoint3D;
+import aoc.utils.grid3d.GridPoint3D;
 
 import java.util.Collection;
 import java.util.List;

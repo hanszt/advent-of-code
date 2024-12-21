@@ -1,8 +1,8 @@
 package aoc.seastories
 
-import aoc.utils.forEachPoint
+import aoc.utils.grid2d.forEachPoint
 import aoc.utils.splitByBlankLine
-import aoc.utils.toIntGrid
+import aoc.utils.grid2d.toMutableIntGrid
 import java.io.File
 
 internal class Day20TrenchTrap(private val inputPath: String) : ChallengeDay {
@@ -43,7 +43,7 @@ internal class Day20TrenchTrap(private val inputPath: String) : ChallengeDay {
     private fun File.toAlgoAndImage(): Pair<List<Int>, Array<IntArray>> {
         val (enhancementAlgo, imageAsString) = readText().splitByBlankLine()
         val algo = enhancementAlgo.trim().lines().flatMap { it.toList().map { char -> if (char == '#') 1 else 0 } }
-        val image = imageAsString.lines().toIntGrid { char -> if (char == '#') 1 else 0 }
+        val image = imageAsString.lines().toMutableIntGrid { char -> if (char == '#') 1 else 0 }
         return Pair(algo, image)
     }
 }

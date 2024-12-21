@@ -1,7 +1,7 @@
 package hzt.aoc.day03;
 
-import aoc.utils.Grid2DUtilsKt;
-import aoc.utils.model.GridPoint2D;
+import aoc.utils.grid2d.Grid2DUtilsKt;
+import aoc.utils.grid2d.GridPoint2D;
 import hzt.aoc.Challenge;
 
 import java.util.ArrayList;

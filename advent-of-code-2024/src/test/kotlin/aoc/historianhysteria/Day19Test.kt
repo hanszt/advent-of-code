@@ -9,9 +9,22 @@ class Day19Test {
     private companion object {
         private val day19 by lazy { Day19(Path("input/day19.txt")) }
         private val day19dr by lazy { Day19(Path("input/day19-dr.txt")) }
-        private val day19Test by lazy { Day16(
-            """""".trimIndent().lines()
-        ) }
+        private val day19Test by lazy {
+            Day19(
+                """
+                r, wr, b, g, bwu, rb, gb, br
+
+                brwrr
+                bggr
+                gbbr
+                rrbgbr
+                ubwu
+                bwurrg
+                brgr
+                bbrgwb
+            """.trimIndent()
+            )
+        }
 
     }
 

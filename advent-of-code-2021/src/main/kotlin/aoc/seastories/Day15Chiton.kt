@@ -1,11 +1,14 @@
 package aoc.seastories
 
 import aoc.utils.*
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.WeightedNode
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.graph.WeightedNode
+import aoc.utils.graph.dijkstra
+import aoc.utils.graph.toWeightedGraph
+import aoc.utils.grid2d.forEachPointAndValue
+import aoc.utils.grid2d.toMutableIntGrid
 import java.io.File
-import java.util.*
 
 internal class Day15Chiton(inputPath: String) : ChallengeDay {
 
@@ -14,13 +17,13 @@ internal class Day15Chiton(inputPath: String) : ChallengeDay {
     /**
      * What is the lowest total risk of any path from the top left to the bottom right?
      */
-    override fun part1(): Int = grid.toIntGrid(Char::digitToInt).calculateTotalRisk<Any>()
+    override fun part1(): Int = grid.toMutableIntGrid(Char::digitToInt).calculateTotalRisk<Any>()
 
     /**
      * what is the lowest total risk of any path from the top left to the bottom right?
      */
     override fun part2() = grid
-        .toIntGrid(Char::digitToInt)
+        .toMutableIntGrid(Char::digitToInt)
         .enlarge(times = 5)
         .calculateTotalRisk<Any>()
 
@@ -41,7 +44,7 @@ internal class Day15Chiton(inputPath: String) : ChallengeDay {
         val enlarged = Array(size * times) { IntArray(first().size * times) }
         for (stepX in 0 until times) {
             for (stepY in 0 until times) {
-                toIntGridOf { (it + stepX + stepY).wrapBack(1, 9) }
+                toMutableIntGrid { (it + stepX + stepY).wrapBack(1, 9) }
                     .forEachPointAndValue { x, y, value ->
                         enlarged[y + size * stepY][x + first().size * stepX] = value
                     }

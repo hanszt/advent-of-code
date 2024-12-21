@@ -2,10 +2,10 @@ package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
 import aoc.utils.invoke
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import java.io.File
-import aoc.utils.model.GridPoint2D as Point
+import aoc.utils.grid2d.GridPoint2D as Point
 
 /**
  * Credits to the Turkey dev.

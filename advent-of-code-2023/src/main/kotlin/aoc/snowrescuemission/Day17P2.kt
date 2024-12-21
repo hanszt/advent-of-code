@@ -1,9 +1,9 @@
 package aoc.snowrescuemission
 
 import aoc.utils.Heap
-import aoc.utils.gridAsString
-import aoc.utils.model.GridPoint2D
-import aoc.utils.toCharGrid
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.toMutableCharGrid
 
 /**
  * https://github.com/elizarov/AdventOfCode2023/blob/main/src/Day17_1.kt
@@ -27,7 +27,7 @@ fun day17Part2(input: List<String>): Int {
         heap.putBetter(position, heatLoss)
     }
     fun gridToString(input: List<String>, p: Pos): String {
-        val grid = input.toCharGrid()
+        val grid = input.toMutableCharGrid()
         var cur: GridPoint2D? = p
         var c = 0
         while (cur != null) {

@@ -1,8 +1,8 @@
 package aoc.snowrescuemission
 
 import aoc.utils.Heap
-import aoc.utils.getOrNull
-import aoc.utils.model.GridPoint2D
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.GridPoint2D
 
 /**
  * https://github.com/elizarov/AdventOfCode2023/blob/main/src/Day17_1.kt

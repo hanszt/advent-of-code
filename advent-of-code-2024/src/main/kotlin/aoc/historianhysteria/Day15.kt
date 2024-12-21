@@ -1,8 +1,14 @@
 package aoc.historianhysteria
 
 import aoc.utils.*
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.copyGrid
+import aoc.utils.grid2d.findPoint
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.swap
+import aoc.utils.grid2d.toMutableCharGrid
 import java.nio.file.Path
 import kotlin.io.path.readText
 
@@ -28,7 +34,7 @@ class Day15(input: String) : ChallengeDay {
         println("map = ${map.gridAsString()}")
         println("instructions = ${instructions}")
         var cur = map.findPoint { it == robot } ?: error("No start point found")
-        var grid = map.toCharGrid()
+        var grid = map.toMutableCharGrid()
         val m = grid[0].size
         val n = grid.size
         for (instruction in instructions) {

@@ -1,7 +1,6 @@
-package aoc.utils
+package aoc.utils.grid3d
 
-import aoc.utils.model.GridPoint3D
-import aoc.utils.model.gridPoint3D as point3D
+import aoc.utils.grid3d.gridPoint3D as point3D
 
 class Transform3D(val rotation: (GridPoint3D) -> GridPoint3D, val translation: GridPoint3D)
 

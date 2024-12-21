@@ -8,7 +8,7 @@ import org.hzt.utils.sequences.Sequence;
 import java.util.ArrayList;
 import java.util.List;
 
-import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
 
 public abstract class Day16Challenge extends Challenge {
 

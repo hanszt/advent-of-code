@@ -1,83 +1,63 @@
 package aoc.seastories
 
-import aoc.utils.get
-import aoc.utils.getOrNull
-import aoc.utils.model.GridPoint2D
-import aoc.utils.set
-import aoc.utils.toIntGrid
+import aoc.utils.grid2d.*
+import aoc.utils.grid2d.GridPoint2D as P2
 import java.util.*
-
-internal fun day15Part1(input: List<String>): Int {
-    val a = input.toIntGrid { it.digitToInt() }
-    val m = a[0].size
-    val n = a.size
-    val d = Array(n) { IntArray(m) { Int.MAX_VALUE } }
-    val v = Array(n) { BooleanArray(m) }
-    fun relax(i: Int, j: Int, x: Int) {
-        if (i !in 0 until n || j !in 0 until m) return
-        d[i][j] = minOf(d[i][j], x + a[i][j])
-    }
-    d[0][0] = 0
-    while (!v[n - 1][m - 1]) {
-        var mx = Int.MAX_VALUE
-        var mi = -1
-        var mj = -1
-        for (i in 0 until n) for (j in 0 until m) {
-            if (!v[i][j] && d[i][j] < mx) {
-                mx = d[i][j]
-                mi = i
-                mj = j
-            }
-        }
-        v[mi][mj] = true
-        relax(mi - 1, mj, mx)
-        relax(mi + 1, mj, mx)
-        relax(mi, mj - 1, mx)
-        relax(mi, mj + 1, mx)
-    }
-    return d[n - 1][m - 1]
-}
 
 /**
  * https://github.com/elizarov/AdventOfCode2021/blob/main/src/Day15_2_fast.kt
+ *
+ * Refactored to understand better
  */
+internal fun day15Part1(input: List<String>): Int {
+    val grid = input.toIntGrid { it.digitToInt() }
+    return dijkstra(grid)[grid.endExclusive].dist
+}
 internal fun day15Part2(input: List<String>): Int {
-    val a0 = input.toIntGrid { it.digitToInt() }
-    val n0 = a0.size
-    val m0 = a0[0].size
-    val n = 5 * n0
-    val m = 5 * m0
-    val enlarged = Array(n) { i ->
-        IntArray(m) { j ->
-            val k = i / n0 + j / m0
-            (a0[i % n0][j % m0] + k - 1) % 9 + 1
-        }
+    val grid = enlarge(input, 5)
+    val target = dijkstra(grid)[grid.endExclusive]
+    val path = target.path().toList()
+    path.forEach { println(it.position) }
+    return target.dist
+}
+
+private fun dijkstra(grid: IntGrid): Grid<Grid2DNode> {
+    val a = Array(grid.height) { y ->
+        Array(grid.width) { x -> Grid2DNode(gridPoint2D(x, y), Int.MAX_VALUE) }
     }
-    val d = Array(n) { IntArray(m) { Int.MAX_VALUE } }
-
-    data class Pos(override val x: Int, override val y: Int, val dist: Int) : GridPoint2D {
-        override fun plus(other: GridPoint2D): Pos = Pos(x + other.x, y + other.y, dist)
-    }
-
-    val visited = Array(n) { BooleanArray(m) }
-    val q = PriorityQueue(compareBy(Pos::dist))
-
-    d[0][0] = 0
-    q.add(Pos(0, 0, 0))
-    while (!visited[n - 1][m - 1]) {
-        val p = q.remove()
-        if (visited[p]) continue
-        visited[p] = true
-        for (dir in GridPoint2D.orthoDirs) {
-            val neighbor = p + dir
-            enlarged.getOrNull(neighbor)?.let { dist ->
-                val newDistance = neighbor.dist + dist
-                if (newDistance < d[neighbor]) {
-                    d[neighbor] = newDistance
-                    q += neighbor.copy(dist = newDistance)
+    val s = Grid2DNode(P2.ZERO, 0)
+    a[P2.ZERO] = s
+    val v = Array(grid.height) { BooleanArray(grid.width) }
+    val q = PriorityQueue(compareBy(Grid2DNode::dist))
+    q.add(s)
+    while (!v[grid.endExclusive]) {
+        val cur = q.remove()
+        val p = cur.position
+        if (v[p]) continue
+        v[p] = true
+        for (dir in P2.orthoDirs) {
+            val n = p + dir
+            grid.getOrNull(n)?.let { dist ->
+                val newDistance = cur.dist + dist
+                if (newDistance < a[n].dist) {
+                    val nn = Grid2DNode(n, newDistance, cur)
+                    a[n] = nn
+                    q += nn
                 }
             }
         }
     }
-    return d[n - 1][m - 1]
+    return a.toGrid { it }
+}
+
+private fun enlarge(input: List<String>, times: Int): IntGrid {
+    val a0 = input.toMutableIntGrid { it.digitToInt() }
+    val n0 = a0.size
+    val m0 = a0[0].size
+    val n = times * n0
+    val m = times * m0
+    return buildIntGrid(m, n) { i, j ->
+        val k = i / n0 + j / m0
+        (a0[i % n0][j % m0] + k - 1) % 9 + 1
+    }
 }

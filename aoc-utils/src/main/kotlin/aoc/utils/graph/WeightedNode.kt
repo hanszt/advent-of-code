@@ -1,4 +1,4 @@
-package aoc.utils.model
+package aoc.utils.graph
 
 import java.util.Collections
 

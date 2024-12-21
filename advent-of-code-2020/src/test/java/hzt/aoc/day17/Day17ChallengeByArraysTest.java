@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static aoc.utils.model.GridPoint3DKt.gridPoint3D;
+import static aoc.utils.grid3d.GridPoint3DKt.gridPoint3D;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,9 +1,9 @@
 package aoc.seastories
 
-import aoc.utils.GridPoint2DRange
-import aoc.utils.by
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2DRange
+import aoc.utils.grid2d.by
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 
 internal object Day17TrickShot : ChallengeDay {
 

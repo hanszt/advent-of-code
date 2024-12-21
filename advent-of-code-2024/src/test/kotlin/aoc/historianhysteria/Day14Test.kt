@@ -1,6 +1,6 @@
 package aoc.historianhysteria
 
-import aoc.utils.model.dimension2D
+import aoc.utils.grid2d.dimension2D
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import kotlin.io.path.Path

@@ -1,8 +1,8 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.gridPoint2D
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.readLines
@@ -64,5 +64,5 @@ class Day10(private val map: List<String>) : ChallengeDay {
     private fun toHeight(x: Int, y: Int): Int? = map.getOrNull(y)?.getOrNull(x)?.takeIf { it.isDigit() }?.digitToInt()
 
     fun part1Elizarov(): Long = part1Elizarov(map)
-    override fun part2(): Long = part2Elizarov(map)
+    override fun part2(): Long = day10Part2(map)
 }

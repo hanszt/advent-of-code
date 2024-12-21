@@ -1,13 +1,13 @@
 package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.GridPoint2D.Companion.east
-import aoc.utils.model.GridPoint2D.Companion.north
-import aoc.utils.model.GridPoint2D.Companion.south
-import aoc.utils.model.GridPoint2D.Companion.west
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D.Companion.east
+import aoc.utils.grid2d.GridPoint2D.Companion.north
+import aoc.utils.grid2d.GridPoint2D.Companion.south
+import aoc.utils.grid2d.GridPoint2D.Companion.west
+import aoc.utils.grid2d.gridPoint2D
 import aoc.utils.toSetOf
 import java.io.File
 

@@ -2,8 +2,8 @@ package aoc.snowrescuemission
 
 import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
-import aoc.utils.gridAsString
-import aoc.utils.rotated
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.rotated
 import java.io.File
 
 class Day13(

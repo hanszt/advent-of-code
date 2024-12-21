@@ -1,7 +1,7 @@
 package aoc.seastories
 
 import aoc.seastories.model.Line
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import java.io.File
 import kotlin.math.max
 

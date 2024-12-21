@@ -1,8 +1,8 @@
 package aoc.seastories
 
 import aoc.utils.mapSecond
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import aoc.utils.toEnds
 import java.io.File
 

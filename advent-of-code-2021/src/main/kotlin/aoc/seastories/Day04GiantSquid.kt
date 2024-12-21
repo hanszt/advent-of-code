@@ -1,9 +1,9 @@
 package aoc.seastories
 
 import aoc.utils.oneOrMoreWhiteSpaces
-import aoc.utils.rotated
+import aoc.utils.grid2d.rotated
 import aoc.utils.splitByBlankLine
-import aoc.utils.toIntGrid
+import aoc.utils.grid2d.toMutableIntGrid
 import java.io.File
 
 internal class Day04GiantSquid(inputPath: String) : ChallengeDay {
@@ -48,7 +48,7 @@ internal class Day04GiantSquid(inputPath: String) : ChallengeDay {
         readText().splitByBlankLine()
             .run {
                 slice(1..<size)
-                    .map { it.lines().toIntGrid(oneOrMoreWhiteSpaces) } to nrsToDrawList()
+                    .map { it.lines().toMutableIntGrid(oneOrMoreWhiteSpaces) } to nrsToDrawList()
             }
 
     private fun List<String>.nrsToDrawList() = first().split(",").map(String::toInt)

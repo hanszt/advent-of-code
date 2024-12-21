@@ -1,7 +1,7 @@
 package aoc.utils
 
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint3D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid3d.GridPoint3D
 
 /**
  * An iterator over a progression of values of type [GridPoint2D].

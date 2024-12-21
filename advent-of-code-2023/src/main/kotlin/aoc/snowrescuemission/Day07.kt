@@ -1,7 +1,6 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.grouping
 import java.io.File
 
 class Day07(
@@ -9,7 +8,8 @@ class Day07(
     lines: List<String> = emptyList()
 ) : ChallengeDay {
 
-    private val hands = fileName?.let { File(it).useLines { s -> s.map(Hand::parse).toList() } }
+    private val hands = fileName?.let { File(it)
+        .useLines { s -> s.map(Hand::parse).toList() } }
         ?: lines.map(Hand::parse)
 
     override fun part1(): Long = solve(compareBy(Hand::type).then(Hand::compareByStrengthPart1))
@@ -24,7 +24,9 @@ class Day07(
 
     data class Hand(val cards: String, val bid: Int = 0) {
 
-        fun typeWithJoker(): Type = type(cards.filterNot { it == 'J' }.grouping.eachCount()
+        fun typeWithJoker(): Type = type(cards.filterNot { it == 'J' }
+            .groupingBy { it }
+            .eachCount()
             .maxByOrNull { it.value }
             ?.key?.let { cards.replace('J', it) } ?: cards
         )
@@ -32,7 +34,7 @@ class Day07(
 
         fun type(cards: String = this.cards): Type {
             if (cards.toSet().size == 1) return Type.FIVE_OF_A_KIND
-            cards.grouping.eachCount().apply {
+            cards.groupingBy { it }.eachCount().apply {
                 if (size == 2) {
                     if (values.any { it == 4 }) return Type.FOUR_OF_A_KIND
                     if (values.any { it == 3 }) return Type.FULL_HOUSE

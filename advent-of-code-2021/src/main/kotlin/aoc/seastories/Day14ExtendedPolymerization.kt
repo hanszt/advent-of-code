@@ -1,6 +1,5 @@
 package aoc.seastories
 
-import aoc.utils.self
 import aoc.utils.splitByBlankLine
 import java.io.File
 
@@ -52,10 +51,12 @@ internal class Day14ExtendedPolymerization(private val inputPath: String) : Chal
     }
 
     private fun Map<String, Long>.toMaxAndMinCount(first: Char): Pair<Long, Long> {
-        val charToCountMap = mutableMapOf(first to 1L)
-        for ((pair, pairCount) in this) {
-            charToCountMap.merge(pair.last(), pairCount, Long::plus)
+        val charToCountMap = buildMap {
+            put(first, 1L)
+            for ((pair, pairCount) in this@toMaxAndMinCount) {
+                merge(pair.last(), pairCount, Long::plus)
+            }
         }
-        return charToCountMap.values.run { maxOf(::self) to minOf(::self) }
+        return charToCountMap.values.let { it.max() to it.min() }
     }
 }

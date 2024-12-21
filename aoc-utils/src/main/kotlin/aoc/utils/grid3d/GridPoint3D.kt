@@ -1,5 +1,6 @@
-package aoc.utils.model
+package aoc.utils.grid3d
 
+import aoc.utils.grid2d.GridPoint2D
 import kotlin.math.abs
 import kotlin.math.sign
 

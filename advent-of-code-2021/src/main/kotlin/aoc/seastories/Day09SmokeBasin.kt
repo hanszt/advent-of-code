@@ -1,13 +1,13 @@
 package aoc.seastories
 
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.toIntGrid
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.toMutableIntGrid
 import java.io.File
 
 internal class Day09SmokeBasin(inputPath: String) : ChallengeDay {
 
-    private val grid = File(inputPath).readLines().toIntGrid(Char::digitToInt)
+    private val grid = File(inputPath).readLines().toMutableIntGrid(Char::digitToInt)
 
     override fun part1() = grid.toLowPoints().sumOf { (_, height) -> height + 1 }
     override fun part2() = grid.findBassinSizes()

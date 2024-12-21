@@ -1,11 +1,11 @@
 package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
-import aoc.utils.model.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import java.io.File
 import kotlin.math.max
 import kotlin.math.min
-import aoc.utils.model.GridPoint2D as Point
+import aoc.utils.grid2d.GridPoint2D as Point
 
 
 /**

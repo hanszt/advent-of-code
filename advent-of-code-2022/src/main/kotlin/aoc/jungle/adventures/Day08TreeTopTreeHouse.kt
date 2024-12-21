@@ -1,7 +1,12 @@
 package aoc.jungle.adventures
 
 import aoc.utils.*
-import aoc.utils.model.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.gridCount
+import aoc.utils.grid2d.gridMaxOf
+import aoc.utils.grid2d.toMutableIntGrid
 import java.io.File
 
 /**
@@ -9,7 +14,7 @@ import java.io.File
  */
 class Day08TreeTopTreeHouse(fileName: String) : ChallengeDay {
 
-    private val treeGrid = File(fileName).readLines().toIntGrid(Char::digitToInt)
+    private val treeGrid = File(fileName).readLines().toMutableIntGrid(Char::digitToInt)
 
     /**
      * How many trees are visible from outside the grid?

@@ -1,9 +1,14 @@
 package aoc.historianhysteria
 
 import aoc.utils.*
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.Vec2
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.Vec2
+import aoc.utils.grid2d.findPoint
+import aoc.utils.grid2d.forEachPoint
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.toMutableCharGrid
 import java.nio.file.Path
 import kotlin.io.path.readText
 
@@ -79,7 +84,7 @@ class Day06(input: String) : ChallengeDay {
     }
 
     private fun loopToString(headings: Set<Heading>, extraObstaclePos: GridPoint2D): String {
-        val grid = map.toCharGrid()
+        val grid = map.toMutableCharGrid()
         for (heading in headings) {
             val position = heading.position
             grid[position.y][position.x] = orientationMap[heading.dir]!!

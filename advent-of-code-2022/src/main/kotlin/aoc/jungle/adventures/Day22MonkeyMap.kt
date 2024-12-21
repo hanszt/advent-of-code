@@ -3,17 +3,17 @@ package aoc.jungle.adventures
 import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
 import aoc.utils.invoke
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.GridPoint2D.Companion.up
-import aoc.utils.model.GridPoint2D.Companion.left
-import aoc.utils.model.GridPoint2D.Companion.right
-import aoc.utils.model.GridPoint2D.Companion.down
-import aoc.utils.model.GridPoint3D
-import aoc.utils.model.gridPoint2D
-import aoc.utils.model.gridPoint3D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.GridPoint2D.Companion.up
+import aoc.utils.grid2d.GridPoint2D.Companion.left
+import aoc.utils.grid2d.GridPoint2D.Companion.right
+import aoc.utils.grid2d.GridPoint2D.Companion.down
+import aoc.utils.grid3d.GridPoint3D
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid3d.gridPoint3D
 import java.io.File
 import kotlin.math.sqrt
-import aoc.utils.model.GridPoint2D as Point2D
+import aoc.utils.grid2d.GridPoint2D as Point2D
 
 /**
  * Credits to Elizarov

@@ -1,10 +1,15 @@
 package aoc.historianhysteria
 
 import aoc.utils.*
-import aoc.utils.model.Dimension2D
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.dimension2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.Dimension2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.dimension2D
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.rangeTo
+import aoc.utils.grid2d.set
+import aoc.utils.grid2d.toMutableCharGrid
 import java.nio.file.Path
 import kotlin.io.path.readLines
 
@@ -21,7 +26,7 @@ class Day18(
      * Afterward, what is the minimum number of steps needed to reach the exit?
      */
     override fun part1(): Int {
-        val memoryGrid = dimension2D.toCharGrid { '.' }.apply {
+        val memoryGrid = dimension2D.toMutableCharGrid { '.' }.apply {
             input.take(nrOfFallenBytes).forEach {
                 val point = it.split(',')
                     .let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
@@ -71,7 +76,7 @@ class Day18(
         val startsToEnds = listOf(horBottomRange to rightRange, leftRange to horTopRange)
 
         for (fallenBytes in nrOfFallenBytes..input.size) {
-            val memoryGrid = dimension2D.toCharGrid { '.' }
+            val memoryGrid = dimension2D.toMutableCharGrid { '.' }
             val bytePositions = input.take(fallenBytes).map {
                 it.split(',').let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
             }

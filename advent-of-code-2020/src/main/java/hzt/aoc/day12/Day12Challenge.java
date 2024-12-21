@@ -1,9 +1,9 @@
 package hzt.aoc.day12;
 
-import aoc.utils.model.GridPoint2D;
+import aoc.utils.grid2d.GridPoint2D;
 import hzt.aoc.Challenge;
 
-import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
 
 public abstract class Day12Challenge extends Challenge {
 

@@ -1,5 +1,6 @@
 package aoc.utils
 
+import aoc.utils.graph.toBiDiGraph
 import io.kotest.matchers.shouldBe
 import java.io.File
 import org.junit.jupiter.api.Test

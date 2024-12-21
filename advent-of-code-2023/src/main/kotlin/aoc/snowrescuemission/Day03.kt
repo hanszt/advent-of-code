@@ -1,8 +1,8 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.gridPoint2D
 import java.io.File
 
 class Day03(

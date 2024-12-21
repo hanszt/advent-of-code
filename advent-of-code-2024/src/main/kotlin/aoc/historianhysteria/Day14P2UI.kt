@@ -1,11 +1,11 @@
 package aoc.historianhysteria
 
-import aoc.utils.get
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.dimension2D
-import aoc.utils.model.mod
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.dimension2D
+import aoc.utils.grid2d.mod
 import aoc.utils.relativeToResources
-import aoc.utils.set
+import aoc.utils.grid2d.set
 import java.awt.*
 import javax.swing.*
 import kotlin.io.path.Path

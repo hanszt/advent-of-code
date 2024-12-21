@@ -1,7 +1,14 @@
 package aoc.utils
 
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.copyGrid
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.mirroredHorizontally
+import aoc.utils.grid2d.mirroredVertically
+import aoc.utils.grid2d.rotated
+import aoc.utils.grid2d.rotatedCc
+import aoc.utils.grid2d.toMutableGrid
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import java.time.Month
@@ -154,7 +161,7 @@ internal class Grid2DUtilsKtTest {
             4321
             1234
         """.trimIndent()
-        val originalGrid = input.lines().toGridOf { it }
+        val originalGrid = input.lines().toMutableGrid { it }
         val copy = originalGrid.copyGrid()
         originalGrid[0][0] = 'a'
 
@@ -169,7 +176,7 @@ internal class Grid2DUtilsKtTest {
             5  2
             11 4
         """.trimIndent()
-        val monthGrid = input.lines().toGridOf(regex = oneOrMoreWhiteSpaces) { Month.of(it.toInt()) }
+        val monthGrid = input.lines().toMutableGrid(regex = oneOrMoreWhiteSpaces) { Month.of(it.toInt()) }
 
         monthGrid.gridAsString(separator = " ")
 

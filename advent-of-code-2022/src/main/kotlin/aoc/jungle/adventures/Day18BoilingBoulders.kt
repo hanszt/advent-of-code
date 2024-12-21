@@ -1,11 +1,11 @@
 package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
-import aoc.utils.model.GridPoint3D
-import aoc.utils.rangeTo
+import aoc.utils.grid3d.GridPoint3D
+import aoc.utils.grid3d.rangeTo
 import java.io.File
-import aoc.utils.model.GridPoint3D as Cube
-import aoc.utils.model.gridPoint3D as cube
+import aoc.utils.grid3d.GridPoint3D as Cube
+import aoc.utils.grid3d.gridPoint3D as cube
 
 /**
  * Credits to Elizarov and Angelo

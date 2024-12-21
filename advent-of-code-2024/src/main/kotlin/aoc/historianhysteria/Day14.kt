@@ -1,13 +1,13 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
-import aoc.utils.gridAsString
-import aoc.utils.model.Dimension2D
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.Vec2
-import aoc.utils.model.dimension2D
-import aoc.utils.model.gridPoint2D
-import aoc.utils.model.mod
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.Dimension2D
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.Vec2
+import aoc.utils.grid2d.dimension2D
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.mod
 import java.nio.file.Path
 import kotlin.io.path.readLines
 

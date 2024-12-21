@@ -70,7 +70,7 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
             mapOf(it to Pair(Regular(it.value / 2), Regular((it.value + 1) / 2)))
         }
 
-        override operator fun plus(other: SnailNr): SnailNr = Pair(this, other).reduce()
+        operator fun plus(other: SnailNr): SnailNr = Pair(this, other).reduce()
 
         fun reduce() = generateSequence(seed = this, ::reductionStep).last()
 

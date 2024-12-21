@@ -9,13 +9,13 @@ import aoc.utils.PIPE_UP_DOWN
 import aoc.utils.PIPE_UP_LEFT
 import aoc.utils.PIPE_UP_RIGHT
 import aoc.utils.YELLOW_BG
-import aoc.utils.get
-import aoc.utils.gridAsString
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.gridAsString
 import aoc.utils.linkedListOf
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.gridPoint2D
-import aoc.utils.set
-import aoc.utils.toCharGrid
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.set
+import aoc.utils.grid2d.toMutableCharGrid
 import aoc.utils.withColor
 import java.io.File
 
@@ -39,7 +39,7 @@ class Day10(
     override fun part1(): Int = bfs(start).last().toPath().size - 1
 
     override fun part2(): Int {
-        val mask = grid.toCharGrid { '.' }
+        val mask = grid.toMutableCharGrid { '.' }
         cyclesByDfs(start)
             .map(Link::toPath)
             .maxBy(List<*>::size)

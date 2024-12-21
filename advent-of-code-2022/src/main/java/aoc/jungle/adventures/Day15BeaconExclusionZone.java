@@ -1,7 +1,7 @@
 package aoc.jungle.adventures;
 
 import aoc.utils.ChallengeDay;
-import aoc.utils.model.GridPoint2D;
+import aoc.utils.grid2d.GridPoint2D;
 import org.hzt.utils.io.FileX;
 import org.hzt.utils.ranges.IntRange;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static aoc.utils.Converters.toInt;
-import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
 import static java.util.function.Predicate.not;
 
 /**

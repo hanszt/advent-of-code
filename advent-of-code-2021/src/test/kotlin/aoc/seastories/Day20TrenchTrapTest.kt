@@ -1,6 +1,7 @@
 package aoc.seastories
 
 import aoc.utils.*
+import aoc.utils.grid2d.gridAsString
 import io.kotest.matchers.shouldBe
 import java.io.File
 import org.junit.jupiter.api.Test

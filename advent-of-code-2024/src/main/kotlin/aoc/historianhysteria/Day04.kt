@@ -1,8 +1,8 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
-import aoc.utils.foldByPoint
-import aoc.utils.model.GridPoint2D
+import aoc.utils.grid2d.foldByPoint
+import aoc.utils.grid2d.GridPoint2D
 import java.nio.file.Path
 import kotlin.io.path.readText
 

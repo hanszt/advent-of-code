@@ -1,9 +1,11 @@
-package aoc.utils
+package aoc.utils.graph
 
-import aoc.utils.model.GridPoint2D
-import aoc.utils.model.GridPoint2D.Companion.by
-import aoc.utils.model.Node
-import aoc.utils.model.WeightedNode
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.MutableIntGrid
+import aoc.utils.grid2d.forEachPoint
+import aoc.utils.grid2d.get
+import aoc.utils.grid2d.getOrNull
+import aoc.utils.toEnds
 
 fun List<String>.toBiDiGraph(delimiter: String): Map<String, Node<String>> = toBiDiGraph(delimiter) { it }
 
@@ -28,19 +30,17 @@ inline fun <T, K, R> List<T>.toBiDiGraph(toPairMapper: (T) -> Pair<K, K>, mapper
     }
 }
 
-fun <T> Array<IntArray>.toWeightedGraph(
+fun <T> MutableIntGrid.toWeightedGraph(
     directions: List<GridPoint2D>,
-    computeWeight: (Int, Int) -> Int = { x, y -> this[y][x] },
-    computeValue: (Int, Int) -> T? = { _, _ -> null }
+    computeWeight: (GridPoint2D) -> Int = { this[it] },
+    computeValue: (GridPoint2D) -> T? = { null }
 ): Map<GridPoint2D, WeightedNode<T>> = buildMap {
-    forEachPoint { x, y ->
-        val curNode = computeIfAbsent(x by y) { WeightedNode(computeValue(x, y), weight = computeWeight(x, y)) }
-        directions.map { (dx, dy) -> (x + dx) by (y + dy) }
-            .mapNotNull { (nx, ny) ->
-                getOrNull(ny)
-                    ?.getOrNull(nx)
-                    ?.let { computeIfAbsent(nx by ny) { WeightedNode(computeValue(nx, ny), weight = computeWeight(nx, ny)) } }
-            }.forEach(curNode::addNeighbor)
+    forEachPoint { p ->
+        val curNode = computeIfAbsent(p) { WeightedNode(computeValue(p), weight = computeWeight(p)) }
+        directions.mapNotNull {
+            val n = p + it
+            getOrNull(n)?.let { computeIfAbsent(n) { WeightedNode(computeValue(n), weight = computeWeight(n)) } }
+        }.forEach(curNode::addNeighbor)
     }
 }
 

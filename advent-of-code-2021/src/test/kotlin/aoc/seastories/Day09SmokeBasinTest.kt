@@ -3,8 +3,8 @@ package aoc.seastories
 import aoc.seastories.Day09SmokeBasin.Companion.findBassinPoints
 import aoc.seastories.Day09SmokeBasin.Companion.toLowPoints
 import aoc.utils.CYAN
-import aoc.utils.model.GridPoint2D
-import aoc.utils.toIntGrid
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.toMutableIntGrid
 import aoc.utils.withColor
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -51,7 +51,7 @@ internal class Day09SmokeBasinTest {
         """.trimIndent()
         val expectedSize = expectedBassin.filter(Char::isLetterOrDigit).length
 
-        val intGrid = inputGrid.lines().toIntGrid(Char::digitToInt)
+        val intGrid = inputGrid.lines().toMutableIntGrid(Char::digitToInt)
 
         val (lowestPoint) = intGrid.toLowPoints().first()
 

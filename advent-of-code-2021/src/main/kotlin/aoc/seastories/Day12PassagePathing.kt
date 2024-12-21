@@ -1,9 +1,9 @@
 package aoc.seastories
 
-import aoc.utils.allPathsByDfs
+import aoc.utils.graph.allPathsByDfs
 import aoc.utils.linkedListOf
-import aoc.utils.model.Node
-import aoc.utils.toBiDiGraph
+import aoc.utils.graph.Node
+import aoc.utils.graph.toBiDiGraph
 import java.io.File
 
 

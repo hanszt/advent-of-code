@@ -1,7 +1,7 @@
 package aoc.historianhysteria
 
-import aoc.utils.model.dimension2D
-import aoc.utils.model.gridPoint2D
+import aoc.utils.grid2d.dimension2D
+import aoc.utils.grid2d.gridPoint2D
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

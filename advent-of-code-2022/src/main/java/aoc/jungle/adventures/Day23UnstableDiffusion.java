@@ -1,7 +1,7 @@
 package aoc.jungle.adventures;
 
 import aoc.utils.ChallengeDay;
-import aoc.utils.model.GridPoint2D;
+import aoc.utils.grid2d.GridPoint2D;
 import org.hzt.utils.collections.ListX;
 import org.hzt.utils.io.FileX;
 import org.hzt.utils.sequences.Sequence;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static aoc.utils.model.GridPoint2D.east;
-import static aoc.utils.model.GridPoint2D.kingDirs;
-import static aoc.utils.model.GridPoint2D.north;
-import static aoc.utils.model.GridPoint2D.northeast;
-import static aoc.utils.model.GridPoint2D.northwest;
-import static aoc.utils.model.GridPoint2D.south;
-import static aoc.utils.model.GridPoint2D.southeast;
-import static aoc.utils.model.GridPoint2D.southwest;
-import static aoc.utils.model.GridPoint2D.west;
-import static aoc.utils.model.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2D.east;
+import static aoc.utils.grid2d.GridPoint2D.kingDirs;
+import static aoc.utils.grid2d.GridPoint2D.north;
+import static aoc.utils.grid2d.GridPoint2D.northeast;
+import static aoc.utils.grid2d.GridPoint2D.northwest;
+import static aoc.utils.grid2d.GridPoint2D.south;
+import static aoc.utils.grid2d.GridPoint2D.southeast;
+import static aoc.utils.grid2d.GridPoint2D.southwest;
+import static aoc.utils.grid2d.GridPoint2D.west;
+import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
 
 /**
  * Credits to Angelo
