@@ -1,9 +1,6 @@
 package aoc.jungle.adventures
 
-import aoc.utils.grid2d.MutableIntGrid
-
-@Suppress("kotlin:S134", "kotlin:S3776")
-fun day19Part(input: List<String>, part: Int): Int {
+fun day19(input: List<String>, part: Int): Int {
     var ans = if (part == 1) 0 else 1
     val tl = if (part == 1) 24 else 32
     val robots = listOf("ore", "clay", "obsidian", "geode")
@@ -85,7 +82,7 @@ fun day19Part(input: List<String>, part: Int): Int {
     return ans
 }
 
-private fun List<String>.createCostTable(rules: List<String>): MutableIntGrid {
+private fun List<String>.createCostTable(rules: List<String>): Array<IntArray> {
     val robotCosts = Array(size) { i ->
         val prefix = "Each ${this[i]} robot costs "
         val rule = rules[i].trim()
@@ -109,7 +106,14 @@ private operator fun Long.get(i: Int): Int = ((this shr (i * SH)) and MASK).toIn
 private fun Long.plus(i: Int, d: Int): Long = this + (d.toLong() shl (i * SH))
 private fun Long.minus(i: Int, d: Int): Long = this - (d.toLong() shl (i * SH))
 
-private const val MAGIC = 0x9E3779B9.toInt()
+/**
+ * https://softwareengineering.stackexchange.com/questions/402542/where-do-magic-hashing-constants-like-0x9e3779b9-and-0x9e3779b1-come-from
+ *
+ * 0x9e3779b9 is the integral part of the Golden Ratio's fractional part 0.61803398875… (sqrt(5)-1)/2, multiplied by 2^32.
+ *
+ * Hence, if φ = (sqrt(5)+1)/2 = 1.61803398875 is the Golden Ratio, the hash function calculates the fractional part of n * φ, which has nice scattering properties.
+ */
+private const val HASH_CONSTANT = 0x9E3779B9.toInt()
 private const val TX = ((2 / 3.0) * (1L shl 32)).toLong().toInt()
 
 class LHS(private var shift: Int = 29) {
@@ -128,7 +132,7 @@ class LHS(private var shift: Int = 29) {
             rehash()
         }
         val hc0 = k.toInt() * 31 + (k ushr 32).toInt()
-        var i = (hc0 * MAGIC) ushr shift
+        var i = (hc0 * HASH_CONSTANT) ushr shift
         while (true) {
             if (a[i] == 0L) {
                 a[i] = k

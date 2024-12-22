@@ -10,6 +10,8 @@ import java.io.File
  *
  * It is very educational to see such a clean and need solution. Many thanks to Elizarov for sharing his code on GitHub
  *
+ * [aoc.utils.Tag.RECURSIVE]
+ *
  * @see <a href="https://github.com/elizarov/AdventOfCode2021">Advent of code 2021 Elizarov</a>
  */
 internal class Day18SnailFish(inputPath: String) : ChallengeDay {

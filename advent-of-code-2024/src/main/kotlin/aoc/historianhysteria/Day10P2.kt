@@ -1,16 +1,21 @@
 package aoc.historianhysteria
 
+import aoc.utils.grid2d.GridPoint2D
 import aoc.utils.grid2d.forEachPoint
 import aoc.utils.grid2d.get
 import aoc.utils.grid2d.getOrNull
-import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.invoke
 
 /**
  * [Source](https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day10_2.kt)
  *
  * Only refactored to understand it better
+ *
+ * [aoc.utils.Tag.PATH_SEARCH]
+ *
+ * Very similar to part 1 by because we need to maintain the ratings, we can not use the generic [aoc.utils.grid2d.floodFill]
  */
-fun day10Part2(map: List<String>): Long {
+fun day10Part2Elizarov(map: List<String>): Long {
     val queue = ArrayDeque<GridPoint2D>()
     val visited = HashMap<GridPoint2D, Long>()
     var sum = 0L
@@ -22,8 +27,8 @@ fun day10Part2(map: List<String>): Long {
             visited.apply { clear(); put(start, 1) }
             while (queue.isNotEmpty()) {
                 val p = queue.removeFirst()
-                val height = map[p.y][p.x]
-                val rating = visited[p]!!
+                val height = map[p]
+                val rating = visited(p)
                 if (height == '9') {
                     sum += rating
                     continue

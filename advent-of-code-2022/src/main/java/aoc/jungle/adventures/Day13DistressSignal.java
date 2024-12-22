@@ -17,6 +17,7 @@ import java.util.stream.Stream;
  * Credits to TheTurkeyDev
  *
  * @see <a href="https://adventofcode.com/2022/day/13">Day 13: Distress signal</a>
+ * Tags {@link aoc.utils.Tag#RECURSIVE}
  */
 final class Day13DistressSignal implements ChallengeDay {
 

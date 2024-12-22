@@ -33,7 +33,7 @@ internal fun elizarovDay14Part2(robots: List<Robot>, searchRange: IntRange, dime
             (pos + vel * k).mod(dimension)
         }
         for (p in robotPositions) nrOfRobots[p]++
-        dimension.forEach { point ->
+        dimension.gridPoints().forEach { point ->
             if (nrOfRobots[point] > 0) {
                 q.clear()
                 var h = 0

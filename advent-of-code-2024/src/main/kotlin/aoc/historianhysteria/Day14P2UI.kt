@@ -41,7 +41,7 @@ fun main() {
             g.color = Color.WHITE
             g.fillRect(0, 0, dim * m, dim * n)
             g.color = Color.BLACK
-            dimension.forEach {
+            dimension.gridPoints().forEach {
                 if (nrOfRobots[it] > 0) {
                     val d = it * dim
                     g.fillRect(d.x, d.y, dim, dim)

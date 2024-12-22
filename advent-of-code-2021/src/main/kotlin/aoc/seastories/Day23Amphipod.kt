@@ -176,11 +176,11 @@ internal class Day23Amphipod(
                 .map {
                     it.map { char ->
                         when (char) {
-                            'A' -> char.withColor(RED)
-                            'B' -> char.withColor(GREEN)
-                            'C' -> char.withColor(BRIGHT_BLUE)
-                            'D' -> char.withColor(YELLOW)
-                            '#' -> ' '.withColor(BROWN_BG)
+                            'A' -> char.toString().withColor(RED)
+                            'B' -> char.toString().withColor(GREEN)
+                            'C' -> char.toString().withColor(BRIGHT_BLUE)
+                            'D' -> char.toString().withColor(YELLOW)
+                            '#' -> ' '.toString().withColor(BROWN_BG)
                             else -> char
                         }
                     }.joinToString("")

@@ -61,9 +61,9 @@ public class Day11MonkeyInTheMiddle implements ChallengeDay {
             }
         }
         return Sequence.of(monkeys)
-                .mapToLong(monkey -> monkey.inspectionCount)
-                .sortedDescending()
+                .sortedByDescending(m -> m.inspectionCount)
                 .take(2)
+                .mapToLong(m -> m.inspectionCount)
                 .reduce(1, (totalCount, count) -> totalCount * count);
     }
 

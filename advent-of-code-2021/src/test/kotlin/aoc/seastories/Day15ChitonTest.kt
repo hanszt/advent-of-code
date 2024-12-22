@@ -1,20 +1,21 @@
 package aoc.seastories
 
 import aoc.utils.*
-import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.GridPoint2D.Companion.by
 import aoc.utils.graph.WeightedNode
 import aoc.utils.graph.dijkstra
 import aoc.utils.graph.toWeightedGraph
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import aoc.utils.grid2d.gridAsString
 import aoc.utils.grid2d.toMutableGrid
 import aoc.utils.grid2d.toMutableIntGrid
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeBlank
-import java.io.File
-import java.util.concurrent.TimeUnit
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
+import java.io.File
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 internal class Day15ChitonTest {
@@ -46,16 +47,6 @@ internal class Day15ChitonTest {
     }
 
     @Test
-    fun `part 1 result Elizarov`() {
-        day15.part1Elizarov() shouldBe 592
-    }
-
-    @Test
-    fun `part 2 result Elizarov`() {
-        day15.part2Elizarov() shouldBe 2897
-    }
-
-    @Test
     fun `part 2 result as grid`() {
         val pathInGridAsString = File("input/day15.txt").readLines().toMutableIntGrid(Char::digitToInt).pathInGridAsString()
         println(pathInGridAsString)
@@ -74,6 +65,20 @@ internal class Day15ChitonTest {
             .forEach { (x, y) -> grid[y][x] = "%2s".format(grid[y][x]).withColors(BRIGHT_YELLOW, YELLOW_BG) }
 
         return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(random16BitColor(Random), BROWN_BG) else it }
+    }
+
+    @Nested
+    inner class ElizarovTests {
+
+        @Test
+        fun `part 1 result Elizarov`() {
+            day15.part1Elizarov() shouldBe 592
+        }
+
+        @Test
+        fun `part 2 result Elizarov`() {
+            day15.part2Elizarov().also { it.traceBackToStart { it.position }.reversed() }.cost shouldBe 2897
+        }
     }
 
 }

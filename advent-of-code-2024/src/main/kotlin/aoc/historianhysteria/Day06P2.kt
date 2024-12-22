@@ -1,7 +1,7 @@
 package aoc.historianhysteria
 
-import aoc.utils.grid2d.findPoint
 import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.firstPoint
 
 /**
  * [Source](https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day06_2.kt)
@@ -9,7 +9,7 @@ import aoc.utils.grid2d.GridPoint2D
 fun day06P2(input: List<String>): Int {
     val n = input.size
     val m = input[0].length
-    val start = input.findPoint { it == '^' } ?: error("Could not find start")
+    val start = input.firstPoint { it == '^' }
     val v = Array(4) { Array(n) { BooleanArray(m) } }
     var cnt = 0
     for (ib in 0..<n) for (jb in 0..<m) {

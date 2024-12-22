@@ -4,88 +4,121 @@ package aoc.utils.grid2d
 
 import aoc.utils.grid2d.GridPoint2D.Companion.by
 
-typealias MutableCharGrid = Array<CharArray>
-typealias MutableIntGrid = Array<IntArray>
-typealias MutableBooleanGrid = Array<BooleanArray>
-typealias MutableGrid<T> = Array<Array<T>>
-
 /**
  * from list of strings to grid converters
  */
-fun List<String>.toMutableIntGrid(regex: Regex): MutableIntGrid =
+fun List<String>.toMutableIntGrid(regex: Regex): Array<IntArray> =
     Array(size) { y -> this[y].trim().split(regex).map(String::toInt).toIntArray() }
 
-fun List<String>.toMutableIntGrid(transform: (Char) -> Int): MutableIntGrid = Array(size) { y ->
+fun List<String>.toMutableIntGrid(transform: (Char) -> Int): Array<IntArray> = Array(size) { y ->
     IntArray(this[y].length) { x -> transform(this[y][x]) }
 }
 
-fun List<String>.toIntGrid(transform: (Char) -> Int): IntGrid = getOrNull(0)?.let {
-    buildIntGrid(it.length, this.size) { x, y -> transform(this[y][x]) }
-} ?: emptyIntGrid()
-
-fun List<String>.toMutableCharGrid(): MutableCharGrid = Array(size) { this[it].toCharArray() }
-fun List<String>.toMutableCharGrid(mapper: (Char) -> Char): MutableCharGrid = Array(size) { y ->
+fun List<String>.toMutableCharGrid(): Array<CharArray> = Array(size) { this[it].toCharArray() }
+fun List<String>.toMutableCharGrid(mapper: (Char) -> Char): Array<CharArray> = Array(size) { y ->
     CharArray(this[y].length) { x -> mapper(this[y][x]) }
 }
 
-inline fun <reified T> List<String>.toMutableGrid(regex: Regex, mapper: (String) -> T): MutableGrid<T> =
+inline fun <reified T> List<String>.toMutableGrid(regex: Regex, mapper: (String) -> T): Array<Array<T>> =
     map { it.split(regex).map(mapper).toTypedArray() }.toTypedArray()
 
-inline fun <reified T> List<String>.toMutableGrid(mapper: (Char) -> T): MutableGrid<T> =
+inline fun <reified T> List<String>.toMutableGrid(mapper: (Char) -> T): Array<Array<T>> =
     map { it.map(mapper).toTypedArray() }.toTypedArray()
 
 /**
  * Grid converters
  */
-inline fun <T, reified R> MutableGrid<T>.toMutableGrid(transform: (T) -> R): MutableGrid<R> =
+inline fun <T, reified R> Array<Array<T>>.toMutableGrid(transform: (T) -> R): Array<Array<R>> =
     map { it.map(transform).toTypedArray() }.toTypedArray()
 
-inline fun <reified R> MutableIntGrid.toMutableGrid(transform: (Int) -> R): MutableGrid<R> =
+inline fun <reified R> Array<IntArray>.toMutableGrid(transform: (Int) -> R): Array<Array<R>> =
     map { it.map(transform).toTypedArray() }.toTypedArray()
 
-inline fun <reified R> MutableCharGrid.toMutableGrid(transform: (Char) -> R): MutableGrid<R> = Array(size) { y ->
+inline fun <reified R> Array<CharArray>.toMutableGrid(transform: (Char) -> R): Array<Array<R>> = Array(size) { y ->
     Array(this[y].size) { x -> transform(this[y][x]) }
 }
 
-inline fun MutableIntGrid.toMutableIntGrid(transform: (Int) -> Int): MutableIntGrid =
+inline fun Array<IntArray>.toMutableIntGrid(transform: (Int) -> Int): Array<IntArray> =
     map { it.map(transform).toIntArray() }.toTypedArray()
 
-inline fun <reified T> MutableGrid<T>.copyGrid(): MutableGrid<T> = Array(size) { this[it].copyOf() }
-fun MutableCharGrid.copyGrid(): MutableCharGrid = Array(size) { this[it].copyOf() }
+inline fun <reified T> Array<Array<T>>.copyGrid(): Array<Array<T>> = Array(size) { this[it].copyOf() }
+fun Array<CharArray>.copyGrid(): Array<CharArray> = Array(size) { this[it].copyOf() }
 
-fun <T> MutableGrid<T>.toGrid(transform: (T) -> T): Grid<T> = getOrNull(0)
+fun <T, R> Array<Array<T>>.toGrid(transform: (T) -> R): Grid<R> = getOrNull(0)
     ?.let {
         buildGrid(it.size, size) { x, y -> transform(this[y][x]) }
     } ?: emptyGrid()
 
+fun <T, R> Grid<T>.toGrid(transform: (T) -> R): Grid<R> = getOrNull(GridPoint2D.ZERO)
+    ?.let {
+        buildGrid(width, height) { x, y -> transform(this[x, y]) }
+    } ?: emptyGrid()
+
+inline fun <T, reified R> Grid<T>.toMutableGrid(transform: (T) -> R): Array<Array<R>> = Array(height) { y ->
+    Array(width) { x -> transform(this[x, y]) }
+}
+
+inline fun <reified T> List<String>.toGrid(crossinline mapper: (Char) -> T): Grid<T> = getOrNull(0)?.let {
+    buildGrid(it.length, size) { x, y -> mapper(this[y][x]) }
+} ?: emptyGrid()
+
+inline fun <reified T> Iterable<GridPoint2D>.toGrid(transform: (Int, Int, Boolean) -> T): Grid<T> = toMutableGrid(transform).toGrid { it }
+inline fun <reified T> Iterable<GridPoint2D>.toMutableGrid(transform: (Int, Int, Boolean) -> T): Array<Array<T>> {
+    val minX = minOf { it.x }
+    val maxX = maxOf { it.x }
+    val minY = minOf { it.y }
+    val maxY = maxOf { it.y }
+    val width = (maxX - minX) + 1
+    val height = (maxY - minY) + 1
+    var array = Array(height) { y ->
+        Array(width) { x ->
+            transform(x, y, false)
+        }
+    }
+    for (p in this@toMutableGrid) {
+        var x = p.x - minX
+        var y = p.y - minY
+        array[y][x] = transform(x, y, true)
+    }
+    return array
+}
+
+fun Iterable<GridPoint2D>.toClosedGridRange(): GridPoint2DRange {
+    val minX = minOf { it.x }
+    val maxX = maxOf { it.x }
+    val minY = minOf { it.y }
+    val maxY = maxOf { it.y }
+    return gridPoint2D(minX, minY)..gridPoint2D(maxX, maxY)
+}
+
 /**
  * mapping, filtering, actions and matching
  */
-inline fun <T, reified R> MutableGrid<T>.mapByPoint(transform: (Int, Int) -> R): MutableGrid<R> = Array(size) { y ->
+inline fun <T, reified R> Array<Array<T>>.mapByPoint(transform: (Int, Int) -> R): Array<Array<R>> = Array(size) { y ->
     val row = this[y]
     Array(row.size) { x -> transform(x, y) }
 }
 
-inline fun <T, reified R> MutableGrid<T>.mapByPoint(transform: (GridPoint2D) -> R): MutableGrid<R> = mapByPoint { x, y ->
+inline fun <T, reified R> Array<Array<T>>.mapByPoint(transform: (GridPoint2D) -> R): Array<Array<R>> = mapByPoint { x, y ->
     transform(gridPoint2D(x, y))
 }
 
-inline fun <reified R> MutableIntGrid.mapByPoint(transform: (Int, Int) -> R): MutableGrid<R> = Array(size) { y ->
+inline fun <reified R> Array<IntArray>.mapByPoint(transform: (Int, Int) -> R): Array<Array<R>> = Array(size) { y ->
     val row = this[y]
     Array(row.size) { x -> transform(x, y) }
 }
 
-inline fun <reified R> MutableIntGrid.mapByPoint(transform: (GridPoint2D) -> R): MutableGrid<R> = mapByPoint { x, y ->
+inline fun <reified R> Array<IntArray>.mapByPoint(transform: (GridPoint2D) -> R): Array<Array<R>> = mapByPoint { x, y ->
     transform(gridPoint2D(x, y))
 }
 
-inline fun <reified R> MutableIntGrid.flatMapByPoint(transform: (Int, Int) -> R): List<R> = buildList {
+inline fun <reified R> Array<IntArray>.flatMapByPoint(transform: (Int, Int) -> R): List<R> = buildList {
     this@flatMapByPoint.forEachIndexed { y, r ->
         r.indices.forEach { x -> add(transform(x, y)) }
     }
 }
 
-inline fun <reified R : Comparable<R>> MutableIntGrid.gridMaxOf(transform: (Int, Int) -> R): R {
+inline fun <reified R : Comparable<R>> Array<IntArray>.gridMaxOf(transform: (Int, Int) -> R): R {
     getOrNull(GridPoint2D.ZERO) ?: throw NoSuchElementException()
     var max = transform(0, 0)
     forEachIndexed { y, r ->
@@ -94,33 +127,33 @@ inline fun <reified R : Comparable<R>> MutableIntGrid.gridMaxOf(transform: (Int,
     return max
 }
 
-inline fun <reified R : Comparable<R>> MutableIntGrid.gridMaxOf(transform: (GridPoint2D) -> R): R = gridMaxOf { x, y ->
+inline fun <reified R : Comparable<R>> Array<IntArray>.gridMaxOf(transform: (GridPoint2D) -> R): R = gridMaxOf { x, y ->
     transform(gridPoint2D(x, y))
 }
 
-inline fun <reified R> MutableIntGrid.flatMapByPoint(transform: (GridPoint2D) -> R): List<R> = flatMapByPoint { x, y ->
+inline fun <reified R> Array<IntArray>.flatMapByPoint(transform: (GridPoint2D) -> R): List<R> = flatMapByPoint { x, y ->
     transform(gridPoint2D(x, y))
 }
 
-inline fun <T> MutableGrid<T>.anyInGrid(predicate: (T) -> Boolean) = any { it.any(predicate) }
+inline fun <T> Grid<T>.anyInGrid(predicate: (T) -> Boolean) = any { it.any(predicate) }
 
-inline fun MutableIntGrid.allInGrid(predicate: (Int) -> Boolean) = all { it.all(predicate) }
+inline fun Array<IntArray>.allInGrid(predicate: (Int) -> Boolean) = all { it.all(predicate) }
 
-inline fun MutableIntGrid.gridCount(predicate: (Int, Int) -> Boolean): Int =
+inline fun Array<IntArray>.gridCount(predicate: (Int, Int) -> Boolean): Int =
     indices.sumOf { y -> this[y].indices.count { x -> predicate(x, y) } }
 
-inline fun MutableIntGrid.gridCount(predicate: (GridPoint2D) -> Boolean): Int =
+inline fun Array<IntArray>.gridCount(predicate: (GridPoint2D) -> Boolean): Int =
     indices.sumOf { y -> this[y].indices.count { x -> predicate(x by y) } }
 
-inline fun <T> MutableGrid<T>.forEachInGrid(action: (T) -> Unit) = forEach { it.forEach(action) }
-
-inline fun <T> MutableGrid<T>.forEachPointAndValue(action: (Int, Int, T) -> Unit) =
+inline fun <T> Array<Array<T>>.forEachPointAndValue(action: (Int, Int, T) -> Unit) =
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
 
-inline fun <T> MutableGrid<T>.forEachPoint(action: (Int, Int) -> Unit) =
+inline fun <T> Array<Array<T>>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
-fun Dimension2D.toMutableCharGrid(transform: (GridPoint2D) -> Char): MutableCharGrid = Array(height) { y ->
+inline fun <T> Array<Array<T>>.forEachPoint(action: (GridPoint2D) -> Unit) = forEachPoint { x, y -> action(gridPoint2D(x, y)) }
+
+fun Dimension2D.toMutableCharGrid(transform: (GridPoint2D) -> Char): Array<CharArray> = Array(height) { y ->
     CharArray(width) { x -> transform(gridPoint2D(x, y)) }
 }
 
@@ -136,19 +169,22 @@ inline fun <R> List<String>.foldByPoint(initial: R, action: (R, Int, Int) -> R):
     return acc
 }
 
-inline fun MutableIntGrid.forEachPoint(action: (Int, Int) -> Unit) =
+inline fun Array<IntArray>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
-inline fun MutableIntGrid.forEachPoint(action: (GridPoint2D) -> Unit) =
+inline fun Array<IntArray>.forEachPoint(action: (GridPoint2D) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(gridPoint2D(x, y)) } }
 
-inline fun MutableCharGrid.forEachPoint(action: (Int, Int) -> Unit) =
+inline fun Array<CharArray>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
-inline fun MutableCharGrid.forEachPoint(action: (GridPoint2D) -> Unit) =
+inline fun Array<CharArray>.forEachPoint(action: (GridPoint2D) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(gridPoint2D(x, y)) } }
 
-inline fun MutableIntGrid.forEachPointAndValue(action: (Int, Int, Int) -> Unit) =
+inline fun Array<IntArray>.forEachPointAndValue(action: (Int, Int, Int) -> Unit) =
+    withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
+
+inline fun Array<CharArray>.forEachPointAndValue(action: (Int, Int, Char) -> Unit) =
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
 
 /**
@@ -165,6 +201,20 @@ fun List<String>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
     return null
 }
 
+fun Array<CharArray>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
+    for ((y, line) in this.withIndex()) {
+        for ((x, c) in line.withIndex()) {
+            if (predicate(c)) {
+                return gridPoint2D(x, y)
+            }
+        }
+    }
+    return null
+}
+
+fun List<String>.firstPoint(predicate: (Char) -> Boolean): GridPoint2D = findPoint(predicate) ?: error("No point found")
+fun Array<CharArray>.firstPoint(predicate: (Char) -> Boolean): GridPoint2D = findPoint(predicate) ?: error("No point found")
+
 /**
  * Dimension2D
  */
@@ -172,7 +222,7 @@ fun List<String>.dimension2D(): Dimension2D = getOrNull(0)
     ?.let { dimension2D(width = it.length, height = size) }
     ?: dimension2D(0, 0)
 
-fun MutableCharGrid.dimension2D(): Dimension2D = getOrNull(0)
+fun Array<CharArray>.dimension2D(): Dimension2D = getOrNull(0)
     ?.let { dimension2D(width = it.size, height = size) }
     ?: dimension2D(0, 0)
 
@@ -180,43 +230,48 @@ fun MutableCharGrid.dimension2D(): Dimension2D = getOrNull(0)
  * Getters
  */
 operator fun List<String>.get(point: GridPoint2D): Char = this[point.y][point.x]
-operator fun MutableCharGrid.get(point: GridPoint2D): Char = this[point.y][point.x]
-operator fun MutableIntGrid.get(point: GridPoint2D): Int = this[point.y][point.x]
-operator fun MutableBooleanGrid.get(point: GridPoint2D): Boolean = this[point.y][point.x]
-operator fun <T> MutableGrid<T>.get(point: GridPoint2D): T = this[point.y][point.x]
+operator fun Array<CharArray>.get(point: GridPoint2D): Char = this[point.y][point.x]
+operator fun Array<IntArray>.get(point: GridPoint2D): Int = this[point.y][point.x]
+operator fun Array<BooleanArray>.get(point: GridPoint2D): Boolean = this[point.y][point.x]
+operator fun <T> Array<Array<T>>.get(point: GridPoint2D): T = this[point.y][point.x]
 
 fun List<String>.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
-fun MutableCharGrid.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
-fun MutableIntGrid.getOrNull(point: GridPoint2D): Int? = getOrNull(point.y)?.getOrNull(point.x)
-fun MutableBooleanGrid.getOrNull(point: GridPoint2D): Boolean? = getOrNull(point.y)?.getOrNull(point.x)
-fun <T> MutableGrid<T>.getOrNull(point: GridPoint2D): T? = getOrNull(point.y)?.getOrNull(point.x)
+fun Array<CharArray>.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
+fun Array<IntArray>.getOrNull(point: GridPoint2D): Int? = getOrNull(point.y)?.getOrNull(point.x)
+fun Array<BooleanArray>.getOrNull(point: GridPoint2D): Boolean? = getOrNull(point.y)?.getOrNull(point.x)
+fun <T> Array<Array<T>>.getOrNull(point: GridPoint2D): T? = getOrNull(point.y)?.getOrNull(point.x)
 
 /**
  * Setters
  */
-operator fun <T> MutableGrid<T>.set(point: GridPoint2D, t: T) {
+operator fun <T> Array<Array<T>>.set(point: GridPoint2D, t: T) {
     this[point.y][point.x] = t
 }
 
-operator fun MutableCharGrid.set(point: GridPoint2D, char: Char) {
+operator fun Array<CharArray>.set(point: GridPoint2D, char: Char) {
     this[point.y][point.x] = char
 }
 
-operator fun MutableIntGrid.set(point: GridPoint2D, int: Int) {
+operator fun Array<IntArray>.set(point: GridPoint2D, int: Int) {
     this[point.y][point.x] = int
 }
 
-operator fun MutableBooleanGrid.set(point: GridPoint2D, bool: Boolean) {
+operator fun Array<BooleanArray>.set(point: GridPoint2D, bool: Boolean) {
     this[point.y][point.x] = bool
 }
 
 /**
- * Edges
+ * Corners
  */
-val MutableIntGrid.upperLeft get() = GridPoint2D.ZERO
-val MutableIntGrid.lowerLeft get() = gridPoint2D(0, lastIndex)
-val MutableIntGrid.upperRight get() = gridPoint2D(this[0].lastIndex, 0)
-val MutableIntGrid.lowerRight get() = gridPoint2D(this[0].lastIndex, lastIndex)
+val Array<IntArray>.upperLeft get(): Int = this[GridPoint2D.ZERO]
+val Array<IntArray>.lowerLeft get(): Int = this[gridPoint2D(0, lastIndex)]
+val Array<IntArray>.upperRight get(): Int = this[gridPoint2D(this[0].lastIndex, 0)]
+val Array<IntArray>.lowerRight get(): Int = this[gridPoint2D(this[0].lastIndex, lastIndex)]
+
+val <T> Grid<T>.upperLeft get(): T = this[GridPoint2D.ZERO]
+val <T> Grid<T>.lowerLeft get(): T = this[gridPoint2D(0, height - 1)]
+val <T> Grid<T>.upperRight get(): T = this[gridPoint2D(width - 1, 0)]
+val <T> Grid<T>.lowerRight get(): T = this[gridPoint2D(width - 1, height - 1)]
 
 /**
  * Ranges
@@ -252,32 +307,32 @@ fun List<String>.rotated(): List<String> =
 fun List<String>.rotatedCc(): List<String> =
     first().indices.reversed().map { col -> indices.map { row -> this[row][col] }.joinToString("") }
 
-inline fun <reified T> MutableGrid<T>.rotated(): MutableGrid<T> =
+inline fun <reified T> Array<Array<T>>.rotated(): Array<Array<T>> =
     first().indices.map { col -> indices.reversed().map { row -> this[row][col] }.toTypedArray() }.toTypedArray()
 
-inline fun <reified T> MutableGrid<T>.rotatedCc(): MutableGrid<T> =
+inline fun <reified T> Array<Array<T>>.rotatedCc(): Array<Array<T>> =
     first().indices.reversed().map { col -> indices.map { row -> this[row][col] }.toTypedArray() }.toTypedArray()
 
-fun MutableIntGrid.rotated(): MutableIntGrid = first().indices.map { col ->
+fun Array<IntArray>.rotated(): Array<IntArray> = first().indices.map { col ->
     indices.reversed().map { row -> this[row][col] }.toIntArray()
 }.toTypedArray()
 
-fun MutableIntGrid.rotatedCc(): MutableIntGrid = first().indices.reversed()
+fun Array<IntArray>.rotatedCc(): Array<IntArray> = first().indices.reversed()
     .map { col -> indices.map { row -> this[row][col] }.toIntArray() }
     .toTypedArray()
 
-fun MutableIntGrid.mirroredHorizontally(): MutableIntGrid = Array(size) { y ->
+fun Array<IntArray>.mirroredHorizontally(): Array<IntArray> = Array(size) { y ->
     val row = this[y]
     IntArray(row.size) { x -> row[row.lastIndex - x] }
 }
 
-inline fun <reified T> MutableGrid<T>.mirroredHorizontally(): MutableGrid<T> = Array(size) { y ->
+inline fun <reified T> Array<Array<T>>.mirroredHorizontally(): Array<Array<T>> = Array(size) { y ->
     val row = this[y]
     Array<T>(row.size) { x -> row[row.lastIndex - x] }
 }
 
-fun MutableIntGrid.mirroredVertically(): MutableIntGrid = Array(size) { y -> this[lastIndex - y] }
-inline fun <reified T> MutableGrid<T>.mirroredVertically(): MutableGrid<T> = Array(size) { y -> this[lastIndex - y] }
+fun Array<IntArray>.mirroredVertically(): Array<IntArray> = Array(size) { y -> this[lastIndex - y] }
+inline fun <reified T> Array<Array<T>>.mirroredVertically(): Array<Array<T>> = Array(size) { y -> this[lastIndex - y] }
 
 /**
  * Grid as string
@@ -291,20 +346,38 @@ fun <T> Array<CharArray>.gridAsString(spacing: Int = 2, separator: String = "", 
     map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }
         .joinToString("\n") { it }
 
-fun MutableIntGrid.gridAsString(spacing: Int = 2, separator: String = "") =
+fun Array<IntArray>.gridAsString(spacing: Int = 2, separator: String = "") =
     map { row -> row.joinToString(separator) { "%${spacing}d".format(it) } }.joinToString("\n") { it }
 
-fun <T> MutableIntGrid.gridAsString(spacing: Int = 2, separator: String = "", selector: (Int) -> T) =
+fun <T> Array<IntArray>.gridAsString(spacing: Int = 2, separator: String = "", selector: (Int) -> T) =
     map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }
         .joinToString("\n") { it }
 
-inline fun <T, R> MutableGrid<T>.gridAsString(
+inline fun <T, R> Array<Array<T>>.gridAsString(
     spacing: Int = 2,
     separator: String = "",
     crossinline selector: (T) -> R
 ) = map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }.joinToString("\n") { it }
 
-fun <T> MutableGrid<T>.gridAsString(spacing: Int = 2, separator: String = "") =
+inline fun <T, R> Grid<T>.gridAsString(
+    spacing: Int = 2,
+    separator: String = "",
+    crossinline selector: (T) -> R
+) = buildString {
+    for (y in 0..<height) {
+        for (x in 0..<width) {
+            append("%${spacing}s".format(selector(this@gridAsString[x, y])))
+            if (x < width - 1) {
+                append(separator)
+            }
+        }
+        if (y < height - 1) {
+            append("\n")
+        }
+    }
+}
+
+fun <T> Array<Array<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
     gridAsString(spacing, separator) { it }
 
 @JvmOverloads
@@ -328,28 +401,39 @@ fun <T> List<String>.gridAsString(spacing: Int = 2, separator: String = "", sele
 /**
  * Swapping points in a grid
  */
-fun MutableCharGrid.swap(p1x: Int, p1y: Int, p2x: Int, p2y: Int) {
+fun Array<CharArray>.swap(p1x: Int, p1y: Int, p2x: Int, p2y: Int) {
     val tmp = this[p1y][p1x]
     this[p1y][p1x] = this[p2y][p2x]
     this[p2y][p2x] = tmp
     1..<3
 }
 
-fun MutableCharGrid.swap(point1: GridPoint2D, point2: GridPoint2D) = swap(point1.x, point1.y, point2.x, point2.y)
+fun Array<CharArray>.swap(point1: GridPoint2D, point2: GridPoint2D) = swap(point1.x, point1.y, point2.x, point2.y)
 
 interface ClosedGridPoint2DRange {
     val start: GridPoint2D
     val endInclusive: GridPoint2D
 
-    operator fun contains(point: GridPoint2D): Boolean = point.x in start.x..endInclusive.x && point.y in start.y..endInclusive.y
-    fun isEmpty(): Boolean = start.x > endInclusive.x || start.y > endInclusive.y
+    operator fun component1() = start
+    operator fun component2() = endInclusive
+
+    operator fun contains(point: GridPoint2D): Boolean {
+        return point.x in (if (start.x < endInclusive.x) start.x..endInclusive.x else endInclusive.x..endInclusive.y) &&
+                point.y in (if (start.x < endInclusive.x) start.y..endInclusive.y else endInclusive.y..endInclusive.y)
+    }
 }
 
 interface OpenEndedGridPoint2DRange {
     val start: GridPoint2D
     val endExclusive: GridPoint2D
 
-    operator fun contains(point: GridPoint2D): Boolean = point.x in start.x..endExclusive.x && point.y in start.y..endExclusive.y
+    operator fun contains(point: GridPoint2D): Boolean {
+        if (isEmpty()) return false
+        return point.x in (if (start.x < endExclusive.x) start.x..endExclusive.x else endExclusive.x..endExclusive.y) &&
+                point.y in (if (start.x < endExclusive.x) start.y..endExclusive.y else endExclusive.y..endExclusive.y)
+    }
+
+    fun isEmpty(): Boolean = start.x == endExclusive.x || start.y == endExclusive.y
 }
 
 class GridPoint2DRange internal constructor(

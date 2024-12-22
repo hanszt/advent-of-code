@@ -9,7 +9,13 @@ class Day06(
 ) : ChallengeDay {
 
     override fun part1(): Long {
-        val (times, distances) = lines.map { it.split(' ').filter(String::isNotEmpty).drop(1).map(String::toLong) }
+        val (times, distances) = lines
+            .map {
+                it.splitToSequence(' ')
+                    .filter(String::isNotEmpty)
+                    .drop(1)
+                    .map(String::toLong)
+            }
         return (times zip distances).fold(1L) { product, (time, distanceToBeat) ->
             product * nrOfWaysToWin(time, distanceToBeat)
         }

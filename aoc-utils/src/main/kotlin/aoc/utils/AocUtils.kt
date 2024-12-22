@@ -21,8 +21,6 @@ fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C
     return destination
 }
 
-operator fun <K, V : Any> Map<K, V>.invoke(key: K): V = getValue(key)
-
 inline fun <A, B, R> Pair<A, B>.mapFirst(transform: (A) -> R): Pair<R, B> = transform(first) to second
 
 inline fun <A, B, R> Pair<A, B>.mapSecond(transform: (B) -> R): Pair<A, R> = first to transform(second)
@@ -40,6 +38,22 @@ fun CharSequence.isNaturalNumber() = "\\d+".toRegex().matches(this)
 fun CharSequence.containsNoDigits() = "\\D+".toRegex().matches(this)
 
 fun CharSequence.splitByBlankLine(): List<String> = split(Regex("(?m)^\\s*$")).map(String::trim)
+
+/**
+ * Splits into space-separate parts of input and maps each part.
+ */
+fun <R> List<String>.parts(map: (List<String>) -> R): List<R> = buildList {
+    var cur = ArrayList<String>()
+    for (s in this@parts) {
+        if (s == "") {
+            add(map(cur))
+            cur = ArrayList()
+            continue
+        }
+        cur.add(s)
+    }
+    if (cur.isNotEmpty()) add(map(cur))
+}
 
 fun Int.wrapBack(to: Int, after: Int): Int = (this - to) % (after - to + 1) + to
 
@@ -131,3 +145,7 @@ infix fun Int.lcm(other: Int): Int = abs((this * other) / gcd(other))
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
+
+enum class Tag {
+    RECURSIVE, PATH_SEARCH
+}

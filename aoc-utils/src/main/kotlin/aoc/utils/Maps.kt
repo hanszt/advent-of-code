@@ -5,3 +5,5 @@ inline fun <K, V, G> Map<K, V>.groupingByKey(crossinline keySelector: (K) -> G):
         override fun sourceIterator() = asSequence().map { (k, v) -> k to v }.iterator()
         override fun keyOf(element: Pair<K, V>): G = keySelector(element.first)
     }
+
+operator fun <K, V : Any> Map<K, V>.invoke(key: K): V = getValue(key)

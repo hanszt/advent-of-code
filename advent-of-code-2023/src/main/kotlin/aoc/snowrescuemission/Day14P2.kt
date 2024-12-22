@@ -1,7 +1,7 @@
 package aoc.snowrescuemission
 
-import aoc.utils.grid2d.MutableCharGrid
 import aoc.utils.grid2d.toMutableCharGrid
+import aoc.utils.invoke
 
 /**
  * [Source](https://github.com/elizarov/AdventOfCode2023/blob/main/src/Day14_2.kt)
@@ -11,7 +11,7 @@ import aoc.utils.grid2d.toMutableCharGrid
  * By maintaining a map of data to count and vice versa, the cycle can be detected.
  */
 fun day14part2(input: List<String>): Int {
-    class Data(val grid: MutableCharGrid) {
+    class Data(val grid: Array<CharArray>) {
         override fun equals(other: Any?): Boolean = other is Data && grid.contentDeepEquals(other.grid)
         override fun hashCode(): Int = grid.contentDeepHashCode()
         override fun toString(): String = grid.joinToString("\n") { it.joinToString("") }
@@ -29,7 +29,7 @@ fun day14part2(input: List<String>): Int {
         val data = Data(grid = Array(grid.size) { grid[it].copyOf() })
         val start = data2count.put(data, count)
         if (start != null) {
-            val targetData = count2Data[start + (target - start) % (count - start)]!!
+            val targetData = count2Data(start + (target - start) % (count - start))
             for (i in 0..<m) for (j in 0..<n) grid[i][j] = targetData.grid[i][j]
             break
         }
@@ -39,7 +39,7 @@ fun day14part2(input: List<String>): Int {
     return calculateLoad(m, n, grid)
 }
 
-private fun calculateLoad(m: Int, n: Int, grid: MutableCharGrid): Int {
+private fun calculateLoad(m: Int, n: Int, grid: Array<CharArray>): Int {
     var sum = 0
     for (i in 0..<m) {
         for (j in 0..<n) {
@@ -51,7 +51,7 @@ private fun calculateLoad(m: Int, n: Int, grid: MutableCharGrid): Int {
     return sum
 }
 
-private fun executeCycle(n: Int, m: Int, grid: MutableCharGrid) {
+private fun executeCycle(n: Int, m: Int, grid: Array<CharArray>) {
     // north
     for (j in 0..<n) {
         for (i in 0..<m) {

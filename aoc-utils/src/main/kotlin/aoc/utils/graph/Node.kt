@@ -1,13 +1,20 @@
 package aoc.utils.graph
 
-import java.util.Collections
+interface Node<N : Node<N>> {
+    /**
+     * The neighbor node this node is explored from
+     */
+    val prev: N?
 
-class Node<T>(val value: T? = null) {
-
-    private val neighborsInternal = HashSet<Node<T>>()
-    val neighbors: Set<Node<T>> get() = Collections.unmodifiableSet(neighborsInternal)
-
-    fun addNeighbor(neighbor: Node<T>) = neighborsInternal.add(neighbor)
-
-    override fun toString(): String = "Node(value=$value, neighbors=${neighborsInternal.map(Node<T>::value)})"
+    /**
+     * Backtracks a path formed by all nodes linked to this node
+     */
+    fun <R> traceBackToStart(transform: (N) -> R): List<R> = buildList {
+        var current = this@Node
+        while (true) {
+            @Suppress("UNCHECKED_CAST")
+            add(transform(current as N))
+            current = current.prev ?: break
+        }
+    }
 }

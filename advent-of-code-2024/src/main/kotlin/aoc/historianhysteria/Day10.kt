@@ -10,6 +10,9 @@ import kotlin.io.path.readLines
 class Day10(private val map: List<String>) : ChallengeDay {
     constructor(path: Path) : this(path.readLines())
 
+    /**
+     * What is the sum of the scores of all trailheads on your topographic map?
+     */
     override fun part1(): Long {
         var result = 0L
         for ((y, r) in map.withIndex()) {
@@ -63,6 +66,10 @@ class Day10(private val map: List<String>) : ChallengeDay {
     private fun toHeight(gridPoint2D: GridPoint2D): Int? = toHeight(x = gridPoint2D.x, y = gridPoint2D.y)
     private fun toHeight(x: Int, y: Int): Int? = map.getOrNull(y)?.getOrNull(x)?.takeIf { it.isDigit() }?.digitToInt()
 
-    fun part1Elizarov(): Long = part1Elizarov(map)
-    override fun part2(): Long = day10Part2(map)
+    fun part1Elizarov(): Long = day10Part1Elizarov(map)
+
+    /**
+     * What is the sum of the ratings of all trailheads?
+     */
+    override fun part2(): Long = day10Part2Elizarov(map)
 }

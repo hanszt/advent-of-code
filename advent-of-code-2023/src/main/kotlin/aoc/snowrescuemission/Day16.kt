@@ -1,7 +1,6 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.grid2d.MutableCharGrid
 import aoc.utils.grid2d.getOrNull
 import aoc.utils.grid2d.GridPoint2D
 import aoc.utils.grid2d.GridPoint2D.Companion.ZERO
@@ -68,7 +67,7 @@ class Day16(
 
 
     private fun propagateBeam(
-        target: MutableCharGrid,
+        target: Array<CharArray>,
         startPos: GridPoint2D,
         startDir: GridPoint2D,
         visitedSplitters: MutableSet<GridPoint2D> = HashSet()

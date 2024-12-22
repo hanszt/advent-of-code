@@ -2,48 +2,47 @@ package aoc.seastories
 
 import aoc.utils.*
 import aoc.utils.grid2d.*
-import aoc.utils.grid2d.GridPoint2D.Companion.by
 import java.io.File
 
 internal class Day11DumboOctopus(private val inputPath: String) : ChallengeDay {
 
     override fun part1(): Int = File(inputPath).readLines()
-        .toMutableGrid(Char::digitToInt)
-        .toMutableGrid(::Octopus)
+        .toGrid { Octopus(it.digitToInt()) }
         .simulateEnergyLevels(steps = 100)
-        .flatMap(Array<Octopus>::asList)
+        .flatten()
         .sumOf(Octopus::nrFlashes)
 
     override fun part2(): Int = File(inputPath).readLines()
-        .toMutableGrid { Octopus(it.digitToInt()) }
+        .toGrid { Octopus(it.digitToInt()) }
         .findSynchronizationStep()
 
-    private fun MutableGrid<Octopus>.findSynchronizationStep(): Int = generateSequence { simulateStep() }
+    private fun Grid<Octopus>.findSynchronizationStep(): Int = generateSequence { simulateStep() }
         .takeWhile { anyInGrid { it.energyLevel != 1 } }
         .count()
 
-    private fun MutableGrid<Octopus>.simulateEnergyLevels(steps: Int): MutableGrid<Octopus> =
+    private fun Grid<Octopus>.simulateEnergyLevels(steps: Int): Grid<Octopus> =
         apply { (1..steps).map { simulateStep() } }
 
     companion object {
-        internal fun MutableGrid<Octopus>.simulateStep() {
-            forEachInGrid(Octopus::incrementEnergy)
+        internal fun Grid<Octopus>.simulateStep() {
+            asSequence().flatten().forEach(Octopus::incrementEnergy)
             updateEnergyLevelsNeighbors()
         }
 
-        private fun MutableGrid<Octopus>.updateEnergyLevelsNeighbors() {
-            val differences = Array(size) { IntArray(first().size) }
-            forEachPoint { x, y -> updateDifferencesNeighbors(x, y, differences) }
+        private fun Grid<Octopus>.updateEnergyLevelsNeighbors() {
+            val differences = Array(height) { IntArray(width) }
+            val gridPoints = gridPoints().toList()
+            gridPoints.forEach { updateDifferencesNeighbors(it, differences) }
             if (differences.allInGrid { it == 0 }) return
-            forEachPointAndValue { x, y, octopus -> octopus.updateEnergyLevel(differences[y][x]) }
+            gridPoints.forEach { it -> this[it].updateEnergyLevel(differences[it]) }
             updateEnergyLevelsNeighbors()
         }
 
-        private fun MutableGrid<Octopus>.updateDifferencesNeighbors(x: Int, y: Int, differences: MutableIntGrid) {
-            val octopus = this[y][x]
+        private fun Grid<Octopus>.updateDifferencesNeighbors(p: GridPoint2D, differences: Array<IntArray>) {
+            val octopus = this[p]
             if (octopus.isFlashing()) {
                 octopus.incrementFlashes()
-                GridPoint2D.kingDirs.map { (dx, dy) -> x + dx by y + dy }
+                GridPoint2D.kingDirs.map { d -> p + d }
                     .forEach { p -> getOrNull(p)?.run { differences[p]++ } }
             }
         }

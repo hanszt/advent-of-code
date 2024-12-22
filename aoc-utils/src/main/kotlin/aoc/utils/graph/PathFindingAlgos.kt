@@ -21,16 +21,16 @@ infix fun <T> WeightedNode<T>.dijkstra(goal: WeightedNode<T>): WeightedNode<T> {
 /**
  * See https://www.geeksforgeeks.org/find-paths-given-source-destination/
  */
-fun <T> allPathsByDfs(start: Node<T>, goal: Node<T>, predicate: (Node<T>) -> Boolean): Sequence<List<Node<T>>> = sequence {
+fun <T> allPathsByDfs(start: MutableNode<T>, goal: MutableNode<T>, predicate: (MutableNode<T>) -> Boolean): Sequence<List<MutableNode<T>>> = sequence {
     dfsRecursive(start, goal, predicate = predicate)
 }
 
-private suspend fun <T> SequenceScope<List<Node<T>>>.dfsRecursive(
-    current: Node<T>,
-    goal: Node<T>,
-    visited: MutableSet<Node<T>> = HashSet(),
-    localPath: MutableList<Node<T>> = mutableListOf(current),
-    predicate: (Node<T>) -> Boolean
+private suspend fun <T> SequenceScope<List<MutableNode<T>>>.dfsRecursive(
+    current: MutableNode<T>,
+    goal: MutableNode<T>,
+    visited: MutableSet<MutableNode<T>> = HashSet(),
+    localPath: MutableList<MutableNode<T>> = mutableListOf(current),
+    predicate: (MutableNode<T>) -> Boolean = { true }
 ) {
     if (current == goal) {
         yield(localPath.toList())

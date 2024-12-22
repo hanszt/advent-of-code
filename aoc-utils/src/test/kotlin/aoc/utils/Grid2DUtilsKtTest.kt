@@ -1,15 +1,9 @@
 package aoc.utils
 
+import aoc.utils.grid2d.*
 import aoc.utils.grid2d.GridPoint2D.Companion.by
-import aoc.utils.grid2d.copyGrid
-import aoc.utils.grid2d.gridAsString
-import aoc.utils.grid2d.gridPoint2D
-import aoc.utils.grid2d.mirroredHorizontally
-import aoc.utils.grid2d.mirroredVertically
-import aoc.utils.grid2d.rotated
-import aoc.utils.grid2d.rotatedCc
-import aoc.utils.grid2d.toMutableGrid
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.Month
 import java.time.Year
@@ -181,5 +175,22 @@ internal class Grid2DUtilsKtTest {
         monthGrid.gridAsString(separator = " ")
 
         monthGrid[0][0] shouldBe Month.DECEMBER
+    }
+
+    @Nested
+    inner class GridTest {
+
+        @Test
+        fun `iterable of points to grid`() {
+            val s = listOf(gridPoint2D(1, 1), gridPoint2D(2, 2), gridPoint2D(3, 3))
+                .toGrid { x, y, isWall -> if (isWall) "#" else "." }
+                .toString()
+
+            s shouldBe """
+              | # . .
+              | . # .
+              | . . #
+            """.trimMargin()
+        }
     }
 }

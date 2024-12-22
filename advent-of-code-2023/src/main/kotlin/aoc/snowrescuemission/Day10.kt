@@ -1,22 +1,7 @@
 package aoc.snowrescuemission
 
-import aoc.utils.CYAN
-import aoc.utils.ChallengeDay
-import aoc.utils.PIPE_DOWN_LEFT
-import aoc.utils.PIPE_DOWN_RIGHT
-import aoc.utils.PIPE_LEFT_RIGHT
-import aoc.utils.PIPE_UP_DOWN
-import aoc.utils.PIPE_UP_LEFT
-import aoc.utils.PIPE_UP_RIGHT
-import aoc.utils.YELLOW_BG
-import aoc.utils.grid2d.get
-import aoc.utils.grid2d.gridAsString
-import aoc.utils.linkedListOf
-import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.gridPoint2D
-import aoc.utils.grid2d.set
-import aoc.utils.grid2d.toMutableCharGrid
-import aoc.utils.withColor
+import aoc.utils.*
+import aoc.utils.grid2d.*
 import java.io.File
 
 class Day10(
@@ -36,12 +21,21 @@ class Day10(
     private val graph = graph(grid)
     private val start = graph.entries.first { (_, c) -> c == START_CHAR }.key
 
-    override fun part1(): Int = bfs(start).last().toPath().size - 1
+    /**
+     * How many steps along the loop does it take to get from the starting position to the point farthest from the starting position?
+     */
+    override fun part1(): Int = floodFill(grid.dimension2D(), start) {
+        val p = it.position
+        grid[p].isNeighbor(dir = p - it.prev!!.position)
+    }.last().cost
 
+    /**
+     * How many tiles are enclosed by the loop?
+     */
     override fun part2(): Int {
         val mask = grid.toMutableCharGrid { '.' }
-        cyclesByDfs(start)
-            .map(Link::toPath)
+        dfs(start)
+            .map { it.traceBackToStart { it.position } }
             .maxBy(List<*>::size)
             .forEach { mask[it] = grid[it].toPathCharacter() }
         return countEnclosedTiles(mask).also { println(mask.toColoredMap()) }
@@ -92,50 +86,25 @@ class Day10(
         ?.getOrNull(start.x)
         ?.toPathCharacter() in setOf(PIPE_UP_DOWN, PIPE_UP_LEFT, PIPE_UP_RIGHT)
 
-    private fun bfs(start: GridPoint2D): Sequence<Link> = sequence {
-        val visited = mutableSetOf(start)
-        val queue = linkedListOf(Link(start))
-        while (queue.isNotEmpty()) {
-            val cur = queue.removeFirst()
-            val neighbors = cur.position.neighbors()
-            for (neighbor in neighbors) {
-                if (neighbor !in visited) {
-                    visited += neighbor
-                    val link = Link(neighbor, cur)
-                    queue.addLast(link)
-                    yield(link)
-                }
-            }
-        }
-    }
-
-    private fun cyclesByDfs(start: GridPoint2D) = sequence {
-        val visited = mutableSetOf<GridPoint2D>()
-        val stack = mutableListOf(Link(start))
+    private fun dfs(start: GridPoint2D) = sequence {
+        val visited = HashSet<GridPoint2D>()
+        val stack = ArrayDeque<Grid2DNode>().also { it.addLast(Grid2DNode(start)) }
         while (stack.isNotEmpty()) {
             val cur = stack.removeLast()
-            val position = cur.position
-            if (position !in visited) {
-                visited += position
-                val neighbors = position.neighbors()
-                for (neighbor in neighbors) {
-                    if (neighbor == this@Day10.start) {
-                        yield(cur)
+            val p = cur.position
+            if (p !in visited) {
+                visited += p
+                for (dir in GridPoint2D.towerDirs) {
+                    val n = p + dir
+                    grid.getOrNull(n)?.let {
+                        if (it isNeighbor dir) {
+                            if (n == this@Day10.start) {
+                                yield(cur)
+                            }
+                            stack.addLast(Grid2DNode(n, prev = cur))
+                        }
                     }
-                    stack.addLast(Link(neighbor, cur))
                 }
-            }
-        }
-    }
-
-    private data class Link(val position: GridPoint2D, val origin: Link? = null) {
-
-        fun toPath(): List<GridPoint2D> = buildList {
-            var cur = this@Link
-            add(cur.position)
-            while (true) {
-                cur = cur.origin ?: break
-                addFirst(cur.position)
             }
         }
     }
@@ -144,18 +113,6 @@ class Day10(
         for ((y, row) in rows.withIndex()) {
             for ((x, c) in row.withIndex()) {
                 this[gridPoint2D(x, y)] = c
-            }
-        }
-    }
-
-    private fun GridPoint2D.neighbors(): Set<GridPoint2D> = buildSet {
-        for (dir in GridPoint2D.towerDirs) {
-            val nx = x + dir.x
-            val ny = y + dir.y
-            grid.getOrNull(ny)?.getOrNull(nx)?.let {
-                if (it isNeighbor dir) {
-                    this += gridPoint2D(nx, ny)
-                }
             }
         }
     }

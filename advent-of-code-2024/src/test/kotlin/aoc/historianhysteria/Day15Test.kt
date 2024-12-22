@@ -30,12 +30,27 @@ class Day15Test {
 
     @Test
     fun part1dr() {
-        day15dr.part1() shouldBe 0
+        day15dr.part1() shouldBe 1526673
     }
 
     @Test
     fun part1() {
-        day15.part1() shouldBe 0
+        day15.part1() shouldBe 1457740
+    }
+
+    @Test
+    fun part2TestSmall() {
+        day15TestSmall.part2() shouldBe 1751
+    }
+
+    @Test
+    fun part2dr() {
+        day15dr.part2() shouldBe 1535509L
+    }
+
+    @Test
+    fun part2() {
+        day15.part2() shouldBe 1467145
     }
 
 }

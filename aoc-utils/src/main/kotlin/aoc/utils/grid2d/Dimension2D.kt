@@ -12,7 +12,7 @@ interface Dimension2D : OpenEndedGridPoint2DRange {
 
     val surfaceArea: Int get() = width * height
 
-    fun gridPoints() = Sequence {
+    fun gridPoints(): Sequence<GridPoint2D> = Sequence {
         object : Iterator<GridPoint2D> {
 
             var x = 0

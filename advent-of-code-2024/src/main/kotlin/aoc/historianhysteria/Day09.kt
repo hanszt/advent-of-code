@@ -7,6 +7,7 @@ import kotlin.io.path.readText
 /**
  * What is the resulting filesystem checksum?
  *
+ * I had an of by one error, looked at the following to see what it had to be.
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day09_1.kt to see what the right answer should have been
  */
 class Day09(diskMap: String) : ChallengeDay {
@@ -56,7 +57,7 @@ class Day09(diskMap: String) : ChallengeDay {
             }
             i1++
         }
-        if (size % 2 != 0) removeLast()
+        if (size % 2 != 0) removeLast() // hack
     }
 
     sealed interface DiskSegment

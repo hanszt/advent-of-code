@@ -53,8 +53,9 @@ fun Map<Int, Color>.printTable() = forEach { (nr, color) ->
 fun colorWithAnsiTableNr(nr: Int): TextColor = colorTable16Bit[nr] ?: error("max code is 255 (was: $nr)")
 fun bgColorWithAnsiTableNr(nr: Int): BgColor = bgColorTable16Bit[nr] ?: error("max code is 255 (was: $nr)")
 
-infix fun <T> T.withColor(color: Color) = "${color.ansiCode}$this${RESET.ansiCode}"
-fun <T> T.withColors(textColor: TextColor, backgroundColor: BgColor) =
+infix fun String.withColor(color: Color) = "${color.ansiCode}$this${RESET.ansiCode}"
+infix fun Char.withColor(color: Color) = "${color.ansiCode}$this${RESET.ansiCode}"
+fun String.withColors(textColor: TextColor, backgroundColor: BgColor) =
     "${backgroundColor.ansiCode}${textColor.ansiCode}$this${RESET.ansiCode}"
 
 fun random16BitColor(random: Random) = colorTable16Bit.values.random(random)

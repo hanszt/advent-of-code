@@ -1,39 +1,23 @@
 package aoc.historianhysteria
 
+import aoc.utils.grid2d.dimension2D
+import aoc.utils.grid2d.floodFill
 import aoc.utils.grid2d.forEachPoint
 import aoc.utils.grid2d.get
-import aoc.utils.grid2d.getOrNull
-import aoc.utils.grid2d.GridPoint2D
 
 /**
  * Source: https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day10_1.kt
  *
  * Only refactored to understand it better
  */
-fun part1Elizarov(map: List<String>): Long {
-    val queue = ArrayDeque<GridPoint2D>()
-    val visited = HashSet<GridPoint2D>()
+fun day10Part1Elizarov(map: List<String>): Long {
     var sum = 0L
     map.forEachPoint {
         if (map[it] == '0') {
-            // Bfs
-            queue.apply { clear(); add(it) }
-            visited.apply { clear(); add(it) }
-            while (queue.isNotEmpty()) {
-                val p = queue.removeFirst()
-                val height = map[p]
-                if (height == '9') {
-                    sum++
-                    continue
-                }
-                for (dir in GridPoint2D.towerDirs) {
-                    val neighbor = p + dir
-                    // check if in grid and current height
-                    map.getOrNull(neighbor)?.takeIf { it == height + 1 } ?: continue
-                    if (visited.add(neighbor)) {
-                        queue += neighbor
-                    }
-                }
+            floodFill(map.dimension2D(), start = it) { it ->
+                val ok = map[it.position] == '0' + it.cost
+                if (ok && it.cost == 9) sum++
+                ok
             }
         }
     }

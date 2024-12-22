@@ -1,12 +1,8 @@
 package aoc.historianhysteria
 
-import aoc.utils.grid2d.Dimension2D
-import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.get
-import aoc.utils.grid2d.getOrNull
-import aoc.utils.grid2d.gridPoint2D
-import aoc.utils.grid2d.lowerRight
-import aoc.utils.grid2d.set
+import aoc.utils.grid2d.*
+import aoc.utils.grid2d.GridPoint2D.Companion.ZERO
+import aoc.utils.toSetOf
 
 /**
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day18_1.kt
@@ -18,25 +14,9 @@ fun day18Part1(input: List<String>, dimension2D: Dimension2D, nrOfFallenBytes: I
     }
     val c = Array(n) { BooleanArray(m) }
     for (p in a.take(nrOfFallenBytes)) c[p] = true
-
-    val distances = Array(n) { IntArray(m) { Int.MAX_VALUE } }
-    val q = ArrayList<GridPoint2D>()
-    fun enq(p: GridPoint2D, d: Int) {
-        val isByte = c.getOrNull(p) ?: return
-        if (isByte) return
-        if (distances[p] <= d) return
-        distances[p] = d
-        q += p
-    }
-    enq(GridPoint2D.ZERO, 0)
-    while (q.isNotEmpty()) {
-        val pos = q.removeFirst()
-        val d = distances[pos]
-        for (dir in GridPoint2D.orthoDirs) {
-            enq(pos + dir, d + 1)
-        }
-    }
-    return distances[distances.lowerRight]
+    return floodFill(dimension2D, dimension2D.start) { !c[it.position] }
+        .toGrid(dimension2D)
+        .lowerRight.cost
 }
 
 /**
@@ -49,27 +29,13 @@ fun day18Part2(input: List<String>, dimension2D: Dimension2D): GridPoint2D {
     val a = input.map {
         it.split(',').let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
     }
-    val c = Array(n) { BooleanArray(m) }
+    val isOpen = Array(n) { BooleanArray(m) { true } }
     for (p in a) {
-        c[p] = true
-        val distances = Array(n) { IntArray(m) { Int.MAX_VALUE } }
-        val q = ArrayDeque<GridPoint2D>()
-        fun enq(p: GridPoint2D, d: Int) {
-            val isByte = c.getOrNull(p) ?: return
-            if (isByte) return
-            if (distances[p] <= d) return
-            distances[p] = d
-            q += p
+        isOpen[p] = false
+        val visited = floodFill(dimension2D, start = ZERO) { isOpen[it.position] }.toSetOf { it.position }
+        if (dimension2D.endExclusive !in visited) {
+            return p
         }
-        enq(GridPoint2D.ZERO, 0)
-        while (q.isNotEmpty()) {
-            val pos = q.removeFirst()
-            val d = distances[pos]
-            for (dir in GridPoint2D.orthoDirs) {
-                enq(pos + dir, d + 1)
-            }
-        }
-        if (distances[distances.lowerRight] == Int.MAX_VALUE) return p
     }
     error("Nothing found")
 }

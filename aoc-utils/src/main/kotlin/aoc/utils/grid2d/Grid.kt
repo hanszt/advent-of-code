@@ -3,9 +3,18 @@ package aoc.utils.grid2d
 /**
  * An unmodifiable Grid 2D.
  */
-interface Grid<T> : Dimension2D {
-    fun getOrNull(p2: GridPoint2D): T?
-    operator fun get(p2: GridPoint2D): T
+interface Grid<T> : Dimension2D, Iterable<List<T>> {
+
+    fun getOrNull(x: Int, y: Int): T?
+    fun getOrNull(point: GridPoint2D): T? = getOrNull(point.x, point.y)
+
+    operator fun get(x: Int, y: Int): T
+    operator fun get(point: GridPoint2D): T = get(point.x, point.y)
+
+    /**
+     * Returns an iterator that iterates over the rows of the grid
+     */
+    override fun iterator(): Iterator<List<T>>
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -14,8 +23,20 @@ private class StandardGrid<T>(private val grid: Array<Array<Any>>) : Grid<T> {
     override val width: Int = grid.getOrNull(0)?.size ?: 0
     override val height: Int = grid.size
 
-    override fun getOrNull(p2: GridPoint2D): T? = grid.getOrNull(p2.y)?.getOrNull(p2.x) as T?
-    override operator fun get(p2: GridPoint2D): T = grid[p2.y][p2.x] as T
+    override fun get(x: Int, y: Int): T = grid[y][x] as T
+
+    override fun iterator(): Iterator<List<T>> = object : Iterator<List<T>> {
+        var y = 0
+        override fun hasNext(): Boolean = y < height
+        override fun next(): List<T> {
+            return if (hasNext()) {
+                listOf(*grid[y++] as Array<T>)
+            } else throw NoSuchElementException()
+        }
+    }
+
+
+    override fun getOrNull(x: Int, y: Int): T? = grid.getOrNull(y)?.getOrNull(x) as T?
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

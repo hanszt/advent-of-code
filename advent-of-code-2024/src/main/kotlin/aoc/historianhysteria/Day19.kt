@@ -7,9 +7,13 @@ import kotlin.io.path.readText
 
 class Day19(input: String) : ChallengeDay {
 
+    private val dss: List<String>
+    private val towel: List<String>
 
     init {
         val (f, s) = input.splitByBlankLine()
+        dss = f.lines()
+        towel = s.lines()
     }
 
     constructor(path: Path) : this(path.readText())

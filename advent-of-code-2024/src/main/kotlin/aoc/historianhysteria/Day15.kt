@@ -1,28 +1,21 @@
 package aoc.historianhysteria
 
-import aoc.utils.*
-import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.copyGrid
-import aoc.utils.grid2d.findPoint
-import aoc.utils.grid2d.get
-import aoc.utils.grid2d.gridAsString
-import aoc.utils.grid2d.gridPoint2D
-import aoc.utils.grid2d.swap
-import aoc.utils.grid2d.toMutableCharGrid
+import aoc.utils.ChallengeDay
+import aoc.utils.grid2d.*
+import aoc.utils.splitByBlankLine
 import java.nio.file.Path
 import kotlin.io.path.readText
-
-private const val robot = '@'
+import aoc.utils.grid2d.gridPoint2D as P2
 
 class Day15(input: String) : ChallengeDay {
 
     private val map: List<String>
-    private val instructions: String
+    private val moves: List<String>
 
     init {
         val (map, instructions) = input.splitByBlankLine()
         this.map = map.lines()
-        this.instructions = instructions.lines().joinToString("")
+        this.moves = instructions.lines()
     }
 
     constructor(path: Path) : this(path.readText())
@@ -30,39 +23,118 @@ class Day15(input: String) : ChallengeDay {
     /**
      * what is the sum of all boxes' GPS coordinates?
      */
-    override fun part1(): Int {
-        println("map = ${map.gridAsString()}")
-        println("instructions = ${instructions}")
-        var cur = map.findPoint { it == robot } ?: error("No start point found")
-        var grid = map.toMutableCharGrid()
-        val m = grid[0].size
-        val n = grid.size
-        for (instruction in instructions) {
-            val curGrid = grid.copyGrid()
-            while (true) {
-                val neighborPos = cur + GridPoint2D.right
-                val neighbor = curGrid[neighborPos]
-                when (neighbor) {
-                    '.' -> grid.swap(cur, neighborPos).also { cur = neighborPos }
-                    'O' -> {
-                        var x = m - 2
-                        do {
-                            val c = grid[cur.y][x]
-                            if (c == '.') {
-                                grid.swap(p1x = x, p1y = cur.y, p2x = x - 1, p2y = cur.y).also { cur = gridPoint2D(x, cur.y) }
-                            }
-                            x--
-                        } while (c != robot)
+    override fun part1(): Long = p1Elizarov()
+
+    /**
+     * What is the sum of all boxes' final GPS coordinates?
+     */
+    override fun part2(): Long = p2Elizarov()
+
+    fun p1Elizarov(): Long {
+        val a = map.toMutableCharGrid()
+        var r = map.firstPoint { it == '@' }
+        a[r] = '.'
+        for (line in moves) for (c in line) {
+            var d = toDirection(c)
+            var k = 1
+            while (a[r + d * k] == 'O') k++
+            when (a[r + d * k]) {
+                '#' -> continue
+                '.' -> {
+                    if (k > 1) {
+                        a[r + d * k] = 'O'
+                        a[r + d] = '.'
                     }
+                    r += d
                 }
-                if ((cur.x..(m - 2)).all { grid[cur.y][it] != '.' }) {
-                    break
-                }
+
+                else -> error("!!!")
             }
-            print(instruction + ", ")
         }
-        TODO()
+        var sum = 0L
+        a.forEachPointAndValue { x, y, c -> if (c == 'O') sum += 100 * y + x }
+        return sum
     }
 
-    override fun part2(): Int = TODO()
+    fun p2Elizarov(): Long {
+        val a = modifyMap(map)
+        var r = a.firstPoint { it == '@' }
+        a[r] = '.'
+        for (line in moves) for (c in line) {
+            var d = toDirection(c)
+            var k = 1
+            if (d.y == 0) {
+                while (a[r.y][r.x + d.x * k] in setOf('[', ']')) k++
+                when (a[r.y][r.x + d.x * k]) {
+                    '#' -> continue
+                    '.' -> {
+                        if (k > 1) {
+                            check(k % 2 == 1)
+                            for (t in 2..k) {
+                                a[r.y][r.x + d.x * t] = if ((t % 2 == 0) == (d.x < 0)) ']' else '['
+                            }
+                            a[r + d] = '.'
+                        }
+                        r += d
+                    }
+
+                    else -> error("!!!")
+                }
+            } else {
+                val ms = HashMap<Int, HashSet<Int>>()
+                ms[r.y] = HashSet(setOf(r.x))
+                var cy = r.y
+                var blocked = false
+                while (!blocked && cy in ms) {
+                    for (x in ms[cy]!!) {
+                        when (a[cy + d.y][x]) {
+                            '[' -> ms.getOrPut(cy + d.y) { HashSet() }.addAll(setOf(x, x + 1))
+                            ']' -> ms.getOrPut(cy + d.y) { HashSet() }.addAll(setOf(x - 1, x))
+                            '#' -> {
+                                blocked = true; break
+                            }
+
+                            '.' -> {}
+                            else -> error("!!!")
+                        }
+                    }
+                    cy += d.y
+                }
+                if (!blocked) {
+                    cy -= d.y
+                    while (cy in ms) {
+                        for (x in ms[cy]!!) {
+                            a[cy + d.y][x] = a[cy][x]
+                            a[cy][x] = '.'
+                        }
+                        cy -= d.y
+                    }
+                    r += P2(0, d.y)
+                }
+            }
+        }
+        var sum = 0L
+        a.forEachPointAndValue { i, j, c -> if (c == '[') sum += 100 * j + i }
+        return sum
+    }
+
+    private fun modifyMap(map: List<String>): Array<CharArray> = map.map {
+        it.map {
+            when (it) {
+                '#' -> "##"
+                'O' -> "[]"
+                '.' -> ".."
+                '@' -> "@."
+                else -> error("!$it")
+            }
+        }.joinToString("")
+    }.toMutableCharGrid()
+
+    private fun toDirection(c: Char): GridPoint2D = when (c) {
+        '<' -> P2(-1, 0)
+        'v' -> P2(0, 1)
+        '>' -> P2(1, 0)
+        '^' -> P2(0, -1)
+        else -> error("!$c")
+    }
 }

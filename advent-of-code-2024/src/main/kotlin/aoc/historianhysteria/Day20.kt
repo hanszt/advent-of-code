@@ -1,14 +1,7 @@
 package aoc.historianhysteria
 
-import aoc.utils.*
-import aoc.utils.grid2d.MutableCharGrid
-import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.findPoint
-import aoc.utils.grid2d.forEachPoint
-import aoc.utils.grid2d.get
-import aoc.utils.grid2d.getOrNull
-import aoc.utils.grid2d.set
-import aoc.utils.grid2d.toMutableCharGrid
+import aoc.utils.ChallengeDay
+import aoc.utils.grid2d.*
 import java.nio.file.Path
 import kotlin.io.path.readLines
 
@@ -22,8 +15,8 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
      * How many cheats would save you at least 100 picoseconds?
      */
     override fun part1(): Int {
-        val start = input.findPoint { it == 'S' } ?: error("Start not found")
-        val target = input.findPoint { it == 'E' } ?: error("Target not found")
+        val start = input.firstPoint { it == 'S' }
+        val target = input.firstPoint { it == 'E' }
         val grid = input.toMutableCharGrid()
         val initial = findShortestTime(grid, start, target)
         var count = 0
@@ -39,26 +32,25 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
         return count
     }
 
-    private fun isCandidate(grid: MutableCharGrid, p: GridPoint2D): Boolean = grid[p] == '#' &&
+    private fun isCandidate(grid: Array<CharArray>, p: GridPoint2D): Boolean = grid[p] == '#' &&
             ((grid.getOrNull(p.plusX(-1)).isPath() && grid.getOrNull(p.plusX(1)).isPath()) ||
                     (grid.getOrNull(p.plusY(-1)).isPath() && grid.getOrNull(p.plusY(1)).isPath()))
 
-    private fun findShortestTime(grid: MutableCharGrid, start: GridPoint2D, target: GridPoint2D): Int {
-        data class Node(val p: GridPoint2D, val time: Int = 0, val prev: Node? = null)
-        val s = Node(start)
-        val nodes = mutableMapOf<GridPoint2D, Node>().apply { put(start, s) }
-        val q = ArrayDeque<Node>().apply { add(s) }
+    private fun findShortestTime(grid: Array<CharArray>, start: GridPoint2D, target: GridPoint2D): Int {
+        val s = Grid2DNode(start)
+        val nodes = mutableMapOf<GridPoint2D, Grid2DNode>().apply { put(start, s) }
+        val q = ArrayDeque<Grid2DNode>().apply { add(s) }
         while (q.isNotEmpty()) {
             val cur = q.removeFirst()
-            if (cur.p == target) return cur.time
-            val newT = cur.time + 1
+            if (cur.position == target) return cur.cost
+            val newT = cur.cost + 1
             for (nd in GridPoint2D.orthoDirs) {
-                val n = cur.p + nd
+                val n = cur.position + nd
                 val nc = grid.getOrNull(n)
                 if (nc.isPath()) {
-                    val t = nodes[n]?.time
+                    val t = nodes[n]?.cost
                     if (t == null || newT < t) {
-                        val node = Node(n, newT, cur)
+                        val node = Grid2DNode(n, newT, cur)
                         nodes[n] = node
                         q += node
                     }

@@ -1,10 +1,13 @@
 package aoc.utils.graph
 
-import java.util.Collections
+import java.util.*
 
-class WeightedNode<T>(val value: T? = null,
-                      val weight: Int,
-                      val neighbors: MutableSet<WeightedNode<T>> = HashSet()) {
+class WeightedNode<T>(
+    val value: T? = null,
+    val weight: Int,
+    val neighbors: MutableSet<WeightedNode<T>> = HashSet(),
+    override val prev: WeightedNode<T>? = null
+): Node<WeightedNode<T>> {
 
     var cost = Int.MAX_VALUE
     private var leastCostPathInternal: List<WeightedNode<T>> = emptyList()

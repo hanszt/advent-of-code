@@ -23,12 +23,12 @@ public class Day19NotEnoughMinerals implements ChallengeDay {
     @NotNull
     @Override
     public Integer part1() {
-        return Day19ElizarovKt.day19Part(lines, 1);
+        return Day19ElizarovKt.day19(lines, 1);
     }
 
     @NotNull
     @Override
     public Integer part2() {
-        return Day19ElizarovKt.day19Part(lines, 2);
+        return Day19ElizarovKt.day19(lines, 2);
     }
 }
