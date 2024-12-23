@@ -7,13 +7,16 @@ interface Node<N : Node<N>> {
     val prev: N?
 
     /**
-     * Backtracks a path formed by all nodes linked to this node
+     * Backtracks a path formed by all nodes linked to this node. If it contains a cycle, it will break
      */
-    fun <R> traceBackToStart(transform: (N) -> R): List<R> = buildList {
+    fun <R> traceBack(transform: (N) -> R): List<R> = buildList {
+        val visited = mutableSetOf<N>()
         var current = this@Node
         while (true) {
             @Suppress("UNCHECKED_CAST")
-            add(transform(current as N))
+            val n = current as N
+            if (!visited.add(n)) break
+            add(transform(n))
             current = current.prev ?: break
         }
     }

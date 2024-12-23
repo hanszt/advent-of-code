@@ -11,8 +11,7 @@ class Day17Test {
     private companion object {
         private val day17dr = Day17(Path("input/day17dr.txt"))
         private val day17 = Day17(Path("input/day17.txt"))
-        private val day17TestInput = Day17(
-            grid = """
+        private val testInput1 = """
                 2413432311323
                 3215453535623
                 3255245654254
@@ -26,7 +25,16 @@ class Day17Test {
                 1224686865563
                 2546548887735
                 4322674655533
-            """.trimIndent().lines()
+            """.trimIndent()
+        private val testInput2 = """
+                111111111111
+                999999999991
+                999999999991
+                999999999991
+                999999999991
+            """.trimIndent()
+        private val day17TestInput = Day17(
+            grid = testInput1.lines()
         )
     }
 
@@ -42,15 +50,7 @@ class Day17Test {
 
     @Test
     fun testPart2TestInput2() {
-        Day17(
-            grid = """
-            111111111111
-            999999999991
-            999999999991
-            999999999991
-            999999999991
-        """.trimIndent().lines()
-        ).part2() shouldBe 71
+        Day17(testInput2.lines()).part2() shouldBe 71
     }
 
     @Test
@@ -65,33 +65,40 @@ class Day17Test {
 
     @Test
     fun testPart2() {
-        day17dr.part2() shouldBe 1420 // 1421 to high
+        day17.part2() shouldBe 1420 // 1421, 1286 to high
     }
 
     @Test
-    fun testPart2V2() {
-        day17.part2() shouldBe 1420 // 1421, 1286 to high
+    fun testPart2dr() {
+        day17dr.part2() shouldBe 1420 // 1421 to high
     }
 
     @Nested
     inner class JavaVersionTest {
 
         @Test
+        fun testJavaSolutionPart1() {
+            Day17Java(Path("input/day17.txt").readLines()).part1() shouldBe 1155
+        }
+
+        @Test
         fun testJavaSolutionPart2() {
-            Day17Java(Path("input/day17.txt").readLines()).part2() shouldBe 101
+            Day17Java(Path("input/day17.txt").readLines()).part2() shouldBe 1285 // 1286 to high
+        }
+
+        @Test
+        fun testJavaSolutionPart2dr() {
+            Day17Java(Path("input/day17dr.txt").readLines()).part2() shouldBe 1420 // 1421 to high
+        }
+
+        @Test
+        fun testJavaSolutionPart2Test1() {
+            Day17Java(testInput1.lines()).part2() shouldBe 94
         }
 
         @Test
         fun testJavaSolutionPart2Test2() {
-            Day17Java(
-                """
-            111111111111
-            999999999991
-            999999999991
-            999999999991
-            999999999991
-        """.trimIndent().lines()
-            ).part2() shouldBe 71
+            Day17Java(testInput2.lines()).part2() shouldBe 71
         }
     }
 

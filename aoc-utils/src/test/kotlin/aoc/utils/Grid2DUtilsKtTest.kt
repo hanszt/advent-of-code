@@ -1,12 +1,10 @@
 package aoc.utils
 
 import aoc.utils.grid2d.*
-import aoc.utils.grid2d.GridPoint2D.Companion.by
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.Month
-import java.time.Year
 
 internal class Grid2DUtilsKtTest {
 
@@ -43,28 +41,14 @@ internal class Grid2DUtilsKtTest {
     }
 
     @Test
-    fun `test rotate rotates generic matrix by 90 deg clockwise`() {
-        val input = listOf(
-            listOf(gridPoint2D(1, 1), gridPoint2D(2, 2))
-        )
-        val expected = listOf(
-            listOf(1 by 1),
-            listOf(2 by 2)
-        )
-        val rotatedClockWise = input.rotated()
-
-        rotatedClockWise shouldBe expected
-    }
-
-    @Test
-    fun `test rotated rotates generic 2d array by 90 deg clockwise`() {
+    fun `test rotated rotates char 2d array by 90 deg clockwise`() {
         val input = arrayOf(
-            arrayOf(1 by 1, 2 by 2),
-            arrayOf(3 by 3, 4 by 4)
+            charArrayOf('1', '2'),
+            charArrayOf('3', '4')
         )
         val expected = arrayOf(
-            arrayOf(3 by 3, 1 by 1),
-            arrayOf(4 by 4, 2 by 2)
+            charArrayOf('3', '1'),
+            charArrayOf('4', '2')
         )
         val rotatedClockWise = input.rotated()
 
@@ -119,14 +103,14 @@ internal class Grid2DUtilsKtTest {
     }
 
     @Test
-    fun `generic grid mirrored vertically`() {
+    fun `char grid mirrored vertically`() {
         val expected = arrayOf(
-            arrayOf(Year.of(4), Year.of(5), Year.of(6)),
-            arrayOf(Year.of(1), Year.of(2), Year.of(3))
+            charArrayOf('4', '5', '6'),
+            charArrayOf('1', '2', '3')
         )
         val input = arrayOf(
-            arrayOf(Year.of(1), Year.of(2), Year.of(3)),
-            arrayOf(Year.of(4), Year.of(5), Year.of(6))
+            charArrayOf('1', '2', '3'),
+            charArrayOf('4', '5', '6')
         )
         val mirrored = input.mirroredVertically()
 
@@ -136,12 +120,12 @@ internal class Grid2DUtilsKtTest {
     @Test
     fun `grid mirrored horizontally`() {
         val expected = arrayOf(
-            arrayOf("3", "2", "1"),
-            arrayOf("6", "5", "4")
+            charArrayOf('3', '2', '1'),
+            charArrayOf('6', '5', '4')
         )
         val input = arrayOf(
-            arrayOf("1", "2", "3"),
-            arrayOf("4", "5", "6")
+            charArrayOf('1', '2', '3'),
+            charArrayOf('4', '5', '6')
         )
         val mirrored = input.mirroredHorizontally()
 

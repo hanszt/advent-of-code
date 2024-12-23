@@ -3,12 +3,11 @@ package aoc.snowrescuemission
 import aoc.utils.ChallengeDay
 import aoc.utils.grid2d.rotated
 import aoc.utils.swap
-import java.io.File
+import kotlin.io.path.Path
+import kotlin.io.path.readLines
 
-class Day14(
-    fileName: String? = null,
-    private val grid: List<String> = File(fileName ?: error("No fileName or text provided")).readLines()
-) : ChallengeDay {
+class Day14(private val grid: List<String>) : ChallengeDay {
+    constructor(fileName: String) : this(Path(fileName).readLines())
 
     override fun part1(): Int = grid.rotated().fold(0, ::addLoadOfColumn)
     override fun part2(): Int = day14part2(grid)

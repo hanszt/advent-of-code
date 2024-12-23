@@ -35,7 +35,7 @@ class Day10(
     override fun part2(): Int {
         val mask = grid.toMutableCharGrid { '.' }
         dfs(start)
-            .map { it.traceBackToStart { it.position } }
+            .map { it.traceBack { it.position } }
             .maxBy(List<*>::size)
             .forEach { mask[it] = grid[it].toPathCharacter() }
         return countEnclosedTiles(mask).also { println(mask.toColoredMap()) }

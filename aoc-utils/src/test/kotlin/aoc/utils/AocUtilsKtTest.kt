@@ -83,4 +83,10 @@ internal class AocUtilsKtTest {
     fun greatestCommonDivisorSample() {
         12 gcd 32 shouldBe 4
     }
+
+    @Test
+    fun listRotated() {
+        listOf(1, 2, 3, 4).rotated(1) shouldBe listOf(2, 3, 4, 1)
+        listOf(1, 2, 3, 4).rotated(2) shouldBe listOf(3, 4, 1, 2)
+    }
 }

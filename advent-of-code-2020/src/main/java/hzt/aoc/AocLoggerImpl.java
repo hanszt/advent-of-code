@@ -10,7 +10,7 @@ public final class AocLoggerImpl implements AocLogger {
 
     private System.Logger.Level level = System.Logger.Level.INFO;
 
-    public AocLoggerImpl(String simpleName) {
+    AocLoggerImpl(String simpleName) {
         this.simpleName = simpleName;
     }
 

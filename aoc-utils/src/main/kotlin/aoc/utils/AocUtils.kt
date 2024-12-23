@@ -86,6 +86,13 @@ fun <T, R> Iterable<T>.toSetOf(mapper: (T) -> R): Set<R> {
     return mapTo(LinkedHashSet(), mapper).optimizeReadOnlySet()
 }
 
+fun <T> List<T>.rotated(amount: Int): List<T> {
+    if (size <= 1) return this
+    return List(size) {
+        this[(it + amount) % this@rotated.size]
+    }
+}
+
 private fun <T> Set<T>.optimizeReadOnlySet() = when (size) {
     0 -> emptySet()
     1 -> setOf(first())

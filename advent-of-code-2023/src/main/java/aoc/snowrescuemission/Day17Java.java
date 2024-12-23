@@ -16,7 +16,7 @@ public final class Day17Java {
     }
 
     public int part1() {
-        return minHeatLoss(maze, 3, (a, b) -> true, i -> true);
+        return minHeatLoss(maze, 3, (_, _) -> true, _ -> true);
     }
 
     public int part2() {
@@ -29,16 +29,18 @@ public final class Day17Java {
         Predicate<Coord> isValidCoord = c -> 0 <= c.x() && 0 <= c.y() && c.x < width && c.y < height;
         Predicate<State> isValidState = s -> s.straightLength() <= maxLength;
         Coord target = new Coord(width - 1, height - 1);
-        Map<Long, Integer> bestCost = new HashMap<>(1_000_000);
-        Queue<State> queue = new PriorityQueue<>(10_000);
+        Map<Long, Integer> bestCost = HashMap.newHashMap(1_000_000);
+        Queue<State> queue = new PriorityQueue<>(10_000, Comparator.comparingLong(State::heatLoss));
         queue.add(new State(new Coord(0, 0), 0, 0, Direction.EAST));
         while (!queue.isEmpty()) {
             State curr = queue.poll();
             List<Coord> nexts = curr.pos().nexts(curr.dir());
             List<State> nextStates = nexts
-                    .stream().filter(c -> isValidCoord.test(c) && nextFilter.test(c, curr)).map(c -> new State(c,
-                            curr.nextStraight(c), curr.heatLoss() + heatCost(c, maze), curr.pos().directionOf(c)))
-                    .filter(isValidState).toList();
+                    .stream()
+                    .filter(c -> isValidCoord.test(c) && nextFilter.test(c, curr))
+                    .map(c -> new State(c, curr.nextStraight(c), curr.heatLoss() + heatCost(c, maze), curr.pos().directionOf(c)))
+                    .filter(isValidState)
+                    .toList();
             for (State s : nextStates) {
                 if (s.pos().equals(target) && stopFilter.test(s.straightLength())) {
                     return s.heatLoss();
@@ -58,7 +60,7 @@ public final class Day17Java {
     }
 
     private enum Direction {
-        NORTH, EAST, SOUTH, WEST;
+        NORTH, EAST, SOUTH, WEST
     }
 
     private record Coord(int x, int y) {
@@ -81,7 +83,7 @@ public final class Day17Java {
             } else if (x == coord.x) {
                 if (y < coord.y) {
                     return Direction.SOUTH;
-                } else if (y > coord.y) {
+                } else {
                     return Direction.NORTH;
                 }
             }
@@ -89,14 +91,7 @@ public final class Day17Java {
         }
     }
 
-    private record State(Coord pos, int straightLength, int heatLoss, Direction dir) implements Comparable<State> {
-
-        private static final Comparator<State> COMPARATOR = Comparator.comparingLong(State::heatLoss);
-
-        @Override
-        public int compareTo(State o) {
-            return COMPARATOR.compare(this, o);
-        }
+    private record State(Coord pos, int straightLength, int heatLoss, Direction dir) {
 
         int nextStraight(Coord c) {
             if (pos.directionOf(c) == dir) {

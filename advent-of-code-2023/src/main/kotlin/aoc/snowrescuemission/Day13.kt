@@ -13,8 +13,8 @@ class Day13(
 
     private val patterns = text.splitToSequence(AocUtils.DOUBLE_LINE_SEPARATOR).map { Pattern(it.lines()) }
 
-    override fun part1(): Int = patterns.map(Pattern::findMirror).sumOf(::toSummary)
-    override fun part2(): Int = patterns.map(Pattern::findSmuggedMirror).sumOf(::toSummary)
+    override fun part1(): Int = patterns.sumOf { toSummary(it.findMirror()) }
+    override fun part2(): Int = patterns.sumOf { toSummary(it.findSmuggedMirror()) }
 
     private fun toSummary(mirror: Mirror) = when (mirror) {
         is VerMirror -> mirror.x

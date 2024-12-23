@@ -77,7 +77,7 @@ internal class Day15ChitonTest {
 
         @Test
         fun `part 2 result Elizarov`() {
-            day15.part2Elizarov().also { it.traceBackToStart { it.position }.reversed() }.cost shouldBe 2897
+            day15.part2Elizarov().also { println(it.traceBack { it.position }.reversed()) }.cost shouldBe 2897
         }
     }
 

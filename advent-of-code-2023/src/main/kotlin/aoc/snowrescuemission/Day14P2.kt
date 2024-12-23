@@ -1,6 +1,7 @@
 package aoc.snowrescuemission
 
-import aoc.utils.grid2d.toMutableCharGrid
+import aoc.utils.grid2d.*
+import aoc.utils.grid2d.GridPoint2D.Companion.north
 import aoc.utils.invoke
 
 /**
@@ -17,9 +18,8 @@ fun day14part2(input: List<String>): Int {
         override fun toString(): String = grid.joinToString("\n") { it.joinToString("") }
     }
 
-    val grid = input.toMutableCharGrid()
-    val m = grid.size
-    val n = grid[0].size
+    var grid = input.toMutableCharGrid()
+    val (m, n) = grid.dimension2D()
 
     val data2count = HashMap<Data, Int>()
     val count2Data = HashMap<Int, Data>()
@@ -30,70 +30,42 @@ fun day14part2(input: List<String>): Int {
         val start = data2count.put(data, count)
         if (start != null) {
             val targetData = count2Data(start + (target - start) % (count - start))
-            for (i in 0..<m) for (j in 0..<n) grid[i][j] = targetData.grid[i][j]
+            for (y in 0..<n) for (x in 0..<m) grid[y][x] = targetData.grid[y][x]
             break
         }
         count2Data[count++] = data
-        executeCycle(n, m, grid)
+        grid = executeCycle(grid)
     }
-    return calculateLoad(m, n, grid)
+    return calculateLoad(grid)
 }
 
-private fun calculateLoad(m: Int, n: Int, grid: Array<CharArray>): Int {
+private fun calculateLoad(grid: Array<CharArray>): Int {
     var sum = 0
-    for (i in 0..<m) {
-        for (j in 0..<n) {
-            if (grid[i][j] == 'O') {
-                sum += m - i
+    for ((y, r) in grid.withIndex()) {
+        for (x in r.indices) {
+            if (grid[y][x] == 'O') {
+                sum += r.size - y
             }
         }
     }
     return sum
 }
 
-private fun executeCycle(n: Int, m: Int, grid: Array<CharArray>) {
-    // north
-    for (j in 0..<n) {
-        for (i in 0..<m) {
-            if (grid[i][j] == 'O') {
-                var k = i
-                while (k > 0 && grid[k - 1][j] == '.') k--
-                grid[i][j] = '.'
-                grid[k][j] = 'O'
+private fun executeCycle(grid: Array<CharArray>): Array<CharArray> {
+    var grid = grid
+    repeat(4) {
+        grid.forEachPoint { p ->
+            if (grid[p] == 'O') {
+                var dir = p
+                while (true) {
+                    grid.getOrNull(dir + north).takeIf { it == '.' } ?: break
+                    dir += north
+                }
+                grid[p] = '.'
+                grid[dir] = 'O'
             }
         }
+        grid = grid.rotated()
     }
-    // west
-    for (i in 0..<m) {
-        for (j in 0..<n) {
-            if (grid[i][j] == 'O') {
-                var k = j
-                while (k > 0 && grid[i][k - 1] == '.') k--
-                grid[i][j] = '.'
-                grid[i][k] = 'O'
-            }
-        }
-    }
-    // south
-    for (j in 0..<n) {
-        for (i in m - 1 downTo 0) {
-            if (grid[i][j] == 'O') {
-                var k = i
-                while (k < m - 1 && grid[k + 1][j] == '.') k++
-                grid[i][j] = '.'
-                grid[k][j] = 'O'
-            }
-        }
-    }
-    // east
-    for (i in 0..<m) {
-        for (j in n - 1 downTo 0) {
-            if (grid[i][j] == 'O') {
-                var k = j
-                while (k < n - 1 && grid[i][k + 1] == '.') k++
-                grid[i][j] = '.'
-                grid[i][k] = 'O'
-            }
-        }
-    }
+    return grid
 }

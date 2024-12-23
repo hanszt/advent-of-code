@@ -94,12 +94,12 @@ fun Iterable<GridPoint2D>.toClosedGridRange(): GridPoint2DRange {
 /**
  * mapping, filtering, actions and matching
  */
-inline fun <T, reified R> Array<Array<T>>.mapByPoint(transform: (Int, Int) -> R): Array<Array<R>> = Array(size) { y ->
+fun Array<CharArray>.mapByPoint(transform: (Int, Int) -> Char): Array<CharArray> = Array(size) { y ->
     val row = this[y]
-    Array(row.size) { x -> transform(x, y) }
+    CharArray(row.size) { x -> transform(x, y) }
 }
 
-inline fun <T, reified R> Array<Array<T>>.mapByPoint(transform: (GridPoint2D) -> R): Array<Array<R>> = mapByPoint { x, y ->
+fun Array<CharArray>.mapByPoint(transform: (GridPoint2D) -> Char): Array<CharArray> = mapByPoint { x, y ->
     transform(gridPoint2D(x, y))
 }
 
@@ -143,7 +143,7 @@ inline fun Array<IntArray>.gridCount(predicate: (Int, Int) -> Boolean): Int =
     indices.sumOf { y -> this[y].indices.count { x -> predicate(x, y) } }
 
 inline fun Array<IntArray>.gridCount(predicate: (GridPoint2D) -> Boolean): Int =
-    indices.sumOf { y -> this[y].indices.count { x -> predicate(x by y) } }
+    indices.sumOf { y -> this[y].indices.count { x -> predicate(gridPoint2D(x, y)) } }
 
 inline fun <T> Array<Array<T>>.forEachPointAndValue(action: (Int, Int, T) -> Unit) =
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
@@ -293,46 +293,72 @@ infix fun IntRange.by(other: IntRange): GridPoint2DRange {
 /**
  * Rotation and mirroring
  */
-@JvmName("gridRotated")
-fun <T> List<List<T>>.rotated(): List<List<T>> =
-    first().indices.map { col -> indices.reversed().map { row -> this[row][col] } }
+fun List<String>.rotated(): List<String> {
+    if (isEmpty()) return emptyList()
+    val s = this@rotated
+    val m = s[0].length
+    val n = s.size
+    return List(m) { y ->
+        buildString(n) {
+            for (x in n - 1 downTo 0) {
+                append(s[x][y])
+            }
+        }
+    }
+}
 
-@JvmName("gridRotatedCc")
-fun <T> List<List<T>>.rotatedCc(): List<List<T>> =
-    first().indices.reversed().map { col -> indices.map { row -> this[row][col] } }
+fun Array<CharArray>.rotated(): Array<CharArray> {
+    if (isEmpty()) return emptyArray()
+    val s = this@rotated
+    val m = s[0].size
+    val n = s.size
+    return Array(m) { y ->
+        CharArray(n) { x -> s[n - x - 1][y] }
+    }
+}
 
-fun List<String>.rotated(): List<String> =
-    first().indices.map { col -> indices.reversed().map { row -> this[row][col] }.joinToString("") }
+fun Array<IntArray>.rotated(): Array<IntArray> {
+    if (isEmpty()) return emptyArray()
+    val s = this@rotated
+    val m = s[0].size
+    val n = s.size
+    return Array(m) { y ->
+        IntArray(n) { x -> s[n - x - 1][y] }
+    }
+}
 
-fun List<String>.rotatedCc(): List<String> =
-    first().indices.reversed().map { col -> indices.map { row -> this[row][col] }.joinToString("") }
+fun Array<CharArray>.rotatedCc(): Array<CharArray> {
+    if (isEmpty()) return emptyArray()
+    val s = this@rotatedCc
+    val m = s[0].size
+    val n = s.size
+    return Array(m) { y ->
+        CharArray(n) { x -> s[x][m - y - 1] }
+    }
+}
 
-inline fun <reified T> Array<Array<T>>.rotated(): Array<Array<T>> =
-    first().indices.map { col -> indices.reversed().map { row -> this[row][col] }.toTypedArray() }.toTypedArray()
-
-inline fun <reified T> Array<Array<T>>.rotatedCc(): Array<Array<T>> =
-    first().indices.reversed().map { col -> indices.map { row -> this[row][col] }.toTypedArray() }.toTypedArray()
-
-fun Array<IntArray>.rotated(): Array<IntArray> = first().indices.map { col ->
-    indices.reversed().map { row -> this[row][col] }.toIntArray()
-}.toTypedArray()
-
-fun Array<IntArray>.rotatedCc(): Array<IntArray> = first().indices.reversed()
-    .map { col -> indices.map { row -> this[row][col] }.toIntArray() }
-    .toTypedArray()
+fun Array<IntArray>.rotatedCc(): Array<IntArray> {
+    if (isEmpty()) return emptyArray()
+    val s = this@rotatedCc
+    val m = s[0].size
+    val n = s.size
+    return Array(m) { y ->
+        IntArray(n) { x -> s[x][m - y - 1] }
+    }
+}
 
 fun Array<IntArray>.mirroredHorizontally(): Array<IntArray> = Array(size) { y ->
     val row = this[y]
     IntArray(row.size) { x -> row[row.lastIndex - x] }
 }
 
-inline fun <reified T> Array<Array<T>>.mirroredHorizontally(): Array<Array<T>> = Array(size) { y ->
+fun Array<CharArray>.mirroredHorizontally(): Array<CharArray> = Array(size) { y ->
     val row = this[y]
-    Array<T>(row.size) { x -> row[row.lastIndex - x] }
+    CharArray(row.size) { x -> row[row.lastIndex - x] }
 }
 
 fun Array<IntArray>.mirroredVertically(): Array<IntArray> = Array(size) { y -> this[lastIndex - y] }
-inline fun <reified T> Array<Array<T>>.mirroredVertically(): Array<Array<T>> = Array(size) { y -> this[lastIndex - y] }
+fun Array<CharArray>.mirroredVertically(): Array<CharArray> = Array(size) { y -> this[lastIndex - y] }
 
 /**
  * Grid as string
@@ -405,7 +431,6 @@ fun Array<CharArray>.swap(p1x: Int, p1y: Int, p2x: Int, p2y: Int) {
     val tmp = this[p1y][p1x]
     this[p1y][p1x] = this[p2y][p2x]
     this[p2y][p2x] = tmp
-    1..<3
 }
 
 fun Array<CharArray>.swap(point1: GridPoint2D, point2: GridPoint2D) = swap(point1.x, point1.y, point2.x, point2.y)

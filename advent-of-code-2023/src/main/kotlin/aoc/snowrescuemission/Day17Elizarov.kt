@@ -70,7 +70,6 @@ fun day17Part2(input: List<String>): Int {
         visited += cur
         var p = cur.pos
         if (p == d.endExclusive) {
-            cur.traceBackToStart { it }.reversed().forEach { println(it) }
             return minHeatLoss
         }
         for (dir in -1..1) {

@@ -14,7 +14,7 @@ internal class Day13TransparentOrigami(private val inputPath: String) : Challeng
         val (coordinates, foldInstructions) = getCoordinatesAndFoldInstructions(inputPath)
         return toGrid(coordinates, foldInstructions)
             .foldGrid(foldInstructions.first())
-            .flatMap(Array<Char>::toList)
+            .flatMap(CharArray::toList)
             .count { it == BLOCK }
     }
 
@@ -27,7 +27,7 @@ internal class Day13TransparentOrigami(private val inputPath: String) : Challeng
         return coordinatesAsString to foldInstructions
     }
 
-    private fun Array<Array<Char>>.foldGrid(foldInstr: Pair<Char, Int>): Array<Array<Char>> {
+    private fun Array<CharArray>.foldGrid(foldInstr: Pair<Char, Int>): Array<CharArray> {
         val (dir, value) = foldInstr
         return when (dir) {
             'x' -> foldAlongX(value)
@@ -36,21 +36,21 @@ internal class Day13TransparentOrigami(private val inputPath: String) : Challeng
         }
     }
 
-    private fun Array<Array<Char>>.foldAlongY(value: Int) = let { grid ->
+    private fun Array<CharArray>.foldAlongY(value: Int) = let { grid ->
         val top = grid.sliceArray(0 until value)
         val mirroredBottom = grid.sliceArray(value + 1 until grid.size).mirroredVertically()
         return@let top.mapByPoint { x, y -> if (top[y][x] == '.') mirroredBottom[y][x] else '█' }
     }
 
-    private fun Array<Array<Char>>.foldAlongX(value: Int) = rotated().foldAlongY(value).rotatedCc()
+    private fun Array<CharArray>.foldAlongX(value: Int) = rotated().foldAlongY(value).rotatedCc()
 
-    private fun toGrid(coordinates: String, foldInstrList: List<Pair<Char, Int>>): Array<Array<Char>> {
+    private fun toGrid(coordinates: String, foldInstrList: List<Pair<Char, Int>>): Array<CharArray> {
         val firstXFold = foldInstrList.first { (dir) -> dir == 'x' }.second
         val firstYFold = foldInstrList.first { (dir) -> dir == 'y' }.second
         val points = coordinates.trim().lines()
             .map { it.split(',').map(String::toInt) }
             .map { (x, y) -> x to y }
-        val grid = Array(firstYFold * 2 + 1) { Array(firstXFold * 2 + 1) { '.' } }
+        val grid = Array(firstYFold * 2 + 1) { CharArray(firstXFold * 2 + 1) { '.' } }
         points.forEach { (x, y) -> grid[y][x] = BLOCK }
         return grid
     }
@@ -62,7 +62,7 @@ internal class Day13TransparentOrigami(private val inputPath: String) : Challeng
             .gridAsString(1)
     }
 
-    private fun Array<Array<Char>>.foldByInstructions(instructions: List<Pair<Char, Int>>): Array<Array<Char>> =
+    private fun Array<CharArray>.foldByInstructions(instructions: List<Pair<Char, Int>>): Array<CharArray> =
         instructions.fold(this) { grid, instruction -> grid.foldGrid(instruction) }
 
     companion object {

@@ -61,7 +61,7 @@ internal class Day12PassagePathingTest {
         @Test
         fun `part 1 small`() {
             val s = day12Elizarov(Path("input/day12test.txt").readLines())
-                .map { it.traceBackToStart { it.label }.reversed().joinToString(",") }
+                .map { it.traceBack { it.label }.reversed().joinToString(",") }
                 .toList()
 
             s shouldHaveSize 10
@@ -70,7 +70,7 @@ internal class Day12PassagePathingTest {
         @Test
         fun `part 2 small`() {
             val s = day12Elizarov(Path("input/day12test.txt").readLines(), visitSmallCaveTwice = true)
-                .map { it.traceBackToStart { it.label }.reversed().joinToString(",") }
+                .map { it.traceBack { it.label }.reversed().joinToString(",") }
                 .toList()
 
             s shouldHaveSize 36

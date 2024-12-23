@@ -228,7 +228,7 @@ public class Launcher2020 implements Runnable {
         } else if (NUMBER_LENGTH_ONE_OR_MORE.matcher(input).matches()) {
             executeByChallengeNumber(input);
         } else {
-            out.println("You didn't enter a valid option...");
+            LOGGER.info("You didn't enter a valid option...");
         }
         return input;
     }

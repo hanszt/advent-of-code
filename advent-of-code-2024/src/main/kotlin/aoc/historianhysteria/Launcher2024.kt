@@ -11,7 +11,7 @@ fun main(vararg args: String) {
         rootFileName = "advent-of-code-2024",
         inputFileName = "input"
     )
-    val results = Launcher2023(inputDir).challengeDays
+    val results = Launcher2024(inputDir).challengeDays
         .flatMap(ChallengeDay::runParts)
         .onEach(::println)
 
@@ -19,7 +19,7 @@ fun main(vararg args: String) {
     println({}.readTextFromResource("/banner.txt", orElse = "Powered by Kotlin and Java") withColor GREEN)
 }
 
-class Launcher2023(inputDir: String) : Launcher {
+class Launcher2024(inputDir: String) : Launcher {
 
     internal val challengeDays = sequenceOf(
         Day01("$inputDir/day01.txt"),

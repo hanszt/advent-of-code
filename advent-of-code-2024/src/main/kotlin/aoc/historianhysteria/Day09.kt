@@ -2,6 +2,7 @@ package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
 import java.nio.file.Path
+import kotlin.collections.lastIndex
 import kotlin.io.path.readText
 
 /**
@@ -13,7 +14,7 @@ import kotlin.io.path.readText
 class Day09(diskMap: String) : ChallengeDay {
     constructor(path: Path) : this(path.readText())
 
-    private val diskSegments = toSegments(diskMap)
+    private val diskSegments by lazy { toSegments(diskMap) }
 
     private fun toSegments(diskMap: String): List<DiskSegment> {
         var index = 0L

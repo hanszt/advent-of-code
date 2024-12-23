@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static aoc.utils.grid2d.Grid2DUtilsKt.*;
 import static java.util.function.Predicate.not;
 
 // Credits to Johan de Jong
-public class Tile {
+public final class Tile {
 
     private static final int CORNERS = 4;
     private GridPoint2D position;
@@ -75,11 +76,11 @@ public class Tile {
 
     private static void collectRotations(List<List<String>> result, List<String> input) {
         result.add(input);
-        List<String> temp = rotate(input);
+        List<String> temp = rotated(input);
         result.add(temp);
-        temp = rotate(temp);
+        temp = rotated(temp);
         result.add(temp);
-        temp = rotate(temp);
+        temp = rotated(temp);
         result.add(temp);
     }
 
@@ -91,18 +92,6 @@ public class Tile {
 
     private static String reverseString(String s) {
         return new StringBuilder(s).reverse().toString();
-    }
-
-    private static List<String> rotate(final List<String> original) {
-        final List<String> result = new ArrayList<>();
-        for (int x = 0; x < original.size(); x++) {
-            final StringBuilder sb = new StringBuilder();
-            for (int y = original.size() - 1; y >= 0; y--) {
-                sb.append(original.get(y).charAt(x));
-            }
-            result.add(sb.toString());
-        }
-        return result;
     }
 
     private static String asString(final List<String> content) {

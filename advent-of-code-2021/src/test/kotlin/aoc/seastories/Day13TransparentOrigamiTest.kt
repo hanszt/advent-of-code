@@ -7,19 +7,25 @@ import aoc.utils.ICY_BG
 import aoc.utils.RED
 import aoc.utils.withColor
 import aoc.utils.withColors
-import org.junit.jupiter.api.Assertions.assertEquals
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class Day13TransparentOrigamiTest {
 
     @Test
-    fun `part 1 test input`() = assertEquals(17, Day13TransparentOrigami("input/day13test.txt").part1())
+    fun `part 1 test input`() {
+        Day13TransparentOrigami("input/day13test.txt").part1() shouldBe 17
+    }
 
     @Test
-    fun `part 1 result`() = assertEquals(607, Day13TransparentOrigami("input/day13.txt").part1().also(::println))
+    fun `part 1 result`() {
+        Day13TransparentOrigami("input/day13.txt").part1().also(::println) shouldBe 607
+    }
 
     @Test
-    fun `part 1 other input`() = assertEquals(693, Day13TransparentOrigami("input/day13-2.txt").part1())
+    fun `part 1 other input`() {
+        Day13TransparentOrigami("input/day13-2.txt").part1() shouldBe 693
+    }
 
     @Test
     fun `part 2 test input`() {
@@ -34,7 +40,7 @@ internal class Day13TransparentOrigamiTest {
         """.trimIndent()
         val result = Day13TransparentOrigami("input/day13test.txt").part2GridAsString()
         println(result.withColor(GREEN))
-        assertEquals(expected, result)
+        result shouldBe expected
     }
 
     @Test
@@ -49,7 +55,7 @@ internal class Day13TransparentOrigamiTest {
         """.trimIndent()
         val result = Day13TransparentOrigami("input/day13-2.txt").part2GridAsString()
         println(result.withColor(BRIGHT_BLUE))
-        assertEquals(expected, result)
+        result shouldBe expected
     }
 
     @Test
@@ -58,6 +64,6 @@ internal class Day13TransparentOrigamiTest {
         println(grid.withColor(RED))
         val text = grid.toExpectedTextOrElseThrow()
         println(text.withColors(RED, ICY_BG))
-        assertEquals("CPZLPFZL", text)
+        text shouldBe "CPZLPFZL"
     }
 }
