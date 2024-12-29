@@ -9,8 +9,7 @@ class Day09Test {
     private companion object {
         private val day09 by lazy { Day09(Path("input/day09.txt")) }
         private val day09dr by lazy { Day09(Path("input/day09-dr.txt")) }
-        private val day09testInput = Day09("""
-           2333133121414131402""".trimIndent())
+        private val day09testInput = Day09("2333133121414131402")
     }
 
     @Test
@@ -20,7 +19,7 @@ class Day09Test {
 
     @Test
     fun part2TestInput() {
-        day09testInput.part2() shouldBe 11387
+        day09testInput.part2() shouldBe 2858
     }
 
     @Test
@@ -30,7 +29,7 @@ class Day09Test {
 
     @Test
     fun part2dr() {
-        day09dr.part2() shouldBe 0
+        day09dr.part2() shouldBe 6412390114238L
     }
 
     @Test
@@ -40,7 +39,7 @@ class Day09Test {
 
     @Test
     fun part2() {
-        day09.part2() shouldBe 42283209483350
+        day09.part2() shouldBe 6286182965311L
     }
 
 }

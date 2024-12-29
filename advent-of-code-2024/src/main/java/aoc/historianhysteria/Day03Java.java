@@ -3,6 +3,7 @@ package aoc.historianhysteria;
 import aoc.utils.ChallengeDay;
 import org.hzt.utils.io.FileX;
 
+import java.nio.file.Path;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,7 @@ public final class Day03Java implements ChallengeDay {
     private static final Pattern regexp2 = Pattern.compile("mul\\((\\d{1,3},\\d{1,3})\\)|don't\\(\\)|do\\(\\)");
     private final String input;
 
-    public Day03Java(String fileName) {
+    public Day03Java(Path fileName) {
         input = FileX.of(fileName).readText();
     }
 

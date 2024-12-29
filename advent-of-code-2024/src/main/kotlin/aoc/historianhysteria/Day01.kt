@@ -2,12 +2,13 @@ package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
 import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.readLines
+import kotlin.io.path.readText
 import kotlin.math.abs
 
-class Day01(
-    fileName: String? = null,
-    private val lines: List<String> = fileName?.let { File(it).readLines() } ?: error("No lines or fileName provided")
-) : ChallengeDay {
+class Day01(private val lines: List<String>) : ChallengeDay {
+    constructor(path: Path) : this(path.readLines())
 
     override fun part1(): Int {
         val (l1, l2) = lines.asSequence()

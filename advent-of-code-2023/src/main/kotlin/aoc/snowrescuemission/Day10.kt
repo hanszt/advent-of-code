@@ -27,7 +27,7 @@ class Day10(
     override fun part1(): Int = floodFill(grid.dimension2D(), start) {
         val p = it.position
         grid[p].isNeighbor(dir = p - it.prev!!.position)
-    }.last().cost
+    }.values.last().cost
 
     /**
      * How many tiles are enclosed by the loop?

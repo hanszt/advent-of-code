@@ -2,13 +2,14 @@ package aoc.historianhysteria
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
+import kotlin.io.path.Path
 
 class Day03Test {
 
     private companion object {
-        private val day03 = Day03("input/day03.txt")
-        private val day03Java = Day03Java("input/day03.txt")
-        private val day03dr = Day03("input/day03-dr.txt")
+        private val day03 = Day03(Path("input/day03.txt"))
+        private val day03Java = Day03Java(Path("input/day03.txt"))
+        private val day03dr = Day03(Path("input/day03-dr.txt"))
     }
 
     @Test

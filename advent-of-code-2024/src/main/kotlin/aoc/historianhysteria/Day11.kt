@@ -1,8 +1,11 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
+import java.nio.file.Path
+import kotlin.io.path.readText
 
 class Day11(input: String) : ChallengeDay {
+    constructor(path: Path) : this(path.readText())
 
     private val stones = input.split(' ').map { it.toLong() }
 

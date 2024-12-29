@@ -6,6 +6,8 @@ import aoc.utils.grid2d.gridPoint2D as P2
 
 /**
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day21_2.kt
+ *
+ * [aoc.utils.Tag.RECURSIVE]
  */
 internal fun day21Elizarov(input: List<String>, k: Int): Long {
     data class Pad(val a: List<String>) {
@@ -35,9 +37,7 @@ internal fun day21Elizarov(input: List<String>, k: Int): Long {
 
     fun find(code: String, p: Int): Long {
         check(code.endsWith('A'))
-        if (p == pads.size) {
-            return code.length.toLong()
-        }
+        if (p == pads.size) return code.length.toLong()
         cache[p][code]?.let { return it }
         val pad = pads[p]
         var len = 0L

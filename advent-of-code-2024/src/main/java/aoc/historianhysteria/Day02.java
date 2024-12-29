@@ -7,14 +7,15 @@ import org.hzt.utils.io.FileX;
 import org.hzt.utils.sequences.Sequence;
 import org.hzt.utils.strings.StringX;
 
+import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public final class Day02 implements ChallengeDay {
 
     private final ListX<IntList> reports;
 
-    public Day02(String fileName) {
-        reports = FileX.of(fileName).useLines(Day02::toReports);
+    public Day02(Path path) {
+        reports = FileX.of(path).useLines(Day02::toReports);
     }
 
     public Day02(Stream<String> s) {

@@ -107,7 +107,7 @@ data class Crucible(
 
         if (pos != other.pos) return false
         if (dir != other.dir) return false
-//        if (straightLength != other.straightLength) return false
+        if (straightLength != other.straightLength) return false
 
         return true
     }

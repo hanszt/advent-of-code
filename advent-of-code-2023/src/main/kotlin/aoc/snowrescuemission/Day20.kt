@@ -28,7 +28,7 @@ class Day20(private val modules: List<String>) : ChallengeDay {
      */
     override fun part2(): Long {
         val machine = Machine.build(modules.map(Node::parse))
-        val broadcaster = machine.setup(Node.Companion.BROADCASTER)
+        val broadcaster = machine.setup(Node.BROADCASTER)
         val originalOutputs = broadcaster.outputs
         val toRxSink = machine.setup.values.first { "rx" in it.outputs }
         var result = 1L
@@ -65,7 +65,7 @@ class Day20(private val modules: List<String>) : ChallengeDay {
     private class Node(
         val name: String,
         val type: Char,
-        var outputs: MutableList<String> = ArrayList<String>(),
+        var outputs: List<String> = emptyList(),
         val inputs: MutableMap<String, Pulse> = HashMap<String, Pulse>(),
         var onOff: Boolean = false,
     ) {
@@ -118,11 +118,7 @@ class Day20(private val modules: List<String>) : ChallengeDay {
                     type = parts[0][0]
                     name = parts[0].substring(1)
                 }
-                val result = Node(name, type)
-                for (dest in parts[1].split(", ")) {
-                    result.outputs.add(dest)
-                }
-                return result
+                return Node(name, type, outputs = parts[1].split(", "))
             }
         }
     }

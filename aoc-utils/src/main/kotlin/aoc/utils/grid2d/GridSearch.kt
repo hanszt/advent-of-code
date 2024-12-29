@@ -24,7 +24,7 @@ fun floodFill(
     start: P2,
     inf: Int = DEFAULT_COST,
     isNeighbor: (Grid2DNode) -> Boolean
-): List<Grid2DNode> = buildList {
+): Map<P2, Grid2DNode> = buildMap {
     val ds = Array(dimension.height) { y ->
         Array(dimension.width) { x -> Grid2DNode(P2(x, y), inf) }
     }
@@ -34,7 +34,7 @@ fun floodFill(
     q += sn
     while (q.isNotEmpty()) {
         val cur = q.removeFirst()
-        add(cur)
+        this[cur.position] =cur
         val newCost = ds[cur.position].cost + 1
         for (dir in P2.orthoDirs) {
             val np = cur.position + dir
@@ -46,16 +46,6 @@ fun floodFill(
             }
         }
     }
-}
-
-fun List<Grid2DNode>.toGrid(dimension2D: Dimension2D, unvisitedCost: Int = DEFAULT_COST): Grid<Grid2DNode> {
-    val grid = Array(dimension2D.height) { y ->
-        Array(dimension2D.width) { x -> Grid2DNode(gridPoint2D(x, y), unvisitedCost) }
-    }
-    for (n in this) {
-        grid[n.position] = n
-    }
-    return grid.toGrid { it }
 }
 
 fun <T> Grid<T>.dijkstra(start: P2, goal: P2, costAt: (P2) -> Int): Grid2DNode {

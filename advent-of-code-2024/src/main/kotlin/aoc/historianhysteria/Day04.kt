@@ -3,6 +3,8 @@ package aoc.historianhysteria
 import aoc.utils.ChallengeDay
 import aoc.utils.grid2d.foldByPoint
 import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.kingDirs
+import aoc.utils.grid2d.getOrNull
 import java.nio.file.Path
 import kotlin.io.path.readText
 
@@ -12,14 +14,12 @@ class Day04(private val input: String) : ChallengeDay {
     override fun part1(): Int {
         val target = "XMAS"
         val lines = input.lines()
-        return lines.foldByPoint(0) { acc, x, y ->
+        return lines.foldByPoint(0) { acc, p ->
             var result = acc
-            for (dir in GridPoint2D.kingDirs) {
+            for (dir in kingDirs) {
                 val found = buildString {
                     for (k in target.indices) {
-                        val dx = x + (dir.x * k)
-                        val dy = y + (dir.y * k)
-                        lines.getOrNull(dy)?.getOrNull(dx)?.let(::append) ?: break
+                        lines.getOrNull(p + dir * k).let(::append) ?: break
                     }
                 }
                 if (found == target) {
@@ -33,7 +33,7 @@ class Day04(private val input: String) : ChallengeDay {
     override fun part2(): Int {
         val target = "MAS"
         val lines = input.lines()
-        return lines.foldByPoint(0) { acc, x, y ->
+        return lines.foldByPoint(0) { acc, p ->
             var result = acc
             var r = 0
             for (dir in GridPoint2D.rookDirs) {
@@ -42,9 +42,7 @@ class Day04(private val input: String) : ChallengeDay {
                 }
                 val found = buildString {
                     for (k in -1..1) {
-                        val dx = x + (dir.x * k)
-                        val dy = y + (dir.y * k)
-                        lines.getOrNull(dy)?.getOrNull(dx)?.let(::append) ?: break
+                        lines.getOrNull(p + dir * k)?.let(::append) ?: break
                     }
                 }
                 if (found == target) {

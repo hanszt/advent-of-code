@@ -67,7 +67,6 @@ class Day14(input: List<String>, private val dimension2D: Dimension2D = dimensio
                 robots[i] = moved(robots[i])
             }
         }
-        println(toPicture(robots))
         return target
     }
 

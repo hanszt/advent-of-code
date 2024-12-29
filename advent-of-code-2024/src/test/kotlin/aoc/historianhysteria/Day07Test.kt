@@ -39,7 +39,7 @@ class Day07Test {
 
     @Test
     fun part2dr() {
-        day07dr.part2() shouldBe 0
+        day07dr.part2() shouldBe 223472064194845L
     }
 
     @Test
@@ -49,7 +49,7 @@ class Day07Test {
 
     @Test
     fun part2() {
-        day07.part2() shouldBe 42283209483350
+        day07.part2() shouldBe 1026766857276279
     }
 
 }

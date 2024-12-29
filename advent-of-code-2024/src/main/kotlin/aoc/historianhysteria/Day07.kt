@@ -10,6 +10,9 @@ class Day07(private val equations: List<Equation>) : ChallengeDay {
     constructor(text: String) : this(text.lineSequence().toEquations())
     constructor(path: Path) : this(path.useLines { it.toEquations() })
 
+    /**
+     * What is their total calibration result?
+     */
     override fun part1(): Long {
         var sum = 0L
         for (eq in equations) {
@@ -38,8 +41,31 @@ class Day07(private val equations: List<Equation>) : ChallengeDay {
         return sum
     }
 
-    override fun part2(): Int {
-        TODO()
+    /**
+     * Solution Elizarov
+     *
+     * What is their total calibration result?
+     */
+    override fun part2(): Long {
+        var sum = 0L
+        for ((answer, a) in equations) {
+            val p = LongArray(a.size)
+            for (i in a.indices) {
+                p[i] = 1
+                while (p[i] <= a[i]) p[i] = p[i] * 10
+            }
+            fun scan(cur: Long, i: Int): Boolean {
+                if (i >= a.size) {
+                    return cur == answer
+                }
+                if (scan(cur + a[i], i + 1)) return true
+                if (scan(cur * a[i], i + 1)) return true
+                if (scan(cur * p[i] + a[i], i + 1)) return true
+                return false
+            }
+            if (scan(a[0], 1)) sum += answer
+        }
+        return sum
     }
 
     data class Equation(val answer: Long, val values: List<Long>)

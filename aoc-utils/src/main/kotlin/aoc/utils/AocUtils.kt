@@ -45,7 +45,7 @@ fun CharSequence.splitByBlankLine(): List<String> = split(Regex("(?m)^\\s*$")).m
 fun <R> List<String>.parts(map: (List<String>) -> R): List<R> = buildList {
     var cur = ArrayList<String>()
     for (s in this@parts) {
-        if (s == "") {
+        if (s.isBlank()) {
             add(map(cur))
             cur = ArrayList()
             continue
@@ -132,8 +132,8 @@ fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
  *
  * @sample aoc.utils.AocUtilsKtTest.greatestCommonDivisorSample
  */
-tailrec infix fun Long.gcd(other: Long): Long = if (other == 0L) this else other gcd this % other
-tailrec infix fun Int.gcd(other: Int): Int = if (other == 0) this else other gcd this % other
+tailrec infix fun Long.gcd(other: Long): Long = if (other == 0L) this else other.gcd(this % other)
+tailrec infix fun Int.gcd(other: Int): Int = if (other == 0) this else other.gcd(this % other)
 
 /**
  * Calculates the least common multiple of two numbers
@@ -146,8 +146,8 @@ tailrec infix fun Int.gcd(other: Int): Int = if (other == 0) this else other gcd
  *
  * @sample aoc.utils.AocUtilsKtTest.leastCommonMultipleSample
  */
-infix fun Long.lcm(other: Long): Long = abs((this * other) / gcd(other))
-infix fun Int.lcm(other: Int): Int = abs((this * other) / gcd(other))
+infix fun Long.lcm(other: Long): Long = abs((this * other) / this.gcd(other))
+infix fun Int.lcm(other: Int): Int = abs((this * other) / this.gcd(other))
 
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 

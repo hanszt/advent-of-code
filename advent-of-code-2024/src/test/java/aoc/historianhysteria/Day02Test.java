@@ -2,12 +2,14 @@ package aoc.historianhysteria;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day02Test {
 
-    private static final Day02 day02dr = new Day02("input/day02-dr.txt");
-    private static final Day02 day02 = new Day02("input/day02.txt");
+    private static final Day02 day02dr = new Day02(Path.of("input/day02-dr.txt"));
+    private static final Day02 day02 = new Day02(Path.of("input/day02.txt"));
     private static final String TEST_INPUT = """
             7 6 4 2 1
             1 2 7 8 9

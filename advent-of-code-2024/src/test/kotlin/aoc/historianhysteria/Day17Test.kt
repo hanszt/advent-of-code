@@ -8,7 +8,6 @@ class Day17Test {
 
     private companion object {
         private val day17 by lazy { Day17(Path("input/day17.txt")) }
-        private val day17dr by lazy { Day17(Path("input/day17-dr.txt")) }
         private val day17Test by lazy {
             Day17(
                 """
@@ -20,7 +19,6 @@ class Day17Test {
                 """.trimIndent().lines()
             )
         }
-
     }
 
     @Test
@@ -29,23 +27,13 @@ class Day17Test {
     }
 
     @Test
-    fun part1dr() {
-        day17dr.part1() shouldBe "4,6,3,5,6,3,5,2,1,0"
-    }
-
-    @Test
     fun part1() {
-        day17.part1() shouldBe "2,1,3,0,5,2,3,7,1"
-    }
-
-    @Test
-    fun par21dr() {
-        day17dr.part2() shouldBe "4,6,3,5,6,3,5,2,1,0"
+        day17.part1() shouldBe "1,5,3,0,2,5,2,5,3"
     }
 
     @Test
     fun part2() {
-        day17.part2() shouldBe "2,1,3,0,5,2,3,7,1"
+        day17.part2() shouldBe 108107566389757L
     }
 
 }

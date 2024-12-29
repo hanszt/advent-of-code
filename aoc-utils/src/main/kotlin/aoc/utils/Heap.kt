@@ -13,10 +13,12 @@ class Heap<K, V>(private val comparator: Comparator<V>) : AbstractMutableMap<K, 
     private val map = HashMap<K, Data<V>>()
 
     override fun isEmpty() = size == 0
-    override val entries: MutableSet<MutableMap.MutableEntry<K, V>> get() = map.asSequence()
-        .map { it.key to it.value.v }
-        .toMap(HashMap())
-        .entries
+    override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
+        get() = HashMap<K, V>(map.size).apply {
+            for ((k, v) in map) {
+                put(k, v.v)
+            }
+        }.entries
 
     /**
      * @return a pair containing the key and the minimum value.

@@ -2,8 +2,6 @@
 
 package aoc.utils.grid2d
 
-import aoc.utils.grid2d.GridPoint2D.Companion.by
-
 /**
  * from list of strings to grid converters
  */
@@ -153,9 +151,17 @@ inline fun <T> Array<Array<T>>.forEachPoint(action: (Int, Int) -> Unit) =
 
 inline fun <T> Array<Array<T>>.forEachPoint(action: (GridPoint2D) -> Unit) = forEachPoint { x, y -> action(gridPoint2D(x, y)) }
 
-fun Dimension2D.toMutableCharGrid(transform: (GridPoint2D) -> Char): Array<CharArray> = Array(height) { y ->
-    CharArray(width) { x -> transform(gridPoint2D(x, y)) }
+fun Dimension2D.toMutableCharGrid(transform: (Int, Int) -> Char): Array<CharArray> = Array(height) { y ->
+    CharArray(width) { x -> transform(x, y) }
 }
+
+fun Dimension2D.toMutableCharGrid(c: Char): Array<CharArray> = toMutableCharGrid { _, _ -> c }
+
+fun Dimension2D.toMutableIntGrid(transform: (Int, Int) -> Int): Array<IntArray> = Array(height) { y ->
+    IntArray(width) { x -> transform(x, y) }
+}
+
+fun Dimension2D.toMutableIntGrid(i: Int): Array<IntArray> = toMutableIntGrid { _, _ -> i }
 
 inline fun List<String>.forEachPoint(action: (Int, Int) -> Unit) =
     withIndex().forEach { (y, row) -> row.indices.forEach { x -> action(x, y) } }
@@ -166,6 +172,12 @@ inline fun List<String>.forEachPoint(action: (GridPoint2D) -> Unit) =
 inline fun <R> List<String>.foldByPoint(initial: R, action: (R, Int, Int) -> R): R {
     var acc = initial
     forEachPoint { x, y -> acc = action(acc, x, y) }
+    return acc
+}
+
+inline fun <R> List<String>.foldByPoint(initial: R, action: (R, GridPoint2D) -> R): R {
+    var acc = initial
+    forEachPoint { acc = action(acc, it) }
     return acc
 }
 
@@ -443,8 +455,8 @@ interface ClosedGridPoint2DRange {
     operator fun component2() = endInclusive
 
     operator fun contains(point: GridPoint2D): Boolean {
-        return point.x in (if (start.x < endInclusive.x) start.x..endInclusive.x else endInclusive.x..endInclusive.y) &&
-                point.y in (if (start.x < endInclusive.x) start.y..endInclusive.y else endInclusive.y..endInclusive.y)
+        return point.x in (if (start.x <= endInclusive.x) start.x..endInclusive.x else endInclusive.x..start.y) &&
+                point.y in (if (start.y <= endInclusive.y) start.y..endInclusive.y else endInclusive.y..start.y)
     }
 }
 
@@ -454,8 +466,8 @@ interface OpenEndedGridPoint2DRange {
 
     operator fun contains(point: GridPoint2D): Boolean {
         if (isEmpty()) return false
-        return point.x in (if (start.x < endExclusive.x) start.x..endExclusive.x else endExclusive.x..endExclusive.y) &&
-                point.y in (if (start.x < endExclusive.x) start.y..endExclusive.y else endExclusive.y..endExclusive.y)
+        return point.x in (if (start.x < endExclusive.x) start.x..endExclusive.x else endExclusive.x..start.y) &&
+                point.y in (if (start.y < endExclusive.y) start.y..endExclusive.y else endExclusive.y..start.y)
     }
 
     fun isEmpty(): Boolean = start.x == endExclusive.x || start.y == endExclusive.y

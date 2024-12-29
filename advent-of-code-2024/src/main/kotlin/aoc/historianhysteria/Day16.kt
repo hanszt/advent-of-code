@@ -1,13 +1,96 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
+import aoc.utils.grid2d.GridPoint2D.Companion.orthoDirs
+import aoc.utils.grid2d.firstPoint
+import aoc.utils.grid2d.get
 import java.nio.file.Path
+import java.util.*
+import kotlin.Int.Companion.MAX_VALUE
 import kotlin.io.path.readLines
+import kotlin.math.min
+import aoc.utils.grid2d.GridPoint2D as P2
 
-class Day16(input: List<String>) : ChallengeDay {
+private const val TURING_COST = 1000
+
+/**
+ * From elizarov 2024 day 16
+ */
+class Day16(private val maze: List<String>) : ChallengeDay {
     constructor(path: Path) : this(path.readLines())
 
-    override fun part1(): Int = TODO()
+    init {
+        require(maze.isNotEmpty())
+    }
 
-    override fun part2(): Int = TODO()
+    private val m = maze[0].length
+    private val n = maze.size
+
+    /**
+     * What is the lowest score a Reindeer could possibly get?
+     */
+    override fun part1(): Int = findShortestPath()
+
+    /**
+     * How many tiles are part of at least one of the best paths through the maze?
+     */
+    override fun part2(): Int {
+        val cost = Array(m) { Array(n) { IntArray(orthoDirs.size) { MAX_VALUE } } }
+        val best = findShortestPath(cost)
+
+        val visited = HashSet<P2>()
+        val q = ArrayDeque<Spot>()
+        var tiles = 0
+        fun enq(pos: P2, d: Int, c: Int) {
+            if (cost[pos][d] != c) return
+            if (visited.add(pos)) tiles++
+            q += Spot(pos, d, c)
+        }
+        val goal = maze.firstPoint { it == 'E' }
+        for (d in orthoDirs.indices) if (cost[goal][d] == best) enq(goal, d, best)
+        while (q.isNotEmpty()) {
+            val (pos, d, score) = q.removeFirst()
+            enq(pos - orthoDirs[d], d, score - 1)
+            enq(pos, leftDir(d), score - TURING_COST)
+            enq(pos, rightDir(d), score - TURING_COST)
+        }
+        return tiles
+    }
+
+    private fun findShortestPath(
+        cost: Array<Array<IntArray>> = Array(m) { Array(n) { IntArray(orthoDirs.size) { MAX_VALUE } } },
+    ): Int {
+        val s = maze.firstPoint { it == 'S' }
+
+        val q = PriorityQueue(compareBy(Spot::cost))
+        val visited = Array(m) { Array(n) { BooleanArray(orthoDirs.size) } }
+        fun enq(pos: P2, d: Int, c: Int) {
+            if (cost[pos][d] <= c) return
+            if (maze[pos] == '#') return
+            cost[pos][d] = c
+            q.add(Spot(pos, d, c))
+        }
+
+        enq(s, 0, 0)
+        // Do a non short-circuiting search to satisfy the requirements for the cost matrix for part 2
+        var best = MAX_VALUE
+        while (q.isNotEmpty()) {
+            val (pos, d, score) = q.remove()
+            if (visited[pos][d]) continue
+            visited[pos][d] = true
+            if (maze[pos] == 'E') {
+                best = min(score, best)
+            }
+            val dir = orthoDirs[d]
+            enq(pos + dir, d, score + 1)
+            enq(pos, leftDir(d), score + TURING_COST)
+            enq(pos, rightDir(d), score + TURING_COST)
+        }
+        return best
+    }
+
+    private fun leftDir(d: Int): Int = (d + 1) % 4
+    private fun rightDir(d: Int): Int = (d + 3) % 4
+
+    private data class Spot(val pos: P2, val dir: Int, val cost: Int)
 }

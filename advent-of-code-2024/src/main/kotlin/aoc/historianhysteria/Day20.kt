@@ -5,9 +5,7 @@ import aoc.utils.grid2d.*
 import java.nio.file.Path
 import kotlin.io.path.readLines
 
-
 class Day20(private val input: List<String>, private val targetMinSaveTime: Int = 100) : ChallengeDay {
-
 
     constructor(path: Path) : this(path.readLines())
 
@@ -32,13 +30,15 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
         return count
     }
 
+    override fun part2(): Int = day20Part2(input)
+
     private fun isCandidate(grid: Array<CharArray>, p: GridPoint2D): Boolean = grid[p] == '#' &&
             ((grid.getOrNull(p.plusX(-1)).isPath() && grid.getOrNull(p.plusX(1)).isPath()) ||
                     (grid.getOrNull(p.plusY(-1)).isPath() && grid.getOrNull(p.plusY(1)).isPath()))
 
     private fun findShortestTime(grid: Array<CharArray>, start: GridPoint2D, target: GridPoint2D): Int {
         val s = Grid2DNode(start)
-        val nodes = mutableMapOf<GridPoint2D, Grid2DNode>().apply { put(start, s) }
+        val nodes = HashMap<GridPoint2D, Grid2DNode>().apply { put(start, s) }
         val q = ArrayDeque<Grid2DNode>().apply { add(s) }
         while (q.isNotEmpty()) {
             val cur = q.removeFirst()
@@ -60,9 +60,7 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
         error("Not found")
     }
 
-    fun part1Elizarov() = day20Part1(input)
-
     private fun Char?.isPath(): Boolean = this == '.' || this == 'E' || this == 'S'
 
-    override fun part2(): Int = day20Part2(input)
+    fun part1Elizarov() = day20Part1(input)
 }

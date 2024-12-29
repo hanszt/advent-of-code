@@ -1,11 +1,12 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
-import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.useLines
 
-class Day03(fileName: String) : ChallengeDay {
+class Day03(path: Path) : ChallengeDay {
 
-    private val input = File(fileName).useLines { it.joinToString("") }
+    private val input = path.useLines { it.joinToString("") }
 
     internal companion object {
         val regexp1 by lazy { Regex("""mul\((\d+),(\d+)\)""") }

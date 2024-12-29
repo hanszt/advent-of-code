@@ -2,7 +2,6 @@ package aoc.historianhysteria
 
 import aoc.utils.grid2d.*
 import aoc.utils.grid2d.GridPoint2D.Companion.ZERO
-import aoc.utils.toSetOf
 
 /**
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day18_1.kt
@@ -15,8 +14,7 @@ fun day18Part1(input: List<String>, dimension2D: Dimension2D, nrOfFallenBytes: I
     val c = Array(n) { BooleanArray(m) }
     for (p in a.take(nrOfFallenBytes)) c[p] = true
     return floodFill(dimension2D, dimension2D.start) { !c[it.position] }
-        .toGrid(dimension2D)
-        .lowerRight.cost
+        .getValue(dimension2D.endExclusive).cost
 }
 
 /**
@@ -32,7 +30,7 @@ fun day18Part2(input: List<String>, dimension2D: Dimension2D): GridPoint2D {
     val isOpen = Array(n) { BooleanArray(m) { true } }
     for (p in a) {
         isOpen[p] = false
-        val visited = floodFill(dimension2D, start = ZERO) { isOpen[it.position] }.toSetOf { it.position }
+        val visited = floodFill(dimension2D, start = ZERO) { isOpen[it.position] }.keys
         if (dimension2D.endExclusive !in visited) {
             return p
         }

@@ -30,9 +30,7 @@ class Day06(input: String) : ChallengeDay {
     /**
      * How many distinct positions will the guard visit before leaving the mapped area?
      */
-    override fun part1(): Int {
-        return walkedPath(guardStartPos).distinct().count()
-    }
+    override fun part1(): Int = walkedPath(guardStartPos).distinct().count()
 
     private fun walkedPath(start: GridPoint2D): Sequence<GridPoint2D> = sequence {
         val obstacle = '#'
@@ -41,7 +39,7 @@ class Day06(input: String) : ChallengeDay {
         while (map.getOrNull(cur) != null) {
             yield(cur)
             val inFront = cur + curDir
-            if (map.getOrNull(inFront.y)?.getOrNull(inFront.x) == obstacle) {
+            if (map.getOrNull(inFront) == obstacle) {
                 curDir = curDir.rot90R()
             }
             cur = cur + curDir
@@ -70,7 +68,7 @@ class Day06(input: String) : ChallengeDay {
         var curPos = guardStartPos
         var curDir = gridPoint2D(0, -1)
         val set = HashSet<Heading>()
-        while (map.getOrNull(curPos.y)?.getOrNull(curPos.x) != null) {
+        while (map.getOrNull(curPos) != null) {
             if (!set.add(Heading(position = curPos, dir = curDir))) {
                 return true
             }

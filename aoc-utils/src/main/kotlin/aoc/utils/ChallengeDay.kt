@@ -1,5 +1,7 @@
 package aoc.utils
 
+import kotlin.time.measureTimedValue
+
 /**
  * Challenge day
  *
@@ -19,9 +21,8 @@ interface ChallengeDay {
     }
 
     private fun runChallengeTimed(solve: () -> Any, name: String): AocResult {
-        val start = System.nanoTime()
-        val result = runCatching { solve().toString() }
-        return AocResult(name, result, System.nanoTime() - start)
+        val (result, duration) = measureTimedValue { runCatching { solve().toString() } }
+        return AocResult(name, result, duration.inWholeNanoseconds)
     }
 
     fun part1(): Any
