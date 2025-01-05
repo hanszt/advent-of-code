@@ -64,10 +64,4 @@ fun <T> buildGrid(width: Int, height: Int, transform: (Int, Int) -> T): Grid<T> 
         Array(width) { x -> transform(x, y) as Any }
     })
 
-fun <T> buildGrid(dimension2D: Dimension2D, transform: (GridPoint2D) -> T): Grid<T> = buildGrid(
-    width = dimension2D.width,
-    height = dimension2D.height,
-    transform = { x, y -> transform(gridPoint2D(x, y)) }
-)
-
 fun <T> emptyGrid(): Grid<T> = StandardGrid(emptyArray())

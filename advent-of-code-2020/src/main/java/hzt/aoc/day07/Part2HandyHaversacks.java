@@ -10,7 +10,7 @@ public class Part2HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    protected long solveByRules(final Map<String, Bag> bags) {
+    long solveByRules(final Map<String, Bag> bags) {
         // We counted the target bag, reduce count by 1.
         return !bags.isEmpty() ? (countInnerBagsRecursive(bags, bags.get(SHINY_GOLD)) - 1) : 0;
     }

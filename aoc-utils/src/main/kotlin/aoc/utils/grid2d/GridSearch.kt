@@ -1,10 +1,9 @@
 package aoc.utils.grid2d
 
-import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
 import java.util.*
 import kotlin.collections.ArrayDeque
 import aoc.utils.grid2d.GridPoint2D as P2
-import aoc.utils.grid2d.gridPoint2D as P2
 
 private const val DEFAULT_COST = Int.MAX_VALUE / 4
 
@@ -18,6 +17,8 @@ private const val DEFAULT_COST = Int.MAX_VALUE / 4
  * - Moves in 4 directions are allowed.
  * - Only cells where [isNeighbor] predicate returns true can be moved into.
  * - `allow(node)` is called on cell (p2) that is distance `d` from the start.
+ *
+ * [aoc.utils.Tag.PATH_SEARCH]
  */
 fun floodFill(
     dimension: Dimension2D,
@@ -26,7 +27,7 @@ fun floodFill(
     isNeighbor: (Grid2DNode) -> Boolean
 ): Map<P2, Grid2DNode> = buildMap {
     val ds = Array(dimension.height) { y ->
-        Array(dimension.width) { x -> Grid2DNode(P2(x, y), inf) }
+        Array(dimension.width) { x -> Grid2DNode(GridPoint2D(x, y), inf) }
     }
     val q = ArrayDeque<Grid2DNode>()
     val sn = start.withDistance(0)
@@ -48,9 +49,12 @@ fun floodFill(
     }
 }
 
+/**
+ * @return the goal node containing the position, the cost to get there and the links to the start.
+ */
 fun <T> Grid<T>.dijkstra(start: P2, goal: P2, costAt: (P2) -> Int): Grid2DNode {
     val a = Array(height) { y ->
-        Array(width) { x -> Grid2DNode(gridPoint2D(x, y), Int.MAX_VALUE) }
+        Array(width) { x -> Grid2DNode(GridPoint2D(x, y), Int.MAX_VALUE) }
     }
     val s = Grid2DNode(start, 0)
     a[start] = s
@@ -67,7 +71,7 @@ fun <T> Grid<T>.dijkstra(start: P2, goal: P2, costAt: (P2) -> Int): Grid2DNode {
             getOrNull(np)?.let {
                 val newCost = cur.cost + costAt(np)
                 if (newCost < a[np].cost) {
-                    val n = Grid2DNode(np, newCost, cur)
+                    val n = Grid2DNode(position = np, cost = newCost, prev = cur)
                     a[np] = n
                     q += n
                 }

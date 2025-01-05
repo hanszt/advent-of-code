@@ -6,7 +6,6 @@ import aoc.utils.grid2d.Dimension2D
 import aoc.utils.grid2d.GridPoint2D
 import aoc.utils.grid2d.Vec2
 import aoc.utils.grid2d.dimension2D
-import aoc.utils.grid2d.gridPoint2D
 import aoc.utils.grid2d.mod
 import java.nio.file.Path
 import kotlin.io.path.readLines
@@ -23,8 +22,8 @@ class Day14(input: List<String>, private val dimension2D: Dimension2D = dimensio
     internal val robots = input.map { it ->
         val groups = regex.find(it)?.groups ?: error("Not found in $it")
         Robot(
-            position = gridPoint2D(groups[1]!!.value.toInt(), groups[2]!!.value.toInt()),
-            velocity = gridPoint2D(groups[3]!!.value.toInt(), groups[4]!!.value.toInt())
+            position = GridPoint2D(groups[1]!!.value.toInt(), groups[2]!!.value.toInt()),
+            velocity = GridPoint2D(groups[3]!!.value.toInt(), groups[4]!!.value.toInt())
         )
     }
 

@@ -5,6 +5,7 @@ import aoc.utils.grid2d.GridPoint2D.Companion.orthoDirs
 import aoc.utils.grid2d.forEachPoint
 import aoc.utils.grid2d.get
 import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.orthoNeighbors
 import aoc.utils.grid2d.set
 import java.nio.file.Path
 import kotlin.io.path.readLines
@@ -12,6 +13,8 @@ import aoc.utils.grid2d.GridPoint2D as P2
 
 /**
  * Refactored versions of Elizarov's solutions
+ *
+ * [aoc.utils.Tag.FLOOD_FILL]
  */
 class Day12(private val input: List<String>) : ChallengeDay {
     constructor(path: Path) : this(path.readLines())
@@ -22,8 +25,8 @@ class Day12(private val input: List<String>) : ChallengeDay {
     override fun part1(): Long = solve { areaPoints, isEdge ->
         var perimeter = 0L
         for (p in areaPoints) {
-            for (d in orthoDirs) {
-                if (isEdge(p + d)) perimeter++
+            for (n in p.orthoNeighbors()) {
+                if (isEdge(n)) perimeter++
             }
         }
         perimeter * areaPoints.size
@@ -32,47 +35,12 @@ class Day12(private val input: List<String>) : ChallengeDay {
     /**
      * What is the new total price of fencing all regions on your map?
      */
-    override fun part2(): Long = solve(::costPart2)
-
-    private fun solve(calculateCost: (Collection<P2>, predicate: (P2) -> Boolean) -> Long): Long {
-        val f = Array(input.size) { IntArray(input[it].length) }
-        val q = ArrayDeque<P2>()
-        var block = 0
-        fun enq(p: P2, c: Char) {
-            val ch = input.getOrNull(p) ?: return
-            if (f[p] != 0 || ch != c) return
-            f[p] = block
-            q += p
-        }
-
-        var sum = 0L
-        input.forEachPoint {
-            if (f[it] == 0) {
-                block++
-                q.clear()
-                val c = input[it]
-                enq(it, c)
-                var h = 0
-                while (h < q.size) {
-                    val p = q[h++]
-                    for (d in orthoDirs) {
-                        enq(p + d, c)
-                    }
-                }
-                sum += calculateCost(q) { n -> f.getOrNull(n)?.takeIf { it == block } == null }
-            }
-        }
-        return sum
-    }
-
-    private fun costPart2(areaPoints: Collection<P2>, isEdge: (P2) -> Boolean): Long {
-        val g = Array(orthoDirs.size) { ArrayList<P2>() }
+    override fun part2(): Long = solve { areaPoints, isEdge ->
+        val g = List(orthoDirs.size) { ArrayList<P2>() }
         for (p in areaPoints) {
             for (k in orthoDirs.indices) {
                 val n = p + orthoDirs[k]
-                if (isEdge(n)) {
-                    g[k].add(n)
-                }
+                if (isEdge(n)) g[k] += n
             }
         }
         var nrOfSides = 0L
@@ -95,6 +63,38 @@ class Day12(private val input: List<String>) : ChallengeDay {
                 }
             }
         }
-        return nrOfSides * areaPoints.size
+        nrOfSides * areaPoints.size
     }
+
+    private fun solve(calculateCost: (Collection<P2>, predicate: (P2) -> Boolean) -> Long): Long {
+        val f = Array(input.size) { IntArray(input[it].length) }
+        val q = ArrayDeque<P2>()
+        var count = 0
+        fun enq(p: P2, c: Char) {
+            val ch = input.getOrNull(p) ?: return
+            if (f[p] != 0 || ch != c) return
+            f[p] = count
+            q += p
+        }
+
+        var sum = 0L
+        input.forEachPoint {
+            if (f[it] == 0) {
+                count++
+                q.clear()
+                val c = input[it]
+                enq(it, c)
+                var h = 0
+                while (h < q.size) {
+                    val p = q[h++]
+                    for (n in p.orthoNeighbors()) {
+                        enq(n, c)
+                    }
+                }
+                sum += calculateCost(q) { n -> f.getOrNull(n)?.takeIf { it == count } == null }
+            }
+        }
+        return sum
+    }
+
 }

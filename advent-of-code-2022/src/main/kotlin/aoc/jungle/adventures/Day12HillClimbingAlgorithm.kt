@@ -2,8 +2,8 @@ package aoc.jungle.adventures
 
 import aoc.utils.ChallengeDay
 import aoc.utils.invoke
-import aoc.utils.grid2d.GridPoint2D
 import aoc.utils.grid2d.GridPoint2D.Companion.by
+import aoc.utils.grid2d.orthoNeighbors
 import java.io.File
 import aoc.utils.grid2d.GridPoint2D as Point
 
@@ -42,21 +42,22 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
 
     /**
      * Also a form of Breadth first search
+     *
+     * [aoc.utils.Tag.FLOOD_FILL]
      */
     private fun Grid.floodFill(postProcess: (Int, Int) -> (Int) = { _, length -> length }): Int {
         val shortestPaths = mutableMapOf(start to 0)
         val queue = ArrayDeque<Point>().apply { add(start) }
         while (queue.isNotEmpty()) {
             val pos = queue.removeFirst()
-            for (dir in GridPoint2D.towerDirs) {
-                val neighborPos = pos + dir
-                grid[neighborPos]?.let { gridHeight ->
+            for (n in pos.orthoNeighbors()) {
+                grid[n]?.let { gridHeight ->
                     if (gridHeight - grid(pos) <= 1) {
                         val newPathLength = shortestPaths(pos) + 1
-                        val pathLength = shortestPaths[neighborPos] ?: Int.MAX_VALUE
+                        val pathLength = shortestPaths[n] ?: Int.MAX_VALUE
                         if (newPathLength < pathLength) {
-                            shortestPaths[neighborPos] = postProcess(gridHeight, newPathLength)
-                            queue.add(neighborPos)
+                            shortestPaths[n] = postProcess(gridHeight, newPathLength)
+                            queue.add(n)
                         }
                     }
                 }
@@ -65,7 +66,14 @@ class Day12HillClimbingAlgorithm(fileName: String) : ChallengeDay {
         return shortestPaths[goal] ?: error("No path found...")
     }
 
+    /**
+     * What is the fewest steps required to move from your current position to the location that should get the best signal?
+     */
     override fun part1(): Int = createGrid(lines).floodFill()
+
+    /**
+     * What is the fewest steps required to move starting from any square with elevation 'a' to the location that should get the best signal?
+     */
     override fun part2(): Int = createGrid(lines).floodFill { height, length -> if (height == 0) 0 else length }
 
     data class Grid(val grid: Map<Point, Int>, val start: Point, val goal: Point)

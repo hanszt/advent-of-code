@@ -22,7 +22,7 @@ class Day18(
         val memoryGrid = dimension2D.toMutableCharGrid('.').apply {
             input.take(nrOfFallenBytes).forEach {
                 val point = it.split(',')
-                    .let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
+                    .let { (x, y) -> GridPoint2D(x.toInt(), y.toInt()) }
                 this[point] = '#'
             }
         }
@@ -62,16 +62,16 @@ class Day18(
     override fun part2(): GridPoint2D {
         val lastX = dimension2D.width - 1
         val lastY = dimension2D.height - 1
-        val horTopRange = gridPoint2D(1, 0)..gridPoint2D(dimension2D.width - 2, 0)
-        val horBottomRange = gridPoint2D(1, lastY)..gridPoint2D(dimension2D.width - 2, lastY)
-        val leftRange = gridPoint2D(0, 1)..gridPoint2D(0, dimension2D.height - 2)
-        val rightRange = gridPoint2D(lastX, 1)..gridPoint2D(lastX, dimension2D.height - 2)
+        val horTopRange = GridPoint2D(1, 0)..GridPoint2D(dimension2D.width - 2, 0)
+        val horBottomRange = GridPoint2D(1, lastY)..GridPoint2D(dimension2D.width - 2, lastY)
+        val leftRange = GridPoint2D(0, 1)..GridPoint2D(0, dimension2D.height - 2)
+        val rightRange = GridPoint2D(lastX, 1)..GridPoint2D(lastX, dimension2D.height - 2)
         val startsToEnds = listOf(horBottomRange to rightRange, leftRange to horTopRange)
 
         for (fallenBytes in nrOfFallenBytes..input.size) {
             val memoryGrid = dimension2D.toMutableCharGrid('.')
             val bytePositions = input.take(fallenBytes).map {
-                it.split(',').let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
+                it.split(',').let { (x, y) -> GridPoint2D(x.toInt(), y.toInt()) }
             }
             bytePositions.forEach { memoryGrid[it] = '#' }
 

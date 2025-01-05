@@ -1,5 +1,12 @@
 package aoc.snowrescuemission
 
+import aoc.snowrescuemission.Day17Abnew.Crucible
+import aoc.utils.Colors.RED
+import aoc.utils.grid2d.gridAsString
+import aoc.utils.grid2d.rangeTo
+import aoc.utils.grid2d.set
+import aoc.utils.grid2d.toMutableGrid
+import aoc.utils.withColor
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -65,41 +72,56 @@ class Day17Test {
 
     @Test
     fun testPart2() {
-        day17.part2() shouldBe 1420 // 1421, 1286 to high
+        day17.part2() shouldBe 1283 // 1421, 1286 to high
     }
 
     @Test
     fun testPart2dr() {
-        day17dr.part2() shouldBe 1420 // 1421 to high
+        day17dr.part2() shouldBe 1416 // 1421 to high
     }
 
     @Nested
-    inner class JavaVersionTest {
+    inner class AbnewVersionTest {
+
+        private val grid = Path("input/day17.txt").readLines()
+        private val day17 = Day17Abnew(grid)
 
         @Test
-        fun testJavaSolutionPart1() {
-            Day17Java(Path("input/day17.txt").readLines()).part1() shouldBe 1155
+        fun testPart1() {
+            val location = day17.part1()
+            println(pathInGridAsString(location, grid))
+            location.best shouldBe 1155
         }
 
         @Test
-        fun testJavaSolutionPart2() {
-            Day17Java(Path("input/day17.txt").readLines()).part2() shouldBe 1285 // 1286 to high
+        fun testPart2() {
+            val location = day17.part2()
+            println(pathInGridAsString(location, grid))
+            location.best shouldBe 1283
         }
 
         @Test
-        fun testJavaSolutionPart2dr() {
-            Day17Java(Path("input/day17dr.txt").readLines()).part2() shouldBe 1420 // 1421 to high
+        fun testPart2Test1() {
+            val input = testInput1.lines()
+            val crucible = Day17Abnew(input).part2()
+            println(pathInGridAsString(crucible, input))
+            crucible.best shouldBe 94
         }
 
         @Test
-        fun testJavaSolutionPart2Test1() {
-            Day17Java(testInput1.lines()).part2() shouldBe 94
+        fun testPart2Test2() {
+            val input = testInput2.lines()
+            val crucible = Day17Abnew(input).part2()
+            println(pathInGridAsString(crucible, input))
+            crucible.best shouldBe 71
         }
 
-        @Test
-        fun testJavaSolutionPart2Test2() {
-            Day17Java(testInput2.lines()).part2() shouldBe 71
+        private fun pathInGridAsString(best: Crucible, grid: List<String>): String {
+            val gr = grid.toMutableGrid { it.toString() }
+            best.traceBack { it.position }
+                .zipWithNext { c, n -> c..n }
+                .forEach { r -> r.forEach { gr[it] = '#'.withColor(RED) } }
+            return gr.gridAsString(1)
         }
     }
-
 }

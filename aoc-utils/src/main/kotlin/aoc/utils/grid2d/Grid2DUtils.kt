@@ -86,7 +86,7 @@ fun Iterable<GridPoint2D>.toClosedGridRange(): GridPoint2DRange {
     val maxX = maxOf { it.x }
     val minY = minOf { it.y }
     val maxY = maxOf { it.y }
-    return gridPoint2D(minX, minY)..gridPoint2D(maxX, maxY)
+    return GridPoint2D(minX, minY)..GridPoint2D(maxX, maxY)
 }
 
 /**
@@ -98,7 +98,7 @@ fun Array<CharArray>.mapByPoint(transform: (Int, Int) -> Char): Array<CharArray>
 }
 
 fun Array<CharArray>.mapByPoint(transform: (GridPoint2D) -> Char): Array<CharArray> = mapByPoint { x, y ->
-    transform(gridPoint2D(x, y))
+    transform(GridPoint2D(x, y))
 }
 
 inline fun <reified R> Array<IntArray>.mapByPoint(transform: (Int, Int) -> R): Array<Array<R>> = Array(size) { y ->
@@ -107,7 +107,7 @@ inline fun <reified R> Array<IntArray>.mapByPoint(transform: (Int, Int) -> R): A
 }
 
 inline fun <reified R> Array<IntArray>.mapByPoint(transform: (GridPoint2D) -> R): Array<Array<R>> = mapByPoint { x, y ->
-    transform(gridPoint2D(x, y))
+    transform(GridPoint2D(x, y))
 }
 
 inline fun <reified R> Array<IntArray>.flatMapByPoint(transform: (Int, Int) -> R): List<R> = buildList {
@@ -126,11 +126,11 @@ inline fun <reified R : Comparable<R>> Array<IntArray>.gridMaxOf(transform: (Int
 }
 
 inline fun <reified R : Comparable<R>> Array<IntArray>.gridMaxOf(transform: (GridPoint2D) -> R): R = gridMaxOf { x, y ->
-    transform(gridPoint2D(x, y))
+    transform(GridPoint2D(x, y))
 }
 
 inline fun <reified R> Array<IntArray>.flatMapByPoint(transform: (GridPoint2D) -> R): List<R> = flatMapByPoint { x, y ->
-    transform(gridPoint2D(x, y))
+    transform(GridPoint2D(x, y))
 }
 
 inline fun <T> Grid<T>.anyInGrid(predicate: (T) -> Boolean) = any { it.any(predicate) }
@@ -141,7 +141,7 @@ inline fun Array<IntArray>.gridCount(predicate: (Int, Int) -> Boolean): Int =
     indices.sumOf { y -> this[y].indices.count { x -> predicate(x, y) } }
 
 inline fun Array<IntArray>.gridCount(predicate: (GridPoint2D) -> Boolean): Int =
-    indices.sumOf { y -> this[y].indices.count { x -> predicate(gridPoint2D(x, y)) } }
+    indices.sumOf { y -> this[y].indices.count { x -> predicate(GridPoint2D(x, y)) } }
 
 inline fun <T> Array<Array<T>>.forEachPointAndValue(action: (Int, Int, T) -> Unit) =
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
@@ -149,7 +149,7 @@ inline fun <T> Array<Array<T>>.forEachPointAndValue(action: (Int, Int, T) -> Uni
 inline fun <T> Array<Array<T>>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
-inline fun <T> Array<Array<T>>.forEachPoint(action: (GridPoint2D) -> Unit) = forEachPoint { x, y -> action(gridPoint2D(x, y)) }
+inline fun <T> Array<Array<T>>.forEachPoint(action: (GridPoint2D) -> Unit) = forEachPoint { x, y -> action(GridPoint2D(x, y)) }
 
 fun Dimension2D.toMutableCharGrid(transform: (Int, Int) -> Char): Array<CharArray> = Array(height) { y ->
     CharArray(width) { x -> transform(x, y) }
@@ -167,7 +167,7 @@ inline fun List<String>.forEachPoint(action: (Int, Int) -> Unit) =
     withIndex().forEach { (y, row) -> row.indices.forEach { x -> action(x, y) } }
 
 inline fun List<String>.forEachPoint(action: (GridPoint2D) -> Unit) =
-    withIndex().forEach { (y, row) -> row.indices.forEach { x -> action(gridPoint2D(x, y)) } }
+    withIndex().forEach { (y, row) -> row.indices.forEach { x -> action(GridPoint2D(x, y)) } }
 
 inline fun <R> List<String>.foldByPoint(initial: R, action: (R, Int, Int) -> R): R {
     var acc = initial
@@ -185,13 +185,13 @@ inline fun Array<IntArray>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
 inline fun Array<IntArray>.forEachPoint(action: (GridPoint2D) -> Unit) =
-    indices.forEach { y -> first().indices.forEach { x -> action(gridPoint2D(x, y)) } }
+    indices.forEach { y -> first().indices.forEach { x -> action(GridPoint2D(x, y)) } }
 
 inline fun Array<CharArray>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
 inline fun Array<CharArray>.forEachPoint(action: (GridPoint2D) -> Unit) =
-    indices.forEach { y -> first().indices.forEach { x -> action(gridPoint2D(x, y)) } }
+    indices.forEach { y -> first().indices.forEach { x -> action(GridPoint2D(x, y)) } }
 
 inline fun Array<IntArray>.forEachPointAndValue(action: (Int, Int, Int) -> Unit) =
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
@@ -206,7 +206,7 @@ fun List<String>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
     for ((y, line) in this.withIndex()) {
         for ((x, c) in line.withIndex()) {
             if (predicate(c)) {
-                return gridPoint2D(x, y)
+                return GridPoint2D(x, y)
             }
         }
     }
@@ -217,7 +217,7 @@ fun Array<CharArray>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
     for ((y, line) in this.withIndex()) {
         for ((x, c) in line.withIndex()) {
             if (predicate(c)) {
-                return gridPoint2D(x, y)
+                return GridPoint2D(x, y)
             }
         }
     }
@@ -275,15 +275,10 @@ operator fun Array<BooleanArray>.set(point: GridPoint2D, bool: Boolean) {
 /**
  * Corners
  */
-val Array<IntArray>.upperLeft get(): Int = this[GridPoint2D.ZERO]
-val Array<IntArray>.lowerLeft get(): Int = this[gridPoint2D(0, lastIndex)]
-val Array<IntArray>.upperRight get(): Int = this[gridPoint2D(this[0].lastIndex, 0)]
-val Array<IntArray>.lowerRight get(): Int = this[gridPoint2D(this[0].lastIndex, lastIndex)]
-
-val <T> Grid<T>.upperLeft get(): T = this[GridPoint2D.ZERO]
-val <T> Grid<T>.lowerLeft get(): T = this[gridPoint2D(0, height - 1)]
-val <T> Grid<T>.upperRight get(): T = this[gridPoint2D(width - 1, 0)]
-val <T> Grid<T>.lowerRight get(): T = this[gridPoint2D(width - 1, height - 1)]
+val List<String>.upperLeft get(): GridPoint2D = GridPoint2D.ZERO
+val List<String>.lowerLeft get(): GridPoint2D = GridPoint2D(0, lastIndex)
+val List<String>.upperRight get(): GridPoint2D = GridPoint2D(this[0].lastIndex, 0)
+val List<String>.lowerRight get(): GridPoint2D = GridPoint2D(this[0].lastIndex, lastIndex)
 
 /**
  * Ranges
@@ -299,7 +294,7 @@ operator fun GridPoint2D.rangeUntil(other: GridPoint2D): OpenEndedGridPoint2DRan
 }
 
 infix fun IntRange.by(other: IntRange): GridPoint2DRange {
-    return GridPoint2DRange(gridPoint2D(start, other.start), gridPoint2D(endInclusive, other.endInclusive))
+    return GridPoint2DRange(GridPoint2D(start, other.start), GridPoint2D(endInclusive, other.endInclusive))
 }
 
 /**
@@ -415,20 +410,18 @@ inline fun <T, R> Grid<T>.gridAsString(
     }
 }
 
-fun <T> Array<Array<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
-    gridAsString(spacing, separator) { it }
+@JvmOverloads
+fun <T> Array<Array<T>>.gridAsString(spacing: Int = 2, separator: String = "") = gridAsString(spacing, separator) { it }
 
 @JvmOverloads
-fun <T> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "") =
-    map { row -> row.joinToString(separator) { "%${spacing}s".format(it) } }.joinToString("\n") { it }
-
-fun <T, R> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "", selector: (T) -> R) =
-    map { row -> row.joinToString(separator) { "%${spacing}s".format(selector(it)) } }
-        .joinToString("\n") { it }
+fun <T> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "") = gridAsString(spacing, separator) { it }
 
 @JvmName("stringListAsGrid")
-fun List<String>.gridAsString(spacing: Int = 2, separator: String = "") = map { row ->
-    row.asSequence().joinToString(separator) { "%${spacing}c".format(it) }
+@JvmOverloads
+fun List<String>.gridAsString(spacing: Int = 2, separator: String = "") = gridAsString(spacing, separator) { it }
+
+fun <T, R> List<List<T>>.gridAsString(spacing: Int = 2, separator: String = "", selector: (T) -> R) = map { row ->
+    row.joinToString(separator) { "%${spacing}s".format(selector(it)) }
 }.joinToString("\n") { it }
 
 @JvmName("stringListAsGrid")

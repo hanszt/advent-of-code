@@ -5,7 +5,7 @@ import aoc.utils.grid2d.*
 import aoc.utils.splitByBlankLine
 import java.nio.file.Path
 import kotlin.io.path.readText
-import aoc.utils.grid2d.gridPoint2D as P2
+import aoc.utils.grid2d.GridPoint2D as P2
 
 class Day15(input: String) : ChallengeDay {
 
@@ -57,7 +57,7 @@ class Day15(input: String) : ChallengeDay {
     }
 
     fun p2Elizarov(): Long {
-        val a = modifyMap(map)
+        val a = modifyMap(map).toMutableCharGrid()
         var r = a.firstPoint { it == '@' }
         a[r] = '.'
         for (line in moves) for (c in line) {
@@ -118,7 +118,7 @@ class Day15(input: String) : ChallengeDay {
         return sum
     }
 
-    private fun modifyMap(map: List<String>): Array<CharArray> = map.map {
+    private fun modifyMap(map: List<String>): List<String> = map.map {
         it.map {
             when (it) {
                 '#' -> "##"
@@ -128,9 +128,9 @@ class Day15(input: String) : ChallengeDay {
                 else -> error("!$it")
             }
         }.joinToString("")
-    }.toMutableCharGrid()
+    }
 
-    private fun toDirection(c: Char): GridPoint2D = when (c) {
+    private fun toDirection(c: Char): P2 = when (c) {
         '<' -> P2(-1, 0)
         'v' -> P2(0, 1)
         '>' -> P2(1, 0)

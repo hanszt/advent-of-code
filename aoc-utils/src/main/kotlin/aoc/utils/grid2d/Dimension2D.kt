@@ -5,7 +5,7 @@ interface Dimension2D : OpenEndedGridPoint2DRange {
     val height: Int
 
     override val start: GridPoint2D get() = GridPoint2D.ZERO
-    override val endExclusive: GridPoint2D get() = gridPoint2D(width - 1, height - 1)
+    override val endExclusive: GridPoint2D get() = GridPoint2D(width - 1, height - 1)
 
     operator fun component1() = width
     operator fun component2() = height
@@ -22,7 +22,7 @@ interface Dimension2D : OpenEndedGridPoint2DRange {
 
             override fun next(): GridPoint2D {
                 if (hasNext()) {
-                    val gridPoint2D = gridPoint2D(x, y)
+                    val gridPoint2D = GridPoint2D(x, y)
                     if (x >= width - 1) {
                         x = 0
                         y++
@@ -38,7 +38,7 @@ interface Dimension2D : OpenEndedGridPoint2DRange {
 fun dimension2D(width: Int, height: Int): Dimension2D = StandardDimension2D(width, height)
 
 private data class StandardDimension2D(override val width: Int, override val height: Int) : Dimension2D {
-    override val endExclusive: GridPoint2D = gridPoint2D(width - 1, height - 1)
+    override val endExclusive: GridPoint2D = GridPoint2D(width - 1, height - 1)
 
     init {
         require(width >= 0)

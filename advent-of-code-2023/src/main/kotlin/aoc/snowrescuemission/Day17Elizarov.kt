@@ -24,8 +24,8 @@ fun day17Part1(input: List<String>): Int {
     val d = input.dimension2D()
     while (heap.isNotEmpty()) {
         val (cur, minHeatLoss) = heap.removeMin()
-        val p = cur.pos
         visited += cur
+        val p = cur.pos
         if (p == d.endExclusive) {
             return minHeatLoss
         }
@@ -68,15 +68,16 @@ fun day17Part2(input: List<String>): Int {
     while (heap.isNotEmpty()) {
         val (cur, minHeatLoss) = heap.removeMin()
         visited += cur
-        var p = cur.pos
-        if (p == d.endExclusive) {
+        val p = cur.pos
+        if (cur.straightLength >= 4 && p == d.endExclusive) {
             return minHeatLoss
         }
         for (dir in -1..1) {
             // TODO: also account for the stopping distance of 4
-            if (dir == 0) {
-                if (cur.straightLength == 10) continue
-            } else if (cur.straightLength < 4) continue
+            when {
+                dir == 0 -> if (cur.straightLength == 10) continue
+                cur.straightLength < 4 -> continue
+            }
             val nextDir = (cur.dir + dir).mod(towerDirs.size)
             val np = p + towerDirs[nextDir]
             input.getOrNull(np)?.let {

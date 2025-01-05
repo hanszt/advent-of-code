@@ -154,5 +154,5 @@ fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bou
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
 
 enum class Tag {
-    RECURSIVE, PATH_SEARCH
+    RECURSIVE, PATH_SEARCH, FLOOD_FILL, INFINITY, THREE_D
 }

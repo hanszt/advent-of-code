@@ -1,5 +1,12 @@
 package aoc.utils
 
+import aoc.utils.Colors.BRIGHT_BLUE
+import aoc.utils.Colors.CYAN
+import aoc.utils.Colors.GREEN
+import aoc.utils.Colors.RED
+import aoc.utils.Colors.RESET
+import aoc.utils.Colors.YELLOW
+
 
 private val ansiColors = listOf(BRIGHT_BLUE, RESET, GREEN, RESET, YELLOW, RESET, CYAN, RESET)
 

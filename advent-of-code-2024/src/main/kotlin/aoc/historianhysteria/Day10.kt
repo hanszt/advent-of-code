@@ -2,7 +2,6 @@ package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
 import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.gridPoint2D
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.readLines
@@ -20,7 +19,7 @@ class Day10(private val map: List<String>) : ChallengeDay {
                 val height = toHeight(x, y) ?: continue
                 if (height == 0) {
 
-                    val start = gridPoint2D(x, y)
+                    val start = GridPoint2D(x, y)
                     /**
                      * You establish that a trailhead's score is the number of 9-height positions reachable from that trailhead via a hiking trail.
                      */

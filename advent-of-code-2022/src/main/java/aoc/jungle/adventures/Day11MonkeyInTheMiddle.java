@@ -108,9 +108,9 @@ public class Day11MonkeyInTheMiddle implements ChallengeDay {
             final var operationLine = lines.get(2);
             final var operation = operationLine.substring(operationLine.indexOf("old"));
 
-            final var divisor = Integer.parseInt(StringX.of(lines.get(3)).split(" by ").get(1));
-            final var monkeyNrWhenTrue = Integer.parseInt(StringX.of(lines.get(4)).split("monkey ").get(1));
-            final var monkeyNrWhenFalse = Integer.parseInt(StringX.of(lines.get(5)).split("monkey ").get(1));
+            final var divisor = StringX.of(lines.get(3)).splitX(" by ").get(1).toInt();
+            final var monkeyNrWhenTrue = StringX.of(lines.get(4)).splitX("monkey ").get(1).toInt();
+            final var monkeyNrWhenFalse = StringX.of(lines.get(5)).splitX("monkey ").get(1).toInt();
             final var items = StringX.of(lines.get(1)).splitToSequence(": ", ", ")
                     .skip(1)
                     .mapToLong(Long::parseLong)

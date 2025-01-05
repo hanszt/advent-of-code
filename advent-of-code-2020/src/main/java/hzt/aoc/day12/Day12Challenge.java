@@ -3,7 +3,7 @@ package hzt.aoc.day12;
 import aoc.utils.grid2d.GridPoint2D;
 import hzt.aoc.Challenge;
 
-import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 
 public abstract class Day12Challenge extends Challenge {
 
@@ -22,11 +22,11 @@ public abstract class Day12Challenge extends Challenge {
 
     GridPoint2D getTranslationInWindDirection(final char direction, final int amount) {
         return switch (direction) {
-            case EAST -> gridPoint2D(amount, 0);
-            case WEST -> gridPoint2D(-amount, 0);
-            case NORTH -> gridPoint2D(0, amount);
-            case SOUTH -> gridPoint2D(0, -amount);
-            default -> gridPoint2D(0, 0);
+            case EAST -> GridPoint2D(amount, 0);
+            case WEST -> GridPoint2D(-amount, 0);
+            case NORTH -> GridPoint2D(0, amount);
+            case SOUTH -> GridPoint2D(0, -amount);
+            default -> GridPoint2D(0, 0);
         };
     }
 

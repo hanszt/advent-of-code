@@ -1,6 +1,7 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
+import aoc.utils.graph.Node
 import aoc.utils.grid2d.GridPoint2D.Companion.orthoDirs
 import aoc.utils.grid2d.firstPoint
 import aoc.utils.grid2d.get
@@ -15,15 +16,13 @@ private const val TURING_COST = 1000
 
 /**
  * From elizarov 2024 day 16
+ *
+ * [aoc.utils.Tag.PATH_SEARCH]
  */
 class Day16(private val maze: List<String>) : ChallengeDay {
     constructor(path: Path) : this(path.readLines())
 
-    init {
-        require(maze.isNotEmpty())
-    }
-
-    private val m = maze[0].length
+    private val m = maze.getOrNull(0)?.length ?: 0
     private val n = maze.size
 
     /**
@@ -60,31 +59,29 @@ class Day16(private val maze: List<String>) : ChallengeDay {
     private fun findShortestPath(
         cost: Array<Array<IntArray>> = Array(m) { Array(n) { IntArray(orthoDirs.size) { MAX_VALUE } } },
     ): Int {
-        val s = maze.firstPoint { it == 'S' }
-
         val q = PriorityQueue(compareBy(Spot::cost))
         val visited = Array(m) { Array(n) { BooleanArray(orthoDirs.size) } }
-        fun enq(pos: P2, d: Int, c: Int) {
+        fun enq(pos: P2, d: Int, c: Int, prev: Spot? = null) {
             if (cost[pos][d] <= c) return
             if (maze[pos] == '#') return
             cost[pos][d] = c
-            q.add(Spot(pos, d, c))
+            q.add(Spot(pos, d, c, prev))
         }
-
-        enq(s, 0, 0)
+        enq(maze.firstPoint { it == 'S' }, 0, 0)
         // Do a non short-circuiting search to satisfy the requirements for the cost matrix for part 2
         var best = MAX_VALUE
         while (q.isNotEmpty()) {
-            val (pos, d, score) = q.remove()
+            val cur = q.remove()
+            val (pos, d, score) = cur
             if (visited[pos][d]) continue
             visited[pos][d] = true
             if (maze[pos] == 'E') {
                 best = min(score, best)
             }
             val dir = orthoDirs[d]
-            enq(pos + dir, d, score + 1)
-            enq(pos, leftDir(d), score + TURING_COST)
-            enq(pos, rightDir(d), score + TURING_COST)
+            enq(pos + dir, d, score + 1, cur)
+            enq(pos, leftDir(d), score + TURING_COST, cur)
+            enq(pos, rightDir(d), score + TURING_COST, cur)
         }
         return best
     }
@@ -92,5 +89,5 @@ class Day16(private val maze: List<String>) : ChallengeDay {
     private fun leftDir(d: Int): Int = (d + 1) % 4
     private fun rightDir(d: Int): Int = (d + 3) % 4
 
-    private data class Spot(val pos: P2, val dir: Int, val cost: Int)
+    private data class Spot(val pos: P2, val dir: Int, val cost: Int, override val prev: Spot? = null) : Node<Spot>
 }

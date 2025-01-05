@@ -1,6 +1,6 @@
 package aoc.snowrescuemission
 
-import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -46,6 +46,6 @@ class Day03Test {
 
     @Test
     fun toNrTest() {
-        Day03(lines = testInput).toNr(gridPoint2D(2, 0)) shouldBe 467
+        Day03(lines = testInput).toNr(GridPoint2D(2, 0)) shouldBe 467
     }
 }

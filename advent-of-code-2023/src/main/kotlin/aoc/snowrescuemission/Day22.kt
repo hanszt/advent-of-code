@@ -1,18 +1,21 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.readLines
 
-class Day22(
-    fileName: String? = null,
-    private val grid: List<String> = File(fileName ?: error("No fileName or text provided")).readLines()
-) : ChallengeDay {
+class Day22(input: List<String>) : ChallengeDay {
+    constructor(path: Path) : this(path.readLines())
 
-    override fun part1(): Int {
-        TODO()
-    }
+    private val day22Zebalu = Day22Zebalu(input)
 
-    override fun part2(): Int {
-        TODO()
-    }
+    /**
+     * How many bricks could be safely chosen as the one to get disintegrated?
+     */
+    override fun part1(): Int = day22Zebalu.part1()
+
+    /**
+     * What is the sum of the number of other bricks that would fall?
+     */
+    override fun part2(): Int = day22Zebalu.part2()
 }

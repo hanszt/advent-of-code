@@ -2,22 +2,26 @@ package aoc.utils.graph
 
 interface Node<N : Node<N>> {
     /**
-     * The neighbor node this node is explored from
+     * The node this node is explored from
      */
     val prev: N?
 
     /**
-     * Backtracks a path formed by all nodes linked to this node. If it contains a cycle, it will break
+     * Backtracks a path formed by all nodes linked to this node. If it contains a cycle, it will break.
      */
-    fun <R> traceBack(transform: (N) -> R): List<R> = buildList {
-        val visited = mutableSetOf<N>()
-        var current = this@Node
-        while (true) {
+    fun <R> traceBack(transform: (N) -> R): Sequence<R> = Sequence {
+        val visited = HashSet<N>()
+        var current: Node<N>? = this@Node
+        object : Iterator<R> {
+            override fun hasNext(): Boolean = current != null && current !in visited
+
             @Suppress("UNCHECKED_CAST")
-            val n = current as N
-            if (!visited.add(n)) break
-            add(transform(n))
-            current = current.prev ?: break
+            override fun next(): R = if (hasNext()) {
+                val c = current as N
+                visited.add(c)
+                current = current?.prev
+                transform(c)
+            } else throw NoSuchElementException()
         }
     }
 }

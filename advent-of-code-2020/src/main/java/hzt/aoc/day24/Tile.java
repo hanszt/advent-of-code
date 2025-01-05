@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 
 public class Tile {
 
@@ -29,12 +29,12 @@ public class Tile {
         OPPOSITE_DIR.put(NORTH_WEST, SOUTH_EAST);
         OPPOSITE_DIR.put(SOUTH_WEST, NORTH_EAST);
         OPPOSITE_DIR.put(NORTH_EAST, SOUTH_WEST);
-        INSTRUCTION_TO_DIR.put(EAST, gridPoint2D(1, 0));
-        INSTRUCTION_TO_DIR.put(WEST, gridPoint2D(-1, 0));
-        INSTRUCTION_TO_DIR.put(SOUTH_EAST, gridPoint2D(1, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_WEST, gridPoint2D(-1, 1));
-        INSTRUCTION_TO_DIR.put(SOUTH_WEST, gridPoint2D(0, -1));
-        INSTRUCTION_TO_DIR.put(NORTH_EAST, gridPoint2D(0, 1));
+        INSTRUCTION_TO_DIR.put(EAST, GridPoint2D(1, 0));
+        INSTRUCTION_TO_DIR.put(WEST, GridPoint2D(-1, 0));
+        INSTRUCTION_TO_DIR.put(SOUTH_EAST, GridPoint2D(1, -1));
+        INSTRUCTION_TO_DIR.put(NORTH_WEST, GridPoint2D(-1, 1));
+        INSTRUCTION_TO_DIR.put(SOUTH_WEST, GridPoint2D(0, -1));
+        INSTRUCTION_TO_DIR.put(NORTH_EAST, GridPoint2D(0, 1));
     }
 
     private final GridPoint2D position;
@@ -53,7 +53,7 @@ public class Tile {
 
     public Tile getNeighborByInstruction(final String instruction, final Map<GridPoint2D, Tile> allTiles) {
         final GridPoint2D delta = INSTRUCTION_TO_DIR.get(instruction);
-        final GridPoint2D newPosition = gridPoint2D(this.position.getX() + delta.getX(), this.position.getY() + delta.getY());
+        final GridPoint2D newPosition = GridPoint2D(this.position.getX() + delta.getX(), this.position.getY() + delta.getY());
         final Tile neighbor;
         if (instructionsToNeighborsMap.get(delta) != null) {
             neighbor = instructionsToNeighborsMap.get(delta);
@@ -70,7 +70,7 @@ public class Tile {
     List<Tile> neighbors() {
         final List<Tile> neighbors = new ArrayList<>();
         for (final GridPoint2D delta : INSTRUCTION_TO_DIR.values()) {
-            neighbors.add(new Tile(gridPoint2D(position.getX() + delta.getX(), position.getY() + delta.getY())));
+            neighbors.add(new Tile(GridPoint2D(position.getX() + delta.getX(), position.getY() + delta.getY())));
         }
         return neighbors;
     }

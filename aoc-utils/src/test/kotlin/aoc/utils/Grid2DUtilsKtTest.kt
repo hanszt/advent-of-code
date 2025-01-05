@@ -166,7 +166,7 @@ internal class Grid2DUtilsKtTest {
 
         @Test
         fun `iterable of points to grid`() {
-            val s = listOf(gridPoint2D(1, 1), gridPoint2D(2, 2), gridPoint2D(3, 3))
+            val s = listOf(GridPoint2D(1, 1), GridPoint2D(2, 2), GridPoint2D(3, 3))
                 .toGrid { x, y, isWall -> if (isWall) "#" else "." }
                 .toString()
 

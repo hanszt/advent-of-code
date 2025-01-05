@@ -1,5 +1,15 @@
 package aoc.utils
 
+import aoc.utils.Colors.BRIGHT_BLUE
+import aoc.utils.Colors.BRIGHT_GREEN
+import aoc.utils.Colors.BRIGHT_YELLOW
+import aoc.utils.Colors.BROWN_BG
+import aoc.utils.Colors.ICY_BG
+import aoc.utils.Colors.RED
+import aoc.utils.Colors.YELLOW
+import aoc.utils.Colors.YELLOW_BG
+import aoc.utils.Colors.bgColorTable16Bit
+import aoc.utils.Colors.colorTable16Bit
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldHaveLength
 import io.kotest.matchers.string.shouldStartWith

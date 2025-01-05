@@ -2,7 +2,6 @@ package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.gridPoint2D
 import java.io.File
 
 class Day03(
@@ -64,7 +63,7 @@ class Day03(
             val dx = x + dir.x
             val dy = y + dir.y
             if (lines.getOrNull(dy)?.getOrNull(dx)?.isDigit() == true) {
-                val gridPoint2D = gridPoint2D(dx, dy)
+                val gridPoint2D = GridPoint2D(dx, dy)
                 val nr = toNr(gridPoint2D)
                 if (nr !in nrs) {
                     nrs.add(nr)

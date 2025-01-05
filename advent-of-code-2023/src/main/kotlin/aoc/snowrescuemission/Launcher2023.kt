@@ -1,6 +1,8 @@
 package aoc.snowrescuemission
 
 import aoc.utils.*
+import aoc.utils.Colors.BRIGHT_BLUE
+import aoc.utils.Colors.GREEN
 
 fun main(vararg args: String) {
     println({}.readTextFromResource("/title.txt", orElse = "Advent of code 2023") withColor BRIGHT_BLUE)

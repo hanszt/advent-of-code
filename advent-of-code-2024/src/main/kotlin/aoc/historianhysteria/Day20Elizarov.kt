@@ -3,7 +3,7 @@ package aoc.historianhysteria
 import aoc.utils.grid2d.*
 import aoc.utils.invoke
 import kotlin.math.abs
-import aoc.utils.grid2d.gridPoint2D as P2
+import aoc.utils.grid2d.GridPoint2D as P2
 
 fun day20Part1(input: List<String>): Int = solve(input, 2)
 fun day20Part2(input: List<String>): Int = solve(input, 20)

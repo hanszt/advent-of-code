@@ -11,7 +11,7 @@ public class Part1HandyHaversacks extends Day07Challenge {
     }
 
     @Override
-    protected long solveByRules(final Map<String, Bag> bags) {
+    long solveByRules(final Map<String, Bag> bags) {
         return bags.values().stream()
                 .filter(bag -> hasDescendent(bags, SHINY_GOLD, bag))
                 .count();

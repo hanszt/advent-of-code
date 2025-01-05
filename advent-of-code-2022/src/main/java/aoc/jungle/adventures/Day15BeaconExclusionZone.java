@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static aoc.utils.Converters.toInt;
-import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 import static java.util.function.Predicate.not;
 
 /**
@@ -34,8 +34,8 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
         sensorBeaconMap = FileX.of(fileName)
                 .useLines(s -> s.map(LINE_PATTERN::matcher)
                         .filter(Matcher::find)
-                        .toMap(m -> gridPoint2D(toInt(m.group(1)), toInt(m.group(2))),
-                                m -> gridPoint2D(toInt(m.group(3)), toInt(m.group(4)))));
+                        .toMap(m -> GridPoint2D(toInt(m.group(1)), toInt(m.group(2))),
+                                m -> GridPoint2D(toInt(m.group(3)), toInt(m.group(4)))));
     }
 
     @NotNull
@@ -57,7 +57,7 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
 
                 final Predicate<GridPoint2D> isRequiredDistance = p -> sensor.manhattanDistance(p) <= distance;
                 IntRange.closed(sensor.getX() - distance, sensor.getX() + distance)
-                        .mapToObj(x -> gridPoint2D(x, TARGET_Y))
+                        .mapToObj(x -> GridPoint2D(x, TARGET_Y))
                         .filter(isRequiredDistance.and(not(beacons::contains)).and(not(sensors::contains)))
                         .forEach(areaChecked::add);
             }
@@ -92,7 +92,7 @@ public class Day15BeaconExclusionZone implements ChallengeDay {
     private static void addToRingIfInLimit(Set<GridPoint2D> ring, int x, int y) {
         final long UPPER_BOUND = 4_000_000;
         if (x >= 0 && y >= 0 && x <= UPPER_BOUND && y <= UPPER_BOUND) {
-            ring.add(gridPoint2D(x, y));
+            ring.add(GridPoint2D(x, y));
         }
     }
 

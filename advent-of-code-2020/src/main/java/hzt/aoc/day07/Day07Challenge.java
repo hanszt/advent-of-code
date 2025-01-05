@@ -33,11 +33,11 @@ public abstract class Day07Challenge extends Challenge {
                 .collect(Collectors.toMap(bag -> bag.bagColor, bag -> bag));
 
         bagColorsToBag.values()
-                .forEach(b -> b.childBagColorsToAmounts.forEach((c, a) -> b.children().add(bagColorsToBag.get(c))));
+                .forEach(b -> b.childBagColorsToAmounts.forEach((c, _) -> b.children().add(bagColorsToBag.get(c))));
         return bagColorsToBag;
     }
 
-    protected abstract long solveByRules(Map<String, Bag> bags);
+    abstract long solveByRules(Map<String, Bag> bags);
 
     Bag extractBagFromLine(final String line) {
         final String[] containerToContent = line.split(Pattern.quote(" bags contain "));
@@ -56,7 +56,7 @@ public abstract class Day07Challenge extends Challenge {
         return currentBag;
     }
 
-    record Bag(String bagColor, Map<String, Integer> childBagColorsToAmounts, List<Bag> children) implements TreeNode<Bag, Bag> {
+    record Bag(String bagColor, Map<String, Integer> childBagColorsToAmounts, List<Bag> children) implements TreeNode<Bag> {
 
         public Bag(final String bagColor) {
             this(bagColor, new HashMap<>(), new ArrayList<>());

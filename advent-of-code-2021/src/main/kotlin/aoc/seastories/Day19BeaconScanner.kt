@@ -2,7 +2,6 @@ package aoc.seastories
 
 import aoc.utils.grid3d.Transform3D
 import aoc.utils.grid3d.GridPoint3D
-import aoc.utils.grid3d.gridPoint3D
 import aoc.utils.grid3d.rotations
 import aoc.utils.splitByBlankLine
 import aoc.utils.toSetOf
@@ -40,7 +39,7 @@ internal class Day19BeaconScanner(inputPath: String) : ChallengeDay {
     private fun String.toScannerDataSets(): ScannerData =
         splitByBlankLine().map { s -> s.lines().filter { "scanner" !in it }.toSetOf(::toPoint3D) }
 
-    private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> gridPoint3D(x, y, z) }
+    private fun toPoint3D(p: String) = p.split(",").map(String::toInt).let { (x, y, z) -> GridPoint3D(x, y, z) }
 
     private fun Array<GridPoint3D>.largestDistance(): Int {
         var max = 0

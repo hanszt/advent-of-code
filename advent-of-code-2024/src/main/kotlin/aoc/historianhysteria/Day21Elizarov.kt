@@ -2,7 +2,7 @@ package aoc.historianhysteria
 
 import aoc.utils.grid2d.firstPoint
 import kotlin.math.abs
-import aoc.utils.grid2d.gridPoint2D as P2
+import aoc.utils.grid2d.GridPoint2D as P2
 
 /**
  * https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day21_2.kt

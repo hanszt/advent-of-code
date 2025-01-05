@@ -9,8 +9,7 @@ import aoc.utils.grid2d.GridPoint2D.Companion.left
 import aoc.utils.grid2d.GridPoint2D.Companion.right
 import aoc.utils.grid2d.GridPoint2D.Companion.down
 import aoc.utils.grid3d.GridPoint3D
-import aoc.utils.grid2d.gridPoint2D
-import aoc.utils.grid3d.gridPoint3D
+import aoc.utils.grid2d.GridPoint2D
 import java.io.File
 import kotlin.math.sqrt
 import aoc.utils.grid2d.GridPoint2D as Point2D
@@ -36,13 +35,13 @@ class Day22MonkeyMap(
     }
 
     override fun part1(): Int {
-        val initPoint = gridPoint2D(grid[0].indexOf('.').also { check(it >= 0) }, 0)
+        val initPoint = GridPoint2D(grid[0].indexOf('.').also { check(it >= 0) }, 0)
         return simulate(initPoint, instructions) { x, point, facing -> facing to grid.moveAlongGrid(x, point, facing) }
     }
 
     override fun part2(): Int {
         val cube = Cube(grid, dirs)
-        val initPoint = gridPoint2D(cube.initialFace.y * cube.faceSize, 0)
+        val initPoint = GridPoint2D(cube.initialFace.y * cube.faceSize, 0)
         return simulate(initPoint, instructions) { x, point, facing -> cube.moveAlongCube(x, point, facing) }
     }
 
@@ -121,7 +120,7 @@ class Day22MonkeyMap(
             var curFacing = nextFacing
             if (grid.isInGrid(neighbor)) {
                 // transition according to the folded cube
-                val oriFace = gridPoint2D(nextPoint.y / faceSize, nextPoint.x / faceSize) // the original face
+                val oriFace = GridPoint2D(nextPoint.y / faceSize, nextPoint.x / faceSize) // the original face
 
                 val connectedFace3D = faceToNeighbors(oriFace)[nextFacing] // basis of the next face if it was connected
                 val nextFace = normalsToFaces(connectedFace3D.point3)// next face (look up by the normal)
@@ -169,16 +168,16 @@ class Day22MonkeyMap(
             check(faceSize * faceSize * 6 == totalCnt)
             val faceToCount = buildList {
                 for (x in grid.indices) for (y in grid[x].indices) if (grid[x][y] != ' ') {
-                    add(gridPoint2D(x / faceSize, y / faceSize))
+                    add(GridPoint2D(x / faceSize, y / faceSize))
                 }
             }.groupingBy { it }.eachCount()
 
             check(faceToCount.values.all { it == faceSize * faceSize })
             initialFace = faceToCount.keys.filter { it.x == 0 }.minBy(Point2D::y)
             val face3D = Face3D(
-                point1 = gridPoint3D(1, 0, 0),
-                point2 = gridPoint3D(0, 1, 0),
-                point3 = gridPoint3D(0, 0, 1)
+                point1 = GridPoint3D(1, 0, 0),
+                point2 = GridPoint3D(0, 1, 0),
+                point3 = GridPoint3D(0, 0, 1)
             )
             dfs(initialFace, face3D, faceToCount)
         }

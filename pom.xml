@@ -36,7 +36,7 @@
         <junit-jupiter.version>5.11.3</junit-jupiter.version>
         <kotest-assertions.version>5.9.1</kotest-assertions.version>
         <annotations.version>24.0.1</annotations.version>
-        <hzt.utils.version>1.0.4.22</hzt.utils.version>
+        <hzt.utils.version>1.0.5.22</hzt.utils.version>
         <!--        plugins-->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>

@@ -1,5 +1,8 @@
 package aoc.utils
 
+import aoc.utils.Colors.RESET
+import aoc.utils.Colors.bgColorTable16Bit
+import aoc.utils.Colors.colorTable16Bit
 import kotlin.random.Random
 
 /**
@@ -8,22 +11,24 @@ import kotlin.random.Random
  * See also [ANSI escape code](https://en.wikipedia.org/wiki/ANSI_escape_code)
  */
 private const val SIXTEEN_BIT = 16
-val RESET = TextColor("\u001B[0m")
 
-val RED = TextColor("\u001B[31m")
-val GREEN = TextColor("\u001B[32m")
-val BRIGHT_GREEN = TextColor("\u001b[32;1m")
-val YELLOW = TextColor("\u001B[33m")
-val CYAN = TextColor("\u001B[36m")
-val BRIGHT_BLUE = TextColor("\u001B[94m")
-val BRIGHT_YELLOW = TextColor("\u001B[93m")
+object Colors {
+    val RESET = TextColor("\u001B[0m")
+    val RED = TextColor("\u001B[31m")
+    val GREEN = TextColor("\u001B[32m")
+    val BRIGHT_GREEN = TextColor("\u001b[32;1m")
+    val YELLOW = TextColor("\u001B[33m")
+    val CYAN = TextColor("\u001B[36m")
+    val BRIGHT_BLUE = TextColor("\u001B[94m")
+    val BRIGHT_YELLOW = TextColor("\u001B[93m")
 
-val YELLOW_BG = BgColor("\u001B[43m")
-val BROWN_BG = BgColor("\u001B[48;5;88m")
-val ICY_BG = BgColor("\u001B[48;5;87m")
+    val YELLOW_BG = BgColor("\u001B[43m")
+    val BROWN_BG = BgColor("\u001B[48;5;88m")
+    val ICY_BG = BgColor("\u001B[48;5;87m")
 
-val colorTable16Bit by lazy { to16bitAnsiColorTabel(::TextColor) }
-val bgColorTable16Bit by lazy { to16bitAnsiColorTabel(::BgColor) }
+    val colorTable16Bit by lazy { to16bitAnsiColorTabel(::TextColor) }
+    val bgColorTable16Bit by lazy { to16bitAnsiColorTabel(::BgColor) }
+}
 
 sealed interface Color {
     val ansiCode: String

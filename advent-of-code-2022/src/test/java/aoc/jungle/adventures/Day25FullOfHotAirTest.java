@@ -8,9 +8,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.hzt.utils.It.println;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.params.provider.Arguments.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class Day25FullOfHotAirTest {
 
@@ -19,14 +18,12 @@ class Day25FullOfHotAirTest {
     @Test
     void testPart1() {
         final var result = day25FullOfHotAir.part1();
-        println(result);
         assertEquals("122-2=200-0111--=200", result);
     }
 
     @Test
     void testPart2() {
         final var result = day25FullOfHotAir.part2();
-        println(result);
         assertEquals("No part 2. Merry christmas! 🎄", result);
     }
 

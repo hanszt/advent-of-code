@@ -8,7 +8,7 @@ import org.hzt.utils.sequences.Sequence;
 import java.util.ArrayList;
 import java.util.List;
 
-import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 
 public abstract class Day16Challenge extends Challenge {
 
@@ -55,7 +55,7 @@ public abstract class Day16Challenge extends Challenge {
             final String[] lowerUpper = range.split("-");
             final int lower = Integer.parseInt(lowerUpper[0]);
             final int upper = Integer.parseInt(lowerUpper[1]);
-            field.addRange(gridPoint2D(lower, upper));
+            field.addRange(GridPoint2D(lower, upper));
         }
         fields.add(field);
     }

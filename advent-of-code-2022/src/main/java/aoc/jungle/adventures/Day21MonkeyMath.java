@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.LongBinaryOperator;
 
+/**
+ * Tags {@link aoc.utils.Tag#RECURSIVE}
+ */
 public class Day21MonkeyMath implements ChallengeDay {
 
     final Map<String, Monkey> monkeyMap;
@@ -75,7 +78,7 @@ public class Day21MonkeyMath implements ChallengeDay {
         return monkeyMap;
     }
 
-    abstract static sealed class Monkey implements TreeNode<Monkey, Monkey> {
+    abstract static sealed class Monkey implements TreeNode<Monkey> {
 
         final String name;
 

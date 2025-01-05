@@ -1,18 +1,15 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.readLines
 
-class Day25(
-    fileName: String? = null,
-    private val grid: List<String> = File(fileName ?: error("No fileName or text provided")).readLines()
-) : ChallengeDay {
+class Day25(private val input: List<String>) : ChallengeDay {
+    constructor(path: Path) : this(path.readLines())
 
     override fun part1(): Int {
         TODO()
     }
 
-    override fun part2(): Int {
-        TODO()
-    }
+    override fun part2() = "Merry Christmas!"
 }

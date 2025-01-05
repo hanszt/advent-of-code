@@ -5,12 +5,14 @@ import aoc.utils.grid3d.GridPoint3D
 import aoc.utils.grid3d.rangeTo
 import java.io.File
 import aoc.utils.grid3d.GridPoint3D as Cube
-import aoc.utils.grid3d.gridPoint3D as cube
+import aoc.utils.grid3d.GridPoint3D as cube
 
 /**
  * Credits to Elizarov and Angelo
  *
  * @see <a href="https://adventofcode.com/2022/day/18">Day 18</a>
+ *
+ * [aoc.utils.Tag.THREE_D]
  */
 class Day18BoilingBoulders(fileName: String) : ChallengeDay {
 

@@ -70,7 +70,7 @@ final class Day13DistressSignal implements ChallengeDay {
         }
     }
 
-    sealed interface CompNode extends Comparable<CompNode>, TreeNode<CompNode, CompNode> permits CompNumber, CompList {
+    sealed interface CompNode extends Comparable<CompNode>, TreeNode<CompNode> permits CompNumber, CompList {
 
         @Override
         default int compareTo(@NotNull CompNode o) {

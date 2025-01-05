@@ -1,7 +1,6 @@
 package aoc.utils.grid2d
 
 import aoc.utils.grid3d.GridPoint3D
-import aoc.utils.grid3d.gridPoint3D
 import kotlin.math.abs
 import kotlin.math.sign
 
@@ -20,15 +19,15 @@ interface GridPoint2D {
     operator fun minus(other: GridPoint2D) = x - other.x by y - other.y
     operator fun times(factor: Int) = x * factor by y * factor
     operator fun div(factor: Int) = x / factor by y / factor
-    operator fun unaryMinus() = gridPoint2D(-x, -y)
+    operator fun unaryMinus() = GridPoint2D(-x, -y)
     fun dotProduct(other: GridPoint2D): Int = x * other.x + y * other.y
-    fun crossProduct(other: GridPoint2D): GridPoint3D = gridPoint3D(0, 0, x * other.y - y * other.x)
+    fun crossProduct(other: GridPoint2D): GridPoint3D = GridPoint3D(0, 0, x * other.y - y * other.x)
 
     fun plus(x: Int, y: Int) = this.x + x by this.y + y
     fun plusX(x: Int) = this.x + x by y
     fun plusY(y: Int) = x by this.y + y
-    fun rot90L(): GridPoint2D = gridPoint2D(y, -x)
-    fun rot90R(): GridPoint2D = gridPoint2D(-y, x)
+    fun rot90L(): GridPoint2D = GridPoint2D(y, -x)
+    fun rot90R(): GridPoint2D = GridPoint2D(-y, x)
     fun manhattanDistance(other: GridPoint2D) = abs(x - other.x) + abs(y - other.y)
 
     companion object {
@@ -36,40 +35,40 @@ interface GridPoint2D {
         val ZERO = 0 by 0
 
         @JvmField
-        val down = gridPoint2D(0, 1)
+        val down = GridPoint2D(0, 1)
 
         @JvmField
-        val up = gridPoint2D(0, -1)
+        val up = GridPoint2D(0, -1)
 
         @JvmField
-        val right = gridPoint2D(1, 0)
+        val right = GridPoint2D(1, 0)
 
         @JvmField
-        val left = gridPoint2D(-1, 0)
+        val left = GridPoint2D(-1, 0)
 
         @JvmField
-        val north = gridPoint2D(0, -1)
+        val north = GridPoint2D(0, -1)
 
         @JvmField
-        val northeast = gridPoint2D(1, -1)
+        val northeast = GridPoint2D(1, -1)
 
         @JvmField
-        val east = gridPoint2D(1, 0)
+        val east = GridPoint2D(1, 0)
 
         @JvmField
-        val southeast = gridPoint2D(1, 1)
+        val southeast = GridPoint2D(1, 1)
 
         @JvmField
-        val south = gridPoint2D(0, 1)
+        val south = GridPoint2D(0, 1)
 
         @JvmField
-        val southwest = gridPoint2D(-1, 1)
+        val southwest = GridPoint2D(-1, 1)
 
         @JvmField
-        val west = gridPoint2D(-1, 0)
+        val west = GridPoint2D(-1, 0)
 
         @JvmField
-        val northwest = gridPoint2D(-1, -1)
+        val northwest = GridPoint2D(-1, -1)
 
         /**
          * Same value order as the mathematical unit circle travel order
@@ -80,25 +79,23 @@ interface GridPoint2D {
         @JvmField
         val rookDirs = listOf(southeast, southwest, northwest, northeast)
 
+        /**
+         * RDLU dirs
+         */
         @JvmField
         val towerDirs = listOf(right, down, left, up)
 
         @JvmField
         val orthoDirs = towerDirs
 
-        infix fun Int.by(y: Int): GridPoint2D = gridPoint2D(this, y)
+        infix fun Int.by(y: Int): GridPoint2D = GridPoint2D(this, y)
 
         @JvmStatic
-        fun of(x: Int, y: Int): GridPoint2D = gridPoint2D(x, y)
+        fun of(x: Int, y: Int): GridPoint2D = GridPoint2D(x, y)
     }
 }
 
-/**
- * A function to make sure the coordinate jumps to the other side of the grid when over the edge.
- */
-fun GridPoint2D.mod(width: Int, height: Int): GridPoint2D = gridPoint2D(x.mod(width), y.mod(height))
-fun GridPoint2D.mod(dimension2D: Dimension2D): GridPoint2D = gridPoint2D(x.mod(dimension2D.width), y.mod(dimension2D.height))
-fun gridPoint2D(x: Int, y: Int): GridPoint2D = StandardGridPoint2D(x, y)
+fun GridPoint2D(x: Int, y: Int): GridPoint2D = StandardGridPoint2D(x, y)
 
 private data class StandardGridPoint2D(override val x: Int, override val y: Int) : GridPoint2D {
     override fun toString(): String = "GridPoint2D(x=$x, y=$y)"

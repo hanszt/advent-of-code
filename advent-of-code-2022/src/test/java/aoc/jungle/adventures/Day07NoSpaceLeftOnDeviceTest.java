@@ -2,7 +2,6 @@ package aoc.jungle.adventures;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hzt.utils.It.println;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day07NoSpaceLeftOnDeviceTest {
@@ -11,7 +10,7 @@ class Day07NoSpaceLeftOnDeviceTest {
     void testPart1() {
         final var day07NoSpaceLeftOnDevice = new Day07NoSpaceLeftOnDevice("input/day07.txt");
         final var result = day07NoSpaceLeftOnDevice.part1();
-        println(day07NoSpaceLeftOnDevice.root.toTreeString(2));
+        System.out.println(day07NoSpaceLeftOnDevice.root.toTreeString(2));
         assertEquals(1_350_966, result);
     }
 
@@ -19,7 +18,7 @@ class Day07NoSpaceLeftOnDeviceTest {
     void testPart1Test() {
         final var day07NoSpaceLeftOnDevice = new Day07NoSpaceLeftOnDevice("input/day07test.txt");
         final var result = day07NoSpaceLeftOnDevice.part1();
-        println(day07NoSpaceLeftOnDevice.root.toTreeString(2));
+        System.out.println(day07NoSpaceLeftOnDevice.root.toTreeString(2));
         assertEquals(95_437, result);
     }
 

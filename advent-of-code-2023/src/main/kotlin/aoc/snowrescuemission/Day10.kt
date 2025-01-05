@@ -1,6 +1,14 @@
 package aoc.snowrescuemission
 
 import aoc.utils.*
+import aoc.utils.Colors.CYAN
+import aoc.utils.Colors.YELLOW_BG
+import aoc.utils.SpecialCharacters.PIPE_DOWN_LEFT
+import aoc.utils.SpecialCharacters.PIPE_DOWN_RIGHT
+import aoc.utils.SpecialCharacters.PIPE_LEFT_RIGHT
+import aoc.utils.SpecialCharacters.PIPE_UP_DOWN
+import aoc.utils.SpecialCharacters.PIPE_UP_LEFT
+import aoc.utils.SpecialCharacters.PIPE_UP_RIGHT
 import aoc.utils.grid2d.*
 import java.io.File
 
@@ -35,8 +43,8 @@ class Day10(
     override fun part2(): Int {
         val mask = grid.toMutableCharGrid { '.' }
         dfs(start)
-            .map { it.traceBack { it.position } }
-            .maxBy(List<*>::size)
+            .map { it.traceBack { it.position }.toList() }
+            .maxBy { it.size }
             .forEach { mask[it] = grid[it].toPathCharacter() }
         return countEnclosedTiles(mask).also { println(mask.toColoredMap()) }
     }
@@ -94,10 +102,10 @@ class Day10(
             val p = cur.position
             if (p !in visited) {
                 visited += p
-                for (dir in GridPoint2D.towerDirs) {
+                for (dir in GridPoint2D.orthoDirs) {
                     val n = p + dir
                     grid.getOrNull(n)?.let {
-                        if (it isNeighbor dir) {
+                        if (it.isNeighbor(dir)) {
                             if (n == this@Day10.start) {
                                 yield(cur)
                             }
@@ -112,12 +120,12 @@ class Day10(
     private fun graph(rows: List<String>): Map<GridPoint2D, Char> = buildMap {
         for ((y, row) in rows.withIndex()) {
             for ((x, c) in row.withIndex()) {
-                this[gridPoint2D(x, y)] = c
+                this[GridPoint2D(x, y)] = c
             }
         }
     }
 
-    private infix fun Char.isNeighbor(dir: GridPoint2D) = when {
+    private fun Char.isNeighbor(dir: GridPoint2D) = when {
         this == START_CHAR -> true
         dir.x == 1 -> this == '-' || this == '7' || this == 'J'
         dir.x == -1 -> this == '-' || this == 'F' || this == 'L'

@@ -23,7 +23,7 @@ class Day18Test {
             U 2 (#7a21e3)
         """.trimIndent().lines())
 
-        private val day18dr = Day18(("input/day18dr.txt"))
+        private val day18 = Day18(("input/day18.txt"))
     }
 
     @Test
@@ -32,12 +32,17 @@ class Day18Test {
     }
 
     @Test
-    fun part1Test() {
-        day18dr.part1() shouldBe 40761
+    fun part2TestInput() {
+        day18TestInput.part2() shouldBe 952408144115
+    }
+
+    @Test
+    fun testPart1() {
+        day18.part1() shouldBe 106459
     }
 
     @Test
     fun testPart2() {
-        day18dr.part2() shouldBe 0
+        day18.part2() shouldBe 63806916814808
     }
 }

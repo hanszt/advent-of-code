@@ -15,6 +15,8 @@ import java.util.stream.Stream;
 
 /**
  * @see <a href="https://adventofcode.com/2022/day/7">Day 7: No space left on device</a>
+ * <p>
+ * Tags {@link aoc.utils.Tag#RECURSIVE}
  */
 public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
 
@@ -100,7 +102,7 @@ public class Day07NoSpaceLeftOnDevice implements ChallengeDay {
     }
 
     record AocFile(String name, int size, AocFile parent, List<AocFile> children)
-            implements TreeNode<AocFile, AocFile> {
+            implements TreeNode<AocFile> {
 
         AocFile(String name, AocFile parent, int size) {
             this(name, size, parent, new ArrayList<>());

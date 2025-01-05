@@ -4,7 +4,7 @@ import aoc.utils.grid3d.GridPoint3D.Companion.ZERO
 import aoc.utils.grid3d.rangeTo
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import aoc.utils.grid3d.gridPoint3D as p3d
+import aoc.utils.grid3d.GridPoint3D as p3d
 
 class GridPoint3DProgressionTest {
 

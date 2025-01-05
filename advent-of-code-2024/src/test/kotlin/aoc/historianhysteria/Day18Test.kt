@@ -1,7 +1,7 @@
 package aoc.historianhysteria
 
 import aoc.utils.grid2d.dimension2D
-import aoc.utils.grid2d.gridPoint2D
+import aoc.utils.grid2d.GridPoint2D
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -65,17 +65,17 @@ class Day18Test {
 
     @Test
     fun part2Test() {
-        day18Test.part2() shouldBe gridPoint2D(6, 1)
+        day18Test.part2() shouldBe GridPoint2D(6, 1)
     }
 
     @Test
     fun part2dr() {
-        day18dr.part2() shouldBe gridPoint2D(25, 6)
+        day18dr.part2() shouldBe GridPoint2D(25, 6)
     }
 
     @Test
     fun part2() {
-        day18.part2() shouldBe gridPoint2D(51, 40)
+        day18.part2() shouldBe GridPoint2D(51, 40)
     }
 
     @Nested
@@ -88,7 +88,7 @@ class Day18Test {
 
         @Test
         fun part2drElizarov() {
-            day18dr.part2Elizarov() shouldBe gridPoint2D(25, 6)
+            day18dr.part2Elizarov() shouldBe GridPoint2D(25, 6)
         }
 
         @Test

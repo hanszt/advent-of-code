@@ -7,7 +7,6 @@ import aoc.utils.grid2d.findPoint
 import aoc.utils.grid2d.forEachPoint
 import aoc.utils.grid2d.getOrNull
 import aoc.utils.grid2d.gridAsString
-import aoc.utils.grid2d.gridPoint2D
 import aoc.utils.grid2d.toMutableCharGrid
 import java.nio.file.Path
 import kotlin.io.path.readText
@@ -21,10 +20,10 @@ class Day06(input: String) : ChallengeDay {
     constructor(path: Path) : this(path.readText())
 
     private val orientationMap = mapOf(
-        gridPoint2D(0, -1) to '^',
-        gridPoint2D(1, 0) to '>',
-        gridPoint2D(0, 1) to 'v',
-        gridPoint2D(-1, 0) to '<',
+        GridPoint2D(0, -1) to '^',
+        GridPoint2D(1, 0) to '>',
+        GridPoint2D(0, 1) to 'v',
+        GridPoint2D(-1, 0) to '<',
     )
 
     /**
@@ -35,7 +34,7 @@ class Day06(input: String) : ChallengeDay {
     private fun walkedPath(start: GridPoint2D): Sequence<GridPoint2D> = sequence {
         val obstacle = '#'
         var cur = start
-        var curDir = gridPoint2D(0, -1)
+        var curDir = GridPoint2D(0, -1)
         while (map.getOrNull(cur) != null) {
             yield(cur)
             val inFront = cur + curDir
@@ -55,7 +54,7 @@ class Day06(input: String) : ChallengeDay {
         map.forEachPoint { x, y ->
             val ch = map[y][x]
             if (ch == '.') {
-                if (isCycle(extraObstaclePos = gridPoint2D(x, y))) {
+                if (isCycle(extraObstaclePos = GridPoint2D(x, y))) {
                     result++
                 }
             }
@@ -66,7 +65,7 @@ class Day06(input: String) : ChallengeDay {
     private fun isCycle(extraObstaclePos: GridPoint2D): Boolean {
         val obstacle = '#'
         var curPos = guardStartPos
-        var curDir = gridPoint2D(0, -1)
+        var curDir = GridPoint2D(0, -1)
         val set = HashSet<Heading>()
         while (map.getOrNull(curPos) != null) {
             if (!set.add(Heading(position = curPos, dir = curDir))) {

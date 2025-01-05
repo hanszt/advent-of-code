@@ -9,7 +9,7 @@ import aoc.utils.grid2d.GridPoint2D.Companion.ZERO
 fun day18Part1(input: List<String>, dimension2D: Dimension2D, nrOfFallenBytes: Int): Int {
     val (m, n) = dimension2D
     val a = input.map {
-        it.split(',').let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
+        it.split(',').let { (x, y) -> GridPoint2D(x.toInt(), y.toInt()) }
     }
     val c = Array(n) { BooleanArray(m) }
     for (p in a.take(nrOfFallenBytes)) c[p] = true
@@ -25,7 +25,7 @@ fun day18Part1(input: List<String>, dimension2D: Dimension2D, nrOfFallenBytes: I
 fun day18Part2(input: List<String>, dimension2D: Dimension2D): GridPoint2D {
     val (m, n) = dimension2D
     val a = input.map {
-        it.split(',').let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
+        it.split(',').let { (x, y) -> GridPoint2D(x.toInt(), y.toInt()) }
     }
     val isOpen = Array(n) { BooleanArray(m) { true } }
     for (p in a) {
@@ -43,7 +43,7 @@ fun day18Part2(input: List<String>, dimension2D: Dimension2D): GridPoint2D {
  */
 fun day18Part2Raw(input: List<String>): String {
     val a = input.map {
-        it.split(',').let { (x, y) -> gridPoint2D(x.toInt(), y.toInt()) }
+        it.split(',').let { (x, y) -> GridPoint2D(x.toInt(), y.toInt()) }
     }
     val n = 71
     val c = Array(n) { BooleanArray(n) }
@@ -59,7 +59,7 @@ fun day18Part2Raw(input: List<String>): String {
             if (c[i][j]) return
             if (dist[i][j] <= d) return
             dist[i][j] = d
-            q += gridPoint2D(i, j)
+            q += GridPoint2D(i, j)
         }
         enq(0, 0, 0)
         while (q.isNotEmpty()) {

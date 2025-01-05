@@ -23,7 +23,7 @@ import static aoc.utils.grid2d.GridPoint2D.south;
 import static aoc.utils.grid2d.GridPoint2D.southeast;
 import static aoc.utils.grid2d.GridPoint2D.southwest;
 import static aoc.utils.grid2d.GridPoint2D.west;
-import static aoc.utils.grid2d.GridPoint2DKt.gridPoint2D;
+import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 
 /**
  * Credits to Angelo
@@ -80,7 +80,7 @@ public class Day23UnstableDiffusion implements ChallengeDay {
             final var line = lines.get(row);
             for (var col = 0; col < line.length(); col++) {
                 if (line.charAt(col) == '#') {
-                    positions.add(gridPoint2D(col, row));
+                    positions.add(GridPoint2D(col, row));
                 }
             }
         }
