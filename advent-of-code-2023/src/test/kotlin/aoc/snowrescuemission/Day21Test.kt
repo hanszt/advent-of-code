@@ -8,6 +8,9 @@ import org.junit.jupiter.params.provider.CsvSource
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
 
+/**
+ * [Reference to day 9](https://www.reddit.com/r/adventofcode/comments/18orn0s/2023_day_21_part_2_links_between_days/?rdt=36924)
+ */
 class Day21Test {
 
     private companion object {

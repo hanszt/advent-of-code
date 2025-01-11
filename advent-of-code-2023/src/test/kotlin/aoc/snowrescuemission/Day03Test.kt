@@ -26,7 +26,7 @@ class Day03Test {
 
     @Test
     fun testPart1() {
-        Day03("input/day03.txt").part1() shouldBe 537_832
+        Day03("input/day03-dr.txt").part1() shouldBe 537_832
     }
 
     @Test
@@ -41,7 +41,7 @@ class Day03Test {
 
     @Test
     fun testPart2() {
-        Day03("input/day03.txt").part2() shouldBe 81_939_900 // higher than 72430769, 77629054,
+        Day03("input/day03-dr.txt").part2() shouldBe 81_939_900 // higher than 72430769, 77629054,
     }
 
     @Test

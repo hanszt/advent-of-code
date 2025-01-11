@@ -2,16 +2,17 @@ package aoc.snowrescuemission
 
 import aoc.utils.AocUtils
 import aoc.utils.ChallengeDay
-import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.readText
 
-class Day05(fileName: String) : ChallengeDay {
+class Day05(input: String) : ChallengeDay {
+    constructor(fileName: Path) : this(fileName.readText())
 
     private val seedSequence: Sequence<Long>
     private val mappingTexts: List<String>
 
     init {
-        val text = File(fileName).readText()
-        val input = text.split(AocUtils.DOUBLE_LINE_SEPARATOR)
+        val input = input.split(AocUtils.DOUBLE_LINE_SEPARATOR)
         seedSequence = input[0].substring("seeds: ".length).splitToSequence(' ').map(String::toLong)
         mappingTexts = input.drop(1)
     }

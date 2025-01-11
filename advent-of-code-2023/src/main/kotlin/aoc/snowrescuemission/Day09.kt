@@ -11,7 +11,16 @@ class Day09(fileName: String) : ChallengeDay {
         it.splitToSequence(' ').map(String::toInt)
     }
 
+    /**
+     * Analyze your OASIS report and extrapolate the next value for each history.
+     * What is the sum of these extrapolated values?
+     */
     override fun part1(): Int = input.sumOf { it.extrapolate { next -> addLast(last() + next.last()) }.last() }
+
+    /**
+     * Analyze your OASIS report again, this time extrapolating the previous value for each history.
+     * What is the sum of these extrapolated values?
+     */
     override fun part2(): Int = input.sumOf { it.extrapolate { next -> addFirst(first() - next.first()) }.first() }
 
     private fun Sequence<Int>.extrapolate(addExtrapolated: MutableList<Int>.(List<Int>) -> Unit): List<Int> {

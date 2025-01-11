@@ -11,9 +11,9 @@ void main(List<String> arguments) {
   }
 
   final List<ChallengeDay> days = [
-    Day01.using("input/day01.txt"),
-    Day02.using("input/day02.txt"),
-    Day03.using("input/day03.txt")
+    Day01.using("input/day01-dr.txt"),
+    Day02.using("input/day02-dr.txt"),
+    Day03.using("input/day03-dr.txt")
   ];
   for (var day in days) {
     printResult(day);

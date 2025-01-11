@@ -7,7 +7,7 @@ class Day01Test {
 
     @Test
     fun `test part 1`() {
-        Day01("input/day01.txt").part1() shouldBe 55_172
+        Day01("input/day01-dr.txt").part1() shouldBe 55_172
     }
 
     @Test
@@ -32,6 +32,6 @@ class Day01Test {
 
     @Test
     fun `test part 2`() {
-        Day01("input/day01.txt").part2() shouldBe 54_925
+        Day01("input/day01-dr.txt").part2() shouldBe 54_925
     }
 }

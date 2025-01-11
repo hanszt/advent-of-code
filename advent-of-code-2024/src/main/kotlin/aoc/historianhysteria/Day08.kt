@@ -59,7 +59,7 @@ class Day08(private val cityMap: List<String>) : ChallengeDay {
             var k = 0
             while (true) {
                 val pp = p1 + d * k
-                var ch = a.getOrNull(pp) ?: break
+                val ch = a.getOrNull(pp) ?: break
                 if (ch != '#') {
                     a[pp] = '#'
                     ans++

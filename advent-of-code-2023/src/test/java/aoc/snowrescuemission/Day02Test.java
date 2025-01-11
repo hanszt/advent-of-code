@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day02Test {
 
-    private static final Day02 DAY_02 = new Day02("input/day02.txt");
+    private static final Day02 DAY_02 = new Day02("input/day02-dr.txt");
 
     @Test
     void testPart1() {

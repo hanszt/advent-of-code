@@ -2,11 +2,13 @@ package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
 import aoc.utils.graph.Node
+import aoc.utils.grid2d.Grid2DNode
+import aoc.utils.grid2d.GridPoint2D.Companion.orthoDirs
 import aoc.utils.grid2d.get
 import aoc.utils.grid2d.getOrNull
+import aoc.utils.grid2d.lowerRight
 import aoc.utils.invoke
 import java.nio.file.Path
-import kotlin.collections.toSet
 import kotlin.io.path.readLines
 import aoc.utils.grid2d.GridPoint2D as P2
 
@@ -33,47 +35,53 @@ class Day23(private val maze: List<String>) : ChallengeDay {
     fun part2Zebalu() = day23Zebalu.part2()
 
     private fun longestHike(isSlippery: (P2, Int) -> Boolean = { _, _ -> false }): Int {
-        val initGraph = buildGraph(isSlippery)
-        val graph = traverse(initGraph)
-
-        val start = P2(1, 0)
-        val target = P2(maze[0].length - 2, maze.size - 1)
-
-        return graph.findLongest(start, target)
+        val adjList = buildGraph(isSlippery)
+        val paths = traverse(adjList)
+        val target = Pos(maze.lowerRight - P2(1, 0))
+        return paths.findLongest(start = Pos(P2(1, 0)), target = target)
     }
 
-    private fun Map<P2, List<E2>>.findLongest(start: P2, target: P2): Int {
-        val visited = HashSet<P2>()
-        fun find(p: P2): Int {
-            if (p == target) return 0
+    data class Pos(val p2: P2, override val prev: Pos? = null) : Node<Pos> {
+        override fun equals(other: Any?): Boolean = this === other || (other is Pos && p2 == other.p2)
+        override fun hashCode(): Int = p2.hashCode()
+    }
+
+    private fun Map<P2, List<Grid2DNode>>.findLongest(start: Pos, target: Pos): Int {
+        val visited = HashSet<Pos>()
+        fun find(p: Pos): Int {
+            if (p == target) {
+                return 0
+            }
             visited += p
-            var res = -1
-            for (e in this(p)) if (e.v !in visited) {
-                val next = find(e.v)
-                if (next < 0) continue
-                res = maxOf(res, next + e.w)
+            var longest = -1
+            for (step in this(p.p2)) {
+                val nPos = Pos(step.position, p)
+                if (nPos !in visited) {
+                    val next = find(nPos)
+                    if (next < 0) continue
+                    longest = maxOf(longest, next + step.cost)
+                }
             }
             visited -= p
-            return res
+            return longest
         }
         return find(start)
     }
 
-    private fun traverse(g0: Map<P2, List<P2>>): Map<P2, List<E2>> = buildMap<P2, MutableList<E2>> {
-        for (n in g0) {
-            val (p0, l0) = n
-            if (l0.size != 2) {
-                for (p1 in l0) {
-                    var pp = p0
-                    var pc = p1
-                    var w = 1
+    private fun traverse(adjList: Map<P2, List<P2>>): Map<P2, List<Grid2DNode>> = buildMap<P2, MutableList<Grid2DNode>> {
+        for ((p, neighbors) in adjList) {
+            if (neighbors.size != 2) {
+                for (n in neighbors) {
+                    var pos = p
+                    var next = n
+                    var dist = 1
                     while (true) {
-                        val lc = (g0[pc]?.toSet() ?: emptySet()) - setOf(pp)
-                        pp = pc
-                        pc = lc.singleOrNull() ?: break
-                        w++
+                        val lc = (adjList[next]?.toSet() ?: emptySet()) - pos
+                        pos = next
+                        next = lc.singleOrNull() ?: break
+                        dist++
                     }
-                    getOrPut(p0, ::ArrayList).add(E2(pc, w))
+                    getOrPut(p, ::ArrayList).add(Grid2DNode(position = next, cost = dist))
                 }
             }
         }
@@ -83,18 +91,12 @@ class Day23(private val maze: List<String>) : ChallengeDay {
         for (y in 0..<maze.size) for (x in 0..<maze[y].length) {
             val p = P2(x, y)
             if (maze[p] == '#') continue
-            for (d in 0..<P2.orthoDirs.size) {
-                if (isSlippery(p, d)) continue
-                val p1 = p + P2.orthoDirs[d]
-                maze.getOrNull(p1)?.takeUnless { it == '#' } ?: continue
-                getOrPut(p, ::ArrayList).add(p1)
+            for (di in orthoDirs.indices) {
+                if (isSlippery(p, di)) continue
+                val np = p + orthoDirs[di]
+                maze.getOrNull(np)?.takeUnless { it == '#' } ?: continue
+                getOrPut(p, ::ArrayList).add(np)
             }
         }
-    }
-
-    data class E2(val v: P2, val w: Int, override val prev: E2? = null) : Node<E2> {
-        override fun equals(other: Any?): Boolean  = this === other ||
-                (other is E2 && v == other.v && w == other.w)
-        override fun hashCode(): Int = arrayOf(v, w).contentHashCode()
     }
 }

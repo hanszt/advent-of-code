@@ -4,6 +4,8 @@ import aoc.utils.grid2d.*
 import aoc.utils.grid2d.GridPoint2D.Companion.towerDirs
 
 /**
+ * Credits to Elizarov
+ *
  * [Source](https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day06_2.kt)
  */
 fun day06P2(input: List<String>): Int {

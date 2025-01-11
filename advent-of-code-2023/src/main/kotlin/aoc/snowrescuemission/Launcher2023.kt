@@ -23,11 +23,11 @@ fun main(vararg args: String) {
 class Launcher2023(inputDir: String) : Launcher {
 
     internal val challengeDays = sequenceOf(
-        Day01("$inputDir/day01.txt"),
-        Day02("$inputDir/day02.txt"),
-        Day03("$inputDir/day03.txt"),
-        Day04("$inputDir/day04.txt"),
-        Day05("$inputDir/day05hzt.txt"),
+        Day01("$inputDir/day01-dr.txt"),
+        Day02("$inputDir/day02-dr.txt"),
+        Day03("$inputDir/day03-dr.txt"),
+        Day04("$inputDir/day04-dr.txt"),
+        Day05("$inputDir/day05.txt"),
         Day08("$inputDir/day08-dr.txt"),
         Day09("$inputDir/day09.txt"),
         Day10("$inputDir/day10.txt"),

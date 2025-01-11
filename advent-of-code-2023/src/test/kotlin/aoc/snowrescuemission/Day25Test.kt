@@ -29,6 +29,6 @@ class Day25Test {
 
     @Test
     fun testPart1() {
-        Day25(Path("input/day25.txt")).part1() shouldBe 0
+        Day25(Path("input/day25.txt")).part1() shouldBe 520_380
     }
 }

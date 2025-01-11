@@ -1,14 +1,18 @@
 package aoc.snowrescuemission;
 
+import aoc.utils.grid2d.Grid2DNode;
 import aoc.utils.grid2d.GridPoint2D;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-import static aoc.utils.grid2d.Grid2DUtilsKt.get;
-import static aoc.utils.grid2d.Grid2DUtilsKt.getOrNull;
+import static aoc.utils.grid2d.Grid2DUtilsKt.*;
+import static aoc.utils.grid2d.GridPoint2D.orthoDirs;
 
 public final class Day23Zebalu {
+
+    private static final String DIRS = ">v<^";
 
     private final List<String> maze;
     private final GridPoint2D start;
@@ -17,7 +21,7 @@ public final class Day23Zebalu {
     public Day23Zebalu(final List<String> maze) {
         this.maze = maze;
         start = GridPoint2D.of(1, 0);
-        target = GridPoint2D.of(maze.size() - 2, maze.size() - 1);
+        target = getLowerRight(maze).minus(GridPoint2D.of(1, 0));
     }
 
     public int part1() {
@@ -25,41 +29,13 @@ public final class Day23Zebalu {
     }
 
     public int part2() {
-        return new WeightedGraph(this::part2Neighbours).longestPath();
-    }
-
-    private Map<GridPoint2D, Integer> longestPathToAny(
-            final GridPoint2D start,
-            final Map<GridPoint2D, Integer> idMap,
-            final Function<GridPoint2D, List<GridPoint2D>> nextList
-    ) {
-        final var result = new HashMap<GridPoint2D, Integer>();
-        final var stack = new ArrayDeque<SequencedSet<GridPoint2D>>();
-        stack.add(new LinkedHashSet<>(Set.of(start)));
-        while (!stack.isEmpty()) {
-            final var curr = stack.pop();
-            if (idMap.containsKey(curr.getLast()) && !curr.getLast().equals(start)) {
-                result.compute(curr.getLast(), (_, v) -> (v == null) ? curr.size() - 1 : Math.max(v, curr.size() - 1));
-            } else {
-                nextList.apply(curr.getLast()).stream().filter(n -> !curr.contains(n)).forEach(n -> {
-                    final var next = new LinkedHashSet<>(curr);
-                    next.add(n);
-                    stack.push(next);
-                });
-            }
-        }
-        return result;
+        return new WeightedGraph(p -> neighbors(p, (_, c) -> c != '#')).longestPath();
     }
 
     List<GridPoint2D> part1Neighbours(GridPoint2D p) {
-        final List<GridPoint2D> result = new ArrayList<>();
-        switch (maze.get(p.getY()).charAt(p.getX())) {
-            case '.' -> {
-                appendIfMatch(result, p.plusY(-1), '^');
-                appendIfMatch(result, p.plusY(1), 'v');
-                appendIfMatch(result, p.plusX(-1), '<');
-                appendIfMatch(result, p.plusX(1), '>');
-            }
+        final var result = new ArrayList<GridPoint2D>();
+        switch (get(maze, p)) {
+            case '.' -> result.addAll(neighbors(p, (i, c) -> c == '.' || DIRS.charAt(i) == c));
             case 'v' -> result.add(p.plusY(1));
             case '^' -> result.add(p.plusY(-1));
             case '>' -> result.add(p.plusX(1));
@@ -69,40 +45,26 @@ public final class Day23Zebalu {
         return result;
     }
 
-    List<GridPoint2D> part2Neighbours(GridPoint2D p) {
-        if (get(maze, p) == '#') {
-            throw new IllegalStateException("can not stand here: " + this);
-        } else {
-            final List<GridPoint2D> result = new ArrayList<>();
-            appendIfNotMatch(result, p.plusY(1), '#');
-            appendIfNotMatch(result, p.plusY(-1), '#');
-            appendIfNotMatch(result, p.plusX(1), '#');
-            appendIfNotMatch(result, p.plusX(-1), '#');
-            return result;
+    private List<GridPoint2D> neighbors(final GridPoint2D p, final BiPredicate<Integer, Character> isLegal) {
+        final var neighbors = new ArrayList<GridPoint2D>();
+        for (var i = 0; i < orthoDirs.size(); i++) {
+            final var n = p.plus(orthoDirs.get(i));
+            final var at = getOrNull(maze, n) instanceof Character c ? c : '#';
+            if (isLegal.test(i, at)) {
+                neighbors.add(n);
+            }
         }
-    }
-
-    private void appendIfMatch(final List<GridPoint2D> collector, final GridPoint2D coord, final char accepted) {
-        final var at = getOrNull(maze, coord) instanceof Character c ? c : '#';
-        if (at == '.' || at == accepted) {
-            collector.add(coord);
-        }
-    }
-
-    private void appendIfNotMatch(final List<GridPoint2D> collector, final GridPoint2D coord, final char rejected) {
-        final var at = getOrNull(maze, coord) instanceof Character c ? c : '#';
-        if (at == '.' || at != rejected) {
-            collector.add(coord);
-        }
+        return neighbors;
     }
 
     private final class WeightedGraph {
-        private final Map<GridPoint2D, Integer> forkIds = new HashMap<>();
+        private final Map<GridPoint2D, Integer> forkIds;
         private final List<Integer>[] connections;
         private final int[][] costs;
 
         public WeightedGraph(final Function<GridPoint2D, List<GridPoint2D>> walkableNeighbourExtractor) {
             var id = 0;
+            final var forkIds = new HashMap<GridPoint2D, Integer>();
             forkIds.put(start, id);
             for (var y = 1; y < maze.size() - 1; ++y) {
                 final var line = maze.get(y);
@@ -110,13 +72,14 @@ public final class Day23Zebalu {
                     final var ch = line.charAt(x);
                     if (ch != '#') {
                         final var c = GridPoint2D.of(x, y);
-                        if (part2Neighbours(c).size() > 2) {
+                        if (neighbors(c, (_, c1) -> c1 != '#').size() > 2) {
                             forkIds.put(c, ++id);
                         }
                     }
                 }
             }
             forkIds.put(target, ++id);
+            this.forkIds = Collections.unmodifiableMap(forkIds);
             //noinspection unchecked
             connections = new List[forkIds.size()];
             costs = new int[forkIds.size()][];
@@ -126,13 +89,47 @@ public final class Day23Zebalu {
             }
             final var entries = new ArrayList<>(forkIds.entrySet());
             for (final var iEntry : entries) {
-                final var paths = longestPathToAny(iEntry.getKey(), forkIds, walkableNeighbourExtractor);
+                final var paths = longestPathToAny(iEntry.getKey(), walkableNeighbourExtractor);
+//                paths.values().forEach(n -> System.out.println(SequencesKt.toList(n.traceBack(s -> s.getPosition()))));
                 for (final var distE : paths.entrySet()) {
                     final int distId = forkIds.get(distE.getKey());
                     connections[iEntry.getValue()].add(distId);
-                    costs[iEntry.getValue()][distId] = distE.getValue();
+                    costs[iEntry.getValue()][distId] = distE.getValue().getCost();
                 }
             }
+        }
+
+        /**
+         * Dfs
+         */
+        private Map<GridPoint2D, Grid2DNode> longestPathToAny(
+                final GridPoint2D start,
+                final Function<GridPoint2D, List<GridPoint2D>> toWalkableNeighbours
+        ) {
+            final var result = new HashMap<GridPoint2D, Grid2DNode>();
+            final var stack = new ArrayDeque<SequencedSet<Grid2DNode>>();
+            stack.add(new LinkedHashSet<>(Set.of(new Grid2DNode(start))));
+            while (!stack.isEmpty()) {
+                final var curr = stack.pop();
+                final var cur = curr.getLast();
+                final var p = cur.getPosition();
+                if (forkIds.containsKey(p) && !p.equals(start)) {
+                    result.compute(p, (_, v) -> {
+                        final var lastIndex = curr.size() - 1;
+                        final var newCost = (v == null) ? lastIndex : Math.max(v.getCost(), lastIndex);
+                        return new Grid2DNode(p, newCost, cur.getPrev());
+                    });
+                } else {
+                    toWalkableNeighbours.apply(p).stream()
+                            .filter(n -> curr.stream().noneMatch(d -> d.getPosition().equals(n)))
+                            .forEach(n -> {
+                                final var next = new LinkedHashSet<>(curr);
+                                next.add(new Grid2DNode(n, 0, cur));
+                                stack.push(next);
+                            });
+                }
+            }
+            return result;
         }
 
         int longestPath() {
@@ -147,11 +144,7 @@ public final class Day23Zebalu {
                 final var v = 1L << c;
                 if ((visited & v) == 0L) {
                     final var newCost = dist + costs[startId][c];
-                    if (c == targetId) {
-                        longest = Math.max(longest, newCost);
-                    } else {
-                        longest = Math.max(longest, longestPath(c, targetId, newCost, visited | v));
-                    }
+                    longest = Math.max(longest, c == targetId ? newCost : longestPath(c, targetId, newCost, visited | v));
                 }
             }
             return longest;

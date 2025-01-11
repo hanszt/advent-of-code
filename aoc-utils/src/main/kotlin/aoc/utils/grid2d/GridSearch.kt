@@ -30,7 +30,7 @@ fun floodFill(
         Array(dimension.width) { x -> Grid2DNode(GridPoint2D(x, y), inf) }
     }
     val q = ArrayDeque<Grid2DNode>()
-    val sn = start.withDistance(0)
+    val sn = start.withCost(0)
     ds[start] = sn
     q += sn
     while (q.isNotEmpty()) {

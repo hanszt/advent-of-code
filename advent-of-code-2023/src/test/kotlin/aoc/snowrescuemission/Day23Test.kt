@@ -9,6 +9,7 @@ class Day23Test {
 
     private companion object {
         private val day23 by lazy { Day23(Path("input/day23.txt")) }
+        private val day23dr by lazy { Day23(Path("input/day23dr.txt")) }
         private val day23Test by lazy {
             Day23(
                 """
@@ -40,24 +41,28 @@ class Day23Test {
         }
     }
 
-    @Test
-    fun part1TestInput() {
-        day23Test.part1() shouldBe 94
-    }
+    @Nested
+    inner class SolutionsElizarov {
 
-    @Test
-    fun part2TestInput() {
-        day23Test.part2() shouldBe 154
-    }
+        @Test
+        fun part1TestInput() {
+            day23Test.part1() shouldBe 94
+        }
 
-    @Test
-    fun testPart1() {
-        day23.part1() shouldBe 2366
-    }
+        @Test
+        fun part2TestInput() {
+            day23Test.part2() shouldBe 154
+        }
 
-    @Test
-    fun testPart2() {
-        day23.part2() shouldBe 6682
+        @Test
+        fun testPart1() {
+            day23.part1() shouldBe 2366
+        }
+
+        @Test
+        fun testPart2() {
+            day23.part2() shouldBe 6682
+        }
     }
 
     @Nested
@@ -71,6 +76,16 @@ class Day23Test {
         @Test
         fun testPart2() {
             day23.part2Zebalu() shouldBe 6682
+        }
+
+        @Test
+        fun testPart1dr() {
+            day23dr.part1Zebalu() shouldBe 2130
+        }
+
+        @Test
+        fun testPart2dr() {
+            day23dr.part2Zebalu() shouldBe 6710
         }
     }
 }
