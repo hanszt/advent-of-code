@@ -8,8 +8,15 @@ class Day04(fileName: String, ) : ChallengeDay {
 
     private val cards = File(fileName).useLines { lines -> lines.map(::card).toList() }
 
+    /**
+     * Take a seat in the large pile of colorful cards. How many points are they worth in total?
+     */
     override fun part1(): Int = cards.sumOf(::calculatePoints)
 
+    /**
+     * Process all the original and copied scratchcards until no more scratchcards are won.
+     * Including the original set of scratchcards, how many total scratchcards do you end up with?
+     */
     override fun part2(): Int {
         val counts = IntArray(cards.size) { 1 }
         for ((i, card) in cards.withIndex()) {

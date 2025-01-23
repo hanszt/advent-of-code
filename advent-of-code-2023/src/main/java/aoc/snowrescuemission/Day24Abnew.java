@@ -1,6 +1,5 @@
 package aoc.snowrescuemission;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Day24Abnew {
@@ -10,23 +9,23 @@ public class Day24Abnew {
     private final long max;
 
     Day24Abnew(List<String> input, long min, long max) {
-        stones = parse(input);
+        stones = input.stream().map(Hailstone::new).toList();
         this.min = min;
         this.max = max;
     }
 
     long part1() {
-        long answer = 0;
-        for (int i = 0; i < stones.size(); i++) {
-            for (int j = i + 1; j < stones.size(); j++) {
-                Hailstone first = stones.get(i);
-                Hailstone second = stones.get(j);
-                int denom = (first.xvel * second.yvel) - (first.yvel * second.xvel);
-                long numer1 = ((second.x - first.x) * second.yvel) - ((second.y - first.y) * second.xvel);
-                long numer2 = ((first.x - second.x) * first.yvel) - ((first.y - second.y) * first.xvel);
+        var answer = 0;
+        for (var i = 0; i < stones.size(); i++) {
+            for (var j = i + 1; j < stones.size(); j++) {
+                final var first = stones.get(i);
+                final var second = stones.get(j);
+                final var denom = (first.xvel * second.yvel) - (first.yvel * second.xvel);
+                final var numer1 = ((second.x - first.x) * second.yvel) - ((second.y - first.y) * second.xvel);
+                final var numer2 = ((first.x - second.x) * first.yvel) - ((first.y - second.y) * first.xvel);
                 if (denom != 0 && (numer1 / denom) > 0 && (numer2 / denom) < 0) {
-                    double intersectionX = (numer1 / (double) denom) * first.xvel + first.x;
-                    double intersectionY = (numer1 / (double) denom) * first.yvel + first.y;
+                    final var intersectionX = (numer1 / (double) denom) * first.xvel + first.x;
+                    final var intersectionY = (numer1 / (double) denom) * first.yvel + first.y;
                     if (intersectionX >= min && intersectionX <= max && intersectionY >= min && intersectionY <= max) {
                         answer++;
                     }
@@ -34,15 +33,6 @@ public class Day24Abnew {
             }
         }
         return answer;
-    }
-
-    private List<Hailstone> parse(List<String> input) {
-        final var stones = new ArrayList<Hailstone>();
-        for (final var line : input) {
-            Hailstone tmp = new Hailstone(line);
-            stones.add(tmp);
-        }
-        return stones;
     }
 
     private static class Hailstone {

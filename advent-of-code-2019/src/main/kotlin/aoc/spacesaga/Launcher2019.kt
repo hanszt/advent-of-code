@@ -2,8 +2,8 @@ package aoc.spacesaga
 
 import aoc.utils.AocResult
 import aoc.utils.ChallengeDay
-import aoc.utils.GREEN
-import aoc.utils.YELLOW
+import aoc.utils.TextColor.Companion.GREEN
+import aoc.utils.TextColor.Companion.YELLOW
 import aoc.utils.readTextFromResource
 import aoc.utils.withColor
 

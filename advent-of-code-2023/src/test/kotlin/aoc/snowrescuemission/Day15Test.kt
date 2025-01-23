@@ -7,7 +7,7 @@ import kotlin.io.path.Path
 class Day15Test {
 
     private companion object {
-        private val day15 = Day15(Path("input/day15.txt"))
+        private val day15 = Day15(Path("input/day15-dr.txt"))
     }
 
     @Test

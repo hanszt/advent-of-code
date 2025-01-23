@@ -2,7 +2,7 @@ package aoc.seastories
 
 import aoc.seastories.Day09SmokeBasin.Companion.findBassinPoints
 import aoc.seastories.Day09SmokeBasin.Companion.toLowPoints
-import aoc.utils.CYAN
+import aoc.utils.TextColor.Companion.CYAN
 import aoc.utils.grid2d.GridPoint2D
 import aoc.utils.grid2d.toMutableIntGrid
 import aoc.utils.withColor

@@ -1,6 +1,8 @@
 package aoc.jungle.adventures
 
 import aoc.utils.*
+import aoc.utils.TextColor.Companion.BRIGHT_BLUE
+import aoc.utils.TextColor.Companion.GREEN
 import kotlin.time.Duration.Companion.nanoseconds
 
 fun main(vararg args: String) {

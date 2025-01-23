@@ -1,7 +1,7 @@
 package aoc.jungle.adventures
 
-import aoc.utils.BLOCK
 import aoc.utils.ChallengeDay
+import aoc.utils.SpecialCharacters.BLOCK
 import java.io.File
 
 /**

@@ -3,14 +3,14 @@ package aoc.seastories
 import aoc.seastories.Day05HydrothermalVenture.Companion.asGrid
 import aoc.seastories.Day05HydrothermalVenture.Companion.countIntersections
 import aoc.seastories.Day05HydrothermalVenture.Companion.toVentureLines
-import aoc.utils.BROWN_BG
-import aoc.utils.YELLOW
+import aoc.utils.BgColor
+import aoc.utils.TextColor
 import aoc.utils.grid2d.gridAsString
 import aoc.utils.withColor
 import aoc.utils.withColors
 import io.kotest.matchers.shouldBe
-import java.io.File
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class Day05HydrothermalVentureTest {
 
@@ -40,7 +40,7 @@ internal class Day05HydrothermalVentureTest {
     }
 
     private fun printGrid(grid: Array<IntArray>) = println(grid.gridAsString(spacing = 2) {
-        if (it > 0) it.toString().withColors(YELLOW, BROWN_BG)
-        else ".".withColor(BROWN_BG)
+        if (it > 0) it.toString().withColors(TextColor.YELLOW, BgColor.BROWN)
+        else ".".withColor(BgColor.BROWN)
     })
 }

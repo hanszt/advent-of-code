@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 class Day14Test {
 
     private companion object {
-        private val day14 = Day14("input/day14.txt")
+        private val day14 = Day14("input/day14-dr.txt")
     }
 
     @Test

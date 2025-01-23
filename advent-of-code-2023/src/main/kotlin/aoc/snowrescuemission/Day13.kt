@@ -13,7 +13,14 @@ class Day13(
 
     private val patterns = text.splitToSequence(AocUtils.DOUBLE_LINE_SEPARATOR).map { Pattern(it.lines()) }
 
+    /**
+     * Find the line of reflection in each of the patterns in your notes. What number do you get after summarizing all of your notes?
+     */
     override fun part1(): Int = patterns.sumOf { toSummary(it.findMirror()) }
+
+    /**
+     * In each pattern, fix the smudge and find the different line of reflection. What number do you get after summarizing the new reflection line in each pattern in your notes?
+     */
     override fun part2(): Int = patterns.sumOf { toSummary(it.findSmuggedMirror()) }
 
     private fun toSummary(mirror: Mirror) = when (mirror) {

@@ -1,9 +1,9 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.invoke
 import aoc.utils.grid2d.longGridPoint2D
 import aoc.utils.grid2d.rotated
+import aoc.utils.invoke
 import java.io.File
 
 class Day11(
@@ -13,8 +13,15 @@ class Day11(
 
     private val grid = image.lines()
 
-
+    /**
+     * Expand the universe, then find the length of the shortest path between every pair of galaxies. What is the sum of these lengths?
+     */
     override fun part1(): Long = findSumDistancesGalaxies()
+
+    /**
+     * Starting with the same initial image, expand the universe according to these new rules, then find the length of the shortest path between every pair of galaxies.
+     * What is the sum of these lengths?
+     */
     override fun part2(): Long = findSumDistancesGalaxies { it * (1_000_000L - 1) }
 
     internal fun findSumDistancesGalaxies(shiftMultiplier: (Int) -> Long = Int::toLong): Long {

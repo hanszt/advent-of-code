@@ -1,8 +1,8 @@
 package aoc.seastories
 
 import aoc.utils.AocResult
-import aoc.utils.GREEN
-import aoc.utils.RED
+import aoc.utils.TextColor.Companion.GREEN
+import aoc.utils.TextColor.Companion.RED
 import aoc.utils.readTextFromResource
 import aoc.utils.withColor
 
@@ -38,7 +38,7 @@ fun main(vararg args: String) {
         Day23Amphipod("$inputDir/day23.txt"),
         Day24ArithmeticLogicUnit("$inputDir/day24.txt"),
         Day25SeaCucumber("$inputDir/day25.txt")
-    ).flatMap(aoc.seastories.ChallengeDay::runParts)
+    ).flatMap(ChallengeDay::runParts)
         .onEach(::println)
         .toList()
 

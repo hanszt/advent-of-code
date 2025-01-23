@@ -6,6 +6,7 @@ import java.nio.file.Path
 import kotlin.io.path.readLines
 
 class Day20(private val input: List<String>, private val targetMinSaveTime: Int = 100) : ChallengeDay {
+    private val day20Elizarov = Day20Elizarov(targetMinSaveTime)
 
     constructor(path: Path) : this(path.readLines())
 
@@ -30,7 +31,7 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
         return count
     }
 
-    override fun part2(): Int = day20Part2(input)
+    override fun part2(): Int = day20Elizarov.day20Part2(input)
 
     private fun isCandidate(grid: Array<CharArray>, p: GridPoint2D): Boolean = grid[p] == '#' &&
             ((grid.getOrNull(p.plusX(-1)).isPath() && grid.getOrNull(p.plusX(1)).isPath()) ||
@@ -50,7 +51,7 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
                 if (nc.isPath()) {
                     val t = nodes[n]?.cost
                     if (t == null || newT < t) {
-                        val node = Grid2DNode(n, newT, cur)
+                        val node = Grid2DNode(position = n, cost = newT, prev = cur)
                         nodes[n] = node
                         q += node
                     }
@@ -62,5 +63,5 @@ class Day20(private val input: List<String>, private val targetMinSaveTime: Int 
 
     private fun Char?.isPath(): Boolean = this == '.' || this == 'E' || this == 'S'
 
-    fun part1Elizarov() = day20Part1(input)
+    fun part1Elizarov() = day20Elizarov.day20Part1(input)
 }

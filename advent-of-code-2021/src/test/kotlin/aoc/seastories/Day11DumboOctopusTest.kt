@@ -2,7 +2,7 @@ package aoc.seastories
 
 import aoc.seastories.Day11DumboOctopus.Companion.simulateStep
 import aoc.seastories.Day11DumboOctopus.Octopus
-import aoc.utils.BRIGHT_YELLOW
+import aoc.utils.TextColor.Companion.BRIGHT_YELLOW
 import aoc.utils.grid2d.gridAsString
 import aoc.utils.grid2d.toGrid
 import aoc.utils.withColor

@@ -107,7 +107,7 @@ private fun Long.plus(i: Int, d: Int): Long = this + (d.toLong() shl (i * SH))
 private fun Long.minus(i: Int, d: Int): Long = this - (d.toLong() shl (i * SH))
 
 /**
- * https://softwareengineering.stackexchange.com/questions/402542/where-do-magic-hashing-constants-like-0x9e3779b9-and-0x9e3779b1-come-from
+ * [Where do "magic" hashing constants like 0x9e3779b9 and 0x9e3779b1 come from?](https://softwareengineering.stackexchange.com/questions/402542/where-do-magic-hashing-constants-like-0x9e3779b9-and-0x9e3779b1-come-from)
  *
  * 0x9e3779b9 is the integral part of the Golden Ratio's fractional part 0.61803398875… (sqrt(5)-1)/2, multiplied by 2^32.
  *

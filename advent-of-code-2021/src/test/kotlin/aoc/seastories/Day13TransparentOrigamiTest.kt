@@ -1,10 +1,10 @@
 package aoc.seastories
 
 import aoc.seastories.Day13TransparentOrigami.Companion.toExpectedTextOrElseThrow
-import aoc.utils.BRIGHT_BLUE
-import aoc.utils.GREEN
-import aoc.utils.ICY_BG
-import aoc.utils.RED
+import aoc.utils.BgColor
+import aoc.utils.TextColor.Companion.BRIGHT_BLUE
+import aoc.utils.TextColor.Companion.GREEN
+import aoc.utils.TextColor.Companion.RED
 import aoc.utils.withColor
 import aoc.utils.withColors
 import io.kotest.matchers.shouldBe
@@ -63,7 +63,7 @@ internal class Day13TransparentOrigamiTest {
         val grid = Day13TransparentOrigami("input/day13.txt").part2GridAsString()
         println(grid.withColor(RED))
         val text = grid.toExpectedTextOrElseThrow()
-        println(text.withColors(RED, ICY_BG))
+        println(text.withColors(RED, BgColor.ICY))
         text shouldBe "CPZLPFZL"
     }
 }

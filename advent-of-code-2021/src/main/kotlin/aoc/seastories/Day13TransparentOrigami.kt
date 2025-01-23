@@ -1,11 +1,8 @@
 package aoc.seastories
 
-import aoc.utils.*
-import aoc.utils.grid2d.gridAsString
-import aoc.utils.grid2d.mapByPoint
-import aoc.utils.grid2d.mirroredVertically
-import aoc.utils.grid2d.rotated
-import aoc.utils.grid2d.rotatedCc
+import aoc.utils.SpecialCharacters
+import aoc.utils.grid2d.*
+import aoc.utils.splitByBlankLine
 import java.io.File
 
 internal class Day13TransparentOrigami(private val inputPath: String) : ChallengeDay {
@@ -15,7 +12,7 @@ internal class Day13TransparentOrigami(private val inputPath: String) : Challeng
         return toGrid(coordinates, foldInstructions)
             .foldGrid(foldInstructions.first())
             .flatMap(CharArray::toList)
-            .count { it == BLOCK }
+            .count { it == SpecialCharacters.BLOCK }
     }
 
     override fun part2() = part2GridAsString().toExpectedTextOrElseThrow()
@@ -51,7 +48,7 @@ internal class Day13TransparentOrigami(private val inputPath: String) : Challeng
             .map { it.split(',').map(String::toInt) }
             .map { (x, y) -> x to y }
         val grid = Array(firstYFold * 2 + 1) { CharArray(firstXFold * 2 + 1) { '.' } }
-        points.forEach { (x, y) -> grid[y][x] = BLOCK }
+        points.forEach { (x, y) -> grid[y][x] = SpecialCharacters.BLOCK }
         return grid
     }
 

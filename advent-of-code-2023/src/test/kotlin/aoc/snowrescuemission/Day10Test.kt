@@ -7,12 +7,12 @@ class Day10Test {
 
     @Test
     fun testPart1() {
-        Day10("input/day10.txt").part1() shouldBe 6875
+        Day10("input/day10-dr.txt").part1() shouldBe 6875
     }
 
     @Test
     fun testPart2() {
-        Day10("input/day10.txt").part2() shouldBe 471
+        Day10("input/day10-dr.txt").part2() shouldBe 471
     }
 
     @Test

@@ -1,11 +1,15 @@
 package aoc.seastories
 
-import aoc.utils.*
+import aoc.utils.BgColor
+import aoc.utils.TextColor
+import aoc.utils.TextColor.Companion.GREEN
 import aoc.utils.grid2d.gridAsString
+import aoc.utils.withColor
+import aoc.utils.withColors
 import io.kotest.matchers.shouldBe
-import java.io.File
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.io.File
 import kotlin.random.Random
 import kotlin.test.assertTrue
 
@@ -39,8 +43,8 @@ internal class Day20TrenchTrapTest {
     @Test
     fun `part 2 print resulting image`() {
         val result = resultImage.gridAsString {
-            if (it == 1) "#".withColors(GREEN, BROWN_BG)
-            else ".".withColor(random16BitColor(Random)) }
+            if (it == 1) "#".withColors(GREEN, BgColor.BROWN)
+            else ".".withColor(TextColor.random(Random)) }
         println(result)
         assertTrue { result.isNotBlank() }
     }

@@ -62,6 +62,11 @@ class Day20Test {
         }
 
         @Test
+        fun part1TestElizarov() {
+            day20Test.part1Elizarov() shouldBe 30
+        }
+
+        @Test
         fun part1drElizarov() {
             day20dr.part1Elizarov() shouldBe 1372
         }

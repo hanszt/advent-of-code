@@ -9,12 +9,12 @@ class Day11Test {
 
     @Test
     fun testPart1() {
-        Day11("input/day11.txt").part1() shouldBe 9_536_038
+        Day11("input/day11-dr.txt").part1() shouldBe 9_536_038
     }
 
     @Test
     fun testPart2() {
-        Day11("input/day11.txt").part2() shouldBe 447_744_640_566
+        Day11("input/day11-dr.txt").part2() shouldBe 447_744_640_566
     }
 
     @Test

@@ -1,8 +1,8 @@
 package aoc.historianhysteria
 
 import aoc.utils.*
-import aoc.utils.Colors.BRIGHT_BLUE
-import aoc.utils.Colors.GREEN
+import aoc.utils.TextColor.Companion.BRIGHT_BLUE
+import aoc.utils.TextColor.Companion.GREEN
 import kotlin.io.path.Path
 import kotlin.time.Duration.Companion.nanoseconds
 

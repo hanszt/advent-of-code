@@ -9,8 +9,8 @@ constructor(
     val cost: Int = 0,
     override val prev: Grid2DNode? = null,
 ) : Node<Grid2DNode> {
-    override fun equals(other: Any?): Boolean = this === other || (other is Grid2DNode && position == other.position && cost == other.cost)
-    override fun hashCode(): Int = arrayOf(position, cost).contentHashCode()
+    override fun equals(other: Any?): Boolean = this === other || (other is Grid2DNode && cost == other.cost && position == other.position)
+    override fun hashCode(): Int = arrayOf(cost, position).contentHashCode()
 }
 
 fun GridPoint2D.withCost(cost: Int): Grid2DNode = Grid2DNode(position = this, cost)

@@ -20,7 +20,7 @@ class Day05(input: String) : ChallengeDay {
     override fun part1(): Long {
         val forwardMappings = mappingTexts.map { buildMappings(it) { s, d -> s to d } }
 
-        return seedSequence.map { seedNr -> forwardMappings.fold(seedNr, ::transform) }.min()
+        return seedSequence.minOf { seedNr -> forwardMappings.fold(seedNr, ::transform) }
     }
 
     override fun part2(): Long {

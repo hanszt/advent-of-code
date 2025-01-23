@@ -21,6 +21,7 @@
         <module>advent-of-code-2024</module>
         <module>aoc-runner</module>
         <module>aoc-utils</module>
+        <module>downloader</module>
     </modules>
 
     <properties>

@@ -8,11 +8,17 @@ class Day15(private val initSequence: String) : ChallengeDay {
     constructor(path: Path) : this(path.readText())
 
     /**
+     * Run the HASH algorithm on each step in the initialization sequence.
+     * What is the sum of the results? (The initialization sequence is one long line; be careful when copy-pasting it.)
+     *
      * https://github.com/elizarov/AdventOfCode2023/blob/main/src/Day15_1.kt
      */
     override fun part1(): Int = initSequence.split(",").sumOf(::hash)
 
     /**
+     * With the help of an over-enthusiastic reindeer in a hard hat, follow the initialization sequence.
+     * What is the focusing power of the resulting lens configuration?
+     *
      * https://github.com/elizarov/AdventOfCode2023/blob/main/src/Day15_2.kt
      */
     override fun part2(): Long {

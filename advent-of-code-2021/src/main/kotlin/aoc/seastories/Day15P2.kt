@@ -15,8 +15,7 @@ internal fun day15Part1(input: List<String>): Int {
 
 internal fun day15Part2(input: List<String>): Grid2DNode {
     val grid = enlarge(input, 5)
-    val target = grid.dijkstra(start = P2.ZERO, goal = grid.endExclusive) { grid[it] }
-    return target
+    return grid.dijkstra(start = P2.ZERO, goal = grid.endExclusive) { grid[it] }
 }
 
 private fun enlarge(input: List<String>, times: Int): Grid<Int> {

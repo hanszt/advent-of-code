@@ -1,7 +1,7 @@
 package aoc.jungle.adventures
 
 import aoc.jungle.adventures.Day10CathodeRayTube.Companion.toExpectedTextOrElseThrow
-import aoc.utils.BRIGHT_BLUE
+import aoc.utils.TextColor.Companion.BRIGHT_BLUE
 import aoc.utils.withColor
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test

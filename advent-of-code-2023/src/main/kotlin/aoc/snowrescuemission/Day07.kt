@@ -12,7 +12,14 @@ class Day07(
         .useLines { s -> s.map(Hand::parse).toList() } }
         ?: lines.map(Hand::parse)
 
+    /**
+     * Find the rank of every hand in your set. What are the total winnings?
+     */
     override fun part1(): Long = solve(compareBy(Hand::type).then(Hand::compareByStrengthPart1))
+
+    /**
+     * Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?
+     */
     override fun part2(): Long = solve(compareBy(Hand::typeWithJoker).then(Hand::compareByStrengthPart2))
 
     private fun solve(comparator: Comparator<Hand>): Long = hands

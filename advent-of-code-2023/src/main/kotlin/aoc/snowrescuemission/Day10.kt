@@ -1,15 +1,16 @@
 package aoc.snowrescuemission
 
-import aoc.utils.*
-import aoc.utils.Colors.CYAN
-import aoc.utils.Colors.YELLOW_BG
+import aoc.utils.BgColor
+import aoc.utils.ChallengeDay
 import aoc.utils.SpecialCharacters.PIPE_DOWN_LEFT
 import aoc.utils.SpecialCharacters.PIPE_DOWN_RIGHT
 import aoc.utils.SpecialCharacters.PIPE_LEFT_RIGHT
 import aoc.utils.SpecialCharacters.PIPE_UP_DOWN
 import aoc.utils.SpecialCharacters.PIPE_UP_LEFT
 import aoc.utils.SpecialCharacters.PIPE_UP_RIGHT
+import aoc.utils.TextColor
 import aoc.utils.grid2d.*
+import aoc.utils.withColor
 import java.io.File
 
 class Day10(
@@ -25,7 +26,7 @@ class Day10(
         )
     }
 
-    private val grid = area.lines()
+    private val grid = area.lineSequence().filter { it.isNotBlank() }.toList()
     private val graph = graph(grid)
     private val start = graph.entries.first { (_, c) -> c == START_CHAR }.key
 
@@ -52,8 +53,8 @@ class Day10(
     private fun Array<CharArray>.toColoredMap(): String = map { row ->
         row.map {
             when (it) {
-                in pathComponents -> it.withColor(CYAN)
-                ENCLOSED -> it.withColor(YELLOW_BG)
+                in pathComponents -> it.withColor(TextColor.CYAN)
+                ENCLOSED -> it.withColor(BgColor.YELLOW)
                 else -> it.toString()
             }
         }

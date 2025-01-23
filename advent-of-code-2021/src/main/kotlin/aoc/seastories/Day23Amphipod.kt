@@ -1,14 +1,13 @@
 package aoc.seastories
 
-import aoc.utils.BRIGHT_BLUE
-import aoc.utils.BROWN_BG
-import aoc.utils.GREEN
-import aoc.utils.RED
-import aoc.utils.YELLOW
+import aoc.utils.BgColor
+import aoc.utils.TextColor.Companion.BRIGHT_BLUE
+import aoc.utils.TextColor.Companion.GREEN
+import aoc.utils.TextColor.Companion.RED
+import aoc.utils.TextColor.Companion.YELLOW
 import aoc.utils.withColor
 import java.io.File
-import java.util.PriorityQueue
-import java.util.Queue
+import java.util.*
 import kotlin.math.abs
 
 /**
@@ -170,7 +169,7 @@ internal class Day23Amphipod(
         fun copy(usedEnergy: Int) = Burrow(grid.map(CharArray::copyOf).toTypedArray(), usedEnergy)
 
         override fun toString(): String = buildList {
-            add(" ".repeat(13).withColor(BROWN_BG))
+            add(" ".repeat(13).withColor(BgColor.BROWN))
             addAll(grid
                 .map(CharArray::concatToString)
                 .map {
@@ -180,7 +179,7 @@ internal class Day23Amphipod(
                             'B' -> char.toString().withColor(GREEN)
                             'C' -> char.toString().withColor(BRIGHT_BLUE)
                             'D' -> char.toString().withColor(YELLOW)
-                            '#' -> ' '.toString().withColor(BROWN_BG)
+                            '#' -> ' '.toString().withColor(BgColor.BROWN)
                             else -> char
                         }
                     }.joinToString("")

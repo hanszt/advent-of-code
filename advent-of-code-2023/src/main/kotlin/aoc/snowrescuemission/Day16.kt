@@ -1,15 +1,15 @@
 package aoc.snowrescuemission
 
 import aoc.utils.ChallengeDay
-import aoc.utils.grid2d.getOrNull
 import aoc.utils.grid2d.GridPoint2D
 import aoc.utils.grid2d.GridPoint2D.Companion.ZERO
 import aoc.utils.grid2d.GridPoint2D.Companion.east
 import aoc.utils.grid2d.GridPoint2D.Companion.north
 import aoc.utils.grid2d.GridPoint2D.Companion.south
 import aoc.utils.grid2d.GridPoint2D.Companion.west
-import aoc.utils.grid2d.toMutableCharGrid
+import aoc.utils.grid2d.getOrNull
 import aoc.utils.grid2d.set
+import aoc.utils.grid2d.toMutableCharGrid
 import java.io.File
 
 class Day16(
@@ -17,7 +17,15 @@ class Day16(
     private val grid: List<String> = File(fileName ?: error("No fileName or text provided")).readLines()
 ) : ChallengeDay {
 
+    /**
+     * The light isn't energizing enough tiles to produce lava; to debug the contraption, you need to start by analyzing the current situation.
+     * With the beam starting in the top-left heading right, how many tiles end up being energized?
+     */
     override fun part1(): Int = energizedLevel(ZERO, east)
+
+    /**
+     * Find the initial beam configuration that energizes the largest number of tiles; how many tiles are energized in that configuration?
+     */
     override fun part2(): Int = buildList {
         var startPos = GridPoint2D(1, 0)
         val firstRow = grid[0]

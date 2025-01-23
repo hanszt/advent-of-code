@@ -1,6 +1,8 @@
 package aoc.seastories
 
-import aoc.utils.*
+import aoc.utils.BgColor
+import aoc.utils.TextColor
+import aoc.utils.TextColor.Companion.BRIGHT_YELLOW
 import aoc.utils.graph.WeightedNode
 import aoc.utils.graph.dijkstra
 import aoc.utils.graph.toWeightedGraph
@@ -9,6 +11,7 @@ import aoc.utils.grid2d.GridPoint2D.Companion.by
 import aoc.utils.grid2d.gridAsString
 import aoc.utils.grid2d.toMutableGrid
 import aoc.utils.grid2d.toMutableIntGrid
+import aoc.utils.withColors
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeBlank
 import org.junit.jupiter.api.Nested
@@ -62,9 +65,9 @@ internal class Day15ChitonTest {
         val grid = toMutableGrid(Int::toString)
         ((start dijkstra goal).leastCostPath + goal)
             .mapNotNull(WeightedNode<GridPoint2D>::value)
-            .forEach { (x, y) -> grid[y][x] = "%2s".format(grid[y][x]).withColors(BRIGHT_YELLOW, YELLOW_BG) }
+            .forEach { (x, y) -> grid[y][x] = "%2s".format(grid[y][x]).withColors(BRIGHT_YELLOW, BgColor.YELLOW) }
 
-        return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(random16BitColor(Random), BROWN_BG) else it }
+        return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(TextColor.random(Random), BgColor.BROWN) else it }
     }
 
     @Nested
@@ -77,7 +80,7 @@ internal class Day15ChitonTest {
 
         @Test
         fun `part 2 result Elizarov`() {
-            day15.part2Elizarov().also { println(it.traceBack { it.position }.reversed()) }.cost shouldBe 2897
+            day15.part2Elizarov().also { println(it.traceBack { it.position }.toList().reversed()) }.cost shouldBe 2897
         }
     }
 

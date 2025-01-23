@@ -1,7 +1,7 @@
 package aoc.snowrescuemission
 
 import aoc.snowrescuemission.Day17Abnew.Crucible
-import aoc.utils.Colors.RED
+import aoc.utils.TextColor
 import aoc.utils.grid2d.gridAsString
 import aoc.utils.grid2d.rangeTo
 import aoc.utils.grid2d.set
@@ -118,9 +118,16 @@ class Day17Test {
 
         private fun pathInGridAsString(best: Crucible, grid: List<String>): String {
             val gr = grid.toMutableGrid { it.toString() }
-            best.traceBack { it.position }
-                .zipWithNext { c, n -> c..n }
-                .forEach { r -> r.forEach { gr[it] = '#'.withColor(RED) } }
+            val traceBack = best.traceBack { it }
+            val maxBest = traceBack.first().best
+            traceBack
+                .zipWithNext { c, n -> c.position..n.position to c.best }
+                .forEach { (r, b) ->
+                    r.forEach {
+                        val hue = ((b / maxBest.toDouble()) * 270).toInt()
+                        gr[it] = '#'.withColor(TextColor.hsb(hue))
+                    }
+                }
             return gr.gridAsString(1)
         }
     }

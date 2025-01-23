@@ -24,7 +24,7 @@ internal class Day18SnailFish(inputPath: String) : ChallengeDay {
 
     override fun part2(): Int = snailNrs.findLargestSum()
 
-    sealed class SnailNr : TreeNode<SnailNr, SnailNr> {
+    sealed class SnailNr : TreeNode<SnailNr> {
 
         private fun findPair(nesting: Int): Pair? {
             if (nesting == 0) return this as? Pair
