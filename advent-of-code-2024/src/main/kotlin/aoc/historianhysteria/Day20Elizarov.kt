@@ -50,10 +50,10 @@ private fun gridAsString(
     val max = sTrace.first().second.toDouble()
     sTrace.zip(eTrace.reversed().asSequence()).forEach { (a, b) ->
         val (ps, cs) = a
-        val (pe, ce) = b
+        val (pe, _) = b
         check(ps == pe)
         val cost = cs
-        val hue = ((cost / (max)) * 220).toInt()
+        val hue = ((cost / (max)) * 1080).toInt()
         val ch = input[ps]
         val cc = if (ch == '.') "%04d ".format(cost) else "$ch".repeat(4) + " "
         grid[ps] = cc.withColor(TextColor.hsb(hue))
