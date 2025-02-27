@@ -43,8 +43,16 @@ help
 ehthumbs.db
 Thumbs.db
 
-# build result #
-################
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+/logs
+out
+
+# Maven target folder #
+######################
 target
 
 # Dart #
