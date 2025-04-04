@@ -1,5 +1,7 @@
 rootProject.name = "advent-of-code"
 
+include(":aoc-runner")
+
 include(":advent-of-code-2019")
 include(":advent-of-code-2020")
 include(":advent-of-code-2021")
@@ -9,8 +11,8 @@ include(":advent-of-code-2024")
 
 include(":downloader")
 include(":aoc-utils")
-include(":aoc-runner")
 
+// Necessary for compose
 pluginManagement {
     repositories {
         gradlePluginPortal()
