@@ -7,7 +7,6 @@ description = "Advent of Code 2019"
 
 dependencies {
     implementation(project(":aoc-utils"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
 }
 
 kotlin {
