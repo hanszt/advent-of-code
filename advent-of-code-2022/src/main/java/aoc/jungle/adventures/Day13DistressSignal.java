@@ -47,7 +47,7 @@ final class Day13DistressSignal implements ChallengeDay {
     public Integer part2() {
         final var targets = Sequence.of("[[2]]", "[[6]]").map(CompList::parse);
         return Sequence.of(input)
-                .filterIndexed((i, _) -> i % 3 != 2)
+                .filterIndexed((i, s) -> i % 3 != 2)
                 .map(CompList::parse)
                 .plus(targets)
                 .sortedDescending()

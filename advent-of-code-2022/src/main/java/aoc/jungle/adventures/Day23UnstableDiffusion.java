@@ -14,15 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
-import static aoc.utils.grid2d.GridPoint2D.east;
-import static aoc.utils.grid2d.GridPoint2D.kingDirs;
-import static aoc.utils.grid2d.GridPoint2D.north;
-import static aoc.utils.grid2d.GridPoint2D.northeast;
-import static aoc.utils.grid2d.GridPoint2D.northwest;
-import static aoc.utils.grid2d.GridPoint2D.south;
-import static aoc.utils.grid2d.GridPoint2D.southeast;
-import static aoc.utils.grid2d.GridPoint2D.southwest;
-import static aoc.utils.grid2d.GridPoint2D.west;
+import static aoc.utils.grid2d.GridPoint2D.*;
 import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 
 /**
@@ -102,7 +94,7 @@ public class Day23UnstableDiffusion implements ChallengeDay {
                            !positions.contains(destination.plus(directions[index][2]));
                 }
                 if (free) {
-                    moveMap.computeIfAbsent(goalGridPoint2D, _ -> new ArrayList<>()).add(destination);
+                    moveMap.computeIfAbsent(goalGridPoint2D, u -> new ArrayList<>()).add(destination);
                 }
             }
         }

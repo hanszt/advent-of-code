@@ -7,11 +7,11 @@ import aoc.utils.grid2d.gridAsString
 import aoc.utils.withColor
 import aoc.utils.withColors
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldNotBeBlank
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
 import kotlin.random.Random
-import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class Day20TrenchTrapTest {
@@ -46,6 +46,6 @@ internal class Day20TrenchTrapTest {
             if (it == 1) "#".withColors(GREEN, BgColor.BROWN)
             else ".".withColor(TextColor.random(Random)) }
         println(result)
-        assertTrue { result.isNotBlank() }
+        result.shouldNotBeBlank()
     }
 }

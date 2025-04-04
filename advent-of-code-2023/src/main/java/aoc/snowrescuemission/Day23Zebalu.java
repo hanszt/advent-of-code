@@ -3,7 +3,15 @@ package aoc.snowrescuemission;
 import aoc.utils.grid2d.Grid2DNode;
 import aoc.utils.grid2d.GridPoint2D;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.SequencedSet;
+import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -29,7 +37,7 @@ public final class Day23Zebalu {
     }
 
     public int part2() {
-        return new WeightedGraph(p -> neighbors(p, (_, c) -> c != '#')).longestPath();
+        return new WeightedGraph(p -> neighbors(p, (u, c) -> c != '#')).longestPath();
     }
 
     List<GridPoint2D> part1Neighbours(GridPoint2D p) {
@@ -72,7 +80,7 @@ public final class Day23Zebalu {
                     final var ch = line.charAt(x);
                     if (ch != '#') {
                         final var c = GridPoint2D.of(x, y);
-                        if (neighbors(c, (_, c1) -> c1 != '#').size() > 2) {
+                        if (neighbors(c, (i, c1) -> c1 != '#').size() > 2) {
                             forkIds.put(c, ++id);
                         }
                     }
@@ -114,7 +122,7 @@ public final class Day23Zebalu {
                 final var cur = curr.getLast();
                 final var p = cur.getPosition();
                 if (forkIds.containsKey(p) && !p.equals(start)) {
-                    result.compute(p, (_, v) -> {
+                    result.compute(p, (i, v) -> {
                         final var lastIndex = curr.size() - 1;
                         final var newCost = (v == null) ? lastIndex : Math.max(v.getCost(), lastIndex);
                         return new Grid2DNode(p, newCost, cur.getPrev());

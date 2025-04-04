@@ -1,12 +1,13 @@
 package aoc.seastories
 
+import io.kotest.matchers.collections.shouldBeEmpty
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
-import kotlin.test.assertTrue
 
 internal class Day10SyntaxScoringTest {
 
@@ -32,7 +33,7 @@ internal class Day10SyntaxScoringTest {
 
         assertAll(
             { assertEquals(' ', char) },
-            { assertTrue(remainder.isEmpty()) }
+            { remainder.shouldBeEmpty() }
         )
     }
 

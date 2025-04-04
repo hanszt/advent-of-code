@@ -71,7 +71,7 @@ public abstract class Day17Challenge extends Challenge {
 
     List<Boolean> createInActiveRow(final int width) {
         return IntStream.range(0, width)
-                .mapToObj(_ -> false)
+                .mapToObj(s -> false)
                 .collect(Collectors.toList());
     }
 

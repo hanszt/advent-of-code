@@ -33,7 +33,7 @@ public abstract class Day07Challenge extends Challenge {
                 .collect(Collectors.toMap(bag -> bag.bagColor, bag -> bag));
 
         bagColorsToBag.values()
-                .forEach(b -> b.childBagColorsToAmounts.forEach((c, _) -> b.children().add(bagColorsToBag.get(c))));
+                .forEach(b -> b.childBagColorsToAmounts.forEach((c, i) -> b.children().add(bagColorsToBag.get(c))));
         return bagColorsToBag;
     }
 

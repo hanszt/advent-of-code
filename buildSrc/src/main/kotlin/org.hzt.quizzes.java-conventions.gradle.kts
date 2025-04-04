@@ -9,10 +9,10 @@ java.sourceCompatibility = JavaVersion.VERSION_21
 
 val junitJupiterVersion = "5.11.3"
 val kotestVersion = "5.9.1"
+val hztUtilsVersion = "1.0.5.21"
 
 dependencies {
-    implementation("org.hzt.utils:core:1.0.5.21")
-
+    implementation("org.hzt.utils:core:$hztUtilsVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
@@ -53,12 +53,18 @@ java {
     }
 }
 
-tasks.withType<JavaCompile> {
+tasks.compileJava {
     options.encoding = "UTF-8"
-    options.compilerArgumentProviders.add(CommandLineArgumentProvider {
+    options.compilerArgumentProviders.add(object : CommandLineArgumentProvider {
+
         // Provide compiled Kotlin classes to javac – needed for Java/Kotlin mixed sources to work
-        listOf(
+        override fun asArguments() = listOf(
             "--patch-module", "advent.of.code.utils=${sourceSets["main"].output.asPath}",
+            "--patch-module", "advent.of.code.twenty.nineteen=${sourceSets["main"].output.asPath}",
+            "--patch-module", "advent.of.code.twenty.twenty=${sourceSets["main"].output.asPath}",
+            "--patch-module", "advent.of.code.twenty.twenty.one=${sourceSets["main"].output.asPath}",
+            "--patch-module", "advent.of.code.twenty.twenty.two=${sourceSets["main"].output.asPath}",
+            "--patch-module", "advent.of.code.twenty.twenty.three=${sourceSets["main"].output.asPath}",
             "--patch-module", "advent.of.code.twenty.twenty.four=${sourceSets["main"].output.asPath}"
         )
     })

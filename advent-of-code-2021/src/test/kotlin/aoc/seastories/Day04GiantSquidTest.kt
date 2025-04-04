@@ -2,9 +2,9 @@ package aoc.seastories
 
 import aoc.seastories.Day04GiantSquid.Companion.isWinningBoard
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 internal class Day04GiantSquidTest {
 
