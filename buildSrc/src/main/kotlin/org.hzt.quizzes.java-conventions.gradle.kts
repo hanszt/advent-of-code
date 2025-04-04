@@ -11,6 +11,8 @@ val junitJupiterVersion = "5.11.3"
 val kotestVersion = "5.9.1"
 
 dependencies {
+    implementation("org.hzt.utils:core:1.0.5.21")
+
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
@@ -41,4 +43,23 @@ tasks.withType<Javadoc> {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+java {
+    //https://kotlinlang.org/docs/gradle-configure-project.html#configure-with-java-modules-jpms-enabled
+    modularity.inferModulePath.set(true)
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.compilerArgumentProviders.add(CommandLineArgumentProvider {
+        // Provide compiled Kotlin classes to javac – needed for Java/Kotlin mixed sources to work
+        listOf(
+            "--patch-module", "advent.of.code.utils=${sourceSets["main"].output.asPath}",
+            "--patch-module", "advent.of.code.twenty.twenty.four=${sourceSets["main"].output.asPath}"
+        )
+    })
 }
