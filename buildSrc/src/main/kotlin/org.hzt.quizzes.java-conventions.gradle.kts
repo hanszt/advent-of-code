@@ -7,13 +7,17 @@ group = "org.hzt.quizzes"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
-val junitJupiterVersion = "5.11.3"
+val junitJupiterPlatformVersion = "1.13.4"
+val junitJupiterVersion = "5.13.4"
 val kotestVersion = "5.9.1"
 val hztUtilsVersion = "1.0.5.21"
 
 dependencies {
     implementation("org.hzt.utils:core:$hztUtilsVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testImplementation("org.junit.platform:junit-platform-commons:$junitJupiterPlatformVersion")
+    testImplementation("org.junit.platform:junit-platform-engine:$junitJupiterPlatformVersion")
+    testImplementation("org.junit.platform:junit-platform-launcher:$junitJupiterPlatformVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
@@ -55,10 +59,10 @@ java {
 
 tasks.compileJava {
     options.encoding = "UTF-8"
-    options.compilerArgumentProviders.add(object : CommandLineArgumentProvider {
+    options.compilerArgumentProviders.add(CommandLineArgumentProvider {
 
         // Provide compiled Kotlin classes to javac – needed for Java/Kotlin mixed sources to work
-        override fun asArguments() = listOf(
+        listOf(
             "--patch-module", "advent.of.code.utils=${sourceSets["main"].output.asPath}",
             "--patch-module", "advent.of.code.twenty.nineteen=${sourceSets["main"].output.asPath}",
             "--patch-module", "advent.of.code.twenty.twenty=${sourceSets["main"].output.asPath}",

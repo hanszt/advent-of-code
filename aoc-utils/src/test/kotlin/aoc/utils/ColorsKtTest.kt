@@ -26,8 +26,8 @@ internal class ColorsKtTest {
 
     @Test
     fun `Print rainbow table`() {
-        println(rainbowTable.joinToString("\n") {
-            it.joinToString(" ") { it.withColor(TextColor(it.trim().toInt())) }
+        println(rainbowTable.joinToString("\n") { lines ->
+            lines.joinToString(" ") { it.withColor(TextColor(it.trim().toInt())) }
         })
     }
 
@@ -89,12 +89,12 @@ internal class ColorsKtTest {
     }
 
     @TestFactory
-    fun `color tests`(): List<DynamicTest> {
+    fun `color tests`(): Sequence<DynamicTest> {
         fun test(color: Color) = dynamicTest("aoc.utils.Color: $color") {
             val coloredText = "Colored text".withColor(color)
             println("coloredText = $coloredText")
             coloredText shouldStartWith "\u001B["
         }
-        return listOf(RED, BRIGHT_BLUE, BRIGHT_GREEN, BRIGHT_YELLOW, BROWN, TextColor.YELLOW, BgColor.YELLOW, ICY).map(::test)
+        return sequenceOf(RED, BRIGHT_BLUE, BRIGHT_GREEN, BRIGHT_YELLOW, BROWN, TextColor.YELLOW, BgColor.YELLOW, ICY).map(::test)
     }
 }

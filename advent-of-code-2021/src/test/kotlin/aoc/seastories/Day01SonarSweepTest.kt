@@ -8,7 +8,7 @@ internal class Day01SonarSweepTest {
     private val day01SonarSweep = Day01SonarSweep("input/day1.txt")
 
     @Test
-    fun testSumDepthIncreases(){
+    fun testSumDepthIncreases() {
         day01SonarSweep.part1().also(::println) shouldBe 1_722
     }
 

@@ -21,6 +21,7 @@ class Day01TheTyrannyOfTheRocketEquationTest {
 
     @ParameterizedTest(name = "A module of mass {0} should require {1} fuel")
     @CsvSource(value = ["12, 2", "1969, 966", "100756, 50346"])
-    fun `test calculate compound fuel`(mass: Int, expectedFuel: Int) =
+    fun `test calculate compound fuel`(mass: Int, expectedFuel: Int) {
         day01TheTyrannyOfTheRocketEquation.compoundFuel(mass) shouldBe expectedFuel
+    }
 }
