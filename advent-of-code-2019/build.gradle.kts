@@ -1,6 +1,6 @@
 plugins {
     id("org.hzt.quizzes.java-conventions")
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.2.20"
 }
 
 description = "Advent of Code 2019"
@@ -10,7 +10,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(24)
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all")
     }

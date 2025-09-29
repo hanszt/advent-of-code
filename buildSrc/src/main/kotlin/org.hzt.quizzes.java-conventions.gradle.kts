@@ -1,3 +1,8 @@
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
+import kotlin.io.path.Path
+import kotlin.io.path.exists
+
 plugins {
     `java-library`
     `maven-publish`
@@ -5,7 +10,7 @@ plugins {
 
 group = "org.hzt.quizzes"
 version = "1.0-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_24
 
 val junitJupiterPlatformVersion = "1.13.4"
 val junitJupiterVersion = "5.13.4"
@@ -33,6 +38,16 @@ repositories {
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
+
+    maven {
+        name = "github"
+        url = uri("https://maven.pkg.github.com/hanszt/*")
+        credentials {
+            val (username, password) = readMavenCredentials("github")
+            this.username = username
+            this.password = password
+        }
+    }
 }
 
 publishing {
@@ -41,35 +56,63 @@ publishing {
     }
 }
 
-tasks.withType<Javadoc> {
-    options.encoding = "UTF-8"
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+    withType<Javadoc> {
+        options.encoding = "UTF-8"
+    }
+    compileJava {
+        options.encoding = "UTF-8"
+        options.compilerArgumentProviders.add(CommandLineArgumentProvider {
+
+            // Provide compiled Kotlin classes to javac – needed for Java/Kotlin mixed sources to work
+            listOf(
+                "--patch-module", "advent.of.code.utils=${sourceSets["main"].output.asPath}",
+                "--patch-module", "advent.of.code.twenty.nineteen=${sourceSets["main"].output.asPath}",
+                "--patch-module", "advent.of.code.twenty.twenty=${sourceSets["main"].output.asPath}",
+                "--patch-module", "advent.of.code.twenty.twenty.one=${sourceSets["main"].output.asPath}",
+                "--patch-module", "advent.of.code.twenty.twenty.two=${sourceSets["main"].output.asPath}",
+                "--patch-module", "advent.of.code.twenty.twenty.three=${sourceSets["main"].output.asPath}",
+                "--patch-module", "advent.of.code.twenty.twenty.four=${sourceSets["main"].output.asPath}"
+            )
+        })
+    }
 }
 
-tasks.test {
-    useJUnitPlatform()
+private fun readMavenCredentials(id: String): Credentials {
+    project.logger.lifecycle("Reading credentials for $id from maven settings.xml")
+    val settingsFile = Path(System.getProperty("user.home"), ".m2/settings.xml")
+    if (!settingsFile.exists()) {
+        error("Maven SettingsFile not found")
+    }
+    try {
+        val parser = XmlSlurper()
+        val settings = parser.parse(settingsFile)
+        val credentials = settings.breadthFirst().asSequence()
+            .filterIsInstance<GPathResult>()
+            .first { id in it.text() }
+            .breadthFirst().asSequence()
+            .filterIsInstance<GPathResult>()
+            .filter { it.name() == "username" || it.name() == "password" }
+            .toList()
+        if (credentials.size == 2) {
+            return Credentials(credentials[0].text(), credentials[1].text())
+        }
+    } catch (e: Exception) {
+        // Log the error for debugging
+        project.logger.lifecycle("Error parsing settings.xml: ${e.message}")
+    }
+    error("Could not find credentials for $id in settingsFile")
 }
+
+private data class Credentials(val username: String, val password: String)
 
 java {
     //https://kotlinlang.org/docs/gradle-configure-project.html#configure-with-java-modules-jpms-enabled
     modularity.inferModulePath.set(true)
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(24))
     }
-}
-
-tasks.compileJava {
-    options.encoding = "UTF-8"
-    options.compilerArgumentProviders.add(CommandLineArgumentProvider {
-
-        // Provide compiled Kotlin classes to javac – needed for Java/Kotlin mixed sources to work
-        listOf(
-            "--patch-module", "advent.of.code.utils=${sourceSets["main"].output.asPath}",
-            "--patch-module", "advent.of.code.twenty.nineteen=${sourceSets["main"].output.asPath}",
-            "--patch-module", "advent.of.code.twenty.twenty=${sourceSets["main"].output.asPath}",
-            "--patch-module", "advent.of.code.twenty.twenty.one=${sourceSets["main"].output.asPath}",
-            "--patch-module", "advent.of.code.twenty.twenty.two=${sourceSets["main"].output.asPath}",
-            "--patch-module", "advent.of.code.twenty.twenty.three=${sourceSets["main"].output.asPath}",
-            "--patch-module", "advent.of.code.twenty.twenty.four=${sourceSets["main"].output.asPath}"
-        )
-    })
 }

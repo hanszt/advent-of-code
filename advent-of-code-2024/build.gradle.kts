@@ -2,7 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     id("org.hzt.quizzes.java-conventions")
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.2.20"
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
 }
@@ -26,7 +26,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(24)
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all")
     }
@@ -34,11 +34,11 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "org.hzt.MainKt"
+        mainClass = "aoc.compose.day12.Day12Kt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "physics-sim"
+            packageName = "advent-of-code-2024"
             packageVersion = "1.0.0"
         }
     }
