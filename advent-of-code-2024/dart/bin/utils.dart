@@ -2,7 +2,7 @@ extension NumberParsing on String {
   bool isDigit() => int.tryParse(this) != null;
 
   bool isLetter() {
-    if (isEmpty) {
+    if (length != 1) {
       return false;
     }
     int rune = codeUnitAt(0);
