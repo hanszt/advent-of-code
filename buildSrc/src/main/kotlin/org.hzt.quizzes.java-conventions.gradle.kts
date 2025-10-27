@@ -12,8 +12,8 @@ group = "org.hzt.quizzes"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_24
 
-val junitJupiterPlatformVersion = "1.13.4"
-val junitJupiterVersion = "5.13.4"
+val junitJupiterPlatformVersion = "6.0.0"
+val junitJupiterVersion = "6.0.0"
 val kotestVersion = "5.9.1"
 val hztUtilsVersion = "1.0.5.21"
 
