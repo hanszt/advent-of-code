@@ -8,6 +8,7 @@ include(":advent-of-code-2021")
 include(":advent-of-code-2022")
 include(":advent-of-code-2023")
 include(":advent-of-code-2024")
+include(":advent-of-code-2025")
 
 include(":downloader")
 include(":aoc-utils")
