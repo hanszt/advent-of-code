@@ -77,9 +77,9 @@ class Heap<K, V>(private val comparator: Comparator<V>) : AbstractMutableMap<K, 
 
     override fun get(key: K): V? = map[key]?.v
 
-    override fun put(k: K, v: V): V? {
-        var get = get(k)
-        putBetter(k, v)
+    override fun put(key: K, value: V): V? {
+        val get = get(key)
+        putBetter(key, value)
         return get
     }
 
