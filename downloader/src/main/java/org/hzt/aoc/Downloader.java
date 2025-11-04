@@ -17,26 +17,24 @@ import java.util.stream.IntStream;
 /**
  * A utility to download the inputs for the aoc challenges by year.
  */
-public final class Downloader {
+public final class Downloader implements AutoCloseable {
 
     private final String sessionId;
-    private final int year;
     private final Clock clock;
+    private final HttpClient httpClient = createHttpClient();
 
-    public Downloader(final String sessionId, final int year, final Clock clock) {
+    public Downloader(final String sessionId, final Clock clock) {
         this.sessionId = sessionId;
-        this.year = year;
         this.clock = clock;
     }
 
-    public void downloadInputs() {
-        final var httpClient = createHttpClient();
+    public void downloadInputs(final int year) {
         IntStream.rangeClosed(1, 25)
                 .filter(i -> Instant.parse(String.format("%d-12-%02dT05:00:00Z", year, i)).isBefore(clock.instant()))
-                .forEach(i -> download(i, httpClient));
+                .forEach(i -> download(i, year));
     }
 
-    private void download(final int i, final HttpClient httpClient) {
+    private void download(final int i, final int year) {
         try {
             final var target = new File(String.format("input-%02d.txt", i));
             if (!target.exists()) {
@@ -52,8 +50,10 @@ public final class Downloader {
             } else {
                 System.out.println("Input: " + target.getAbsolutePath() + " already exists.");
             }
-        } catch (final IOException | InterruptedException | URISyntaxException e) {
+        } catch (final IOException | URISyntaxException e) {
             throw new IllegalStateException("Could not download input: " + i, e);
+        } catch (final InterruptedException unused) {
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -70,8 +70,14 @@ public final class Downloader {
         }
     }
 
-    public static void main(final String[] args) {
-        new Downloader("hzt", 2020, Clock.systemUTC()).downloadInputs();
+    @Override
+    public void close() {
+        httpClient.close();
     }
 
+    public static void main(final String[] args) {
+        try (final var downloader = new Downloader("hzt", Clock.systemUTC())) {
+            downloader.downloadInputs(2020);
+        }
+    }
 }
