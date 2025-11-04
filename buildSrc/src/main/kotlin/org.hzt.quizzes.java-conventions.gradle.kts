@@ -12,19 +12,18 @@ group = "org.hzt.quizzes"
 version = "1.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_24
 
-val junitJupiterPlatformVersion = "6.0.0"
-val junitJupiterVersion = "6.0.0"
+val junitVersion = "6.0.0"
 val kotestVersion = "5.9.1"
 val hztUtilsVersion = "1.0.5.21"
 
 dependencies {
     implementation("org.hzt.utils:core:$hztUtilsVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-    testImplementation("org.junit.platform:junit-platform-commons:$junitJupiterPlatformVersion")
-    testImplementation("org.junit.platform:junit-platform-engine:$junitJupiterPlatformVersion")
-    testImplementation("org.junit.platform:junit-platform-launcher:$junitJupiterPlatformVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("org.junit.platform:junit-platform-commons:$junitVersion")
+    testImplementation("org.junit.platform:junit-platform-engine:$junitVersion")
+    testImplementation("org.junit.platform:junit-platform-launcher:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-shared-jvm:$kotestVersion")
 }
