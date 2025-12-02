@@ -52,9 +52,12 @@ public final class Day02 implements ChallengeDay {
     }
 
     private static boolean isInvalidIdP2(long l) {
-        var s = String.valueOf(l);
-        var chunkSize = 1;
-        while (chunkSize <= s.length() / 2) {
+        final var s = String.valueOf(l);
+        final var size = s.length();
+        for (var chunkSize = 1; chunkSize <= size / 2; chunkSize++) {
+            if (size % chunkSize != 0) {
+                continue;
+            }
             var isRepeating = StringX.of(s).codePointSequence()
                     .chunked(chunkSize)
                     .zipWithNext(Objects::equals)
@@ -62,7 +65,6 @@ public final class Day02 implements ChallengeDay {
             if (isRepeating) {
                 return true;
             }
-            chunkSize++;
         }
         return false;
     }
