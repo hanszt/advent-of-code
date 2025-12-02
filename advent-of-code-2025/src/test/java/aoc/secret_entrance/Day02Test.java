@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day02Test {
 
-    private static final Day02 day02 = new Day02(FileX.of(Path.of("input/day02.txt")).readText());
+    private static final String TEXT = FileX.of(Path.of("input/day02.txt")).readText();
+    private static final Day02 day02 = new Day02(TEXT);
     private static final Day02 day02Sample = new Day02("11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124");
 
     @Test
@@ -25,6 +26,11 @@ class Day02Test {
     @Test
     void testPart2() {
         assertEquals(41662374059L, day02.part2());
+    }
+
+    @Test
+    void testPart2Elizarov() {
+        assertEquals(41662374059L, Day02Part2Elizarov.INSTANCE.run(TEXT));
     }
 
 }
