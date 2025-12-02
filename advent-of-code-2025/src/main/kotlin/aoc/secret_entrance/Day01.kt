@@ -1,4 +1,4 @@
-package aoc.theme
+package aoc.secret_entrance
 
 import aoc.utils.ChallengeDay
 import java.nio.file.Path

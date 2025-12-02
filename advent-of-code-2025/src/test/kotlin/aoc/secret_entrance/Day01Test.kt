@@ -1,4 +1,4 @@
-package aoc.theme
+package aoc.secret_entrance
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
