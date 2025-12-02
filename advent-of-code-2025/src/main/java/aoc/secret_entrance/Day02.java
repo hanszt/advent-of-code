@@ -9,14 +9,12 @@ import java.util.Objects;
 import java.util.function.LongPredicate;
 import java.util.stream.LongStream;
 
-public final class Day02 implements ChallengeDay {
-
-    private final List<IdRange> idRanges;
+public record Day02(List<IdRange> idRanges) implements ChallengeDay {
 
     public Day02(String idRanges) {
-        this.idRanges = Patterns.commaPattern.splitAsStream(idRanges)
+        this(Patterns.commaPattern.splitAsStream(idRanges)
                 .map(IdRange::parse)
-                .toList();
+                .toList());
     }
 
     @Override
@@ -30,15 +28,12 @@ public final class Day02 implements ChallengeDay {
     }
 
     private long invalidIdSum(LongPredicate isInvalidId) {
-        var invalidIds = LongStream.builder();
-        for (var idRange : idRanges) {
-            var min = Math.min(idRange.start, idRange.end);
-            var max = Math.max(idRange.start, idRange.end);
-            LongStream.rangeClosed(min, max)
-                    .filter(isInvalidId)
-                    .forEach(invalidIds::add);
-        }
-        return invalidIds.build().sum();
+        return idRanges.stream()
+                .flatMapToLong(idRange -> {
+                    var min = Math.min(idRange.start, idRange.end);
+                    var max = Math.max(idRange.start, idRange.end);
+                    return LongStream.rangeClosed(min, max).filter(isInvalidId);
+                }).sum();
     }
 
     private static boolean isInvalidIdP1(long l) {
@@ -52,13 +47,13 @@ public final class Day02 implements ChallengeDay {
     }
 
     private static boolean isInvalidIdP2(long l) {
-        final var s = String.valueOf(l);
+        final var s = StringX.of(l);
         final var size = s.length();
         for (var chunkSize = 1; chunkSize <= size / 2; chunkSize++) {
             if (size % chunkSize != 0) {
                 continue;
             }
-            var isRepeating = StringX.of(s).codePointSequence()
+            var isRepeating = s.codePointSequence()
                     .chunked(chunkSize)
                     .zipWithNext(Objects::equals)
                     .all(b -> b);
