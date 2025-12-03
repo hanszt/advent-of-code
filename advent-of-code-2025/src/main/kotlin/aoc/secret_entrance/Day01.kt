@@ -34,16 +34,15 @@ class Day01(private val lines: List<String>) : ChallengeDay {
                 'R' -> {
                     pos += amount
                     cnt += pos / 100
-                    pos = pos.mod(100)
                 }
 
                 'L' -> {
                     if (pos == 0) cnt--
                     pos -= amount
                     cnt += (-pos + 100) / 100
-                    pos = pos.mod(100)
                 }
             }
+            pos = pos.mod(100)
         }
         return cnt
     }
