@@ -29,8 +29,18 @@ class Day03Test {
     }
 
     @Test
+    fun testPart1ComparisonElizarov() {
+        day03.part1() shouldBe day03.solve(k = 2)
+    }
+
+    @Test
     fun testPart2TestInput() {
         day03TestInput.part2() shouldBe 3121910778619
+    }
+
+    @Test
+    fun testPart2() {
+        day03.part2() shouldBe 167302518850275
     }
 
 }
