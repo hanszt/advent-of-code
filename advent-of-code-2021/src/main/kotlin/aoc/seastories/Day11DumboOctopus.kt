@@ -34,7 +34,7 @@ internal class Day11DumboOctopus(private val inputPath: String) : ChallengeDay {
             val gridPoints = gridPoints().toList()
             gridPoints.forEach { updateDifferencesNeighbors(it, differences) }
             if (differences.allInGrid { it == 0 }) return
-            gridPoints.forEach { it -> this[it].updateEnergyLevel(differences[it]) }
+            gridPoints.forEach { this[it].updateEnergyLevel(differences[it]) }
             updateEnergyLevelsNeighbors()
         }
 
