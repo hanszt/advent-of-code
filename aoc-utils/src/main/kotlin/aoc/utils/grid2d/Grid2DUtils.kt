@@ -140,6 +140,9 @@ inline fun Array<IntArray>.allInGrid(predicate: (Int) -> Boolean) = all { it.all
 inline fun Array<IntArray>.gridCount(predicate: (Int, Int) -> Boolean): Int =
     indices.sumOf { y -> this[y].indices.count { x -> predicate(x, y) } }
 
+inline fun List<String>.gridCount(predicate: (GridPoint2D) -> Boolean): Int =
+    indices.sumOf { y -> this[y].indices.count { x -> predicate(GridPoint2D(x, y)) } }
+
 inline fun Array<IntArray>.gridCount(predicate: (GridPoint2D) -> Boolean): Int =
     indices.sumOf { y -> this[y].indices.count { x -> predicate(GridPoint2D(x, y)) } }
 
@@ -200,7 +203,7 @@ inline fun Array<CharArray>.forEachPointAndValue(action: (Int, Int, Char) -> Uni
     withIndex().forEach { (y, row) -> row.withIndex().forEach { (x, value) -> action(x, y, value) } }
 
 /**
- * Find first point matching the predicate
+ * Find the first point matching the predicate
  */
 fun List<String>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
     for ((y, line) in this.withIndex()) {
