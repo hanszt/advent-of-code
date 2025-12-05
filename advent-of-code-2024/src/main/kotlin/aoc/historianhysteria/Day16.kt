@@ -15,14 +15,14 @@ import aoc.utils.grid2d.GridPoint2D as P2
 private const val TURING_COST = 1000
 
 /**
- * From elizarov 2024 day 16
+ * [Adaption of elizarov 2024 day 16 solution](https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day16_2.kt)
  *
  * [aoc.utils.Tag.PATH_SEARCH]
  */
 class Day16(private val maze: List<String>) : ChallengeDay {
     constructor(path: Path) : this(path.readLines())
 
-    private val m = maze.getOrNull(0)?.length ?: 0
+    private val m = maze.firstOrNull()?.length ?: 0
     private val n = maze.size
 
     /**
