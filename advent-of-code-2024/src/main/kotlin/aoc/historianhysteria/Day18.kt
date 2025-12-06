@@ -6,6 +6,9 @@ import aoc.utils.invoke
 import java.nio.file.Path
 import kotlin.io.path.readLines
 
+/**
+ * [aoc.utils.Tag.PATH_SEARCH]
+ */
 class Day18(
     private val input: List<String>,
     private val nrOfFallenBytes: Int = 1_024,
@@ -40,11 +43,9 @@ class Day18(
                 if (neighbor == '.') {
                     val newPathLength = shortestPaths(pos) + 1
                     val pathLength = shortestPaths[neighborPos] ?: Int.MAX_VALUE
-                    if (neighborPos !in visited) {
-                        if (newPathLength < pathLength) {
-                            shortestPaths[neighborPos] = newPathLength
-                            queue.add(neighborPos)
-                        }
+                    if (neighborPos !in visited && newPathLength < pathLength) {
+                        shortestPaths[neighborPos] = newPathLength
+                        queue.add(neighborPos)
                     }
                 }
             }
@@ -90,10 +91,8 @@ class Day18(
                             for (d in GridPoint2D.kingDirs) {
                                 val neighborPos = pos + d
                                 val neighbor = memoryGrid.getOrNull(neighborPos)
-                                if (neighbor == '#') {
-                                    if (neighborPos !in visited) {
-                                        stack += neighborPos
-                                    }
+                                if (neighbor == '#' && neighborPos !in visited) {
+                                    stack += neighborPos
                                 }
                             }
                         }
