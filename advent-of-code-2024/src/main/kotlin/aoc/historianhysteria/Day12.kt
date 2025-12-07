@@ -1,12 +1,8 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
+import aoc.utils.grid2d.*
 import aoc.utils.grid2d.GridPoint2D.Companion.orthoDirs
-import aoc.utils.grid2d.forEachPoint
-import aoc.utils.grid2d.get
-import aoc.utils.grid2d.getOrNull
-import aoc.utils.grid2d.orthoNeighbors
-import aoc.utils.grid2d.set
 import java.nio.file.Path
 import kotlin.io.path.readLines
 import aoc.utils.grid2d.GridPoint2D as P2
@@ -78,12 +74,12 @@ class Day12(private val input: List<String>) : ChallengeDay {
         }
 
         var sum = 0L
-        input.forEachPoint {
-            if (f[it] == 0) {
+        input.forEachPoint { p ->
+            if (f[p] == 0) {
                 count++
                 q.clear()
-                val c = input[it]
-                enq(it, c)
+                val c = input[p]
+                enq(p, c)
                 var h = 0
                 while (h < q.size) {
                     val p = q[h++]
