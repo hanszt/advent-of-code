@@ -14,21 +14,21 @@ class Day07(private val lines: List<String>) : ChallengeDay {
      * [Elizarov's solution](https://github.com/elizarov/AdventOfCode2025/blob/main/src/Day07_1.kt)
      */
     override fun part1(): Int {
-        var rayXPositions = setOf(lines[0].indexOf('S'))
+        var xPositions = setOf(lines[0].indexOf('S'))
         var cnt = 0
         for (y in 1..<lines.size) {
-                rayXPositions = buildSet {
-                    for (x in rayXPositions) {
-                        if (lines[y][x] == '^') {
-                            cnt++
-                            this += (x - 1)
-                            this += (x + 1)
-                        } else {
-                            this += x
-                        }
-                    }
+            val next = HashSet<Int>()
+            for (x in xPositions) {
+                if (lines[y][x] == '^') {
+                    cnt++
+                    next += (x - 1)
+                    next += (x + 1)
+                } else {
+                    next += x
                 }
             }
+            xPositions = next
+        }
         return cnt
     }
 
@@ -41,16 +41,16 @@ class Day07(private val lines: List<String>) : ChallengeDay {
     override fun part2(): Long {
         var xPositionsToCount = mapOf(lines[0].indexOf('S') to 1L)
         for (y in 1..<lines.size) {
-            xPositionsToCount = buildMap {
-                for ((x, c) in xPositionsToCount) {
-                    if (lines[y][x] == '^') {
-                        this[x - 1] = getOrDefault(x - 1, 0) + c
-                        this[x + 1] = getOrDefault(x + 1, 0) + c
-                    } else {
-                        this[x] = getOrDefault(x, 0) + c
-                    }
+            val next = HashMap<Int, Long>()
+            for ((x, c) in xPositionsToCount) {
+                if (lines[y][x] == '^') {
+                    next[x - 1] = next.getOrDefault(x - 1, 0) + c
+                    next[x + 1] = next.getOrDefault(x + 1, 0) + c
+                } else {
+                    next[x] = next.getOrDefault(x, 0) + c
                 }
             }
+            xPositionsToCount = next
         }
         return xPositionsToCount.values.sum()
     }
