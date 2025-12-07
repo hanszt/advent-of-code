@@ -44,4 +44,6 @@ private data class StandardDimension2D(override val width: Int, override val hei
         require(width >= 0)
         require(height >= 0)
     }
+
+    override fun toString(): String = "(width=$width, height=$height)"
 }

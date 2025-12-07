@@ -60,7 +60,9 @@ inline fun <reified T> List<String>.toGrid(crossinline mapper: (Char) -> T): Gri
     buildGrid(it.length, size) { x, y -> mapper(this[y][x]) }
 } ?: emptyGrid()
 
-inline fun <reified T> Iterable<GridPoint2D>.toGrid(transform: (Int, Int, Boolean) -> T): Grid<T> = toMutableGrid(transform).toGrid { it }
+inline fun <reified T> Iterable<GridPoint2D>.toGrid(transform: (Int, Int, Boolean) -> T): Grid<T> =
+    toMutableGrid(transform).toGrid { it }
+
 inline fun <reified T> Iterable<GridPoint2D>.toMutableGrid(transform: (Int, Int, Boolean) -> T): Array<Array<T>> {
     val minX = minOf { it.x }
     val maxX = maxOf { it.x }
@@ -152,7 +154,8 @@ inline fun <T> Array<Array<T>>.forEachPointAndValue(action: (Int, Int, T) -> Uni
 inline fun <T> Array<Array<T>>.forEachPoint(action: (Int, Int) -> Unit) =
     indices.forEach { y -> first().indices.forEach { x -> action(x, y) } }
 
-inline fun <T> Array<Array<T>>.forEachPoint(action: (GridPoint2D) -> Unit) = forEachPoint { x, y -> action(GridPoint2D(x, y)) }
+inline fun <T> Array<Array<T>>.forEachPoint(action: (GridPoint2D) -> Unit) =
+    forEachPoint { x, y -> action(GridPoint2D(x, y)) }
 
 fun Dimension2D.toMutableCharGrid(transform: (Int, Int) -> Char): Array<CharArray> = Array(height) { y ->
     CharArray(width) { x -> transform(x, y) }
@@ -228,7 +231,8 @@ fun Array<CharArray>.findPoint(predicate: (Char) -> Boolean): GridPoint2D? {
 }
 
 fun List<String>.firstPoint(predicate: (Char) -> Boolean): GridPoint2D = findPoint(predicate) ?: error("No point found")
-fun Array<CharArray>.firstPoint(predicate: (Char) -> Boolean): GridPoint2D = findPoint(predicate) ?: error("No point found")
+fun Array<CharArray>.firstPoint(predicate: (Char) -> Boolean): GridPoint2D =
+    findPoint(predicate) ?: error("No point found")
 
 /**
  * Dimension2D
@@ -241,14 +245,30 @@ fun Array<CharArray>.dimension2D(): Dimension2D = getOrNull(0)
     ?.let { dimension2D(width = it.size, height = size) }
     ?: dimension2D(0, 0)
 
+fun Array<IntArray>.dimension2D(): Dimension2D = getOrNull(0)
+    ?.let { dimension2D(width = it.size, height = size) }
+    ?: dimension2D(0, 0)
+
+fun Array<BooleanArray>.dimension2D(): Dimension2D = getOrNull(0)
+    ?.let { dimension2D(width = it.size, height = size) }
+    ?: dimension2D(0, 0)
+
+fun <T> Array<Array<T>>.dimension2D(): Dimension2D = getOrNull(0)
+    ?.let { dimension2D(width = it.size, height = size) }
+    ?: dimension2D(0, 0)
+
 /**
  * Getters
  */
-operator fun List<String>.get(point: GridPoint2D): Char = this[point.y][point.x]
-operator fun Array<CharArray>.get(point: GridPoint2D): Char = this[point.y][point.x]
-operator fun Array<IntArray>.get(point: GridPoint2D): Int = this[point.y][point.x]
-operator fun Array<BooleanArray>.get(point: GridPoint2D): Boolean = this[point.y][point.x]
-operator fun <T> Array<Array<T>>.get(point: GridPoint2D): T = this[point.y][point.x]
+operator fun List<String>.get(point: GridPoint2D): Char = getOrNull(point) ?: dimension2D().pointOutOfBound(point)
+operator fun Array<CharArray>.get(point: GridPoint2D): Char = getOrNull(point) ?: dimension2D().pointOutOfBound(point)
+operator fun Array<IntArray>.get(point: GridPoint2D): Int = getOrNull(point) ?: dimension2D().pointOutOfBound(point)
+operator fun Array<BooleanArray>.get(point: GridPoint2D): Boolean = getOrNull(point) ?: dimension2D().pointOutOfBound(point)
+operator fun <T> Array<Array<T>>.get(point: GridPoint2D): T = getOrNull(point) ?: dimension2D().pointOutOfBound(point)
+
+private fun Dimension2D.pointOutOfBound(point: GridPoint2D): Nothing {
+    error("Point $point out of bounds for grid dimensions $this")
+}
 
 fun List<String>.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
 fun Array<CharArray>.getOrNull(point: GridPoint2D): Char? = getOrNull(point.y)?.getOrNull(point.x)
@@ -291,10 +311,11 @@ operator fun GridPoint2D.rangeTo(other: GridPoint2D): GridPoint2DRange = GridPoi
     endInclusive = other,
 )
 
-operator fun GridPoint2D.rangeUntil(other: GridPoint2D): OpenEndedGridPoint2DRange = object : OpenEndedGridPoint2DRange {
-    override val start: GridPoint2D = this@rangeUntil
-    override val endExclusive: GridPoint2D = other
-}
+operator fun GridPoint2D.rangeUntil(other: GridPoint2D): OpenEndedGridPoint2DRange =
+    object : OpenEndedGridPoint2DRange {
+        override val start: GridPoint2D = this@rangeUntil
+        override val endExclusive: GridPoint2D = other
+    }
 
 infix fun IntRange.by(other: IntRange): GridPoint2DRange {
     return GridPoint2DRange(GridPoint2D(start, other.start), GridPoint2D(endInclusive, other.endInclusive))
