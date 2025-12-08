@@ -18,12 +18,17 @@ interface GridPoint3D {
     operator fun component2(): Int = y
     operator fun component3(): Int = z
     operator fun minus(other: GridPoint3D) = GridPoint3D(x - other.x, y - other.y, z - other.z)
-    fun minusZ(z: Int) = GridPoint3D(x, y, this.z - z)
     operator fun plus(other: GridPoint3D) = GridPoint3D(x + other.x, y + other.y, z + other.z)
     operator fun times(factor: Int) = GridPoint3D(x * factor, y * factor, z * factor)
     operator fun unaryMinus() = GridPoint3D(-x, -y, -z)
     fun dotProduct(other: GridPoint3D): Int = x * other.x + y * other.y + z * other.z
     fun manhattanDistance(other: GridPoint3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
+    fun distanceSquared(other: GridPoint3D): Long {
+        val dx = (x - other.x).toLong()
+        val dy = (y - other.y).toLong()
+        val dz = (z - other.z).toLong()
+        return dx * dx + dy * dy + dz * dz
+    }
 
     companion object {
         @JvmField
