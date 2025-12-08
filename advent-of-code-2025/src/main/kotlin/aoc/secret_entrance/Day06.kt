@@ -19,16 +19,14 @@ class Day06(private val lines: List<String>) : ChallengeDay {
             .map { line -> line.trim().split(oneOrMoreWhiteSpaces).map { it.trim().toInt() } }
 
         return (0 until operators.size).sumOf { i ->
-            val operator = operators[i]
-            nrLists.fold(determineInitial(operator)) { acc, nrs -> operator.apply(acc, nrs[i]) }
+            nrLists.applyOperator(operators[i]) { it[i] }
         }
     }
 
     override fun part2(): Long {
         val nrLists = parseToCephalopodMathNrLists()
-        return (nrLists.lastIndex downTo  0).sumOf { i ->
-            val operator = operators[i]
-            nrLists[i].fold(determineInitial(operator)) { acc, nr -> operator.apply(acc, nr) }
+        return (nrLists.lastIndex downTo 0).sumOf { i ->
+            nrLists[i].applyOperator(operators[i]) { it }
         }
     }
 
@@ -61,15 +59,9 @@ class Day06(private val lines: List<String>) : ChallengeDay {
         return nrLists
     }
 
-    private fun Char.apply(result: Long, nr: Int): Long = when (this) {
-        '+' -> result + nr
-        '*' -> result * nr
-        else -> error("Invalid operator: $this")
-    }
-
-    private fun determineInitial(operator: Char): Long = when (operator) {
-        '+' -> 0L
-        '*' -> 1L
+    private fun <T> Iterable<T>.applyOperator(operator: Char, toInt: (T) -> Int): Long = when (operator) {
+        '+' -> fold(0L) { acc, item -> acc + toInt(item) }
+        '*' -> fold(1L) { acc, item -> acc * toInt(item) }
         else -> error("Invalid operator: $operator")
     }
 }
