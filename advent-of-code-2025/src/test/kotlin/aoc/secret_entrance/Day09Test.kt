@@ -26,16 +26,16 @@ class Day09Test {
 
     @Test
     fun testPart1() {
-        day09.part1() shouldBe 102_816
+        day09.part1() shouldBe 4_767_418_746
     }
 
     @Test
     fun testPart2TestInput() {
-        day09TestInput.part2() shouldBe 25272L
+        day09TestInput.part2() shouldBe 24
     }
 
     @Test
     fun testPart2() {
-        day09.part2() shouldBe 100011612L
+        day09.part2() shouldBe 1_461_987_144
     }
 }

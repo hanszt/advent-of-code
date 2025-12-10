@@ -18,8 +18,8 @@ class Day09(private val lines: List<String>) : ChallengeDay {
         var largestArea = 0L
         for (i in 0..<lines.size) {
             for (j in i + 1..<lines.size) {
-                val point = toPoint(i)
-                val other = toPoint(j)
+                val point = toPoint(lines[i])
+                val other = toPoint(lines[j])
                 val d = dimension2D(abs(point.x - other.x) + 1, abs(point.y - other.y) + 1)
                 largestArea = maxOf(d.surfaceArea, largestArea)
             }
@@ -27,9 +27,9 @@ class Day09(private val lines: List<String>) : ChallengeDay {
         return largestArea
     }
 
-    private fun toPoint(i: Int): GridPoint2D = lines[i].split(',').map(String::toInt)
+    private fun toPoint(s: String): GridPoint2D = s.split(',').map(String::toInt)
         .let { (x, y) -> GridPoint2D(x, y) }
 
 
-    override fun part2(): Int = TODO()
+    override fun part2(): Long = Day09P2Elizarov.run(lines)
 }
