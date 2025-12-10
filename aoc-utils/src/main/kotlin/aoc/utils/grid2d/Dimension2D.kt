@@ -10,7 +10,7 @@ interface Dimension2D : OpenEndedGridPoint2DRange {
     operator fun component1() = width
     operator fun component2() = height
 
-    val surfaceArea: Int get() = width * height
+    val surfaceArea: Long get() = width.toLong() * height.toLong()
 
     fun gridPoints(): Sequence<GridPoint2D> = Sequence {
         object : Iterator<GridPoint2D> {
