@@ -58,10 +58,13 @@ class Day08(lines: List<String>, private val limit: Int = 1_000) : ChallengeDay 
         sortBy { it.distance }
     }
 
-    override fun part2(): Int {
-        val distances = distancesAscending()
+    override fun part2(): Int = dsu(distancesAscending())
+
+    /**
+     *  [Disjoint-Set Union (DSU) algorithm.](https://cp-algorithms.com/data_structures/disjoint_set_union.html)
+     */
+    private fun dsu(distances: List<Dist>): Int {
         val g = List(n) { ArrayList<Int>() }
-        // Disjoint-Set Union (DSU) algorithm. https://cp-algorithms.com/data_structures/disjoint_set_union.html
         val dUp = IntArray(n) { it }
         val dSz = IntArray(n) { 1 }
         var num = n
