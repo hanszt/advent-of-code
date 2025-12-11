@@ -98,7 +98,7 @@ object Day09P2Elizarov {
             check(!inside)
         }
         dump()
-        dumpPng(a, "Day09.png")
+        dumpPng(a, "build/Day09.png")
         var ans = 0L
         for (i in 0..<n) for (j in i + 1..<n) {
             val xi = xm[p[i].x]!!
