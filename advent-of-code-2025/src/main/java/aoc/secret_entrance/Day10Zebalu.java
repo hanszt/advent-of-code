@@ -9,64 +9,74 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 ///
 /// [Zebalu day10](https://github.com/zebalu/advent-of-code-2025/blob/master/Day10.java)
 ///
-public record Day10Zebalu(Stream<Machine> machines) implements ChallengeDay {
+public record Day10Zebalu(List<Machine> machines) implements ChallengeDay {
 
-    public static Day10Zebalu fromPath(Path path) {
+    public static Day10Zebalu fromPath(final Path path) {
         try {
-            //noinspection resource
-            return new Day10Zebalu(Files.lines(path).map(Machine::fromString));
-        } catch (IOException e) {
+            return getDay10Zebalu(Files.readAllLines(path));
+        } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public static Day10Zebalu fromText(String text) {
-        return new Day10Zebalu(text.lines().map(Machine::fromString));
+    public static Day10Zebalu fromText(final String text) {
+        return getDay10Zebalu(text.lines().toList());
+    }
+
+    private static @NotNull Day10Zebalu getDay10Zebalu(List<String> list) {
+        List<Machine> result = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            String line = list.get(i);
+            Machine machine = Machine.fromString(i + 1, line);
+            result.add(machine);
+        }
+        return new Day10Zebalu(result);
+    }
+
+    private static void log(String message) {
+        System.out.println(message);
     }
 
     @Override
     public @NotNull Integer part1() {
-        try {
-            return machines.mapToInt(Machine::countFewestPresses).sum();
-        } finally {
-            machines.close();
-        }
+        return machines.stream().mapToInt(Machine::countFewestPresses).sum();
     }
 
     @Override
     public @NotNull Integer part2() {
-        try {
-            return machines.parallel().mapToInt(Machine::countFewestJoltagePresses).sum();
-        } finally {
-            machines.close();
-        }
+        return machines.parallelStream().mapToInt(Machine::countFewestJoltagePresses).sum();
     }
 
-    record Machine(List<Boolean> lights, List<SequencedSet<Integer>> buttons, List<Integer> joltage) {
+    record Machine(
+            int id,
+            List<Boolean> lights,
+            List<SequencedSet<Integer>>
+            buttons, List<Integer> joltage
+    ) {
+
         int countFewestPresses() {
             record MachineCount(List<Boolean> lights, int count) {
             }
-            var seen = new HashSet<>();
-            var queue = new ArrayDeque<MachineCount>();
-            List<Boolean> initial = new ArrayList<>();
+            final var seen = new HashSet<>();
+            final var queue = new ArrayDeque<MachineCount>();
+            final var initial = new ArrayList<Boolean>();
             for (var i = 0; i < lights.size(); i++) {
                 initial.add(false);
             }
             seen.add(initial);
             queue.add(new MachineCount(initial, 0));
             while (!queue.isEmpty()) {
-                var next = queue.poll();
+                final var next = queue.poll();
                 if (next.lights.equals(lights)) {
                     return next.count;
                 }
-                for (var button : buttons) {
+                for (final var button : buttons) {
                     final var switched = new ArrayList<>(next.lights);
-                    for (int b : button) {
+                    for (final int b : button) {
                         switched.set(b, !switched.get(b));
                     }
                     if (switched.equals(lights)) {
@@ -80,23 +90,31 @@ public record Day10Zebalu(Stream<Machine> machines) implements ChallengeDay {
         }
 
         int countFewestJoltagePresses() {
-            var solver = new IntSolver();
+            final var start = System.currentTimeMillis();
+            final var solver = new IntSolver();
             solver.findSolution(joltage, 0, new HashSet<>());
             if (solver.bestFound == Integer.MAX_VALUE) {
                 throw new IllegalStateException("Cheapest joltage not found");
             }
-            return solver.bestFound;
+            final var end = System.currentTimeMillis();
+            final var bestFound = solver.bestFound;
+            log("Machine: " + id + ", bestFound " + bestFound + ", Solve time: " + (end - start) + " ms");
+            return bestFound;
         }
 
         class IntSolver {
             int bestFound = Integer.MAX_VALUE;
 
-            void findSolution(List<Integer> target, int steps, Set<SequencedSet<Integer>> pressedButtons) {
-                int min = target.stream().min(Comparator.naturalOrder()).orElseThrow();
+            void findSolution(
+                    final List<Integer> target,
+                    final int steps,
+                    final Set<SequencedSet<Integer>> pressedButtons
+            ) {
+                final int min = target.stream().min(Comparator.naturalOrder()).orElseThrow();
                 if (min < 0) {
                     return;
                 }
-                int max = target.stream().max(Comparator.naturalOrder()).orElseThrow();
+                final int max = target.stream().max(Comparator.naturalOrder()).orElseThrow();
                 if (steps + max >= bestFound) {
                     return;
                 }
@@ -106,20 +124,22 @@ public record Day10Zebalu(Stream<Machine> machines) implements ChallengeDay {
                     }
                     return;
                 }
-                var validContinuations = new HashSet<>(buttons);
+                final var validContinuations = new HashSet<>(buttons);
                 validContinuations.removeAll(pressedButtons);
                 for (var i = 0; i < target.size(); ++i) {
-                    var indexOfSmall = i;
+                    final var indexOfSmall = i;
                     for (var j = 0; j < target.size(); ++j) {
-                        var indexOfBig = j;
+                        final var indexOfBig = j;
                         if (target.get(indexOfSmall) < target.get(indexOfBig)) {
-                            var validButtons = validContinuations.stream().filter(b -> b.contains(indexOfBig) && !b.contains(indexOfSmall)).toList();
+                            final var validButtons = validContinuations.stream()
+                                    .filter(b -> b.contains(indexOfBig) && !b.contains(indexOfSmall))
+                                    .toList();
                             if (validButtons.isEmpty()) {
                                 return;
                             } else if (validButtons.size() == 1) {
-                                var button = validButtons.getFirst();
-                                List<Integer> newTarget = new ArrayList<>(target);
-                                for (var idx : button) {
+                                final var button = validButtons.getFirst();
+                                final List<Integer> newTarget = new ArrayList<>(target);
+                                for (final var idx : button) {
                                     newTarget.set(idx, newTarget.get(idx) - 1);
                                 }
                                 findSolution(newTarget, steps + 1, pressedButtons);
@@ -128,17 +148,19 @@ public record Day10Zebalu(Stream<Machine> machines) implements ChallengeDay {
                         }
                     }
                 }
-                var minNon0Index = IntStream.range(0, target.size())
+                final var minNon0Index = IntStream.range(0, target.size())
                         .filter(i -> target.get(i) != 0).boxed()
                         .min(Comparator.comparingInt(target::get)).orElse(-1);
-                var nonChangeable = IntStream.range(0, target.size())
+                final var nonChangeable = IntStream.range(0, target.size())
                         .filter(i -> target.get(i) == 0).boxed()
                         .collect(Collectors.toSet());
-                var selected = validContinuations.stream().filter(b -> b.contains(minNon0Index) && !pressedButtons.contains(b) && b.stream().noneMatch(nonChangeable::contains)).toList();
-                var newPressedButtons = new HashSet<>(pressedButtons);
-                for (var button : selected) {
-                    var newTarget = new ArrayList<>(target);
-                    for (var idx : button) {
+                final var selected = validContinuations.stream()
+                        .filter(b -> b.contains(minNon0Index) && !pressedButtons.contains(b) && b.stream().noneMatch(nonChangeable::contains))
+                        .toList();
+                final var newPressedButtons = new HashSet<>(pressedButtons);
+                for (final var button : selected) {
+                    final var newTarget = new ArrayList<>(target);
+                    for (final var idx : button) {
                         newTarget.set(idx, newTarget.get(idx) - 1);
                     }
                     findSolution(newTarget, steps + 1, newPressedButtons);
@@ -147,21 +169,20 @@ public record Day10Zebalu(Stream<Machine> machines) implements ChallengeDay {
             }
         }
 
-        static Machine fromString(String line) {
-            var spaces = line.split(" ");
-            List<Boolean> lights = new ArrayList<>();
-            List<SequencedSet<Integer>> buttons = new ArrayList<>();
-            List<Integer> joltage = new ArrayList<>();
+        static Machine fromString(final int id, final String line) {
+            final var spaces = line.split(" ");
+            final List<Boolean> lights = new ArrayList<>();
+            final List<SequencedSet<Integer>> buttons = new ArrayList<>();
             for (var i = 1; i < spaces[0].length() - 1; ++i) {
                 lights.add(spaces[0].charAt(i) == '#');
             }
             for (var i = 1; i < spaces.length - 1; ++i) {
-                var wireing = spaces[i].substring(1, spaces[i].length() - 1).split(",");
-                buttons.add(new LinkedHashSet<>(Arrays.stream(wireing).map(Integer::parseInt).toList()));
+                final var wiring = spaces[i].substring(1, spaces[i].length() - 1).split(",");
+                buttons.add(new LinkedHashSet<>(Arrays.stream(wiring).map(Integer::parseInt).toList()));
             }
-            var joltageStrings = spaces[spaces.length - 1].substring(1, spaces[spaces.length - 1].length() - 1).split(",");
-            Arrays.stream(joltageStrings).map(Integer::parseInt).forEach(joltage::add);
-            return new Machine(lights, buttons, joltage);
+            final var joltageStrings = spaces[spaces.length - 1].substring(1, spaces[spaces.length - 1].length() - 1).split(",");
+            final var joltage = Arrays.stream(joltageStrings).map(Integer::parseInt).toList();
+            return new Machine(id, lights, buttons, joltage);
         }
     }
 }
