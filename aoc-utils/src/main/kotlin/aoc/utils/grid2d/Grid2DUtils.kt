@@ -494,3 +494,18 @@ class GridPoint2DRange internal constructor(
     override val start: GridPoint2D,
     override val endInclusive: GridPoint2D
 ) : GridPoint2DProgression(start, endInclusive), ClosedGridPoint2DRange
+
+fun Iterable<GridPoint2D>.gridPoint2DRangeOrNull(): GridPoint2DRange? {
+    if (none()) return null
+    var minx = Integer.MAX_VALUE
+    var miny = Integer.MAX_VALUE
+    var maxx = Integer.MIN_VALUE
+    var maxy = Integer.MIN_VALUE
+    for (p in this) {
+        minx = minOf(minx, p.x)
+        miny = minOf(miny, p.y)
+        maxx = maxOf(maxx, p.x)
+        maxy = maxOf(maxy, p.y)
+    }
+    return GridPoint2DRange(GridPoint2D(minx, miny), GridPoint2D(maxx, maxy))
+}
