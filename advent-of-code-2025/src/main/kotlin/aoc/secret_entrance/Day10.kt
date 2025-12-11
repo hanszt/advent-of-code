@@ -2,6 +2,7 @@ package aoc.secret_entrance
 
 import aoc.utils.ChallengeDay
 import java.nio.file.Path
+import java.util.stream.StreamSupport
 import kotlin.io.path.readLines
 import kotlin.time.DurationUnit
 import kotlin.time.TimeSource.Monotonic.markNow
@@ -26,8 +27,9 @@ class Day10(private val lines: List<String>) : ChallengeDay {
             val wiring = s.substringAfter(']').substringBefore('{').trim()
                 .split(" ")
                 .map { w ->
-                w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
-            }.toIntArray()
+                    w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
+                }.toIntArray()
+
             fun find(i: Int, mask: Int): Int {
                 if (i >= wiring.size) {
                     return if (mask == goal) 0 else INF
@@ -38,6 +40,7 @@ class Day10(private val lines: List<String>) : ChallengeDay {
                 )
                 return best
             }
+
             val res = find(0, 0)
             check(res < INF)
             ans += res
@@ -47,84 +50,125 @@ class Day10(private val lines: List<String>) : ChallengeDay {
 
 
     override fun part2(): Int {
-        val input = lines
-        var ans = 0
-        for ((lineIndex, s) in input.withIndex()) {
-            val start = markNow()
-            val goal = s.substringAfter('{').dropLast(1).split(",").map { it.toInt() }.toIntArray()
-            val wiring = s.substringAfter(']').substringBefore('{').trim().split(" ").map { w ->
-                w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
-            }.toIntArray()
-            // reindex from highest bit to lowest
-            var done = 0
-            for (j in goal.size - 1 downTo 0) {
-                val wcnt = IntArray(goal.size)
-                for (i in done..<wiring.size) {
-                    val w = wiring[i]
-                    for (k in 0..j) if (w shr k and 1 != 0) wcnt[k]++
+        val parallel = true
+        return StreamSupport.stream(lines.withIndex().spliterator(), parallel)
+            .mapToInt(::countFewestJoltagePresses)
+            .sum()
+    }
+
+    private fun countFewestJoltagePresses(iv: IndexedValue<String>): Int {
+        val start = markNow()
+        val (goal, wiring) = prepare(iv.value)
+        val res = solve(goal, wiring)
+        println("${iv.index + 1}: $res in ${start.elapsedNow().toString(DurationUnit.SECONDS, 3)}")
+        return res
+    }
+
+    fun displayPreparedStatePart2() {
+        for ((lineIndex, line) in lines.withIndex()) {
+            val (goal, wiring) = prepare(line)
+            println("=== ${lineIndex + 1}:")
+            display(wiring, goal)
+        }
+    }
+
+    private fun display(wiring: IntArray, goal: IntArray) {
+        for (i in wiring.indices) {
+            val str = goal.indices.joinToString("") { k ->
+                when (wiring[i] shr k and 1) {
+                    0 -> ".   "
+                    1 -> "#   "
+                    else -> error("!")
                 }
-                val j1 = (0..j)
-                    .sortedBy { goal[it] }
-                    .minBy { wcnt[it] }
-                goal[j] = goal[j1].also { goal[j1] = goal[j] }
-                for (i in wiring.indices) {
-                    val w = wiring[i]
-                    val bj = w shr j and 1
-                    val bj1 = w shr j1 and 1
-                    wiring[i] = w and (1 shl j).inv() and (1 shl j1).inv() or (bj shl j1) or (bj1 shl j)
-                }
-                wiring.sortDescending(done, wiring.size)
-                while (done < wiring.size && wiring[done] shr j and 1 != 0) done++
             }
-            // solve
-            val n = goal.size
-            val bc = IntArray(wiring.size + 1)
-            for (i in wiring.indices) bc[i] = 32 - wiring[i].countLeadingZeroBits()
-            val ff = IntArray(wiring.size + 1)
-            for (i in wiring.size - 1 downTo 0) ff[i] = wiring[i] or ff[i + 1]
-            val a = IntArray(n)
-            fun find(i: Int, j0: Int): Int {
-                val bci = bc[i]
-                for (k in bci..<j0) if (a[k] < goal[k]) return INF
-                val f = ff[i]
-                for (k in 0..<bci) if ((f shr k) and 1 == 0 && a[k] < goal[k]) return INF
-                if (i >= wiring.size) return 0
-                var best = INF
-                var cnt = 0
-                if (bc[i + 1] < bci) {
-                    // optimize for the last one
-                    cnt = goal[bci - 1] - a[bci - 1]
+            println(str)
+        }
+        for (i in goal.indices) {
+            print(goal[i].toString().padEnd(4, ' '))
+        }
+        println()
+        println()
+    }
+
+    private fun solve(goal: IntArray, wiring: IntArray): Int {
+        // solve
+        val n = goal.size
+        val bc = IntArray(wiring.size + 1)
+        for (i in wiring.indices) bc[i] = 32 - wiring[i].countLeadingZeroBits()
+        val ff = IntArray(wiring.size + 1)
+        for (i in wiring.size - 1 downTo 0) ff[i] = wiring[i] or ff[i + 1]
+        val a = IntArray(n)
+        fun find(i: Int, j0: Int): Int {
+            val bci = bc[i]
+            for (k in bci..<j0) if (a[k] < goal[k]) return INF
+            val f = ff[i]
+            for (k in 0..<bci) if ((f shr k) and 1 == 0 && a[k] < goal[k]) return INF
+            if (i >= wiring.size) return 0
+            var best = INF
+            var cnt = 0
+            if (bc[i + 1] < bci) {
+                // optimize for the last one
+                cnt = goal[bci - 1] - a[bci - 1]
+                var ok = true
+                for (k in 0..<bci) if ((wiring[i] shr k) and 1 != 0) {
+                    a[k] += cnt
+                    if (a[k] > goal[k]) ok = false
+                }
+                if (ok) {
+                    best = minOf(best, find(i + 1, bci) + cnt)
+                }
+            } else {
+                // enumerate all the choices
+                do {
+                    best = minOf(best, find(i + 1, bci) + cnt)
+                    cnt++
                     var ok = true
                     for (k in 0..<bci) if ((wiring[i] shr k) and 1 != 0) {
-                        a[k] += cnt
+                        a[k]++
                         if (a[k] > goal[k]) ok = false
                     }
-                    if (ok) {
-                        best = minOf(best, find(i + 1, bci) + cnt)
-                    }
-                } else {
-                    // enumerate all the choices
-                    do {
-                        best = minOf(best, find(i + 1, bci) + cnt)
-                        cnt++
-                        var ok = true
-                        for (k in 0..<bci) if ((wiring[i] shr k) and 1 != 0) {
-                            a[k]++
-                            if (a[k] > goal[k]) ok = false
-                        }
-                    } while (ok)
-                }
-                for (k in 0..<bc[i]) if ((wiring[i] shr k) and 1 != 0) {
-                    a[k] -= cnt
-                }
-                return best
+                } while (ok)
             }
-            val res = find(0, n)
-            println("${lineIndex + 1}: $res in ${start.elapsedNow().toString(DurationUnit.SECONDS, 3)}")
-            check(res < INF)
-            ans += res
+            for (k in 0..<bc[i]) if ((wiring[i] shr k) and 1 != 0) {
+                a[k] -= cnt
+            }
+            return best
         }
-        return ans
+
+        val res = find(0, n)
+
+        check(res < INF)
+        return res
+    }
+
+    private fun prepare(line: String): Pair<IntArray, IntArray> {
+        val goal = line.substringAfter('{').dropLast(1).split(",").map { it.toInt() }.toIntArray()
+        val wiring = line.substringAfter(']')
+            .substringBefore('{').trim().split(" ").map { w ->
+                w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
+            }.toIntArray()
+        // reindex from highest bit to lowest
+        var done = 0
+        for (j in goal.lastIndex downTo 0) {
+            val wcnt = IntArray(goal.size)
+            for (i in done..<wiring.size) {
+                val w = wiring[i]
+                for (k in 0..j) if (w shr k and 1 != 0) wcnt[k]++
+            }
+            val j1 = (0..j)
+                .sortedBy { goal[it] }
+                .minBy { wcnt[it] }
+            goal[j] = goal[j1].also { goal[j1] = goal[j] }
+            for (i in wiring.indices) {
+                val w = wiring[i]
+                val bj = w shr j and 1
+                val bj1 = w shr j1 and 1
+                wiring[i] = w and (1 shl j).inv() and (1 shl j1).inv() or (bj shl j1) or (bj1 shl j)
+            }
+            wiring.sortDescending(done, wiring.size)
+            while (done < wiring.size && wiring[done] shr j and 1 != 0) done++
+        }
+        return Pair(goal, wiring)
     }
 
     companion object {
