@@ -2,12 +2,7 @@ package hzt.aoc.day21;
 
 import hzt.aoc.Challenge;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // credits to Johan de Jong
@@ -19,7 +14,7 @@ public abstract class Day21Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Food> foods = inputList.stream().map(this::parseLine).toList();
+        final var foods = inputList.stream().map(this::parseLine).toList();
         return calculateAnswer(foods);
     }
 
@@ -28,10 +23,10 @@ public abstract class Day21Challenge extends Challenge {
     private static final String ONE_OR_MORE_SPACES = "\\s+";
 
     private Food parseLine(final String line) {
-        final String[] ingredientsToAllergens = line.split("contains");
-        final String[] ingredientsAsArray = ingredientsToAllergens[0]
+        final var ingredientsToAllergens = line.split("contains");
+        final var ingredientsAsArray = ingredientsToAllergens[0]
                 .replace("(", "").strip().split(ONE_OR_MORE_SPACES);
-        final String[] allergensAsArray = ingredientsToAllergens[1].replace(")", "")
+        final var allergensAsArray = ingredientsToAllergens[1].replace(")", "")
                 .replace(" ", "").strip().split(",");
         return new Food(Set.of(ingredientsAsArray), Set.of(allergensAsArray));
     }
@@ -39,11 +34,11 @@ public abstract class Day21Challenge extends Challenge {
     Result extractAllergens(final Set<String> allAllergens, final List<Food> foods) {
         final Set<String> potentialAllergenIngredients = new HashSet<>();
         final Map<String, List<String>> allergenToIngredientsMap = new HashMap<>();
-        for (final String allergen : allAllergens) {
-            final List<Food> foodsWithAllergen = extractFoodsWithAllergen(allergen, foods);
-            final Set<String> allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen);
-            for (final String ingredient : allPossibleIngredients) {
-                final boolean inAllFoods = foodsWithAllergen.stream().allMatch(food -> food.ingredientSet().contains(ingredient));
+        for (final var allergen : allAllergens) {
+            final var foodsWithAllergen = extractFoodsWithAllergen(allergen, foods);
+            final var allPossibleIngredients = allPossibleIngredientsContainingAllergen(foodsWithAllergen);
+            for (final var ingredient : allPossibleIngredients) {
+                final var inAllFoods = foodsWithAllergen.stream().allMatch(food -> food.ingredientSet().contains(ingredient));
                 if (inAllFoods) {
                     potentialAllergenIngredients.add(ingredient);
                     allergenToIngredientsMap.computeIfAbsent(allergen, key -> new ArrayList<>()).add(ingredient);

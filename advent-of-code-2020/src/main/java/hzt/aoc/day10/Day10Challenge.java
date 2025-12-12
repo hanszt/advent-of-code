@@ -37,8 +37,8 @@ public abstract class Day10Challenge extends Challenge {
     long calculateTheProductBetweenOneAndThreeDifference(final int[] sortedArray) {
         long oneDifference = 0;
         long threeDifference = 0;
-        for (int i = 0; i < sortedArray.length - 1; i++) {
-            final int difference = sortedArray[i + 1] - sortedArray[i];
+        for (var i = 0; i < sortedArray.length - 1; i++) {
+            final var difference = sortedArray[i + 1] - sortedArray[i];
             if (difference == 1) {
                 oneDifference++;
             }

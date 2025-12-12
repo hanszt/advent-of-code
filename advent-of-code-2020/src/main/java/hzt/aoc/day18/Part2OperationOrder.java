@@ -16,11 +16,11 @@ public class Part2OperationOrder extends Day18Challenge {
 
     @Override
     String evaluateBetweenParentheses(List<String> elementList) {
-        String subResult = "0";
+        var subResult = "0";
         List<String> newList;
         while (elementList.contains(OPERATOR_TO_EVALUATE_FIRST)) {
             newList = new ArrayList<>(elementList);
-            for (int i = 0; i < elementList.size(); i++) {
+            for (var i = 0; i < elementList.size(); i++) {
                 if (elementList.get(i).equals(OPERATOR_TO_EVALUATE_FIRST)) {
                     subResult = parseAndCalculateSubResult(elementList, i);
                     replaceEquationBySubResult(newList, subResult, i - 1, EVALUATION_LENGTH);
@@ -28,7 +28,7 @@ public class Part2OperationOrder extends Day18Challenge {
                 }
             }
             elementList = newList;
-            var fElementList = elementList;
+            final var fElementList = elementList;
             LOGGER.trace(() -> fElementList);
         }
         if (elementList.size() > 1) {
@@ -40,9 +40,9 @@ public class Part2OperationOrder extends Day18Challenge {
     }
 
     private String parseAndCalculateSubResult(final List<String> elementList, final int index) {
-        final long first = Long.parseLong(elementList.get(index - 1));
-        final long second = Long.parseLong(elementList.get(index + 1));
-        final long longSubResult = evaluate(first, OPERATOR_TO_EVALUATE_FIRST, second);
+        final var first = Long.parseLong(elementList.get(index - 1));
+        final var second = Long.parseLong(elementList.get(index + 1));
+        final var longSubResult = evaluate(first, OPERATOR_TO_EVALUATE_FIRST, second);
         return String.valueOf(longSubResult);
     }
 

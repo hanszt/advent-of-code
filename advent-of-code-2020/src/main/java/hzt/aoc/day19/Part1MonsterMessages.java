@@ -41,8 +41,8 @@ public class Part1MonsterMessages extends Day19Challenge {
         final var allSubRules = rulesToSubRules.get(rule);
         for (final var subRules : allSubRules) {
             final List<Character> charsCopy = new ArrayList<>(messageChars);
-            boolean matchesAll = true;
-            for (final int curRule : subRules) {
+            var matchesAll = true;
+            for (final var curRule : subRules) {
                 if (!matches(charsCopy, curRule)) {
                     matchesAll = false;
                     break;

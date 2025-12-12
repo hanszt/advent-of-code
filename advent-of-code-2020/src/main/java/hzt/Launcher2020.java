@@ -61,13 +61,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -115,7 +109,7 @@ public class Launcher2020 implements Runnable {
                 .orElseThrow(() -> new IllegalStateException("Could not load " + name));
         try (final var lines = Files.lines(path)) {
             return lines.collect(Collectors.joining("\n"));
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -126,7 +120,7 @@ public class Launcher2020 implements Runnable {
     }
 
     private static void populateChallengeDaysMap(final Map<Integer, ChallengeDay> challengeDays) {
-        int day = 0;
+        var day = 0;
         challengeDays.put(++day, new ChallengeDay("Report Repair", BRIGHT_BLUE, dateOfDay(day),
                 new Part1ReportRepair(), new Part2ReportRepair()));
         challengeDays.put(++day, new ChallengeDay("Password Philosophy", GREEN, dateOfDay(day),
@@ -185,23 +179,23 @@ public class Launcher2020 implements Runnable {
     }
 
     public static void runOnce() {
-        final long startTime = nanoTime();
+        final var startTime = nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
         new Launcher2020().challengeDays.values().forEach(ChallengeDay::solveChallenges);
-        final long runtime = nanoTime() - startTime;
+        final var runtime = nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
     }
 
     public void run() {
-        String userInput = ALL;
-        final long startTime = nanoTime();
+        var userInput = ALL;
+        final var startTime = nanoTime();
         LOGGER.info(String.format("%n%s", TITTLE));
         while (!userInput.equals(EXIT)) {
             pressEnterToContinue();
             out.print(menuAsString());
             userInput = execute(new Scanner(in).next());
         }
-        final long runtime = nanoTime() - startTime;
+        final var runtime = nanoTime() - startTime;
         out.printf("%s%nRuntime: %2.3f seconds%n%s%n", GREEN, runtime / 1e9, DOTTED_LINE);
     }
 
@@ -245,7 +239,7 @@ public class Launcher2020 implements Runnable {
     }
 
     private void executeByChallengeNumber(final String input) {
-        final int dayNr = Integer.parseInt(input);
+        final var dayNr = Integer.parseInt(input);
         if (challengeDays.containsKey(dayNr)) {
             challengeDays.get(dayNr).solveChallenges();
         } else {
@@ -254,7 +248,7 @@ public class Launcher2020 implements Runnable {
     }
 
     private String menuAsString() {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         sb.append(String.format("%n"));
         challengeDays.forEach((dayNr, day) -> sb.append(menuOption(dayNr, day.getTitle())));
         sb.append(String.format("Enter '%s'  and press 'Enter' to execute all challenges at once.%n", ALL));
@@ -279,7 +273,7 @@ public class Launcher2020 implements Runnable {
                 .sorted(Comparator.comparing(pair -> pair.left.getSolveTime()))
                 .toList();
 
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         sb.append(RESET);
         sb.append(String.format("%nChallenges sorted by solve time:%n"));
         for (final var p : challenges) {

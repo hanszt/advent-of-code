@@ -10,33 +10,33 @@ public final class AocLoggerImpl implements AocLogger {
 
     private System.Logger.Level level = System.Logger.Level.INFO;
 
-    AocLoggerImpl(String simpleName) {
+    AocLoggerImpl(final String simpleName) {
         this.simpleName = simpleName;
     }
 
     @Override
-    public void trace(Supplier<Object> supplier) {
+    public void trace(final Supplier<Object> supplier) {
         if (level.getSeverity() <= System.Logger.Level.TRACE.getSeverity()) {
             System.out.println(supplier.get());
         }
     }
 
     @Override
-    public void info(Object s) {
+    public void info(final Object s) {
         if (level.getSeverity() <= System.Logger.Level.INFO.getSeverity()) {
             System.out.println(s);
         }
     }
 
     @Override
-    public void error(Object s) {
+    public void error(final Object s) {
         if (level.getSeverity() <= System.Logger.Level.ERROR.getSeverity()) {
             System.err.println(simpleName + " - " + s);
         }
     }
 
     @Override
-    public void error(Object s, Throwable throwable) {
+    public void error(final Object s, final Throwable throwable) {
         if (level.getSeverity() <= System.Logger.Level.ERROR.getSeverity()) {
             System.err.println(simpleName + " - " + s);
             throwable.printStackTrace();
@@ -44,7 +44,7 @@ public final class AocLoggerImpl implements AocLogger {
     }
 
     @Override
-    public void setLevel(System.Logger.Level level) {
+    public void setLevel(final System.Logger.Level level) {
         this.level = level;
     }
 }

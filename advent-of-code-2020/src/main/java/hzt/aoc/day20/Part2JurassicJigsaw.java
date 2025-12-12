@@ -2,11 +2,7 @@ package hzt.aoc.day20;
 
 import aoc.utils.grid2d.GridPoint2D;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 // Credits to Johan de Jong
 public class Part2JurassicJigsaw extends Day20Challenge {
@@ -22,23 +18,23 @@ public class Part2JurassicJigsaw extends Day20Challenge {
     @Override
     protected long calculateAnswer(final Map<Integer, Tile> tileIdsToGrids) {
         sideLength = (int) Math.sqrt(tileIdsToGrids.size());
-        final int pictureSideLength = (int) Math.sqrt(tileIdsToGrids.size());
+        final var pictureSideLength = (int) Math.sqrt(tileIdsToGrids.size());
         final Set<Integer> placedIds = new HashSet<>();
-        final Tile[][] placedTiles = new Tile[pictureSideLength][pictureSideLength];
-        final boolean complete = placeNextTile(placedIds, placedTiles, GridPoint2D.ZERO, tileIdsToGrids);
+        final var placedTiles = new Tile[pictureSideLength][pictureSideLength];
+        final var complete = placeNextTile(placedIds, placedTiles, GridPoint2D.ZERO, tileIdsToGrids);
         if (complete) {
-            final List<String> fullPicture = buildFullPicture(placedTiles, pictureSideLength);
+            final var fullPicture = buildFullPicture(placedTiles, pictureSideLength);
             return countHowManyHashesNotPartOfSeeMonster(fullPicture);
         }
         return 0L;
     }
 
     private static long countHowManyHashesNotPartOfSeeMonster(final List<String> fullPicture) {
-        final List<String> seeMonster = createSeeMonster();
-        final Tile fullPictureTile = new Tile(fullPicture);
-        for (final List<String> orientation : fullPictureTile.getOrientations()) {
+        final var seeMonster = createSeeMonster();
+        final var fullPictureTile = new Tile(fullPicture);
+        for (final var orientation : fullPictureTile.getOrientations()) {
             final List<String> markedList = new ArrayList<>(orientation);
-            final boolean marked = markPatterns(seeMonster, orientation, markedList);
+            final var marked = markPatterns(seeMonster, orientation, markedList);
             if (marked) {
                 return countHashes(markedList);
             }
@@ -46,10 +42,10 @@ public class Part2JurassicJigsaw extends Day20Challenge {
         throw new IllegalArgumentException("No matching pattern found...");
     }
 
-    private static boolean markPatterns(List<String> seeMonster, List<String> orientation, List<String> markedList) {
-        boolean marked = false;
-        for (int y = 0; y <= orientation.size() - seeMonster.size(); y++) {
-            for (int x = 0; x <= orientation.get(0).length() - seeMonster.get(0).length(); x++) {
+    private static boolean markPatterns(final List<String> seeMonster, final List<String> orientation, final List<String> markedList) {
+        var marked = false;
+        for (var y = 0; y <= orientation.size() - seeMonster.size(); y++) {
+            for (var x = 0; x <= orientation.get(0).length() - seeMonster.get(0).length(); x++) {
                 if (isPatternAt(orientation, seeMonster, x, y)) {
                     markPatternAt(markedList, seeMonster, x, y);
                     marked = true;
@@ -62,14 +58,14 @@ public class Part2JurassicJigsaw extends Day20Challenge {
     private static List<String> buildFullPicture(final Tile[][] placedTileGrid,
                                                  final int pictureSideLength) {
         final List<String> fullPicture = new ArrayList<>();
-        for (int y = 0; y < pictureSideLength; y++) {
+        for (var y = 0; y < pictureSideLength; y++) {
             final List<List<String>> inners = new ArrayList<>();
-            for (int x = 0; x < pictureSideLength; x++) {
+            for (var x = 0; x < pictureSideLength; x++) {
                 inners.add(placedTileGrid[y][x].getInner());
             }
-            for (int j = 0; j < inners.get(0).size(); j++) {
-                final StringBuilder sb = new StringBuilder();
-                for (final List<String> inner : inners) {
+            for (var j = 0; j < inners.get(0).size(); j++) {
+                final var sb = new StringBuilder();
+                for (final var inner : inners) {
                     sb.append(inner.get(j));
                 }
                 fullPicture.add(sb.toString());
@@ -87,10 +83,10 @@ public class Part2JurassicJigsaw extends Day20Challenge {
 
     private static boolean isPatternAt(final List<String> fullPicture,
                                        final List<String> pattern, final int x, final int y) {
-        for (int dy = 0; dy < pattern.size(); dy++) {
-            for (int dx = 0; dx < pattern.get(0).length(); dx++) {
-                final boolean patternMatch = pattern.get(dy).charAt(dx) == '#';
-                final boolean noMatchInPicture = fullPicture.get(y + dy).charAt(x + dx) != '#';
+        for (var dy = 0; dy < pattern.size(); dy++) {
+            for (var dx = 0; dx < pattern.get(0).length(); dx++) {
+                final var patternMatch = pattern.get(dy).charAt(dx) == '#';
+                final var noMatchInPicture = fullPicture.get(y + dy).charAt(x + dx) != '#';
                 if (patternMatch && noMatchInPicture) {
                     return false;
                 }
@@ -100,12 +96,12 @@ public class Part2JurassicJigsaw extends Day20Challenge {
     }
 
     private static void markPatternAt(final List<String> fullPicture, final List<String> pattern, final int x, final int y) {
-        for (int dy = 0; dy < pattern.size(); dy++) {
-            for (int dx = 0; dx < pattern.get(0).length(); dx++) {
+        for (var dy = 0; dy < pattern.size(); dy++) {
+            for (var dx = 0; dx < pattern.get(0).length(); dx++) {
                 if (pattern.get(dy).charAt(dx) == '#') {
-                    final String originalLine = fullPicture.get(y + dy);
-                    final int position = x + dx;
-                    final String newLine = originalLine.substring(0, position) + "O" + originalLine.substring(position + 1);
+                    final var originalLine = fullPicture.get(y + dy);
+                    final var position = x + dx;
+                    final var newLine = originalLine.substring(0, position) + "O" + originalLine.substring(position + 1);
                     fullPicture.set(y + dy, newLine);
                 }
             }
@@ -123,9 +119,9 @@ public class Part2JurassicJigsaw extends Day20Challenge {
                                   final Tile[][] placed,
                                   final GridPoint2D curPosition,
                                   final Map<Integer, Tile> tiles) {
-        for (final Map.Entry<Integer, Tile> entry : tiles.entrySet()) {
+        for (final var entry : tiles.entrySet()) {
             if (!placedIds.contains(entry.getKey())) {
-                final Tile curTile = entry.getValue();
+                final var curTile = entry.getValue();
                 curTile.setPosition(curPosition);
                 placedIds.add(entry.getKey());
                 final var orientationFits = orientationFits(placed, curTile, placedIds, tiles);
@@ -142,12 +138,12 @@ public class Part2JurassicJigsaw extends Day20Challenge {
                                     final Tile curTile,
                                     final Set<Integer> placedIds,
                                     final Map<Integer, Tile> tiles) {
-        for (final List<String> orientation : curTile.getOrientations()) {
-            final GridPoint2D cur = curTile.getPosition();
+        for (final var orientation : curTile.getOrientations()) {
+            final var cur = curTile.getPosition();
             placed[cur.getY()][cur.getX()] = new Tile(orientation);
             if (canPlaceTile(placed, cur)) {
-                final GridPoint2D next = nextPosition(cur);
-                final boolean allTilesPlaced = next.getY() == sideLength;
+                final var next = nextPosition(cur);
+                final var allTilesPlaced = next.getY() == sideLength;
                 final var nextTilePlaced = placeNextTile(placedIds, placed, next, tiles);
                 if (allTilesPlaced || nextTilePlaced) {
                     return true;
@@ -158,8 +154,8 @@ public class Part2JurassicJigsaw extends Day20Challenge {
     }
 
     private GridPoint2D nextPosition(final GridPoint2D gridPoint2D) {
-        int nextX = gridPoint2D.getX() + 1;
-        int nextY = gridPoint2D.getY();
+        var nextX = gridPoint2D.getX() + 1;
+        var nextY = gridPoint2D.getY();
         if (nextX == sideLength) {
             nextX = 0;
             nextY++;

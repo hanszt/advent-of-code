@@ -17,22 +17,22 @@ public abstract class Day08Challenge extends Challenge {
     @Override
     protected String solve(final List<String> inputList) {
         Instruction.setNext(0);
-        final List<Instruction> instructions = inputList.stream()
+        final var instructions = inputList.stream()
                 .map(Instruction::fromInput)
                 .toList();
 
-        final int global = solveByInstructions(instructions);
+        final var global = solveByInstructions(instructions);
         return String.valueOf(global);
     }
 
     abstract int solveByInstructions(List<Instruction> instructions);
 
     Result testInstructions(final List<Instruction> instructions) {
-        int position = 0;
-        int global = 0;
+        var position = 0;
+        var global = 0;
         Instruction lastInstruction = null;
         while (position < instructions.size() && !instructions.get(position).isVisited()) {
-            final Instruction instruction = instructions.get(position);
+            final var instruction = instructions.get(position);
             switch (instruction.getDescriptor()) {
                 case JUMP:
                     position += instruction.getArgument();

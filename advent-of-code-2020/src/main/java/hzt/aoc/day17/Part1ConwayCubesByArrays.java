@@ -33,9 +33,9 @@ public class Part1ConwayCubesByArrays extends Day17ChallengeByArrays {
                 .sum();
     }
 
-    private static int countActive(boolean[] booleans) {
+    private static int countActive(final boolean[] booleans) {
         var count = 0;
-        for (var active : booleans) {
+        for (final var active : booleans) {
             if (active) {
                 count++;
             }

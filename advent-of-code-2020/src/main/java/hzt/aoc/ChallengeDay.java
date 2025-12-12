@@ -21,7 +21,7 @@ public final class ChallengeDay {
         this.textColor = textColor;
         this.date = date;
         this.challenges = Arrays.copyOf(challenges, challenges.length);
-        for(final Challenge challenge : challenges) {
+        for(final var challenge : challenges) {
             challenge.setTitle(title);
         }
     }
@@ -29,7 +29,7 @@ public final class ChallengeDay {
     public void solveChallenges() {
         LOGGER.info(String.format("%n%n%s%s%nDay %d: %s%nDate: %s%n%s", textColor,
                 DOTTED_LINE, date.getDayOfMonth(), title, date.format(DateTimeFormatter.ISO_DATE), DOTTED_LINE));
-        for (final Challenge challenge : challenges) {
+        for (final var challenge : challenges) {
             challenge.solveChallenge();
         }
     }

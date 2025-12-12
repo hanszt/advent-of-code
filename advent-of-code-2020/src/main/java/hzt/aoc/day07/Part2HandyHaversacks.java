@@ -16,7 +16,7 @@ public class Part2HandyHaversacks extends Day07Challenge {
     }
 
     private static long countInnerBagsRecursive(final Map<String, Bag> bags, final Bag bag) {
-        long sum = 1L;
+        var sum = 1L;
         for (final var entry : bag.childBagColorsToAmounts().entrySet()) {
             sum += entry.getValue() * countInnerBagsRecursive(bags, bags.get(entry.getKey()));
         }

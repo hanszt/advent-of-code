@@ -2,11 +2,7 @@ package hzt.aoc.day19;
 
 import hzt.aoc.Challenge;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Day19Challenge extends Challenge {
@@ -29,7 +25,7 @@ public abstract class Day19Challenge extends Challenge {
     }
 
     private void parseInputList(final List<String> inputList) {
-        for (final String line : inputList) {
+        for (final var line : inputList) {
             if (line.matches("[a-b]{2,}")) {
                 messages.add(line);
             } else if (!line.isEmpty()) {
@@ -39,14 +35,14 @@ public abstract class Day19Challenge extends Challenge {
     }
 
     void addRuleToRulesMaps(final String line) {
-        final String[] ruleNrToSubRules = line.split(":");
-        final int ruleNr = Integer.parseInt(ruleNrToSubRules[0]);
-        final String subRulesAsString = ruleNrToSubRules[1].strip();
+        final var ruleNrToSubRules = line.split(":");
+        final var ruleNr = Integer.parseInt(ruleNrToSubRules[0]);
+        final var subRulesAsString = ruleNrToSubRules[1].strip();
         rulesAsStringMap.put(ruleNr, subRulesAsString);
         if (subRulesAsString.contains("\"")) {
             endChars.put(ruleNr, subRulesAsString.replace("\"", "").charAt(0));
         } else {
-            final String[] subRulesAsArray = subRulesAsString.split("\\|");
+            final var subRulesAsArray = subRulesAsString.split("\\|");
             final var subRules = Arrays.stream(subRulesAsArray)
                     .map(this::stringToRuleList)
                     .toArray(int[][]::new);
@@ -55,7 +51,7 @@ public abstract class Day19Challenge extends Challenge {
     }
 
     String parsedInputAsString(final Map<Integer, int[][]> rulesToSubRules, final List<String> messages) {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         sb.append(String.format("%nTargetRules:%n"));
         endChars.forEach((k, v) -> sb.append(k).append("->").append(v).append(String.format("%n")));
         sb.append(String.format("%nRules:%n"));
@@ -65,7 +61,7 @@ public abstract class Day19Challenge extends Challenge {
         return sb.toString();
     }
 
-    private static String gridToString(int[][] grid) {
+    private static String gridToString(final int[][] grid) {
         return Arrays.stream(grid)
                 .map(Arrays::toString)
                 .collect(Collectors.joining());

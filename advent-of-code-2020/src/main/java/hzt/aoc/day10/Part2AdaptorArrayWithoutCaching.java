@@ -21,11 +21,11 @@ public class Part2AdaptorArrayWithoutCaching extends Day10Challenge {
         if (sortedArray.length == 1) {
             return BigInteger.ONE;
         }
-        BigInteger arrangements = BigInteger.ZERO;
-        int index = 1;
+        var arrangements = BigInteger.ZERO;
+        var index = 1;
         final var current = sortedArray[0]; // first index in sorted list
         while (sortedArray.length > index && sortedArray[index] - current <= MAX_STEP_APART) {
-            final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(Arrays.copyOfRange(sortedArray, index, sortedArray.length));
+            final var subArrangements = numberOfWaysToCompleteAdaptorChain(Arrays.copyOfRange(sortedArray, index, sortedArray.length));
             arrangements = arrangements.add(subArrangements);
             index++;
         }

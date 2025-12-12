@@ -26,14 +26,14 @@ public class Part2AdaptorArrayWithCachingLongs extends Day10Challenge {
             return 1;
         }
         long arrangements = 0;
-        int index = 1;
-        final int current = sortedArray[0];
+        var index = 1;
+        final var current = sortedArray[0];
 
         while (sortedArray.length > index && sortedArray[index] - current <= MAX_STEP_APART) {
             final var subList = Arrays.copyOfRange(sortedArray, index, sortedArray.length);
-            final String stringSubList = Arrays.toString(subList);
+            final var stringSubList = Arrays.toString(subList);
             if (!cache.containsKey(stringSubList)) {
-                final long subArrangements = numberOfWaysToCompleteAdaptorChain(subList);
+                final var subArrangements = numberOfWaysToCompleteAdaptorChain(subList);
                 cache.put(stringSubList, subArrangements);
                 arrangements += subArrangements;
             } else {

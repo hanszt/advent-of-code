@@ -15,14 +15,14 @@ public abstract class Day14Challenge extends Challenge {
     protected String solve(final List<String> inputList) {
         final List<Program> programs = new ArrayList<>();
         Program program = null;
-        for (final String line : inputList) {
-            final String[] array = line.split(" = ");
+        for (final var line : inputList) {
+            final var array = line.split(" = ");
             if (array[0].matches("mask")) {
                 program = new Program(array[1]);
                 programs.add(program);
             } else if (program != null) {
-                final int value = Integer.parseInt(array[1]);
-                final int memoryLocation = Integer.parseInt(array[0].substring(4, array[0].length() - 1));
+                final var value = Integer.parseInt(array[1]);
+                final var memoryLocation = Integer.parseInt(array[0].substring(4, array[0].length() - 1));
                 program.put(value, memoryLocation);
             }
         }

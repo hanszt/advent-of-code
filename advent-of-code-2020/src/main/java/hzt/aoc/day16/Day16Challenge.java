@@ -22,8 +22,8 @@ public abstract class Day16Challenge extends Challenge {
         final var yourTicketValues = IntMutableList.empty();
         final List<IntList> nearbyTicketValues = new ArrayList<>();
         Field.setNext(0);
-        int inputPart = 0;
-        for (final String s : inputList) {
+        var inputPart = 0;
+        for (final var s : inputList) {
             if (!s.isBlank()) {
                 if ("your ticket:".equals(s)) {
                     inputPart++;
@@ -48,13 +48,13 @@ public abstract class Day16Challenge extends Challenge {
     protected abstract long solveByParsedInput(List<Field> fields, IntList yourTicketValues, List<IntList> nearbyTicketValues);
 
     private static void addField(final String s, final List<Field> fields) {
-        final String[] array = s.split(": ");
-        final Field field = new Field(array[0]);
-        final String[] ranges = array[1].split(" or ");
-        for (final String range : ranges) {
-            final String[] lowerUpper = range.split("-");
-            final int lower = Integer.parseInt(lowerUpper[0]);
-            final int upper = Integer.parseInt(lowerUpper[1]);
+        final var array = s.split(": ");
+        final var field = new Field(array[0]);
+        final var ranges = array[1].split(" or ");
+        for (final var range : ranges) {
+            final var lowerUpper = range.split("-");
+            final var lower = Integer.parseInt(lowerUpper[0]);
+            final var upper = Integer.parseInt(lowerUpper[1]);
             field.addRange(GridPoint2D(lower, upper));
         }
         fields.add(field);

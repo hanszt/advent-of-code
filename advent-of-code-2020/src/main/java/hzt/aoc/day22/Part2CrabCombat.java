@@ -1,11 +1,6 @@
 package hzt.aoc.day22;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.List;
-import java.util.SequencedCollection;
-import java.util.Set;
+import java.util.*;
 
 // Credits to Johan de Jong
 public class Part2CrabCombat extends Day22Challenge {
@@ -28,8 +23,8 @@ public class Part2CrabCombat extends Day22Challenge {
         final Set<String> configsPlayer2 = new HashSet<>();
 
         while (!player1Cards.isEmpty() && !player2Cards.isEmpty()) {
-            final String curConfigPlayer1 = configurationAsString(player1Cards);
-            final String curConfigPlayer2 = configurationAsString(player2Cards);
+            final var curConfigPlayer1 = configurationAsString(player1Cards);
+            final var curConfigPlayer2 = configurationAsString(player2Cards);
             if (configsPlayer1.contains(curConfigPlayer1) || configsPlayer2.contains(curConfigPlayer2)) {
                 //player 1 wins
                 return true;
@@ -59,7 +54,7 @@ public class Part2CrabCombat extends Day22Challenge {
     }
 
     private static String configurationAsString(final SequencedCollection<Integer> playerCards) {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         playerCards.forEach(sb::append);
         return sb.toString();
     }

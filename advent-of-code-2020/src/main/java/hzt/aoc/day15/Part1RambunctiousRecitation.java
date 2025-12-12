@@ -13,12 +13,12 @@ public class Part1RambunctiousRecitation extends Day15Challenge {
 
     @Override
     protected int getNthNumberSpoken(final IntMutableList numbers) {
-        int last = 0;
-        long start = System.nanoTime();
+        var last = 0;
+        var start = System.nanoTime();
         while (numbers.size() < THRESHOLD) {
-            final int prevLast = numbers.removeLast();
-            int newLast = 0;
-            for (int index = numbers.size() - 1; index >= 0; index--) {
+            final var prevLast = numbers.removeLast();
+            var newLast = 0;
+            for (var index = numbers.size() - 1; index >= 0; index--) {
                 if (numbers.get(index) == prevLast) {
                     newLast = numbers.size() - index;
                     break;

@@ -1,11 +1,6 @@
 package hzt.aoc.day14;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Program implements Iterable<Program.Entry> {
@@ -30,9 +25,9 @@ public class Program implements Iterable<Program.Entry> {
     }
 
     public long getValueStoredAfterBitMaskApplication(final int value) {
-        final String binaryString36 = convertIntToBinaryString(value);
-        final char[] array = binaryString36.toCharArray();
-        for (int i = 0; i < binaryString36.length(); i++) {
+        final var binaryString36 = convertIntToBinaryString(value);
+        final var array = binaryString36.toCharArray();
+        for (var i = 0; i < binaryString36.length(); i++) {
             if (bitMask.charAt(i) != 'X') {
                 array[i] = bitMask.charAt(i);
             }
@@ -41,15 +36,15 @@ public class Program implements Iterable<Program.Entry> {
     }
 
     public Set<Long> getMemoryLocationsAfterBitMaskApplication(final int memoryAddress) {
-        final String binaryString = convertIntToBinaryString(memoryAddress);
+        final var binaryString = convertIntToBinaryString(memoryAddress);
         Set<char[]> possibleMemoryLocations = new HashSet<>();
-        final char[] array = binaryString.toCharArray();
+        final var array = binaryString.toCharArray();
         possibleMemoryLocations.add(array);
-        for (int i = 0; i < binaryString.length(); i++) {
+        for (var i = 0; i < binaryString.length(); i++) {
             if (bitMask.charAt(i) == 'X') {
                 final Set<char[]> copy = new HashSet<>(possibleMemoryLocations);
-                for (final char[] charArray : possibleMemoryLocations) {
-                    final char[] newArray = Arrays.copyOf(charArray, charArray.length);
+                for (final var charArray : possibleMemoryLocations) {
+                    final var newArray = Arrays.copyOf(charArray, charArray.length);
                     charArray[i] = '0';
                     newArray[i] = '1';
                     copy.add(newArray);
@@ -57,7 +52,7 @@ public class Program implements Iterable<Program.Entry> {
                 possibleMemoryLocations = new HashSet<>(copy);
             }
             if (bitMask.charAt(i) == '1') {
-                for (final char[] possibleMemoryLocation : possibleMemoryLocations) {
+                for (final var possibleMemoryLocation : possibleMemoryLocations) {
                     possibleMemoryLocation[i] = bitMask.charAt(i);
                 }
             }
@@ -66,7 +61,7 @@ public class Program implements Iterable<Program.Entry> {
     }
 
     private static String convertIntToBinaryString(final int integer) {
-        final String binaryString = Integer.toBinaryString(integer);
+        final var binaryString = Integer.toBinaryString(integer);
         return "0".repeat(BITMASK_LENGTH - binaryString.length()).concat(binaryString);
     }
 

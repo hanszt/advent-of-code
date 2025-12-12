@@ -13,11 +13,11 @@ public class Part1RainRisk extends Day12Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        GridPoint2D position = GridPoint2D.ZERO;
-        GridPoint2D orientation = GridPoint2D.of(1, 0);
-        for (final String line : inputList) {
-            final char instruction = line.charAt(0);
-            final int amount = Integer.parseInt(line.substring(1));
+        var position = GridPoint2D.ZERO;
+        var orientation = GridPoint2D.of(1, 0);
+        for (final var line : inputList) {
+            final var instruction = line.charAt(0);
+            final var amount = Integer.parseInt(line.substring(1));
             orientation = rotateShip(orientation, instruction, amount);
             position = position.plus(getTranslationInWindDirection(instruction, amount));
             if (instruction == MOVE_FORWARD) {
@@ -28,10 +28,10 @@ public class Part1RainRisk extends Day12Challenge {
     }
 
     private static GridPoint2D rotateShip(final GridPoint2D initOrientation, final char instruction, final int angle) {
-        GridPoint2D orientation = initOrientation;
+        var orientation = initOrientation;
         if ((instruction == TURN_RIGHT || instruction == TURN_LEFT) && angle % NINETY_DEGREES == 0) {
-            final int dir = instruction == TURN_RIGHT ? 1 : -1;
-            int counter = 0;
+            final var dir = instruction == TURN_RIGHT ? 1 : -1;
+            var counter = 0;
             while (angle / NINETY_DEGREES != counter) {
                 orientation = getGridPoint2D(orientation, dir);
                 counter++;
@@ -40,7 +40,7 @@ public class Part1RainRisk extends Day12Challenge {
         return orientation;
     }
 
-    private static GridPoint2D getGridPoint2D(GridPoint2D orientation, int dir) {
+    private static GridPoint2D getGridPoint2D(final GridPoint2D orientation, final int dir) {
         if (GridPoint2D.right.equals(orientation)) {
             return GridPoint2D.of(0, -dir);
         } else if (GridPoint2D.down.equals(orientation)) {

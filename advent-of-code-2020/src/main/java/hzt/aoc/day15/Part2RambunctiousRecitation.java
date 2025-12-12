@@ -18,11 +18,11 @@ public class Part2RambunctiousRecitation extends Day15Challenge {
 
     @Override
     protected int getNthNumberSpoken(final IntMutableList numbers) {
-        long start = System.nanoTime();
-        int index = 0;
-        int last = -1;
+        var start = System.nanoTime();
+        var index = 0;
+        var last = -1;
         final Map<Integer, Integer> seenLastToIndex = new HashMap<>();
-        for (int i = 0; i < numbers.size(); i++) {
+        for (var i = 0; i < numbers.size(); i++) {
             index++;
             last = numbers.get(i);
             if (i != numbers.size() - 1) {

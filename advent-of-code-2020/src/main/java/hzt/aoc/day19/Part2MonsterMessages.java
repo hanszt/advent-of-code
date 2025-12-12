@@ -15,9 +15,9 @@ public class Part2MonsterMessages extends Day19Challenge {
         addRuleToRulesMaps("8: 42 | 42 8");
         addRuleToRulesMaps("11: 42 31 | 42 11 31");
         LOGGER.trace(() -> parsedInputAsString(rulesToSubRules, messages));
-        final String startRule = rulesAsStringMap.get(0);
-        final String regex = ruleRegex2(startRule);
-        final Pattern pattern = Pattern.compile(regex);
+        final var startRule = rulesAsStringMap.get(0);
+        final var regex = ruleRegex2(startRule);
+        final var pattern = Pattern.compile(regex);
         return messages.stream().filter(message -> pattern.matcher(message).matches()).count();
     }
 
@@ -33,14 +33,14 @@ public class Part2MonsterMessages extends Day19Challenge {
         if (rule.startsWith("\"")) {
             return rule.substring(1, 2);
         } else {
-            final StringBuilder sb = new StringBuilder();
-            final String[] parts = rule.split(" ");
-            for (final String part : parts) {
+            final var sb = new StringBuilder();
+            final var parts = rule.split(" ");
+            for (final var part : parts) {
                 if ("|".equals(part)) {
                     sb.append('|');
                 } else {
-                    final int subRuleIndex = Integer.parseInt(part);
-                    final String subRule = rulesAsStringMap.get(subRuleIndex);
+                    final var subRuleIndex = Integer.parseInt(part);
+                    final var subRule = rulesAsStringMap.get(subRuleIndex);
                     sb.append('(').append(ruleRegex2(subRule, ++depth)).append(')');
                 }
             }

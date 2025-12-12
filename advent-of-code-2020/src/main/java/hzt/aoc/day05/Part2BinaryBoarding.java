@@ -16,7 +16,7 @@ public class Part2BinaryBoarding extends Day05Challenge {
     @Override
     protected int calculateResult(final List<Seat> seats) {
         // flight completely full
-        final IntMutableSet possibleSeatIds = IntMutableSet.empty();
+        final var possibleSeatIds = IntMutableSet.empty();
         final var seatIds = Sequence.of(seats)
                 .mapToInt(seat -> seat.getSeatID(NUMBER_OF_COLUMNS))
                 .toList();
@@ -25,15 +25,15 @@ public class Part2BinaryBoarding extends Day05Challenge {
         for (final var seatId : seatIds) {
             // Seats with id one less and one more than myId are in my list
             if (seatIds.contains(seatId - 2)) {
-                final int possibleSeatId = seatId + 1;
+                final var possibleSeatId = seatId + 1;
                 // My boarding pass is the only missing boarding pass in the list
                 if (!seatIds.contains(possibleSeatId)) {
                     possibleSeatIds.add(possibleSeatId);
                 }
             }
         }
-        final int highestSeatIdOnBoardingPass = findHighestSeatID(seatIds);
-        int mySeatId = 0;
+        final var highestSeatIdOnBoardingPass = findHighestSeatID(seatIds);
+        var mySeatId = 0;
         for (final int seatId : possibleSeatIds) {
             // some seats at the very front and back of the plane don't exist on this aircraft, they'll be missing from your list.
             // My seat isn't in the very front or back of the plane

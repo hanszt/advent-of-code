@@ -24,12 +24,12 @@ public class Part2CrabCups extends Day23Challenge {
     @Override
     protected long calculateAnswer(final IntList cupLabels) {
         final Map<Integer, LinkedNode> labelToNodeMap = new HashMap<>();
-        final LinkedNode first = firstNode(cupLabels);
-        LinkedNode current = first;
-        LinkedNode target = new LinkedNode(0);
+        final var first = firstNode(cupLabels);
+        var current = first;
+        var target = new LinkedNode(0);
         LinkedNode next;
-        for (int i = 0; i < cupLabels.size(); i++) {
-            final int label = cupLabels.get(i);
+        for (var i = 0; i < cupLabels.size(); i++) {
+            final var label = cupLabels.get(i);
             if (i != 0) {
                 next = new LinkedNode(label);
                 current.setNext(next);
@@ -46,7 +46,7 @@ public class Part2CrabCups extends Day23Challenge {
     }
 
     private static LinkedNode firstNode(final IntList cupLabels) {
-        final int label = cupLabels.get(0);
+        final var label = cupLabels.get(0);
         return new LinkedNode(label);
     }
 
@@ -55,8 +55,8 @@ public class Part2CrabCups extends Day23Challenge {
             final LinkedNode initial
     ) {
         var current = initial;
-        for (int label = labelToNodeMap.size() + 1; label <= CUP_AMOUNT; label++) {
-            final LinkedNode next = new LinkedNode(label);
+        for (var label = labelToNodeMap.size() + 1; label <= CUP_AMOUNT; label++) {
+            final var next = new LinkedNode(label);
             labelToNodeMap.put(label, next);
             current.setNext(next);
             current = next;
@@ -66,12 +66,12 @@ public class Part2CrabCups extends Day23Challenge {
 
     public static long run(LinkedNode current, final LinkedNode target,
                     final Map<Integer, LinkedNode> indexToLabelNodeMap) {
-        for (int i = 0; i < NR_OF_MOVES; i++) {
-            final LinkedNode moved = current.getNext();
+        for (var i = 0; i < NR_OF_MOVES; i++) {
+            final var moved = current.getNext();
             current.setNext(current.getNext().getNext().getNext().getNext());
-            final int destinationCupLabel = determineTargetCupLabel(current, moved, indexToLabelNodeMap);
+            final var destinationCupLabel = determineTargetCupLabel(current, moved, indexToLabelNodeMap);
 
-            final LinkedNode nodeToBeInserted = indexToLabelNodeMap.get(destinationCupLabel);
+            final var nodeToBeInserted = indexToLabelNodeMap.get(destinationCupLabel);
             moved.getNext().getNext().setNext(nodeToBeInserted.getNext());
             nodeToBeInserted.setNext(moved);
 
@@ -85,7 +85,7 @@ public class Part2CrabCups extends Day23Challenge {
     private static int determineTargetCupLabel(final LinkedNode current,
                                         final LinkedNode removed,
                                         final Map<Integer, LinkedNode> indexToLabelNodeMap) {
-        int destinationCupLabel = current.getValue() == TARGET_VAL ? indexToLabelNodeMap.size() : (current.getValue() - 1);
+        var destinationCupLabel = current.getValue() == TARGET_VAL ? indexToLabelNodeMap.size() : (current.getValue() - 1);
         while (inRange(removed, destinationCupLabel)) {
             destinationCupLabel--;
             if (destinationCupLabel == 0) {
@@ -96,9 +96,9 @@ public class Part2CrabCups extends Day23Challenge {
     }
 
     private static boolean inRange(final LinkedNode removed, final int destination) {
-        final int current = removed.getValue();
-        final int next = removed.getNext().getValue();
-        final int secondNext = removed.getNext().getNext().getValue();
+        final var current = removed.getValue();
+        final var next = removed.getNext().getValue();
+        final var secondNext = removed.getNext().getNext().getValue();
         return current == destination || next == destination || secondNext == destination;
     }
 

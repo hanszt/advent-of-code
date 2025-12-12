@@ -14,8 +14,8 @@ public class Part1SeatingSystem extends Day11Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        int occupied = 0;
-        int prevOccupied = -1;
+        var occupied = 0;
+        var prevOccupied = -1;
         while (occupied != prevOccupied) {
             prevOccupied = occupied;
             occupied = checkOccupiedAndUpdateList(inputList);
@@ -24,12 +24,12 @@ public class Part1SeatingSystem extends Day11Challenge {
     }
 
     private int checkOccupiedAndUpdateList(final List<String> inputList) {
-        int occupied = 0;
+        var occupied = 0;
         final List<String> newList = new ArrayList<>();
-        for (int row = 0; row < inputList.size(); row++) {
-            final String curRow = inputList.get(row);
-            final String upperRow = row > 0 ? inputList.get(row - 1) : null;
-            final String lowerRow = row < inputList.size() - 1 ? inputList.get(row + 1) : null;
+        for (var row = 0; row < inputList.size(); row++) {
+            final var curRow = inputList.get(row);
+            final var upperRow = row > 0 ? inputList.get(row - 1) : null;
+            final var lowerRow = row < inputList.size() - 1 ? inputList.get(row + 1) : null;
             occupied += checkAndUpdateRow(upperRow, curRow, lowerRow, newList);
         }
         inputList.clear();
@@ -41,12 +41,12 @@ public class Part1SeatingSystem extends Day11Challenge {
 
 
     private int checkAndUpdateRow(final String upperRow, final String curRow, final String lowerRow, final List<String> newList) {
-        int occupied = 0;
-        final char[] charsNewRow = curRow.toCharArray();
-        for (int col = 0; col < charsNewRow.length; col++) {
-            final String neighbours = extractNeighBours(upperRow, curRow, lowerRow, col);
-            int occupiedNeighbours = 0;
-            for (final char c : neighbours.toCharArray()) {
+        var occupied = 0;
+        final var charsNewRow = curRow.toCharArray();
+        for (var col = 0; col < charsNewRow.length; col++) {
+            final var neighbours = extractNeighBours(upperRow, curRow, lowerRow, col);
+            var occupiedNeighbours = 0;
+            for (final var c : neighbours.toCharArray()) {
                 if (c == OCCUPIED_SEAT) {
                     occupiedNeighbours++;
                 }
@@ -66,10 +66,10 @@ public class Part1SeatingSystem extends Day11Challenge {
     }
 
     private String extractNeighBours(final String upperRow, final String curRow, final String lowerRow, final int col) {
-        final String upperNeighBours = extractNeighboursByRow(upperRow, col);
-        final String lowerNeighBours = extractNeighboursByRow(lowerRow, col);
-        final String leftNeighBour = curRow.substring(col > 0 ? col - 1 : col, col);
-        final String rightNeighBour = curRow.substring(col < curRow.length() - 1 ? col + 1 : col, col < curRow.length() - 1 ? col + 2 : col);
+        final var upperNeighBours = extractNeighboursByRow(upperRow, col);
+        final var lowerNeighBours = extractNeighboursByRow(lowerRow, col);
+        final var leftNeighBour = curRow.substring(col > 0 ? col - 1 : col, col);
+        final var rightNeighBour = curRow.substring(col < curRow.length() - 1 ? col + 1 : col, col < curRow.length() - 1 ? col + 2 : col);
         return upperNeighBours.concat(lowerNeighBours).concat(leftNeighBour).concat(rightNeighBour);
     }
 

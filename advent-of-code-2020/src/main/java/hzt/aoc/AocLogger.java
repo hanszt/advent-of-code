@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 public interface AocLogger {
 
-    static AocLogger getLogger(Class<?> aClass) {
+    static AocLogger getLogger(final Class<?> aClass) {
         return new AocLoggerImpl(aClass.getSimpleName());
     }
 

@@ -2,7 +2,6 @@ package hzt.aoc.day13;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Part1ShuttleSearch extends Day13Challenge {
@@ -15,15 +14,14 @@ public class Part1ShuttleSearch extends Day13Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final int earliestTimestamp = Integer.parseInt(inputList.get(0));
-        final List<Integer> integers = Arrays.stream(inputList.get(1).split(","))
+        final var earliestTimestamp = Integer.parseInt(inputList.get(0));
+        final var busNumbersToWaitingTimes = Arrays.stream(inputList.get(1).split(","))
                 .filter(s -> !s.matches("x"))
-                .map(Integer::parseInt).collect(Collectors.toList());
-        final Map<Integer, Integer> busNumbersToWaitingTimes = integers.stream()
+                .map(Integer::parseInt)
                 .collect(Collectors.toMap(busNr -> busNr, busNr -> busNr - earliestTimestamp % busNr));
-        int timeToWaitForEarliestBus = Integer.MAX_VALUE;
-        int busNumberBelongingToSmallest = 0;
-        for (final Map.Entry<Integer, Integer> entry : busNumbersToWaitingTimes.entrySet()) {
+        var timeToWaitForEarliestBus = Integer.MAX_VALUE;
+        var busNumberBelongingToSmallest = 0;
+        for (final var entry : busNumbersToWaitingTimes.entrySet()) {
             if (entry.getValue() < timeToWaitForEarliestBus) {
                 timeToWaitForEarliestBus = entry.getValue();
                 busNumberBelongingToSmallest = entry.getKey();

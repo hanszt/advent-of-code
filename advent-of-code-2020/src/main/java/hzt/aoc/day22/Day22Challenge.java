@@ -23,8 +23,8 @@ public abstract class Day22Challenge extends Challenge {
     private static void fillDecksByInputList(final Iterable<String> input,
                                              final SequencedCollection<Integer> player1Cards,
                                              final SequencedCollection<Integer> player2Cards) {
-        int player = 0;
-        for (final String line : input) {
+        var player = 0;
+        for (final var line : input) {
             if (NUMBER_LENGTH_ONE_OR_MORE.matcher(line).matches()) {
                 if (player == 1) {
                     player1Cards.addLast(Integer.parseInt(line));

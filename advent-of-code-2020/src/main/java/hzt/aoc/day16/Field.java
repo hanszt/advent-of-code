@@ -24,7 +24,7 @@ public class Field {
     }
 
     public boolean containsValueInRanges(final Integer integer) {
-        for (final GridPoint2D p : valueRanges) {
+        for (final var p : valueRanges) {
             if (integer >= p.getX() && integer <= p.getY()) {
                 return true;
             }

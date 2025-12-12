@@ -14,8 +14,8 @@ public abstract class Day06Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputByLineList) {
-        final List<Group> groups = getGroups(inputByLineList);
-        final int result = calculateResult(groups);
+        final var groups = getGroups(inputByLineList);
+        final var result = calculateResult(groups);
         return String.valueOf(result);
     }
 
@@ -23,9 +23,9 @@ public abstract class Day06Challenge extends Challenge {
         final List<Group> groups = new ArrayList<>();
         final List<Character> groupAnswers = new ArrayList<>();
         final List<List<Character>> personsInGroupAnswers = new ArrayList<>();
-        for (final String string : inputByLineList) {
+        for (final var string : inputByLineList) {
             final List<Character> personAnswers = new ArrayList<>();
-            for (int i = 0; i < string.length(); i++) {
+            for (var i = 0; i < string.length(); i++) {
                 groupAnswers.add(string.charAt(i));
                 personAnswers.add(string.charAt(i));
             }

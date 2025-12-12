@@ -15,15 +15,15 @@ public abstract class Day20Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final Map<Integer, Tile> tileIdsToGrids = parseInput(inputList);
+        final var tileIdsToGrids = parseInput(inputList);
         return getMessage(calculateAnswer(tileIdsToGrids));
     }
 
     private static Map<Integer, Tile> parseInput(final List<String> inputList) {
         final Map<Integer, Tile> tileIdsToGrids = new HashMap<>();
         List<String> tileContent = new ArrayList<>();
-        int tileId = 0;
-        for (final String line : inputList) {
+        var tileId = 0;
+        for (final var line : inputList) {
             if (line.isBlank()) {
                 tileIdsToGrids.put(tileId, new Tile(tileContent));
             }

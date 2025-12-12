@@ -16,7 +16,7 @@ public abstract class Day09Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Long> numbers = inputList.stream()
+        final var numbers = inputList.stream()
                 .map(Long::parseLong)
                 .toList();
         return String.valueOf(solveByXmasList(numbers));
@@ -27,9 +27,9 @@ public abstract class Day09Challenge extends Challenge {
     long findFirstNumberNotSumOfTwoIntegersInPreamble(final List<Long> longs) {
         long result = 0;
         final List<Long> preambleNumbers = new ArrayList<>();
-        for (int i = 0; i < longs.size(); i++) {
+        for (var i = 0; i < longs.size(); i++) {
             if (preambleNumbers.size() == PRE_AMBLE_LENGTH) {
-                final boolean isSum = sumOfUniquePairInPreamble(longs.get(i), preambleNumbers);
+                final var isSum = sumOfUniquePairInPreamble(longs.get(i), preambleNumbers);
                 if (!isSum) {
                     result = longs.get(i);
                     break;
@@ -46,7 +46,7 @@ public abstract class Day09Challenge extends Challenge {
 
     private static boolean sumOfUniquePairInPreamble(final long current, final List<Long> preAmbleNumbers) {
         for (final long number : preAmbleNumbers) {
-            final long difference = current - number;
+            final var difference = current - number;
             if (preAmbleNumbers.contains(difference) && difference != number) {
                 return true;
             }

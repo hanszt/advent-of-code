@@ -2,11 +2,7 @@ package hzt.aoc.day24;
 
 import aoc.utils.grid2d.GridPoint2D;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static aoc.utils.grid2d.GridPoint2DKt.GridPoint2D;
 
@@ -52,8 +48,8 @@ public class Tile {
     }
 
     public Tile getNeighborByInstruction(final String instruction, final Map<GridPoint2D, Tile> allTiles) {
-        final GridPoint2D delta = INSTRUCTION_TO_DIR.get(instruction);
-        final GridPoint2D newPosition = GridPoint2D(this.position.getX() + delta.getX(), this.position.getY() + delta.getY());
+        final var delta = INSTRUCTION_TO_DIR.get(instruction);
+        final var newPosition = GridPoint2D(this.position.getX() + delta.getX(), this.position.getY() + delta.getY());
         final Tile neighbor;
         if (instructionsToNeighborsMap.get(delta) != null) {
             neighbor = instructionsToNeighborsMap.get(delta);
@@ -69,7 +65,7 @@ public class Tile {
 
     List<Tile> neighbors() {
         final List<Tile> neighbors = new ArrayList<>();
-        for (final GridPoint2D delta : INSTRUCTION_TO_DIR.values()) {
+        for (final var delta : INSTRUCTION_TO_DIR.values()) {
             neighbors.add(new Tile(GridPoint2D(position.getX() + delta.getX(), position.getY() + delta.getY())));
         }
         return neighbors;
@@ -91,7 +87,7 @@ public class Tile {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final Tile tile = (Tile) o;
+        final var tile = (Tile) o;
         return Objects.equals(position, tile.position);
     }
 
@@ -101,14 +97,14 @@ public class Tile {
     }
 
     private String neighborsAsString() {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         instructionsToNeighborsMap.entrySet().forEach(e -> sb.append(neighborAsString(e)));
         return sb.toString();
     }
 
     private static String neighborAsString(final Map.Entry<GridPoint2D, Tile> e) {
-        final GridPoint2D p = e.getValue().position;
-        final GridPoint2D delta = e.getKey();
+        final var p = e.getValue().position;
+        final var delta = e.getKey();
         return String.format("delta(x=%2d, y=%2d)->(position='(x=%3d, y=%3d)', blackUp=%5b) ",
                 delta.getX(), delta.getY(), p.getX(), p.getY(), e.getValue().blackUp);
     }

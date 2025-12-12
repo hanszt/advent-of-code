@@ -19,10 +19,10 @@ class Instruction {
     }
 
     static Instruction fromInput(final String string) {
-        final String[] strings = ONE_OR_MORE_WHITE_SPACES.split(string);
-        final String descriptor = strings[0];
-        final String stringArgument = strings[1];
-        final int argument = Integer.parseInt(stringArgument);
+        final var strings = ONE_OR_MORE_WHITE_SPACES.split(string);
+        final var descriptor = strings[0];
+        final var stringArgument = strings[1];
+        final var argument = Integer.parseInt(stringArgument);
         return new Instruction(descriptor, argument);
     }
 

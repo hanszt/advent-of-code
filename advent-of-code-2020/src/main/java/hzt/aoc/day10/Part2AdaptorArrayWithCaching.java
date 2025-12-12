@@ -26,15 +26,15 @@ public class Part2AdaptorArrayWithCaching extends Day10Challenge {
         if (sortedArray.length == 1) {
             return BigInteger.ONE;
         }
-        BigInteger arrangements = BigInteger.ZERO;
-        int index = 1;
+        var arrangements = BigInteger.ZERO;
+        var index = 1;
         final var current = sortedArray[0];
 
         while (sortedArray.length > index && sortedArray[index] - current <= MAX_STEP_APART) {
             final var subArray = Arrays.copyOfRange(sortedArray, index, sortedArray.length);
-            final String stringSubList = Arrays.toString(subArray);
+            final var stringSubList = Arrays.toString(subArray);
             if (!cache.containsKey(stringSubList)) {
-                final BigInteger subArrangements = numberOfWaysToCompleteAdaptorChain(subArray);
+                final var subArrangements = numberOfWaysToCompleteAdaptorChain(subArray);
                 cache.put(stringSubList, subArrangements);
                 arrangements = arrangements.add(subArrangements);
             } else {

@@ -28,7 +28,7 @@ public abstract class Day23Challenge extends Challenge {
                                 final int lowestCupLabel,
                                 final int highestCupLabel,
                                 final IntList cups) {
-        int targetCupLabel = currentCupLabel - 1;
+        var targetCupLabel = currentCupLabel - 1;
         while (!cups.contains(targetCupLabel)) {
             targetCupLabel--;
             if (targetCupLabel < lowestCupLabel) {
@@ -46,8 +46,8 @@ public abstract class Day23Challenge extends Challenge {
     }
 
     int getIndexByLabel(final int label, final IntList cups) {
-        int index = 0;
-        for (int i = 0; i < cups.size(); i++) {
+        var index = 0;
+        for (var i = 0; i < cups.size(); i++) {
             if (cups.get(i) == label) {
                 index = i;
                 break;

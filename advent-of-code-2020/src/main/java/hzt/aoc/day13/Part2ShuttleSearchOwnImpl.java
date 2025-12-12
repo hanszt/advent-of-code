@@ -1,11 +1,7 @@
 package hzt.aoc.day13;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
@@ -20,21 +16,21 @@ public class Part2ShuttleSearchOwnImpl extends Day13Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<String> busNrList = Arrays.asList(inputList.get(1).split(","));
-        final int highestIndex = busNrList.size() - 1;
+        final var busNrList = Arrays.asList(inputList.get(1).split(","));
+        final var highestIndex = busNrList.size() - 1;
         final Map<Integer, Integer> listPositionsToBusNrs = new TreeMap<>();
-        for (int i = 0; i < busNrList.size(); i++) {
+        for (var i = 0; i < busNrList.size(); i++) {
             if (!X_PATTERN.matcher(busNrList.get(i)).matches()) {
                 listPositionsToBusNrs.put(i, Integer.parseInt(busNrList.get(i)));
             }
         }
-        BigInteger earliestTimestamp = BigInteger.ZERO;
+        var earliestTimestamp = BigInteger.ZERO;
         while (true) {
             final List<Boolean> matches = new ArrayList<>();
-            for (final Map.Entry<Integer, Integer> entry : listPositionsToBusNrs.entrySet()) {
+            for (final var entry : listPositionsToBusNrs.entrySet()) {
                 final int listPosition = entry.getKey();
                 final int busNr = entry.getValue();
-                final BigInteger value = (earliestTimestamp.mod(BigInteger.valueOf(busNr))
+                final var value = (earliestTimestamp.mod(BigInteger.valueOf(busNr))
                         .add(BigInteger.valueOf((long) listPosition - highestIndex)));
                 matches.add(value.equals(BigInteger.ZERO));
             }

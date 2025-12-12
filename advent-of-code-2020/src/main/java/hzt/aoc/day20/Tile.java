@@ -2,14 +2,10 @@ package hzt.aoc.day20;
 
 import aoc.utils.grid2d.GridPoint2D;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static aoc.utils.grid2d.Grid2DUtilsKt.*;
+import static aoc.utils.grid2d.Grid2DUtilsKt.rotated;
 import static java.util.function.Predicate.not;
 
 // Credits to Johan de Jong
@@ -30,9 +26,9 @@ public final class Tile {
         final List<String> sidesWithoutFlip = new ArrayList<>();
         sidesWithoutFlip.add(content.get(0));
         sidesWithoutFlip.add(content.get(content.size() - 1));
-        final StringBuilder left = new StringBuilder();
-        final StringBuilder right = new StringBuilder();
-        for (final String line : content) {
+        final var left = new StringBuilder();
+        final var right = new StringBuilder();
+        for (final var line : content) {
             left.append(line.charAt(0));
             right.append(line.charAt(line.length() - 1));
         }
@@ -40,7 +36,7 @@ public final class Tile {
         sidesWithoutFlip.add(right.toString());
 
         final List<String> sides = new ArrayList<>();
-        for (final String side : sidesWithoutFlip) {
+        for (final var side : sidesWithoutFlip) {
             sides.add(side);
             sides.add(reverseString(side));
         }
@@ -48,7 +44,7 @@ public final class Tile {
     }
 
     public boolean isBorder(final Map<Integer, Tile> tiles) {
-        final Set<String> otherTiles = otherTileBorders(tiles);
+        final var otherTiles = otherTileBorders(tiles);
         final Set<String> sideTiles = new HashSet<>(tileSides());
         return countCommonElements(sideTiles, otherTiles) == CORNERS;
     }
@@ -67,16 +63,16 @@ public final class Tile {
                 .collect(Collectors.toSet());
     }
 
-    private static List<List<String>> calculateOrientations(List<String> content) {
-        List<List<String>> result = new ArrayList<>();
+    private static List<List<String>> calculateOrientations(final List<String> content) {
+        final List<List<String>> result = new ArrayList<>();
         collectRotations(result, content);
         collectRotations(result, flip(content));
         return result;
     }
 
-    private static void collectRotations(List<List<String>> result, List<String> input) {
+    private static void collectRotations(final List<List<String>> result, final List<String> input) {
         result.add(input);
-        List<String> temp = rotated(input);
+        var temp = rotated(input);
         result.add(temp);
         temp = rotated(temp);
         result.add(temp);
@@ -84,13 +80,13 @@ public final class Tile {
         result.add(temp);
     }
 
-    private static List<String> flip(List<String> content) {
+    private static List<String> flip(final List<String> content) {
         return content.stream()
                 .map(Tile::reverseString)
                 .toList();
     }
 
-    private static String reverseString(String s) {
+    private static String reverseString(final String s) {
         return new StringBuilder(s).reverse().toString();
     }
 
@@ -113,16 +109,16 @@ public final class Tile {
     }
 
     public String getLeft() {
-        final StringBuilder sb = new StringBuilder();
-        for (final String line : content) {
+        final var sb = new StringBuilder();
+        for (final var line : content) {
             sb.append(line.charAt(0));
         }
         return sb.toString();
     }
 
     public String getRight() {
-        final StringBuilder sb = new StringBuilder();
-        for (final String line : content) {
+        final var sb = new StringBuilder();
+        for (final var line : content) {
             sb.append(line.charAt(line.length() - 1));
         }
         return sb.toString();
@@ -130,8 +126,8 @@ public final class Tile {
 
     public List<String> getInner() {
         final List<String> result = new ArrayList<>();
-        for (int i = 1; i < content.size() - 1; i++) {
-            final String line = content.get(i);
+        for (var i = 1; i < content.size() - 1; i++) {
+            final var line = content.get(i);
             result.add(line.substring(1, line.length() - 1));
         }
         return result;

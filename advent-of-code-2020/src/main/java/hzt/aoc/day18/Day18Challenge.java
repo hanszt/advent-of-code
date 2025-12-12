@@ -35,13 +35,13 @@ public abstract class Day18Challenge extends Challenge {
     private long solveEquation(final List<String> elementList) {
         var results = elementList;
         while (results.contains("(")) {
-            int indexOpenBracket = 0;
+            var indexOpenBracket = 0;
             final List<String> newList = new ArrayList<>(results);
-            for (int i = 0; i < results.size(); i++) {
+            for (var i = 0; i < results.size(); i++) {
                 if (results.get(i).equals("(")) {
                     indexOpenBracket = i;
                 } else if (results.get(i).equals(")")) {
-                    final List<String> subList = results.subList(indexOpenBracket + 1, i);
+                    final var subList = results.subList(indexOpenBracket + 1, i);
                     LOGGER.trace(() -> subList);
                     final var result = evaluateBetweenParentheses(subList);
                     replaceEquationBySubResult(newList, result, indexOpenBracket, subList.size() + 1);
@@ -52,13 +52,13 @@ public abstract class Day18Challenge extends Challenge {
             }
             results = newList;
         }
-        String result = evaluateBetweenParentheses(results);
+        final var result = evaluateBetweenParentheses(results);
         LOGGER.trace(() -> result);
         return Long.parseLong(result);
     }
 
     void replaceEquationBySubResult(final List<String> newList, final String subResult, final int index, final int equationLength) {
-        int j = 0;
+        var j = 0;
         while (j < equationLength) {
             newList.remove(index);
             j++;
@@ -70,14 +70,14 @@ public abstract class Day18Challenge extends Challenge {
 
     String evaluateInOrder(final List<String> subEquation) {
         final Deque<String> elementDeque = new ArrayDeque<>(subEquation);
-        String result = "";
+        var result = "";
         while (!elementDeque.isEmpty()) {
-            final String num1 = result.isEmpty() ? elementDeque.pollFirst() : result;
+            final var num1 = result.isEmpty() ? elementDeque.pollFirst() : result;
             if (elementDeque.size() > 1) {
-                final String operator = elementDeque.pollFirst();
-                final String num2 = elementDeque.pollFirst();
+                final var operator = elementDeque.pollFirst();
+                final var num2 = elementDeque.pollFirst();
                 assert num2 != null;
-                final long intResult = evaluate(Long.parseLong(num1), operator, Long.parseLong(num2));
+                final var intResult = evaluate(Long.parseLong(num1), operator, Long.parseLong(num2));
                 result = String.valueOf(intResult);
             }
         }

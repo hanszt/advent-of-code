@@ -55,22 +55,22 @@ public class Passport {
 
     // in part 1, a password is valid when all fields have a value. Only country ID is optional
     public boolean requiredFieldsPresent() {
-        final boolean mandatoryPassportFieldsPresent = passwordID != null && expirationYear != null && issueYear != null;
-        final boolean userFieldsPresent = birthYear != null && height != null && eyeColor != null && hairColor != null;
+        final var mandatoryPassportFieldsPresent = passwordID != null && expirationYear != null && issueYear != null;
+        final var userFieldsPresent = birthYear != null && height != null && eyeColor != null && hairColor != null;
         return mandatoryPassportFieldsPresent && userFieldsPresent;
     }
 
     public boolean fieldsMeetCriteria() {
         if (requiredFieldsPresent()) {
-            final boolean birthYearValid = checkYear(birthYear, LOWEST_BIRTH_YEAR, HIGHEST_BIRTH_YEAR);
-            final boolean issueYearValid = checkYear(issueYear, LOWEST_ISSUE_YEAR, HIGHEST_ISSUE_YEAR);
-            final boolean expirationYearValid = checkYear(expirationYear, LOWEST_EXPIRATION_YEAR, HIGHEST_EXPIRATION_YEAR);
-            final boolean heightValid = checkHeight(height);
+            final var birthYearValid = checkYear(birthYear, LOWEST_BIRTH_YEAR, HIGHEST_BIRTH_YEAR);
+            final var issueYearValid = checkYear(issueYear, LOWEST_ISSUE_YEAR, HIGHEST_ISSUE_YEAR);
+            final var expirationYearValid = checkYear(expirationYear, LOWEST_EXPIRATION_YEAR, HIGHEST_EXPIRATION_YEAR);
+            final var heightValid = checkHeight(height);
             // a # followed by exactly six characters 0-9 or a-f.
-            final boolean hairColorValid = hairColor != null && HAIR_COLOR_PATTERN.matcher(hairColor).matches();
-            final boolean eyeColorValid = eyeColor != null && VALID_EYE_COLORS.contains(eyeColor);
+            final var hairColorValid = hairColor != null && HAIR_COLOR_PATTERN.matcher(hairColor).matches();
+            final var eyeColorValid = eyeColor != null && VALID_EYE_COLORS.contains(eyeColor);
             // a nine-digit number, including leading zeroes.
-            final boolean passportIdValid = PASSWORD_ID_PATTERN.matcher(passwordID).matches();
+            final var passportIdValid = PASSWORD_ID_PATTERN.matcher(passwordID).matches();
             LOGGER.trace(() -> isValidAsString(birthYearValid, issueYearValid, expirationYearValid, heightValid,
                     hairColorValid, eyeColorValid, passportIdValid));
             final var personCharacteristicsValid = eyeColorValid && hairColorValid && heightValid;
@@ -99,9 +99,9 @@ public class Passport {
 
     private static boolean checkHeight(final String height) {
         if (height.length() >= MINIMUM_HEIGHT_STRING_LENGTH) {
-            final String value = height.substring(0, height.length() - UNIT_LENGTH);
-            final String unit = height.substring(height.length() - UNIT_LENGTH);
-            final boolean valueIsNumber = NR_PATTERN.matcher(value).matches();
+            final var value = height.substring(0, height.length() - UNIT_LENGTH);
+            final var unit = height.substring(height.length() - UNIT_LENGTH);
+            final var valueIsNumber = NR_PATTERN.matcher(value).matches();
             LOGGER.trace(() -> "value is number=" + valueIsNumber + " Value=" + value);
             if (valueIsNumber) {
                 return checkHeightUnit(value, unit);
@@ -113,8 +113,8 @@ public class Passport {
         }
     }
 
-    private static boolean checkHeightUnit(String value, String unit) {
-        final int heightValue = Integer.parseInt(value);
+    private static boolean checkHeightUnit(final String value, final String unit) {
+        final var heightValue = Integer.parseInt(value);
         if ("cm".equals(unit)) {
             return heightValue >= 150 && heightValue <= 193;
         } else if ("in".equals(unit)) {
@@ -125,9 +125,9 @@ public class Passport {
     }
 
     private static boolean checkYear(final String input, final int lower, final int upper) {
-        final boolean matchesFourDigits = input.length() == 4 && FOUR_DIGIT_NR_PATTERN.matcher(input).matches();
+        final var matchesFourDigits = input.length() == 4 && FOUR_DIGIT_NR_PATTERN.matcher(input).matches();
         if (matchesFourDigits) {
-            final int year = Integer.parseInt(input);
+            final var year = Integer.parseInt(input);
             return year >= lower && year <= upper;
         } else {
             return false;

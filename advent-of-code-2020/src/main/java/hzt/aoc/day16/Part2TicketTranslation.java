@@ -21,14 +21,14 @@ public class Part2TicketTranslation extends Day16Challenge {
     protected long solveByParsedInput(final List<Field> fields,
                                       final IntList ourTicketValues,
                                       final List<IntList> nearbyTickets) {
-        final boolean[][] possibleMatches = new boolean[fields.size()][ourTicketValues.size()];
-        for (final boolean[] possibleMatch : possibleMatches) {
+        final var possibleMatches = new boolean[fields.size()][ourTicketValues.size()];
+        for (final var possibleMatch : possibleMatches) {
             Arrays.fill(possibleMatch, true);
         }
         final var validTickets = findValidTickets(fields, nearbyTickets);
         for (final var ticket : validTickets) {
-            for (int col = 0; col < ticket.size(); col++) {
-                for (int row = 0; row < fields.size(); row++) {
+            for (var col = 0; col < ticket.size(); col++) {
+                for (var row = 0; row < fields.size(); row++) {
                     if (!fields.get(row).containsValueInRanges(ticket.get(col))) {
                         possibleMatches[row][col] = false;
                     }
@@ -49,17 +49,17 @@ public class Part2TicketTranslation extends Day16Challenge {
     }
 
     public void filterOutUniqueValues(final boolean[][] possibleMatches) {
-        for (int col = 0; col < possibleMatches[0].length; col++) {
-            int count = 0;
-            int index = -1;
-            for (int row = 0; row < possibleMatches.length; row++) {
+        for (var col = 0; col < possibleMatches[0].length; col++) {
+            var count = 0;
+            var index = -1;
+            for (var row = 0; row < possibleMatches.length; row++) {
                 if (possibleMatches[col][row]) {
                     count++;
                     index = row;
                 }
             }
             if (count == 1) {
-                for (int i = 0; i < possibleMatches.length; i++) {
+                for (var i = 0; i < possibleMatches.length; i++) {
                     if (i != col) {
                         possibleMatches[i][index] = false;
                     }
@@ -69,9 +69,9 @@ public class Part2TicketTranslation extends Day16Challenge {
     }
 
     public boolean isDone(final boolean[][] possibleMatches) {
-        for (final boolean[] possibleMatch : possibleMatches) {
-            int matches = 0;
-            for (final boolean match : possibleMatch) {
+        for (final var possibleMatch : possibleMatches) {
+            var matches = 0;
+            for (final var match : possibleMatch) {
                 if (match) {
                     matches++;
                 }
@@ -86,7 +86,7 @@ public class Part2TicketTranslation extends Day16Challenge {
     protected List<IntList> findValidTickets(final List<Field> fields, final List<IntList> nearbyTickets) {
         final var validTickets = new ArrayList<IntList>();
         for (final var nearbyTicket : nearbyTickets) {
-            final boolean containsOnlyValidValues = nearbyTicket.stream().allMatch(value -> fieldsContainValue(value, fields));
+            final var containsOnlyValidValues = nearbyTicket.stream().allMatch(value -> fieldsContainValue(value, fields));
             if (containsOnlyValidValues) {
                 validTickets.add(nearbyTicket);
             }
@@ -96,10 +96,10 @@ public class Part2TicketTranslation extends Day16Challenge {
 
     private static long getAnswer(final boolean[][] possibleMatches, final IntList ourTicketValues) {
         long answer = 1;
-        for (int row = 0; row < FIRST_SIX_FIELDS; row++) {
-            for (int col = 0; col < possibleMatches.length; col++) {
+        for (var row = 0; row < FIRST_SIX_FIELDS; row++) {
+            for (var col = 0; col < possibleMatches.length; col++) {
                 if (possibleMatches[row][col]) {
-                    final int value = ourTicketValues.get(col);
+                    final var value = ourTicketValues.get(col);
                     answer *= value;
                     break;
                 }

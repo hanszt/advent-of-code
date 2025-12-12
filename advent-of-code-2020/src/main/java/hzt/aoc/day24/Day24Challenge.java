@@ -3,12 +3,7 @@ package hzt.aoc.day24;
 import aoc.utils.grid2d.GridPoint2D;
 import hzt.aoc.Challenge;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static hzt.aoc.day24.Tile.*;
@@ -26,14 +21,14 @@ public abstract class Day24Challenge extends Challenge {
     @Override
     protected String solve(final List<String> inputList) {
         final List<List<String>> instructions = new ArrayList<>();
-        for (String line : inputList) {
+        for (var line : inputList) {
             final List<String> instruction = new ArrayList<>();
             line = line.replace(SOUTH_EAST, " " + SOUTH_EAST + ",");
             line = line.replace(SOUTH_WEST, " " + SOUTH_WEST + ",");
             line = line.replace(NORTH_WEST, " " + NORTH_WEST + ",");
             line = line.replace(NORTH_EAST, " " + NORTH_EAST + ",");
-            final String[] array = COMMA_OR_COMMA_WITH_SPACE.split(line);
-            for (final String string : array) {
+            final var array = COMMA_OR_COMMA_WITH_SPACE.split(line);
+            for (final var string : array) {
                 if (string.length() != 2 || !INSTRUCTION_SET.contains(string)) {
                     instruction.addAll(string.codePoints()
                             .mapToObj(Character::toString)
@@ -53,11 +48,11 @@ public abstract class Day24Challenge extends Challenge {
 
     Map<GridPoint2D, Tile> buildFloorByInstructions(final List<List<String>> instructionsList) {
         final Map<GridPoint2D, Tile> tileMap = new HashMap<>();
-        final Tile centerTile = new Tile(GridPoint2D.ZERO);
+        final var centerTile = new Tile(GridPoint2D.ZERO);
         tileMap.put(centerTile.getPosition(), centerTile);
-        for (final List<String> instructions : instructionsList) {
-            Tile curTile = centerTile;
-            for (final String instruction : instructions) {
+        for (final var instructions : instructionsList) {
+            var curTile = centerTile;
+            for (final var instruction : instructions) {
                 curTile = curTile.getNeighborByInstruction(instruction, tileMap);
                 tileMap.put(curTile.getPosition(), curTile);
             }

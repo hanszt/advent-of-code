@@ -11,7 +11,7 @@ public class Part2PasswordPhilosophy extends Day02Challenge {
 
     @Override
     boolean isValid(final String password, final Policy policy) {
-        int matchesWithPolicyChar = 0;
+        var matchesWithPolicyChar = 0;
         if (password.charAt(policy.getLowerBound() - 1) == policy.getCharacter()) {
             matchesWithPolicyChar++;
         }

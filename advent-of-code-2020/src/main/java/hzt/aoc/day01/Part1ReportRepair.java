@@ -15,7 +15,7 @@ public class Part1ReportRepair extends Day01Challenge {
     protected List<int[]> findIntegersListThatSumTo2020(final NavigableSet<Integer> integers) {
         final List<int[]> entriesList = new ArrayList<>();
         for (final var integer : integers) {
-            final int difference = SUM_TO_BE_FOUND - integer;
+            final var difference = SUM_TO_BE_FOUND - integer;
             if (integers.contains(difference)) {
                 final int[] entries = {integer, difference};
                 entriesList.add(entries);

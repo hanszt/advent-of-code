@@ -12,9 +12,9 @@ public class TreesEncounteredPart2 extends Day03Challenge {
     @Override
     protected long calculateResult(final List<List<Boolean>> grid) {
         long product = 1;
-        for (final Path path : Path.values()) {
+        for (final var path : Path.values()) {
             final int numberOfTrees = calculateNumberOfTreesEncountered(grid, path.getSlope());
-            LOGGER.info(String.format("The number of trees crossed using %s is %d", path.name(), numberOfTrees));
+            LOGGER.info("The number of trees crossed using %s is %d".formatted(path.name(), numberOfTrees));
             product *= numberOfTrees;
         }
         LOGGER.info("");

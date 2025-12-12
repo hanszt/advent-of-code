@@ -30,7 +30,7 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
     }
 
     static boolean[][][][] addInactiveOuterLayer4D(final boolean[][][][] grid4d) {
-        var newGrid4d = new boolean[grid4d.length + 2][][][];
+        final var newGrid4d = new boolean[grid4d.length + 2][][][];
         System.arraycopy(grid4d, 0, newGrid4d, 1, grid4d.length);
         for (var z = 0; z < grid4d.length; z++) {
             final var grid3D = grid4d[z];
@@ -69,7 +69,7 @@ public class Part2ConwayCubesByArrays extends Part1ConwayCubesByArrays {
     private boolean[][][][] deepCopyGrid4D(final boolean[][][][] grid4d) {
         final var copy = new boolean[grid4d.length][][][];
         for (var i = 0; i < grid4d.length; i++) {
-            var grid3d = grid4d[i];
+            final var grid3d = grid4d[i];
             copy[i] = deepCopyGrid3D(grid3d);
         }
         return copy;

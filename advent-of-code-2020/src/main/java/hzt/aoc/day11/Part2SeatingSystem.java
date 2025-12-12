@@ -28,9 +28,9 @@ public class Part2SeatingSystem extends Day11Challenge {
         width = inputList.get(0).length();
         height = inputList.size();
         state = new char[height][width];
-        for (int y = 0; y < height; y++) {
-            final String s = inputList.get(y);
-            for (int x = 0; x < width; x++) {
+        for (var y = 0; y < height; y++) {
+            final var s = inputList.get(y);
+            for (var x = 0; x < width; x++) {
                 state[y][x] = s.charAt(x);
             }
         }
@@ -38,7 +38,7 @@ public class Part2SeatingSystem extends Day11Challenge {
     }
 
     private int iterate(final IntBinaryOperator adjacentOccupiedFunction) {
-        boolean updated = true;
+        var updated = true;
         while (updated) {
             updated = performUpdate(adjacentOccupiedFunction);
         }
@@ -46,10 +46,10 @@ public class Part2SeatingSystem extends Day11Challenge {
     }
 
     private boolean performUpdate(final IntBinaryOperator adjacentOccupiedFunction) {
-        boolean updated = false;
-        final char[][] nextState = new char[height][width];
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
+        var updated = false;
+        final var nextState = new char[height][width];
+        for (var row = 0; row < height; row++) {
+            for (var col = 0; col < width; col++) {
                 if (state[row][col] == EMPTY_SEAT && adjacentOccupiedFunction.applyAsInt(col, row) == 0) {
                     nextState[row][col] = OCCUPIED_SEAT;
                     updated = true;
@@ -67,9 +67,9 @@ public class Part2SeatingSystem extends Day11Challenge {
     }
 
     private int adjacentOccupiedLine(final int x, final int y) {
-        int result = 0;
-        for (int dy = -1; dy <= 1; dy++) {
-            for (int dx = -1; dx <= 1; dx++) {
+        var result = 0;
+        for (var dy = -1; dy <= 1; dy++) {
+            for (var dx = -1; dx <= 1; dx++) {
                 if ((dx != 0 || dy != 0) && adjacentOccupiedLine(x, y, dx, dy)) {
                     result++;
                 }
@@ -82,7 +82,7 @@ public class Part2SeatingSystem extends Day11Challenge {
         while (true) {
             x += dx;
             y += dy;
-            final char c = get(x, y);
+            final var c = get(x, y);
             if (c == OCCUPIED_SEAT) {
                 return true;
             }
@@ -93,9 +93,9 @@ public class Part2SeatingSystem extends Day11Challenge {
     }
 
     private int countOccupied() {
-        int result = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        var result = 0;
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
                 if (state[y][x] == OCCUPIED_SEAT) {
                     result++;
                 }

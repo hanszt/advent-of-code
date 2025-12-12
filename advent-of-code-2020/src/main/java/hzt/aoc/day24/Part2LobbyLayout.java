@@ -1,10 +1,7 @@
 package hzt.aoc.day24;
 
-import aoc.utils.grid2d.GridPoint2D;
-
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,19 +18,19 @@ public class Part2LobbyLayout extends Day24Challenge {
 
     @Override
     protected long calculateResult(final List<List<String>> instructions) {
-        final Map<GridPoint2D, Tile> tileMap = buildFloorByInstructions(instructions);
-        final Set<Tile> blackTiles = tileMap.values().stream().filter(Tile::isBlackUp).collect(Collectors.toSet());
-        for (int day = 0; day < DAYS_OF_EXHIBIT; day++) {
+        final var tileMap = buildFloorByInstructions(instructions);
+        final var blackTiles = tileMap.values().stream().filter(Tile::isBlackUp).collect(Collectors.toSet());
+        for (var day = 0; day < DAYS_OF_EXHIBIT; day++) {
             simulate(blackTiles);
         }
         return blackTiles.size();
     }
 
     private static void simulate(final Set<Tile> blackTiles) {
-        final Set<Tile> active = determineActiveSet(blackTiles);
-        final Set<Tile> originalBlack = new HashSet<>(blackTiles);
-        for (final Tile position : active) {
-            final long blackNeighbours = countBlackNeighbours(originalBlack, position);
+        final var active = determineActiveSet(blackTiles);
+        final var originalBlack = new HashSet<>(blackTiles);
+        for (final var position : active) {
+            final var blackNeighbours = countBlackNeighbours(originalBlack, position);
             if (originalBlack.contains(position) && (blackNeighbours == 0 || blackNeighbours > 2)) {
                 blackTiles.remove(position);
             }

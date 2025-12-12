@@ -17,24 +17,24 @@ public abstract class Day02Challenge extends Challenge {
     @Override
     protected String solve(final List<String> inputList) {
         inputListSize = inputList.size();
-        final long validPasswords = inputList.stream().filter(this::passwordIsValid).count();
+        final var validPasswords = inputList.stream().filter(this::passwordIsValid).count();
         return String.valueOf(validPasswords);
     }
 
     boolean passwordIsValid(final String line) {
-        final String[] array = line.split(": ");
-        final String string = array[0];
-        final String password = array[1];
-        final Policy policy = getPolicyFromString(string);
+        final var array = line.split(": ");
+        final var string = array[0];
+        final var password = array[1];
+        final var policy = getPolicyFromString(string);
         return isValid(password, policy);
     }
 
     abstract boolean isValid(String password, Policy policy);
 
     private static Policy getPolicyFromString(final String string) {
-        final char character = string.charAt(string.length() - 1);
-        final String range = string.substring(0, string.length() - 2);
-        final String[] lowerAndUpper = range.split("-");
+        final var character = string.charAt(string.length() - 1);
+        final var range = string.substring(0, string.length() - 2);
+        final var lowerAndUpper = range.split("-");
         return new Policy(Integer.parseInt(lowerAndUpper[0]), Integer.parseInt(lowerAndUpper[1]), character);
     }
 

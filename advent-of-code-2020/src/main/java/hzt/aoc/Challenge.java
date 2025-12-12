@@ -38,17 +38,17 @@ public abstract class Challenge {
     public void solveChallenge() {
         LOGGER.info(String.format("%n%s %s%nInput: %s%nChallenge: %s%n%s",
                 title, part, inputFileName, description, DOTTED_LINE));
-        final List<String> inputList = loadInputList();
-        final long startTime = System.nanoTime();
+        final var inputList = loadInputList();
+        final var startTime = System.nanoTime();
         if (!inputList.isEmpty()) {
             if (answer == null) {
                 startTimeSolve = ZonedDateTime.now();
                 answer = solve(inputList);
-                final long endTime = System.nanoTime();
+                final var endTime = System.nanoTime();
                 solveTime = endTime - startTime;
             }
             logResult(answer);
-            final String message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
+            final var message = String.format("%nSolved at %s%nSolved in %5.5f ms%n",
                     startTimeSolve.format(DateTimeFormatter.ofPattern("HH:mm:ss VV")), solveTime / 1e6);
             LOGGER.info(message + DOTTED_LINE);
         }
@@ -59,10 +59,10 @@ public abstract class Challenge {
     }
 
     protected String listOfStringListsAsString(final List<List<String>> listOfStringLists) {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         sb.append(String.format("%n"));
-        for (final List<String> row : listOfStringLists) {
-            for (final String s : row) {
+        for (final var row : listOfStringLists) {
+            for (final var s : row) {
                 sb.append(s).append(", ");
             }
             sb.append(String.format("%n"));
@@ -72,10 +72,10 @@ public abstract class Challenge {
     }
 
     protected String booleanGrid2DAsString(final boolean[][] grid) {
-        final StringBuilder sb = new StringBuilder();
+        final var sb = new StringBuilder();
         sb.append(String.format("%n"));
-        for (final boolean[] row : grid) {
-            for (final boolean active : row) {
+        for (final var row : grid) {
+            for (final var active : row) {
                 sb.append(active ? 1 : 0).append(", ");
             }
             sb.append(String.format("%n"));

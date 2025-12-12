@@ -10,9 +10,9 @@ public class Part1PasswordPhilosophy extends Day02Challenge {
     }
 
     boolean isValid(final String password, final Policy policy) {
-        int matchesWithPolicyChar = 0;
-        for (int i = 0; i < password.length(); i++) {
-            final char character = password.charAt(i);
+        var matchesWithPolicyChar = 0;
+        for (var i = 0; i < password.length(); i++) {
+            final var character = password.charAt(i);
             if (character == policy.getCharacter()) {
                 matchesWithPolicyChar++;
             }

@@ -18,11 +18,11 @@ public class Part2ConwayCubes extends Part1ConwayCubes {
         var grid4d = getInitGrid4D(inputList);
         for (var i = 0; i < NUMBER_OF_CYCLES; i++) {
             addInactiveOuterLayer4D(grid4d);
-            var index = i;
+            final var index = i;
             LOGGER.trace(() -> "Iteration: " + index);
             var w = -(grid4d.size() - 1) / 2;
             for (final var grid3D : grid4d) {
-                var finalW = w;
+                final var finalW = w;
                 LOGGER.trace(() -> String.format("at w = %d %s", finalW, grid3DAsString(grid3D)));
                 w++;
             }

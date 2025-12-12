@@ -2,12 +2,7 @@ package hzt.aoc.day01;
 
 import hzt.aoc.Challenge;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NavigableSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Day01Challenge extends Challenge {
@@ -22,7 +17,7 @@ public abstract class Day01Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final Set<Integer> integers = inputList.stream().map(Integer::parseInt).collect(Collectors.toSet());
+        final var integers = inputList.stream().map(Integer::parseInt).collect(Collectors.toSet());
         integersThatSumTo2020List.clear();
         integersThatSumTo2020List.addAll(findIntegersListThatSumTo2020(new TreeSet<>(integers)));
         LOGGER.trace(() -> getMessage(integersThatSumTo2020List));
@@ -32,17 +27,17 @@ public abstract class Day01Challenge extends Challenge {
     protected abstract List<int[]> findIntegersListThatSumTo2020(NavigableSet<Integer> integers);
 
     public String getMessage(final List<int[]> integersThatSumTo2020List) {
-        final StringBuilder sb = new StringBuilder();
-        final String message = String.format("Output size: %d%n", integersThatSumTo2020List.size());
+        final var sb = new StringBuilder();
+        final var message = String.format("Output size: %d%n", integersThatSumTo2020List.size());
         sb.append(message);
         for (final var entries : integersThatSumTo2020List) {
-            final StringBuilder isb = new StringBuilder();
+            final var isb = new StringBuilder();
             long product = 1;
             for (final Integer integer : entries) {
                 isb.append(integer).append(", ");
                 product *= integer;
             }
-            final String result = String.format("The %d digits from the list that sum to %d are: %s%nThe product of these digits is: %d%n",
+            final var result = String.format("The %d digits from the list that sum to %d are: %s%nThe product of these digits is: %d%n",
                     entries.length, SUM_TO_BE_FOUND, isb, product);
             sb.append(result);
         }

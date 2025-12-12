@@ -14,7 +14,7 @@ public class Part2DockingData extends Day14Challenge {
 
     long count(final List<Program> programs) {
         final Map<Long, Long> memoryAddressesToValues =  new HashMap<>();
-        for (final Program p : programs) {
+        for (final var p : programs) {
             p.forEach(pair -> p.getMemoryLocationsAfterBitMaskApplication(pair.memSpot())
                     .forEach(memAdr -> memoryAddressesToValues.put(memAdr, (long) pair.binNr())));
         }

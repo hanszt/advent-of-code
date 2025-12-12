@@ -14,16 +14,16 @@ public class Part2EncodingError extends Day09Challenge {
 
     @Override
     protected long solveByXmasList(final List<Long> longs) {
-        final long resultStep1 = findFirstNumberNotSumOfTwoIntegersInPreamble(longs);
-        final List<Long> contiguousSumList = findSumList(longs, resultStep1);
+        final var resultStep1 = findFirstNumberNotSumOfTwoIntegersInPreamble(longs);
+        final var contiguousSumList = findSumList(longs, resultStep1);
         return findSumMinAndMaxNumber(contiguousSumList);
     }
 
     private List<Long> findSumList(final List<Long> longs, final long ref) {
         long sum = 0;
         final List<Long> sumList = new ArrayList<>();
-        for (int i = 0; i < longs.size(); i++) {
-            for (int j = i; j < longs.size(); j++) {
+        for (var i = 0; i < longs.size(); i++) {
+            for (var j = i; j < longs.size(); j++) {
                 sumList.add(longs.get(j));
                 sum += longs.get(j);
                 if (sum == ref) {

@@ -24,7 +24,7 @@ public abstract class Day17ChallengeByArrays extends Challenge {
     boolean[][][] inputListToInitGrid3D(final List<String> inputList) {
         final var grid2D = new boolean[inputList.size()][];
         for (var rowi = 0; rowi < inputList.size(); rowi++) {
-            var line = inputList.get(rowi);
+            final var line = inputList.get(rowi);
             final var length = line.length();
             final var row = new boolean[length];
             for (var coli = 0; coli < length; coli++) {
@@ -50,11 +50,11 @@ public abstract class Day17ChallengeByArrays extends Challenge {
     }
 
     static boolean[][][] addInactiveOuterLayer3D(final boolean[][][] grid3d) {
-        var newGrid3d = new boolean[grid3d.length + 2][][];
+        final var newGrid3d = new boolean[grid3d.length + 2][][];
         System.arraycopy(grid3d, 0, newGrid3d, 1, grid3d.length);
         for (var y = 0; y < grid3d.length; y++) {
-            var gridXY = grid3d[y];
-            var newGridXY = addInactiveOuterLayer2D(gridXY);
+            final var gridXY = grid3d[y];
+            final var newGridXY = addInactiveOuterLayer2D(gridXY);
             newGrid3d[y + 1] = newGridXY;
         }
         final var firstPlane = newGrid3d[1];
@@ -66,12 +66,12 @@ public abstract class Day17ChallengeByArrays extends Challenge {
         return newGrid3d;
     }
 
-    static boolean[][] addInactiveOuterLayer2D(boolean[][] gridXY) {
-        var newGridXY = new boolean[gridXY.length + 2][];
+    static boolean[][] addInactiveOuterLayer2D(final boolean[][] gridXY) {
+        final var newGridXY = new boolean[gridXY.length + 2][];
         System.arraycopy(gridXY, 0, newGridXY, 1, gridXY.length);
         for (var x = 0; x < gridXY.length; x++) {
-            var rowX = gridXY[x];
-            var newRowX = new boolean[rowX.length + 2];
+            final var rowX = gridXY[x];
+            final var newRowX = new boolean[rowX.length + 2];
             System.arraycopy(rowX, 0, newRowX, 1, rowX.length);
             newGridXY[x + 1] = newRowX;
         }

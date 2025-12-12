@@ -2,7 +2,6 @@ package hzt.aoc.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,9 +9,9 @@ import java.util.Scanner;
 public class IOController2 implements IIOController {
 
     public List<String> readInputFileByLine(final String fileName) {
-        final URL url = getClass().getResource(RELATIVE_PATH + fileName);
+        final var url = getClass().getResource(RELATIVE_PATH + fileName);
         if (url != null) {
-            try (final Scanner input = new Scanner(new File(url.getFile()))) {
+            try (final var input = new Scanner(new File(url.getFile()))) {
                 final List<String> inputList = new ArrayList<>();
                 while (input.hasNextLine()) {
                     inputList.add(input.nextLine());
@@ -28,9 +27,9 @@ public class IOController2 implements IIOController {
 
     @Override
     public List<String> readInputFileByWord(final String fileName) {
-        final URL url = getClass().getResource(RELATIVE_PATH + fileName);
+        final var url = getClass().getResource(RELATIVE_PATH + fileName);
         if (url != null) {
-            try (final Scanner input = new Scanner(new File(url.getFile()))) {
+            try (final var input = new Scanner(new File(url.getFile()))) {
                 final List<String> inputList = new ArrayList<>();
                 while (input.hasNext()) {
                     inputList.add(input.next());

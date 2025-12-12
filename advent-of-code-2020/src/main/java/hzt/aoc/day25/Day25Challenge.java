@@ -15,8 +15,8 @@ public abstract class Day25Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final long cardPublicKey = Long.parseLong(inputList.get(0));
-        final long doorPublicKey = Long.parseLong(inputList.get(1));
+        final var cardPublicKey = Long.parseLong(inputList.get(0));
+        final var doorPublicKey = Long.parseLong(inputList.get(1));
         return getMessage(solveByInput(cardPublicKey, doorPublicKey));
 
     }

@@ -12,10 +12,10 @@ public class Part2HandheldHalting extends Day08Challenge {
 
     @Override
     int solveByInstructions(final List<Instruction> instructions) {
-        for (final Instruction instruction : instructions) {
+        for (final var instruction : instructions) {
             instructions.forEach(item -> item.setVisited(false));
             swapJumpAndNoOperation(instruction);
-            final Result result = testInstructions(instructions);
+            final var result = testInstructions(instructions);
             if (result.lastInstruction().getNr() == instructions.size()) {
                 return result.global();
             }

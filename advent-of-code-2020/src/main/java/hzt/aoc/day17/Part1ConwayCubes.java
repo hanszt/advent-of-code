@@ -22,7 +22,7 @@ public class Part1ConwayCubes extends Day17Challenge {
         var grid3d = getInitGrid3D(inputList);
         for (var i = 0; i < NUMBER_OF_CYCLES; i++) {
             addInactiveOuterLayer3D(grid3d);
-            var iteration = i;
+            final var iteration = i;
             final var updated = updateGrid(grid3d);
             LOGGER.trace(() -> String.format("Iteration: %d%n%s", iteration, grid3DAsString(updated)));
             grid3d = updated;

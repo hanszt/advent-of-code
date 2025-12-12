@@ -13,10 +13,10 @@ public class Part1ComboBreaker extends Day25Challenge {
 
     @Override
     protected long solveByInput(final long cardPublicKey, final long doorPublicKey) {
-        final long loopSizeCard = findLoopSize(cardPublicKey);
-        final long loopSizeDoor = findLoopSize(doorPublicKey);
-        final long encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard);
-        final long encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor);
+        final var loopSizeCard = findLoopSize(cardPublicKey);
+        final var loopSizeDoor = findLoopSize(doorPublicKey);
+        final var encryptionKeyDoor = calculateEncryptionKey(doorPublicKey, loopSizeCard);
+        final var encryptionKeyCard = calculateEncryptionKey(cardPublicKey, loopSizeDoor);
         LOGGER.trace(() -> "Card loop size: " + loopSizeCard);
         LOGGER.trace(() -> "Door loop size: " + loopSizeDoor);
         LOGGER.trace(() -> "Card encryption key: " + encryptionKeyCard);
@@ -28,13 +28,13 @@ public class Part1ComboBreaker extends Day25Challenge {
         return LongStream.range(0, loopSizeOther).reduce(STARTING_VALUE,  (acc, n) -> performStep(acc, publicKey));
     }
 
-    private static long performStep(long value, final long subjectNumber) {
+    private static long performStep(final long value, final long subjectNumber) {
         return (value * subjectNumber) % NUMBER_TO_DIVIDE_BY;
     }
 
     private static long findLoopSize(final long publicKey) {
-        long newVal = STARTING_VALUE;
-        int counter = 0;
+        var newVal = STARTING_VALUE;
+        var counter = 0;
         do {
             newVal = performStep(newVal, INIT_SUBJECT_NUMBER);
             counter++;

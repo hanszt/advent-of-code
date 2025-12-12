@@ -24,10 +24,10 @@ public class Group {
     }
 
     public int amountEveryoneAnsweredYes() {
-        int amountAnswersEveryoneAnsweredYes = 0;
-        for (final Character answer : getGivenAnswerSet()) {
-            boolean everyOneAnsweredYes = true;
-            for (final List<Character> personAnswers : personsInGroupAnswers) {
+        var amountAnswersEveryoneAnsweredYes = 0;
+        for (final var answer : getGivenAnswerSet()) {
+            var everyOneAnsweredYes = true;
+            for (final var personAnswers : personsInGroupAnswers) {
                 if (!personAnswers.contains(answer)) {
                     everyOneAnsweredYes = false;
                     break;

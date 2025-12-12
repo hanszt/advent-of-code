@@ -25,17 +25,17 @@ public abstract class Day04Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Passport> passports = getPasswords(inputList);
+        final var passports = getPasswords(inputList);
         passportListSize = passports.size();
-        final long validPasswords = calculateResult(passports);
+        final var validPasswords = calculateResult(passports);
         return String.valueOf(validPasswords);
     }
 
     private List<Passport> getPasswords(final List<String> lines) {
         final List<Passport> passportList = new ArrayList<>();
         final List<String> passportValues = new ArrayList<>();
-        for (final String string : lines) {
-            final String[] strings = string.split("\\s");
+        for (final var string : lines) {
+            final var strings = string.split("\\s");
             passportValues.addAll(Arrays.asList(strings));
             if (string.matches("\\s*")) {
                 passportValues.remove(string);
@@ -47,12 +47,12 @@ public abstract class Day04Challenge extends Challenge {
     }
 
     private static Passport createPassportFromValues(final List<String> passwordEntries) {
-        final Passport passport = new Passport();
-        final StringBuilder sb = new StringBuilder();
-        for (final String passwordEntry : passwordEntries) {
-            final String[] keyValue = passwordEntry.split(":");
-            final String key = keyValue[0];
-            final String value = keyValue[1];
+        final var passport = new Passport();
+        final var sb = new StringBuilder();
+        for (final var passwordEntry : passwordEntries) {
+            final var keyValue = passwordEntry.split(":");
+            final var key = keyValue[0];
+            final var value = keyValue[1];
             sb.append(String.format("Entry{key='%s', value='%s'}", key, value));
             switch (key) {
                 case PASSPORT_ID -> passport.setPasswordID(value);
@@ -67,7 +67,7 @@ public abstract class Day04Challenge extends Challenge {
             }
             sb.append(String.format("%n"));
         }
-        LOGGER.trace(() -> sb.toString());
+        LOGGER.trace(sb::toString);
         return passport;
     }
 

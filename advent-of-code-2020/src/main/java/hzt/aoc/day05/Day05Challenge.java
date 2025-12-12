@@ -22,19 +22,19 @@ public abstract class Day05Challenge extends Challenge {
 
     @Override
     protected String solve(final List<String> inputList) {
-        final List<Seat> seats = inputList.stream().map(this::extractSeat).toList();
-        final int result = calculateResult(seats);
+        final var seats = inputList.stream().map(this::extractSeat).toList();
+        final var result = calculateResult(seats);
         return String.valueOf(result);
     }
 
     protected abstract int calculateResult(List<Seat> seats);
 
     Seat extractSeat(final String string) {
-        int lowerBoundRows = 0;
-        int upperBoundRows = NUMBER_OF_ROWS;
-        int lowerBoundCols = 0;
-        int upperBoundCols = NUMBER_OF_COLUMNS;
-        for (int i = 0; i < string.length(); i++) {
+        var lowerBoundRows = 0;
+        var upperBoundRows = NUMBER_OF_ROWS;
+        var lowerBoundCols = 0;
+        var upperBoundCols = NUMBER_OF_COLUMNS;
+        for (var i = 0; i < string.length(); i++) {
             if (i < AMOUNT_SIGNS_FRONT_BACK) {
                 if (string.charAt(i) == KEEP_UPPER_HALF_ROWS) {
                     lowerBoundRows = newLowerBound(lowerBoundRows, upperBoundRows);

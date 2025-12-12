@@ -33,9 +33,9 @@ public class Part2AllergenAssessment extends Day21Challenge {
         for (final var entry : allergenToIngredientsMap.entrySet()) {
             final var ingredientsList = entry.getValue();
             if (ingredientsList.size() == 1) {
-                final String ingredient = ingredientsList.get(0);
+                final var ingredient = ingredientsList.get(0);
                 uniqueAllergenToIngredientMap.put(entry.getKey(), ingredient);
-                for (final List<String> ingredients : allergenToIngredientsMap.values()) {
+                for (final var ingredients : allergenToIngredientsMap.values()) {
                     ingredients.remove(ingredient);
                 }
                 break;

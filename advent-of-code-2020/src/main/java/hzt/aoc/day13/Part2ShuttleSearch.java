@@ -3,7 +3,6 @@ package hzt.aoc.day13;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Part2ShuttleSearch extends Day13Challenge {
 
@@ -15,17 +14,17 @@ public class Part2ShuttleSearch extends Day13Challenge {
 
     @Override
     protected String solve(final List<String> lines) {
-        final List<Integer> busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
+        final var busIdsWithBlanks = Arrays.stream(lines.get(1).split(","))
                 .map(x -> "x".equals(x) ? "-1" : x)
                 .map(Integer::parseInt)
-                .collect(Collectors.toList());
+                .toList();
         return String.valueOf(second(busIdsWithBlanks));
     }
 
     // Chinese remainder theorem implementation
     private long second(final List<Integer> busIdsWithBlanks) {
         final List<Equation> equations = new ArrayList<>();
-        for (int i = 0; i < busIdsWithBlanks.size(); i++) {
+        for (var i = 0; i < busIdsWithBlanks.size(); i++) {
             final int busId = busIdsWithBlanks.get(i);
             if (busId != -1) {
                 equations.add(new Equation(-i, busId));
@@ -37,7 +36,7 @@ public class Part2ShuttleSearch extends Day13Challenge {
                 .map(equation -> equation.modulo)
                 .reduce(1L, (a, b) -> a * b);
 
-        for (final Equation equation : equations) {
+        for (final var equation : equations) {
             equation.n = moduloProduct / equation.modulo;
             equation.w = euclideanGeneralTheorem(equation.n, equation.modulo);
             if (equation.w < 0) {
@@ -54,18 +53,18 @@ public class Part2ShuttleSearch extends Day13Challenge {
     }
 
     private long euclideanGeneralTheorem(final long a1, final long b1) {
-        long b = a1;
-        long a = b1;
+        var b = a1;
+        var a = b1;
 
         long x = 0;
         long y = 1;
         long u = 1;
         long v = 0;
         while (b != 0) {
-            final long q = a / b;
-            final long r = properModulo(a, b);
-            final long m = x - u * q;
-            final long n = y - v * q;
+            final var q = a / b;
+            final var r = properModulo(a, b);
+            final var m = x - u * q;
+            final var n = y - v * q;
             a = b;
             b = r;
             x = u;
