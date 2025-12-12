@@ -66,8 +66,9 @@ public record Day11Zebalu(Map<String, Set<String>> connections) implements Chall
             final String start,
             final String end
     ) {
-        if (memo.containsKey(start)) {
-            return memo.get(start);
+        final var l = memo.get(start);
+        if (l != null) {
+            return l;
         }
         if (start.equals(end)) {
             return 1L;
@@ -75,11 +76,9 @@ public record Day11Zebalu(Map<String, Set<String>> connections) implements Chall
         var sum = 0L;
         final var s = connections.get(start);
         if (s != null) {
-            var result = 0L;
             for (final var c : s) {
-                result += countPaths(memo, c, end);
+                sum += countPaths(memo, c, end);
             }
-            sum = result;
         }
         memo.put(start, sum);
         return sum;

@@ -15,22 +15,22 @@ class Day02Test {
 
     @Test
     void testPart1() {
-        assertEquals(31839939622L, day02.part1());
+        assertEquals(31_839_939_622L, day02.part1());
     }
 
     @Test
     void testPart2Sample() {
-        assertEquals(4174379265L, day02Sample.part2());
+        assertEquals(4_174_379_265L, day02Sample.part2());
     }
 
     @Test
     void testPart2() {
-        assertEquals(41662374059L, day02.part2());
+        assertEquals(41_662_374_059L, day02.part2());
     }
 
     @Test
     void testPart2Elizarov() {
-        assertEquals(41662374059L, Day02Part2Elizarov.INSTANCE.run(TEXT));
+        assertEquals(41_662_374_059L, Day02Part2Elizarov.INSTANCE.run(TEXT));
     }
 
 }

@@ -70,14 +70,14 @@ inline fun <reified T> Iterable<GridPoint2D>.toMutableGrid(transform: (Int, Int,
     val maxY = maxOf { it.y }
     val width = (maxX - minX) + 1
     val height = (maxY - minY) + 1
-    var array = Array(height) { y ->
+    val array = Array(height) { y ->
         Array(width) { x ->
             transform(x, y, false)
         }
     }
     for (p in this@toMutableGrid) {
-        var x = p.x - minX
-        var y = p.y - minY
+        val x = p.x - minX
+        val y = p.y - minY
         array[y][x] = transform(x, y, true)
     }
     return array

@@ -5,7 +5,6 @@ import org.hzt.utils.Patterns;
 import org.hzt.utils.strings.StringX;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.LongPredicate;
 import java.util.stream.LongStream;
 
@@ -53,10 +52,8 @@ public record Day02(List<IdRange> idRanges) implements ChallengeDay {
             if (size % chunkSize != 0) {
                 continue;
             }
-            final var isRepeating = s.codePointSequence()
-                    .chunked(chunkSize)
-                    .zipWithNext(Objects::equals)
-                    .all(b -> b);
+            final var first = s.codePointSequence().chunked(chunkSize).first();
+            final var isRepeating = s.codePointSequence().chunked(chunkSize).skip(1).all(first::equals);
             if (isRepeating) {
                 return true;
             }
