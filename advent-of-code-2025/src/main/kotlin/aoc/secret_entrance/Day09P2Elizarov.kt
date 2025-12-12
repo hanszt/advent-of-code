@@ -7,6 +7,9 @@ import javax.imageio.ImageIO
 import kotlin.math.abs
 import aoc.utils.grid2d.GridPoint2D as P
 
+/**
+ * [Elizarov day 9 part 2](https://github.com/elizarov/AdventOfCode2025/blob/main/src/Day09_2.kt)
+ */
 object Day09P2Elizarov {
 
     fun run(lines: List<String>): Long {
