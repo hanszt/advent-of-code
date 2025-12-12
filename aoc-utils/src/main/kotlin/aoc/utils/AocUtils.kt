@@ -111,10 +111,22 @@ private fun mapCapacity(expectedSize: Int): Int = when {
     else -> Int.MAX_VALUE
 }
 
-fun CharArray.swap(sourceIndex: Int, destIndex: Int) {
-    val temp = this[sourceIndex]
-    this[sourceIndex] = this[destIndex]
-    this[destIndex] = temp
+fun CharArray.swap(i: Int, j: Int) {
+    val temp = this[i]
+    this[i] = this[j]
+    this[j] = temp
+}
+
+fun <T> Array<T>.swap(i: Int, j: Int) {
+    val temp = this[i]
+    this[i] = this[j]
+    this[j] = temp
+}
+
+fun IntArray.swap(i: Int, j: Int) {
+    val temp = this[i]
+    this[i] = this[j]
+    this[j] = temp
 }
 
 fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
@@ -132,8 +144,8 @@ fun <T : Comparable<T>> Iterable<T>.min() = minOf { it }
  *
  * @sample aoc.utils.AocUtilsKtTest.greatestCommonDivisorSample
  */
-tailrec infix fun Long.gcd(other: Long): Long = if (other == 0L) this else other.gcd(this % other)
-tailrec infix fun Int.gcd(other: Int): Int = if (other == 0) this else other.gcd(this % other)
+tailrec fun Long.gcd(other: Long): Long = if (other == 0L) this else other.gcd(this % other)
+tailrec fun Int.gcd(other: Int): Int = if (other == 0) this else other.gcd(this % other)
 
 /**
  * Calculates the least common multiple of two numbers
@@ -146,8 +158,8 @@ tailrec infix fun Int.gcd(other: Int): Int = if (other == 0) this else other.gcd
  *
  * @sample aoc.utils.AocUtilsKtTest.leastCommonMultipleSample
  */
-infix fun Long.lcm(other: Long): Long = abs((this * other) / this.gcd(other))
-infix fun Int.lcm(other: Int): Int = abs((this * other) / this.gcd(other))
+fun Long.lcm(other: Long): Long = abs((this * other) / this.gcd(other))
+fun Int.lcm(other: Int): Int = abs((this * other) / this.gcd(other))
 
 fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bound, bound)
 

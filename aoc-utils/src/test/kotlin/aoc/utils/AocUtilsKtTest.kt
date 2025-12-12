@@ -76,12 +76,12 @@ internal class AocUtilsKtTest {
 
     @Test
     fun leastCommonMultipleSample() {
-        24 lcm 36 shouldBe 72
+        24.lcm(36) shouldBe 72
     }
 
     @Test
     fun greatestCommonDivisorSample() {
-        12 gcd 32 shouldBe 4
+        12.gcd(32) shouldBe 4
     }
 
     @Test

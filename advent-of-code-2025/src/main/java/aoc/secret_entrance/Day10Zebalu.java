@@ -27,17 +27,17 @@ public record Day10Zebalu(List<Machine> machines) implements ChallengeDay {
         return getDay10Zebalu(text.lines().toList());
     }
 
-    private static @NotNull Day10Zebalu getDay10Zebalu(List<String> list) {
-        List<Machine> result = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            String line = list.get(i);
-            Machine machine = Machine.fromString(i + 1, line);
+    private static @NotNull Day10Zebalu getDay10Zebalu(final List<String> list) {
+        final var result = new ArrayList<Machine>();
+        for (var i = 0; i < list.size(); i++) {
+            final var line = list.get(i);
+            final var machine = Machine.fromString(i + 1, line);
             result.add(machine);
         }
         return new Day10Zebalu(result);
     }
 
-    private static void log(String message) {
+    private static void log(final String message) {
         System.out.println(message);
     }
 
@@ -138,7 +138,7 @@ public record Day10Zebalu(List<Machine> machines) implements ChallengeDay {
                                 return;
                             } else if (validButtons.size() == 1) {
                                 final var button = validButtons.getFirst();
-                                final List<Integer> newTarget = new ArrayList<>(target);
+                                final var newTarget = new ArrayList<>(target);
                                 for (final var idx : button) {
                                     newTarget.set(idx, newTarget.get(idx) - 1);
                                 }
@@ -171,8 +171,8 @@ public record Day10Zebalu(List<Machine> machines) implements ChallengeDay {
 
         static Machine fromString(final int id, final String line) {
             final var spaces = line.split(" ");
-            final List<Boolean> lights = new ArrayList<>();
-            final List<SequencedSet<Integer>> buttons = new ArrayList<>();
+            final var lights = new ArrayList<Boolean>();
+            final var buttons = new ArrayList<SequencedSet<Integer>>();
             for (var i = 1; i < spaces[0].length() - 1; ++i) {
                 lights.add(spaces[0].charAt(i) == '#');
             }

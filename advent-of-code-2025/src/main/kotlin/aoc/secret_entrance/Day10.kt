@@ -9,6 +9,8 @@ import kotlin.time.TimeSource.Monotonic.markNow
 
 /**
  * [aoc.utils.Tag.RECURSIVE]
+ *
+ * [Day 10 part 2](https://github.com/elizarov/AdventOfCode2025/blob/main/src/Day10_2.kt)
  */
 class Day10(private val lines: List<String>) : ChallengeDay {
 
