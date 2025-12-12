@@ -1,22 +1,25 @@
 package aoc.secret_entrance;
 
+import aoc.utils.grid2d.Grid2DUtilsKt;
 import aoc.utils.grid2d.GridPoint2D;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /// [Johan de Jong Day 12](https://github.com/johandj123/adventofcode2025/blob/master/src/Day12.java)
 public record Day12JohanDeJong(String text) {
 
     public int run() {
-        final var input = readAsStringGroups(text);
-        final List<CharMatrix> presents = new ArrayList<>();
-        for (var i = 0; i < input.size() - 1; i++) {
-            var s = input.get(i);
+        final var parts = text.split("\n\n");
+        final var presents = new ArrayList<CharMatrix>();
+        for (var i = 0; i < parts.length - 1; i++) {
+            var s = parts[i];
             s = s.substring(s.indexOf('\n') + 1);
             presents.add(new CharMatrix(s));
         }
-        final var regions = Arrays.stream(input.getLast().split("\n")).map(Region::new).toList();
+        final var regions = Arrays.stream(parts[parts.length - 1].split("\n")).map(Region::new).toList();
         final var presentSizes = presents.stream().map(Day12JohanDeJong::countGridPoint2Ds).toList();
         final var presentsAllOrientations = presents.stream().map(Day12JohanDeJong::allOrientations).toList();
 
@@ -37,7 +40,7 @@ public record Day12JohanDeJong(String text) {
     }
 
     private static int countGridPoint2Ds(final CharMatrix charMatrix) {
-        return (int) charMatrix.stream().filter(cell -> charMatrix.get(cell.getX(), cell.getY()) == '#').count();
+        return (int) charMatrix.chars().filter(c -> c == '#').count();
     }
 
     static class Region {
@@ -73,7 +76,7 @@ public record Day12JohanDeJong(String text) {
         }
 
         List<Set<CharMatrix>> presentsToBePlaced(final List<Set<CharMatrix>> presentsAllOrientations) {
-            final List<Set<CharMatrix>> result = new ArrayList<>();
+            final var result = new ArrayList<Set<CharMatrix>>();
             for (var i = 0; i < counts.size(); i++) {
                 for (var j = 0; j < counts.get(i); j++) {
                     result.add(presentsAllOrientations.get(i));
@@ -91,7 +94,7 @@ public record Day12JohanDeJong(String text) {
                     '}';
         }
 
-        public boolean canPlacePresents(final List<Set<CharMatrix>> presentsAllOrientations) {
+        private boolean canPlacePresents(final List<Set<CharMatrix>> presentsAllOrientations) {
             final var charMatrix = new CharMatrix(height, width, '.');
             final var presentList = presentsToBePlaced(presentsAllOrientations);
             return canPlacePresents(charMatrix, presentList);
@@ -108,8 +111,8 @@ public record Day12JohanDeJong(String text) {
                         final var position = GridPoint2D.of(x, y);
                         if (canPlace(charMatrix, present, position)) {
                             place(charMatrix, present, position);
-                            final var result = canPlacePresents(charMatrix, presentsAllOrientations.subList(1, presentsAllOrientations.size()));
-                            if (result) {
+                            final var canPlace = canPlacePresents(charMatrix, presentsAllOrientations.subList(1, presentsAllOrientations.size()));
+                            if (canPlace) {
                                 return true;
                             }
                             unplace(charMatrix, present, position);
@@ -150,13 +153,13 @@ public record Day12JohanDeJong(String text) {
         }
     }
 
-    public static <T> Set<T> reachable(final T start, final Function<? super T, ? extends Iterable<T>> neighbours) {
+    public static <T> Set<T> reachable(final T start, final Function<? super T, ? extends Iterable<T>> toNeighbours) {
         final var startList = List.of(start);
-        final Set<T> seen = new HashSet<>(startList);
-        final Deque<T> todo = new ArrayDeque<>(startList);
+        final var seen = new HashSet<>(startList);
+        final var todo = new ArrayDeque<>(startList);
         while (!todo.isEmpty()) {
             final var node = todo.remove();
-            for (final var nextNode : neighbours.apply(node)) {
+            for (final var nextNode : toNeighbours.apply(node)) {
                 if (seen.add(nextNode)) {
                     todo.add(nextNode);
                 }
@@ -165,8 +168,95 @@ public record Day12JohanDeJong(String text) {
         return seen;
     }
 
-    public static List<String> readAsStringGroups(String text) {
-        final var parts = text.split("\n\n");
-        return List.of(parts);
-    }
+    record CharMatrix(char[][] content) {
+
+        CharMatrix(final String[] content) {
+            this(new char[content.length][Arrays.stream(content).mapToInt(String::length).max().orElse(0)]);
+                for (var y = 0; y < content.length; y++) {
+                    for (var x = 0; x < content[y].length(); x++) {
+                        this.content[y][x] = content[y].charAt(x);
+                    }
+                }
+            }
+
+            CharMatrix(final String content) {
+                this(content.split("\n"));
+            }
+
+            CharMatrix(final int height, final int width, final char fill) {
+                this(new char[height][width]);
+                for (var y = 0; y < height; y++) {
+                    Arrays.fill(this.content[y], fill);
+                }
+            }
+
+            IntStream chars() {
+                return Arrays.stream(content).flatMapToInt(s -> new String(s).chars());
+            }
+
+            int getWidth() {
+                return content[0].length;
+            }
+
+            int getHeight() {
+                return content.length;
+            }
+
+            char get(final int x, final int y) {
+                return content[y][x];
+            }
+
+            void set(final int x, final int y, final char c) {
+                content[y][x] = c;
+            }
+
+            String getRow(final int y) {
+                final var stringBuilder = new StringBuilder();
+                for (var x = 0; x < content[y].length; x++) {
+                    stringBuilder.append(content[y][x]);
+                }
+                return stringBuilder.toString();
+            }
+
+            String getColumn(final int x) {
+                final var stringBuilder = new StringBuilder();
+                for (char[] chars : content) {
+                    stringBuilder.append(chars[x]);
+                }
+                return stringBuilder.toString();
+            }
+
+            CharMatrix transpose() {
+                final var s = new String[getWidth()];
+                for (var i = 0; i < getWidth(); i++) {
+                    s[i] = getColumn(i);
+                }
+                return new CharMatrix(s);
+            }
+
+            CharMatrix mirrorHorizontal() {
+                return new CharMatrix(Grid2DUtilsKt.mirroredHorizontally(content));
+            }
+
+            CharMatrix mirrorVertical() {
+                return new CharMatrix(Grid2DUtilsKt.mirroredVertically(content));
+            }
+
+            @Override
+            public boolean equals(final Object o) {
+                return this == o || (o instanceof CharMatrix(char[][] other) && Arrays.deepEquals(content, other));
+            }
+
+            @Override
+            public int hashCode() {
+                return Arrays.deepHashCode(content);
+            }
+
+            @Override
+            public String toString() {
+                return IntStream.range(0, content.length)
+                        .mapToObj(this::getRow)
+                        .collect(Collectors.joining("\n"));
+            }
+        }
 }
