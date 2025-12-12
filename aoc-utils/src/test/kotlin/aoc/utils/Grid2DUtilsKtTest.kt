@@ -118,6 +118,21 @@ internal class Grid2DUtilsKtTest {
     }
 
     @Test
+    fun `string list mirrored vertically`() {
+        val expected = listOf(
+            "321",
+            "654",
+        )
+        val input = listOf(
+            "654",
+            "321",
+        )
+        val mirrored = input.mirroredVertically()
+
+        mirrored shouldBe expected
+    }
+
+    @Test
     fun `grid mirrored horizontally`() {
         val expected = arrayOf(
             charArrayOf('3', '2', '1'),
@@ -131,6 +146,22 @@ internal class Grid2DUtilsKtTest {
 
         mirrored shouldBe expected
     }
+
+    @Test
+    fun `string list mirrored horizontally`() {
+        val expected = listOf(
+            "321",
+            "654",
+        )
+        val input = listOf(
+            "123",
+            "456",
+        )
+        val mirrored = input.mirroredHorizontally()
+
+        mirrored shouldBe expected
+    }
+
 
     @Test
     fun `a copied grid should be unaffected by changes in original grid`() {

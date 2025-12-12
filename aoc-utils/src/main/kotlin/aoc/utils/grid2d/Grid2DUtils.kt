@@ -388,8 +388,16 @@ fun Array<CharArray>.mirroredHorizontally(): Array<CharArray> = Array(size) { y 
     CharArray(row.size) { x -> row[row.lastIndex - x] }
 }
 
+fun List<String>.mirroredHorizontally(): List<String> = map { it.reversed() }
+
 fun Array<IntArray>.mirroredVertically(): Array<IntArray> = Array(size) { y -> this[lastIndex - y] }
 fun Array<CharArray>.mirroredVertically(): Array<CharArray> = Array(size) { y -> this[lastIndex - y] }
+fun List<String>.mirroredVertically(): List<String> = buildList(size) {
+    val input = this@mirroredVertically
+    for (y in 0..<input.size) {
+        add(input[input.lastIndex - y])
+    }
+}
 
 /**
  * Grid as string
