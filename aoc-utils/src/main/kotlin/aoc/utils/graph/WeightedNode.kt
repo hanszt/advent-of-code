@@ -5,7 +5,7 @@ import java.util.*
 class WeightedNode<T>(
     val value: T? = null,
     val weight: Int,
-    val neighbors: MutableSet<WeightedNode<T>> = HashSet(),
+    override val neighbors: MutableSet<WeightedNode<T>> = HashSet(),
     override val prev: WeightedNode<T>? = null
 ): Node<WeightedNode<T>> {
 

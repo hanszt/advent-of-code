@@ -11,11 +11,12 @@ import aoc.utils.invoke
  * [aoc.utils.Tag.RECURSIVE], [aoc.utils.Tag.PATH_SEARCH]
  */
 fun day12Elizarov(input: List<String>, visitSmallCaveTwice: Boolean = false) = buildList {
+    val caves = this
     val g = buildGraph(input)
     val visited = HashSet<String>()
     fun find(cave: Cave, dontVisitSmall: Boolean = false) {
         if (cave.label == "end") {
-            add(cave)
+            caves.add(cave)
             return
         }
         for (other in g(cave.label)) {
@@ -37,7 +38,7 @@ fun day12Elizarov(input: List<String>, visitSmallCaveTwice: Boolean = false) = b
     find(Cave("start"), dontVisitSmall = !visitSmallCaveTwice)
 }
 
-private fun buildGraph(input: List<String>): Map<String, HashSet<Cave>> = buildMap {
+private fun buildGraph(input: List<String>): Map<String, Set<Cave>> = buildMap<String, MutableSet<Cave>> {
     for (s in input) {
         val (a, b) = s.split("-")
         getOrPut(a) { HashSet() }.add(Cave(b))

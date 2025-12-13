@@ -43,3 +43,17 @@ fun <T> Array<IntArray>.toWeightedGraph(
     }
 }
 
+fun <T> T.seenByBfs(toNeighbours: (T) -> Iterable<T>): Set<T> {
+    val start = setOf(this)
+    val seen = HashSet(start)
+    val todo = ArrayDeque(start)
+    while (todo.isNotEmpty()) {
+        val node = todo.removeLast()
+        for (nextNode in toNeighbours(node)) {
+            if (seen.add(nextNode)) {
+                todo.add(nextNode)
+            }
+        }
+    }
+    return seen
+}

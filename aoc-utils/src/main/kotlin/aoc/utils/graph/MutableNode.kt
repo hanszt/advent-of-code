@@ -1,11 +1,9 @@
 package aoc.utils.graph
 
-import java.util.Collections
-
 class MutableNode<T>(val value: T, override val prev: MutableNode<T>? = null) : Node<MutableNode<T>> {
 
     private val neighborsInternal = HashSet<MutableNode<T>>()
-    val neighbors: Set<MutableNode<T>> get() = Collections.unmodifiableSet(neighborsInternal)
+    override val neighbors: Set<MutableNode<T>> get() = neighborsInternal.toSet()
 
     fun addNeighbor(neighbor: MutableNode<T>) = neighborsInternal.add(neighbor)
 

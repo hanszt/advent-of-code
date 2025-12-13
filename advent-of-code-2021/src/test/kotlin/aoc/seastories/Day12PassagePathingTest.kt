@@ -27,7 +27,7 @@ internal class Day12PassagePathingTest {
 
     @Test
     fun `part 1 result`() {
-        day12PassagePathing.part1().also(::println) shouldBe 3_298
+        day12PassagePathing.part1() shouldBe 3_298
     }
 
     @Test
@@ -42,7 +42,7 @@ internal class Day12PassagePathingTest {
 
     @Test
     fun `part 2 result`() {
-        day12PassagePathing.part2().also(::println) shouldBe 93_572
+        day12PassagePathing.part2() shouldBe 93_572
     }
 
     @Nested
@@ -61,7 +61,7 @@ internal class Day12PassagePathingTest {
         @Test
         fun `part 1 small`() {
             val s = day12Elizarov(Path("input/day12test.txt").readLines())
-                .map { it.traceBack { it.label }.toMutableList().apply { reverse() }.joinToString(",") }
+                .map { it.traceBack(Cave::label).toMutableList().apply { reverse() }.joinToString(",") }
                 .toList()
 
             s shouldHaveSize 10
@@ -70,7 +70,7 @@ internal class Day12PassagePathingTest {
         @Test
         fun `part 2 small`() {
             val s = day12Elizarov(Path("input/day12test.txt").readLines(), visitSmallCaveTwice = true)
-                .map { it.traceBack { it.label }.toMutableList().apply { reverse() }.joinToString(",") }
+                .map { it.traceBack (Cave::label).toMutableList().apply { reverse() }.joinToString(",") }
                 .toList()
 
             s shouldHaveSize 36
