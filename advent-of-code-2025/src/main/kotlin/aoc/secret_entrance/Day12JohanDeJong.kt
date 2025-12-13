@@ -1,7 +1,10 @@
 package aoc.secret_entrance
 
+import aoc.utils.graph.seenByBfs
 import aoc.utils.grid2d.*
 import aoc.utils.parts
+
+typealias CharMatrix = Array<CharArray>
 
 /** [Johan de Jong Day 12](https://github.com/johandj123/adventofcode2025/blob/master/src/Day12.java) */
 class Day12JohanDeJong(private val text: String) {
@@ -10,12 +13,12 @@ class Day12JohanDeJong(private val text: String) {
         val parts = text.lines().parts { it }
         val presents = parts.dropLast(1).map { CharMatrix(it.drop(1)) }
         val regions = parts.last().map(::Region)
-        val presentSizes = presents.map(::countGridPoint2Ds)
+        val presentSizes = presents.map { m -> m.chars().count { it == '#' } }
         val presentsAllOrientations = presents.map(::allOrientations)
 
         var count = 0
         for (region in regions) {
-            if (region.size < region.countGridPoint2DsNeeded(presentSizes)) {
+            if (region.size < region.countGridPointsNeeded(presentSizes)) {
                 continue
             }
             if (region.canPlacePresents(presentsAllOrientations)) {
@@ -28,18 +31,17 @@ class Day12JohanDeJong(private val text: String) {
     internal class Region(line: String) {
         val width: Int
         val height: Int
-        val counts: List<Int>
+        val counts = line.substringAfter(": ").split(' ').map { it.toInt() }
 
         init {
-            val ints = extractPositiveIntegers(line)
-            width = ints[0]
-            height = ints[1]
-            counts = ints.drop(2)
+            val (m, n) = line.substringBefore(':').split('x').map { it.toInt() }
+            width = m
+            height = n
         }
 
         val size: Int = width * height
 
-        fun countGridPoint2DsNeeded(presentSizes: List<Int>): Int =
+        fun countGridPointsNeeded(presentSizes: List<Int>): Int =
             counts.indices.sumOf { counts[it] * presentSizes[it] }
 
         fun presentsToBePlaced(presentsAllOrientations: List<Set<CharMatrix>>): List<Set<CharMatrix>> = buildList {
@@ -53,16 +55,15 @@ class Day12JohanDeJong(private val text: String) {
         override fun toString(): String = "Region{width=$width, height=$height, counts=$counts}"
 
         fun canPlacePresents(presentsAllOrientations: List<Set<CharMatrix>>): Boolean {
-            val charMatrix = CharMatrix(height, width, '.')
             val presentList = presentsToBePlaced(presentsAllOrientations)
-            return charMatrix.canPlacePresents(presentList)
+            return CharMatrix(height, width, '.').canPlacePresents(presentList)
         }
 
         private fun CharMatrix.canPlacePresents(presentsAllOrientations: List<Set<CharMatrix>>): Boolean {
             if (presentsAllOrientations.isEmpty()) {
                 return true
             }
-            val presentOrientations: Set<CharMatrix> = presentsAllOrientations.first()
+            val presentOrientations = presentsAllOrientations.first()
             for (present in presentOrientations) {
                 for (y in 0..<this.height - present.height + 1) {
                     for (x in 0..<this.width - present.width + 1) {
@@ -93,28 +94,15 @@ class Day12JohanDeJong(private val text: String) {
             return true
         }
 
-        private fun CharMatrix.place(present: CharMatrix, position: GridPoint2D) {
-            set(present, position, '#')
-        }
+        private fun CharMatrix.place(present: CharMatrix, position: GridPoint2D) = set(present, position, '#')
+        private fun CharMatrix.unplace(present: CharMatrix, position: GridPoint2D) = set(present, position, '.')
 
-        private fun CharMatrix.unplace(present: CharMatrix, position: GridPoint2D) {
-            set(present, position, '.')
-        }
-
-        companion object {
-            private val nonDigit = "\\D".toRegex()
-
-            fun extractPositiveIntegers(input: String): List<Int> {
-                return input.split(nonDigit).filter(String::isNotBlank).map(String::toInt)
-            }
-
-            private fun CharMatrix.set(present: CharMatrix, position: GridPoint2D, c: Char) {
-                for (y in 0..<present.height) {
-                    for (x in 0..<present.width) {
-                        val d = GridPoint2D(x, y)
-                        if (present[d] == '#') {
-                            this[position + d] = c
-                        }
+        private fun CharMatrix.set(present: CharMatrix, position: GridPoint2D, c: Char) {
+            for (y in 0..<present.height) {
+                for (x in 0..<present.width) {
+                    val d = GridPoint2D(x, y)
+                    if (present[d] == '#') {
+                        this[position + d] = c
                     }
                 }
             }
@@ -142,51 +130,24 @@ class Day12JohanDeJong(private val text: String) {
         }
 
         fun getRow(y: Int): String = buildString(content[y].size) {
-            for (x in content[y].indices) {
-                append(content[y][x])
-            }
+            for (x in content[y].indices) append(content[y][x])
         }
 
         fun getColumn(x: Int): String = buildString(content.size) {
-            for (chars in content) {
-                append(chars[x])
-            }
+            for (chars in content) append(chars[x])
         }
 
-        fun transpose(): CharMatrix {
-            val s = List(this.width) { getColumn(it) }
-            return CharMatrix(s)
-        }
-
-        fun mirrorHorizontal(): CharMatrix = CharMatrix(content.mirroredHorizontally())
-        fun mirrorVertical(): CharMatrix = CharMatrix(content.mirroredVertically())
+        fun transposed(): CharMatrix = CharMatrix(List(width) { getColumn(it) })
+        fun mirroredHorizontally(): CharMatrix = CharMatrix(content.mirroredHorizontally())
+        fun mirroredVertically(): CharMatrix = CharMatrix(content.mirroredVertically())
 
         override fun equals(other: Any?): Boolean =
             this === other || (other is CharMatrix && content.contentDeepEquals(other.content))
 
         override fun hashCode(): Int = content.contentDeepHashCode()
-        override fun toString(): String = content.indices.joinToString("\n", transform = this::getRow)
+        override fun toString(): String = content.indices.joinToString("\n", transform = ::getRow)
     }
 
-    companion object {
-        private fun allOrientations(charMatrix: CharMatrix): Set<CharMatrix> =
-            charMatrix.seenByBfs { listOf(it, it.mirrorHorizontal(), it.mirrorVertical(), it.transpose()) }
-
-        private fun countGridPoint2Ds(charMatrix: CharMatrix): Int = charMatrix.chars().count { it == '#' }
-
-        fun <T> T.seenByBfs(toNeighbours: (T) -> Iterable<T>): Set<T> {
-            val start = setOf(this)
-            val seen = HashSet(start)
-            val todo = ArrayDeque(start)
-            while (todo.isNotEmpty()) {
-                val node = todo.removeLast()
-                for (nextNode in toNeighbours(node)) {
-                    if (seen.add(nextNode)) {
-                        todo.add(nextNode)
-                    }
-                }
-            }
-            return seen
-        }
-    }
+    private fun allOrientations(charMatrix: CharMatrix): Set<CharMatrix> =
+        charMatrix.seenByBfs { listOf(it, it.mirroredHorizontally(), it.mirroredVertically(), it.transposed()) }
 }
