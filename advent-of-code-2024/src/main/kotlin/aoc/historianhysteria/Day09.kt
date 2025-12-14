@@ -1,9 +1,9 @@
 package aoc.historianhysteria
 
 import aoc.utils.ChallengeDay
+import aoc.utils.swap
 import java.nio.file.Path
-import java.util.TreeSet
-import kotlin.collections.lastIndex
+import java.util.*
 import kotlin.io.path.readText
 
 /**
@@ -29,17 +29,12 @@ class Day09(private val diskMap: String) : ChallengeDay {
         return segments
     }
 
-    override fun part1(): Long {
-        val deFragmented = deFragment(diskSegments)
-        var sum = 0L
-        for ((i, fs) in deFragmented.withIndex()) {
-            sum += (i * fs.id).toLong()
-        }
-        return sum
+    override fun part1(): Long = deFragment(diskSegments).withIndex().sumOf { (i, fs) ->
+        (i * fs.id).toLong()
     }
 
     /**
-     * Solution Elizarov
+     * [Solution Elizarov](https://github.com/elizarov/AdventOfCode2024/blob/main/src/Day09_2.kt)
      */
     override fun part2(): Long {
         val input = diskMap.lines()
@@ -47,11 +42,9 @@ class Day09(private val diskMap: String) : ChallengeDay {
         val m = s.sumOf { it.digitToInt() }
         val a = IntArray(m)
         var cur = 0
-        data class BD(val j: Int, val k: Int): Comparable<BD> {
-            override fun compareTo(other: BD): Int = j - other.j
-        }
+        data class BD(val j: Int, val k: Int)
         val files = ArrayList<BD>()
-        val space = Array(10) { TreeSet<BD>() }
+        val space = Array(10) { TreeSet<BD>(compareBy { it.j }) }
         for (i in s.indices) {
             val k = s[i].digitToInt()
             val t = if (i % 2 == 0) {
@@ -73,7 +66,7 @@ class Day09(private val diskMap: String) : ChallengeDay {
             val (sj, sl) = best
             if (sj > fj) continue
             for (k in 0..<fl) {
-                a[fj + k] = a[sj + k].also { a[sj + k] = a[fj + k] }
+                a.swap(fj + k, sj + k)
             }
             space[sl].remove(best)
             val rem = sl - fl
