@@ -112,21 +112,15 @@ private fun mapCapacity(expectedSize: Int): Int = when {
 }
 
 fun CharArray.swap(i: Int, j: Int) {
-    val temp = this[i]
-    this[i] = this[j]
-    this[j] = temp
+    this[i] = this[j].also { this[j] = this[i] }
 }
 
 fun <T> Array<T>.swap(i: Int, j: Int) {
-    val temp = this[i]
-    this[i] = this[j]
-    this[j] = temp
+    this[i] = this[j].also { this[j] = this[i] }
 }
 
 fun IntArray.swap(i: Int, j: Int) {
-    val temp = this[i]
-    this[i] = this[j]
-    this[j] = temp
+    this[i] = this[j].also { this[j] = this[i] }
 }
 
 fun <T : Comparable<T>> Iterable<T>.max() = maxOf { it }
@@ -166,5 +160,5 @@ fun sumNaturalNrs(start: Int = 1, bound: Int) = sumOfArithmeticSeries(start, bou
 fun sumOfArithmeticSeries(first: Int, last: Int, termCount: Int) = (first + last) * termCount / 2
 
 enum class Tag {
-    RECURSIVE, PATH_SEARCH, GRAPH, FLOOD_FILL, INFINITY, THREE_D, AOC_MATH, MANY_WORLDS
+    RECURSIVE, PATH_SEARCH, GRAPH, FLOOD_FILL, INFINITY, THREE_D, AOC_MATH, MANY_WORLDS, MATRIX_OPTIMIZATION
 }

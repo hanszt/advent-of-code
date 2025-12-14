@@ -89,4 +89,9 @@ internal class AocUtilsKtTest {
         listOf(1, 2, 3, 4).rotated(1) shouldBe listOf(2, 3, 4, 1)
         listOf(1, 2, 3, 4).rotated(2) shouldBe listOf(3, 4, 1, 2)
     }
+
+    @Test
+    fun testSwap() {
+        intArrayOf(1, 2, 3, 4).also { it.swap(1, 3) } shouldBe intArrayOf(1, 4, 3, 2)
+    }
 }
