@@ -7,6 +7,9 @@ import kotlin.math.sign
 import kotlin.time.DurationUnit
 import kotlin.time.TimeSource
 
+/**
+ * [aoc.utils.Tag.MATRIX_OPTIMIZATION]
+ */
 object Day10ElizarovGauss {
     private const val INF = Int.MAX_VALUE / 2
 
@@ -32,9 +35,9 @@ object Day10ElizarovGauss {
      * [Gaussian elimination](https://en.wikipedia.org/wiki/Gaussian_elimination)
      */
     private fun countFewestJoltagePresses(s: String): Int {
-        val goal = getGoal(s)
+        val goal = Day10.toGoal(s)
         val n = goal.size // constraints
-        val w = variables(s, n)
+        val w = toWiring(s, n)
         val m = w.size // variables
         val gMax = goal.max()
         val d = Array(m) { IntArray(m) }
@@ -71,9 +74,9 @@ object Day10ElizarovGauss {
             d.swap(je, j1)
             r.swap(je, j1)
             w.swap(je, j1)
-            for (j in 0..<mr) w[j][ie] = w[j][i1].also { w[j][i1] = w[j][ie] }
+            for (j in 0..<mr) w[j].swap(ie, i1)
             check(w[je][ie] != 0)
-            goal[ie] = goal[i1].also { goal[i1] = goal[ie] }
+            goal.swap(ie, i1)
             // eliminate variable je from d * a >= bound
             for (k in 0..<m) {
                 if (d[je][k] == 0) continue // is already zero
@@ -142,19 +145,13 @@ object Day10ElizarovGauss {
         return res
     }
 
-    private fun getGoal(s: String): IntArray = s.substringAfter('{')
-        .dropLast(1)
-        .split(",")
-        .map { it.toInt() }
-        .toIntArray()
-
-    private fun variables(s: String, n: Int): Array<IntArray> {
+    private fun toWiring(s: String, n: Int): Array<IntArray> {
         return s.substringAfter(']').substringBefore('{').trim()
             .split(" ")
             .map { w ->
-                val index = w.substring(1, w.length - 1).split(",").map { it.toInt() }
+                val indices = w.substring(1, w.length - 1).split(",").map { it.toInt() }
                 val wi = IntArray(n)
-                for (j in index) wi[j] = 1
+                for (j in indices) wi[j] = 1
                 wi
             }.toTypedArray()
     }

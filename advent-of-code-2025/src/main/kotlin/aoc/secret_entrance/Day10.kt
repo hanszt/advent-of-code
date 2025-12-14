@@ -1,8 +1,8 @@
 package aoc.secret_entrance
 
 import aoc.utils.ChallengeDay
+import aoc.utils.swap
 import java.nio.file.Path
-import java.util.stream.StreamSupport
 import kotlin.io.path.readLines
 import kotlin.time.DurationUnit
 import kotlin.time.TimeSource.Monotonic.markNow
@@ -26,11 +26,7 @@ class Day10(private val lines: List<String>) : ChallengeDay {
                     else -> error("$c")
                 } shl i
             }.sum()
-            val wiring = s.substringAfter(']').substringBefore('{').trim()
-                .split(" ")
-                .map { w ->
-                    w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
-                }.toIntArray()
+            val wiring = toWiring(s)
 
             fun find(i: Int, mask: Int): Int {
                 if (i >= wiring.size) {
@@ -50,17 +46,16 @@ class Day10(private val lines: List<String>) : ChallengeDay {
         return ans
     }
 
-
-    override fun part2(): Int {
-        val parallel = true
-        return StreamSupport.stream(lines.withIndex().spliterator(), parallel)
-            .mapToInt(::countFewestJoltagePresses)
-            .sum()
-    }
+    override fun part2(): Int = lines.withIndex().toList().parallelStream()
+        .mapToInt(::countFewestJoltagePresses)
+        .sum()
 
     private fun countFewestJoltagePresses(iv: IndexedValue<String>): Int {
         val start = markNow()
-        val (goal, wiring) = prepare(iv.value)
+        val line = iv.value
+        val goal = toGoal(line)
+        val wiring = toWiring(line)
+        reindex(goal, wiring)
         val res = solve(goal, wiring)
         println("${iv.index + 1}: $res in ${start.elapsedNow().toString(DurationUnit.SECONDS, 3)}")
         return res
@@ -68,7 +63,9 @@ class Day10(private val lines: List<String>) : ChallengeDay {
 
     fun displayPreparedStatePart2() {
         for ((lineIndex, line) in lines.withIndex()) {
-            val (goal, wiring) = prepare(line)
+            val goal = toGoal(line)
+            val wiring = toWiring(line)
+            reindex(goal, wiring)
             println("=== ${lineIndex + 1}:")
             display(wiring, goal)
         }
@@ -143,13 +140,10 @@ class Day10(private val lines: List<String>) : ChallengeDay {
         return res
     }
 
-    private fun prepare(line: String): Pair<IntArray, IntArray> {
-        val goal = line.substringAfter('{').dropLast(1).split(",").map { it.toInt() }.toIntArray()
-        val wiring = line.substringAfter(']')
-            .substringBefore('{').trim().split(" ").map { w ->
-                w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
-            }.toIntArray()
-        // reindex from highest bit to lowest
+    /**
+     * Reindex from highest bit to lowest
+     */
+    private fun reindex(goal: IntArray, wiring: IntArray) {
         var done = 0
         for (j in goal.lastIndex downTo 0) {
             val wcnt = IntArray(goal.size)
@@ -160,7 +154,7 @@ class Day10(private val lines: List<String>) : ChallengeDay {
             val j1 = (0..j)
                 .sortedBy { goal[it] }
                 .minBy { wcnt[it] }
-            goal[j] = goal[j1].also { goal[j1] = goal[j] }
+            goal.swap(j , j1)
             for (i in wiring.indices) {
                 val w = wiring[i]
                 val bj = w shr j and 1
@@ -170,10 +164,21 @@ class Day10(private val lines: List<String>) : ChallengeDay {
             wiring.sortDescending(done, wiring.size)
             while (done < wiring.size && wiring[done] shr j and 1 != 0) done++
         }
-        return Pair(goal, wiring)
     }
 
     companion object {
+
+        fun toGoal(line: String): IntArray = line.substringAfter('{')
+            .dropLast(1)
+            .split(",")
+            .map { it.toInt() }
+            .toIntArray()
+
+        fun toWiring(line: String): IntArray = line.substringAfter(']')
+            .substringBefore('{').trim().split(" ").map { w ->
+                w.substring(1, w.length - 1).split(",").sumOf { 1 shl it.toInt() }
+            }.toIntArray()
+
         private const val INF = Int.MAX_VALUE / 2
     }
 }
