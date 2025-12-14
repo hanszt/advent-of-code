@@ -53,6 +53,11 @@ class Day10Test {
     }
 
     @Test
+    fun testPart2FastJdeJong() {
+        Day10JohanDeJong(path).part2()
+    }
+
+    @Test
     @Disabled("Takes to long")
     fun testPart2Zebalu() {
         day10Zebalu.part2() shouldBe 20317
