@@ -7,15 +7,9 @@ pub fn part_1(input: &str) -> i64 {
         let direction = parts.next().unwrap();
         let amount: i64 = parts.next().unwrap().parse().unwrap();
         match direction {
-            "forward" => {
-                x += amount;
-            }
-            "down" => {
-                y += amount;
-            }
-            "up" => {
-                y -= amount;
-            }
+            "forward" => x += amount,
+            "down" => y += amount,
+            "up" => y -= amount,
             _ => panic!(),
         }
     }
@@ -36,12 +30,8 @@ pub fn part_2(input: &str) -> i64 {
                 x += amount;
                 y += aim * amount;
             }
-            "down" => {
-                aim += amount;
-            }
-            "up" => {
-                aim -= amount;
-            }
+            "down" => aim += amount,
+            "up" => aim -= amount,
             _ => panic!(),
         }
     }
