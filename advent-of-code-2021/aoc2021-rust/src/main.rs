@@ -1,5 +1,5 @@
-use aoc2021_rust::day02;
 use aoc2021_rust::{day01, day18snailfish};
+use aoc2021_rust::{day02, day23amphipod};
 
 fn main() {
     println!("\nDay 1");
@@ -16,4 +16,9 @@ fn main() {
     let input_day18 = include_str!("../../input/day18.txt");
     println!("part 1: {}", day18snailfish::part_1(input_day18));
     println!("part 2: {}", day18snailfish::part_2(input_day18));
+
+    println!("\nDay 23 Amphipod");
+    let input_day23 = include_str!("../../input/day23.txt");
+    println!("part 1: {}", day23amphipod::part_1(input_day23));
+    println!("part 2: {}", day23amphipod::part_2(input_day23));
 }
