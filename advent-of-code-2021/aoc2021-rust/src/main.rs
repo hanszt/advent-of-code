@@ -1,5 +1,4 @@
-use aoc2021_rust::{day01, day15chiton, day18snailfish};
-use aoc2021_rust::{day02, day23amphipod};
+use aoc2021_rust::{day01, day02, day15chiton, day18snailfish, day23amphipod};
 
 fn main() {
     println!("\nDay 1");
