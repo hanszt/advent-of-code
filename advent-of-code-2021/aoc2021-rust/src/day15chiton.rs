@@ -4,13 +4,13 @@ use std::{
 };
 
 pub fn part_1(input: &str) -> i32 {
-    let (map, mut best, max_x, max_y) = input_part1(input);
-    dijkstra(map, &mut best, max_y, max_x)
+    let (map, mut best, goal) = input_part1(input);
+    dijkstra(map, &mut best, goal)
 }
 
 pub fn part_2(input: &str) -> i32 {
-    let (map, mut best, max_x, max_y) = input_part2(input);
-    dijkstra(map, &mut best, max_x, max_y)
+    let (map, mut best, goal) = input_part2(input);
+    dijkstra(map, &mut best, goal)
 }
 
 fn input_part1(
@@ -18,8 +18,7 @@ fn input_part1(
 ) -> (
     HashMap<(usize, usize), i32>,
     HashMap<(usize, usize), i32>,
-    usize,
-    usize,
+    (usize, usize),
 ) {
     let mut map = HashMap::new();
     let mut best = HashMap::new();
@@ -33,7 +32,7 @@ fn input_part1(
             max_y = y;
         }
     }
-    (map, best, max_x, max_y)
+    (map, best, (max_x, max_y))
 }
 
 fn wrap(i: i32) -> i32 {
@@ -44,8 +43,7 @@ fn wrap(i: i32) -> i32 {
 fn dijkstra(
     map: HashMap<(usize, usize), i32>,
     best: &mut HashMap<(usize, usize), i32>,
-    max_x: usize,
-    max_y: usize,
+    (max_x, max_y): (usize, usize),
 ) -> i32 {
     let mut visit = BinaryHeap::new();
     visit.push((Reverse(0), (0, 0)));
@@ -70,8 +68,7 @@ fn input_part2(
 ) -> (
     HashMap<(usize, usize), i32>,
     HashMap<(usize, usize), i32>,
-    usize,
-    usize,
+    (usize, usize),
 ) {
     let mut map = HashMap::new();
     let mut best = HashMap::new();
@@ -122,7 +119,7 @@ fn input_part2(
 
     let max_x = tile_width * 5 - 1;
     let max_y = tile_height * 5 - 1;
-    (map, best, max_x, max_y)
+    (map, best, (max_x, max_y))
 }
 
 #[cfg(test)]
