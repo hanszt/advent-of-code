@@ -166,14 +166,11 @@ fn to_nums(input: &str) -> Vec<Number> {
 }
 
 pub fn part_1(input: &str) -> u32 {
-    let nums = to_nums(input);
-
-    let final_sum = nums
+    to_nums(input)
         .into_iter()
         .reduce(|a, b| Number::Pair(Box::new(a), Box::new(b)).reduce())
-        .unwrap();
-
-    final_sum.mag()
+        .expect(&format!("No numbers in input: {}", input))
+        .mag()
 }
 
 pub fn part_2(input: &str) -> u32 {
