@@ -4,21 +4,17 @@ use std::{
 };
 
 pub fn part_1(input: &str) -> i32 {
-    let (graph, goal) = input_part1(input);
+    let (graph, goal) = process_input(input);
     dijkstra(graph, goal)
 }
 
 pub fn part_2(input: &str) -> i32 {
-    let (graph, goal) = input_part2(input);
+    let (mut graph, (max_x, max_y)) = process_input(input);
+    let goal = magnify(&mut graph, 5, max_x, max_y);
     dijkstra(graph, goal)
 }
 
-fn input_part1(
-    input: &str,
-) -> (
-    HashMap<(usize, usize), i32>,
-    (usize, usize),
-) {
+fn process_input(input: &str) -> (HashMap<(usize, usize), i32>, (usize, usize)) {
     let mut graph = HashMap::new();
     let mut max_x = 0;
     let mut max_y = 0;
@@ -26,8 +22,8 @@ fn input_part1(
         for (x, c) in line.chars().enumerate() {
             graph.insert((y, x), c.to_digit(10).unwrap() as i32);
             max_x = x;
-            max_y = y;
         }
+        max_y = y;
     }
     (graph, (max_x, max_y))
 }
@@ -37,11 +33,9 @@ fn wrap(i: i32) -> i32 {
     if i == 0 { 1 } else { i }
 }
 
-fn dijkstra(
-    graph: HashMap<(usize, usize), i32>,
-    (max_x, max_y): (usize, usize),
-) -> i32 {
-    let mut best = graph.iter()
+fn dijkstra(graph: HashMap<(usize, usize), i32>, (max_x, max_y): (usize, usize)) -> i32 {
+    let mut best = graph
+        .iter()
         .map(|(k, _)| (*k, i32::MAX))
         .collect::<HashMap<(usize, usize), i32>>();
     let mut visit = BinaryHeap::new();
@@ -62,55 +56,37 @@ fn dijkstra(
     best[&(max_y, max_x)]
 }
 
-fn input_part2(
-    input: &str,
-) -> (
-    HashMap<(usize, usize), i32>,
-    (usize, usize),
-) {
-    let mut graph = HashMap::new();
-    let mut max_x = 0;
-    let mut max_y = 0;
-    for (y, line) in input.trim().split('\n').enumerate() {
-        for (x, c) in line.chars().enumerate() {
-            graph.insert((y, x), c.to_digit(10).unwrap() as i32);
-            max_x = x;
-            max_y = y;
-        }
-    }
+fn magnify(
+    graph: &mut HashMap<(usize, usize), i32>,
+    magnification: usize,
+    max_x: usize,
+    max_y: usize,
+) -> (usize, usize) {
     let tile_width = max_x + 1;
     let tile_height = max_y + 1;
-
-    for y_tile in 0..5 {
-        for x_tile in 0..5 {
+    for y_tile in 0..magnification {
+        for x_tile in 0..magnification {
             if y_tile == 0 && x_tile == 0 {
                 continue;
             }
             for y in 0..=max_y {
                 for x in 0..=max_x {
-                    if x_tile == 0 {
-                        graph.insert(
-                            (y + y_tile * tile_height, x + x_tile * tile_width),
-                            wrap(
-                                graph[&(y + (y_tile - 1) * tile_height, x + x_tile * tile_width)] + 1,
-                            ),
-                        );
+                    let x1 = x + x_tile * tile_width;
+                    let y1 = y + y_tile * tile_height;
+                    let p2n = if x_tile == 0 {
+                        &(y + (y_tile - 1) * tile_height, x1)
                     } else {
-                        graph.insert(
-                            (y + y_tile * tile_height, x + x_tile * tile_width),
-                            wrap(
-                                graph[&(y + y_tile * tile_height, x + (x_tile - 1) * tile_width)] + 1,
-                            ),
-                        );
-                    }
+                        &(y1, x + (x_tile - 1) * tile_width)
+                    };
+                    let cost = wrap(graph[p2n] + 1);
+                    graph.insert((y1, x1), cost);
                 }
             }
         }
     }
-
-    let max_x = tile_width * 5 - 1;
-    let max_y = tile_height * 5 - 1;
-    (graph, (max_x, max_y))
+    let max_x = tile_width * magnification - 1;
+    let max_y = tile_height * magnification - 1;
+    (max_x, max_y)
 }
 
 #[cfg(test)]
