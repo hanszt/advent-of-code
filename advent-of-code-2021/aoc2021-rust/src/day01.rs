@@ -28,11 +28,11 @@ fn to_depths(input: &str) -> Vec<i64> {
 mod tests {
     #[test]
     fn part_1() {
-        assert_eq!(1722, super::part_1(include_str!("../../input/day1.txt")));
+        assert_eq!(super::part_1(include_str!("../../input/day1.txt")), 1_722);
     }
 
     #[test]
     fn part_2() {
-        assert_eq!(1748, super::part_2(include_str!("../../input/day1.txt")));
+        assert_eq!(super::part_2(include_str!("../../input/day1.txt")), 1_748);
     }
 }

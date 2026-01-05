@@ -43,11 +43,11 @@ mod tests {
 
     #[test]
     fn part_1() {
-        assert_eq!(2_019_945, super::part_1(include_str!("../../input/day2.txt")));
+        assert_eq!(super::part_1(include_str!("../../input/day2.txt")), 2_019_945);
     }
 
     #[test]
     fn part_2() {
-        assert_eq!(1_599_311_480, super::part_2(include_str!("../../input/day2.txt")));
+        assert_eq!(super::part_2(include_str!("../../input/day2.txt")), 1_599_311_480);
     }
 }
