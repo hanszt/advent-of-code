@@ -241,12 +241,9 @@ fn to_room_lines(input: &str) -> (Vec<char>, Vec<char>) {
     (room_line1, room_line2)
 }
 
-fn solve<F>(input: &str, to_state: F) -> usize
-where
-    F: Fn(Vec<char>, Vec<char>) -> State,
-{
+fn solve(input: &str, to_state: impl Fn(&[char], &[char]) -> State) -> usize {
     let (room_line1, room_line2) = to_room_lines(input);
-    let state = to_state(room_line1, room_line2);
+    let state = to_state(&room_line1, &room_line2);
     // eprintln!("{:?} {}", state, state.hcost());
     let mut best = HashMap::new();
     let mut queue = BinaryHeap::new();
