@@ -189,8 +189,7 @@ impl State {
 }
 
 pub fn part_1(input: &str) -> usize {
-    let (room_line1, room_line2) = to_room_lines(input);
-    let state = State {
+    solve(input, |room_line1, room_line2| State {
         bottom: 2,
         hallway: [None; 11],
         rooms: [
@@ -199,14 +198,11 @@ pub fn part_1(input: &str) -> usize {
             [Some(room_line1[7]), Some(room_line2[7]), None, None],
             [Some(room_line1[9]), Some(room_line2[9]), None, None],
         ],
-    };
-
-    solve(state)
+    })
 }
 
 pub fn part_2(input: &str) -> usize {
-    let (room_line1, room_line2) = to_room_lines(input);
-    let state = State {
+    solve(input, |room_line1, room_line2| State {
         bottom: 4,
         hallway: [None; 11],
         rooms: [
@@ -235,8 +231,7 @@ pub fn part_2(input: &str) -> usize {
                 Some(room_line2[9]),
             ],
         ],
-    };
-    solve(state)
+    })
 }
 
 fn to_room_lines(input: &str) -> (Vec<char>, Vec<char>) {
@@ -246,7 +241,12 @@ fn to_room_lines(input: &str) -> (Vec<char>, Vec<char>) {
     (room_line1, room_line2)
 }
 
-fn solve(state: State) -> usize {
+fn solve<F>(input: &str, to_state: F) -> usize
+where
+    F: Fn(Vec<char>, Vec<char>) -> State,
+{
+    let (room_line1, room_line2) = to_room_lines(input);
+    let state = to_state(room_line1, room_line2);
     // eprintln!("{:?} {}", state, state.hcost());
     let mut best = HashMap::new();
     let mut queue = BinaryHeap::new();
