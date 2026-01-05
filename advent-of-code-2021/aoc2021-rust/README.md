@@ -15,11 +15,21 @@ cargo build
 
 ---
 
+## Test
+
+```sh
+cargo test
+```
+
+---
+
 ## Clean
 
 ```sh
 cargo clean
 ```
+
+---
 
 ## Sources
 
