@@ -36,23 +36,15 @@ impl Number {
 
     fn add_to_right(&mut self, num: u32) {
         match self {
-            Number::Pair(a, _b) => {
-                a.add_to_right(num);
-            }
-            Number::Regular(n) => {
-                *n += num;
-            }
+            Number::Pair(a, _b) => a.add_to_right(num),
+            Number::Regular(n) => *n += num,
         }
     }
 
     fn add_to_left(&mut self, num: u32) {
         match self {
-            Number::Pair(_a, b) => {
-                b.add_to_left(num);
-            }
-            Number::Regular(n) => {
-                *n += num;
-            }
+            Number::Pair(_a, b) => b.add_to_left(num),
+            Number::Regular(n) => *n += num,
         }
     }
 
@@ -189,14 +181,12 @@ pub fn part_2(input: &str) -> u32 {
 
     let mut max_mag = 0;
     for i in 0..nums.len() {
-        for j in 0..nums.len() {
-            if i != j {
-                max_mag = max_mag.max(
-                    Number::Pair(Box::new(nums[i].clone()), Box::new(nums[j].clone()))
-                        .reduce()
-                        .mag(),
-                );
-            }
+        for j in (i + 1)..nums.len() {
+            max_mag = max_mag.max(
+                Number::Pair(Box::new(nums[i].clone()), Box::new(nums[j].clone()))
+                    .reduce()
+                    .mag(),
+            );
         }
     }
     max_mag
@@ -236,7 +226,8 @@ mod tests {
 [[[[5,4],[7,7]],8],[[8,3],8]]
 [[9,3],[[9,9],[6,[4,9]]]]
 [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
-[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]"),
+[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]"
+            ),
             4_140
         );
     }
