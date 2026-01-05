@@ -1,9 +1,26 @@
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, HashMap, VecDeque},
+    collections::{BinaryHeap, HashMap},
 };
 
 pub fn part_1(input: &str) -> i32 {
+    let (map, mut best, max_x, max_y) = input_part1(input);
+    dijkstra(map, &mut best, max_y, max_x)
+}
+
+pub fn part_2(input: &str) -> i32 {
+    let (map, mut best, max_x, max_y) = input_part2(input);
+    dijkstra(map, &mut best, max_x, max_y)
+}
+
+fn input_part1(
+    input: &str,
+) -> (
+    HashMap<(usize, usize), i32>,
+    HashMap<(usize, usize), i32>,
+    usize,
+    usize,
+) {
     let mut map = HashMap::new();
     let mut best = HashMap::new();
     let mut max_x = 0;
@@ -16,22 +33,7 @@ pub fn part_1(input: &str) -> i32 {
             max_y = y;
         }
     }
-    let mut visit = VecDeque::new();
-    visit.push_back(((0, 0), 0));
-    while let Some(((y, x), cost)) = visit.pop_front() {
-        if cost < best[&(y, x)] {
-            best.insert((y, x), cost);
-            for (dy, dx) in [(1isize, 0), (-1, 0), (0, 1), (0, -1)] {
-                let y = (y as isize) + dy;
-                let x = (x as isize) + dx;
-                if y >= 0 && x >= 0 && y <= max_y as isize && x <= max_x as isize {
-                    let p2 = (y as usize, x as usize);
-                    visit.push_back((p2, cost + map[&p2]));
-                }
-            }
-        }
-    }
-    best[&(max_y, max_x)]
+    (map, best, max_x, max_y)
 }
 
 fn wrap(i: i32) -> i32 {
@@ -39,7 +41,38 @@ fn wrap(i: i32) -> i32 {
     if i == 0 { 1 } else { i }
 }
 
-pub fn part_2(input: &str) -> i32 {
+fn dijkstra(
+    map: HashMap<(usize, usize), i32>,
+    best: &mut HashMap<(usize, usize), i32>,
+    max_x: usize,
+    max_y: usize,
+) -> i32 {
+    let mut visit = BinaryHeap::new();
+    visit.push((Reverse(0), (0, 0)));
+    while let Some((Reverse(cost), (y, x))) = visit.pop() {
+        if cost < best[&(y, x)] {
+            best.insert((y, x), cost);
+            for (dy, dx) in [(1isize, 0), (-1, 0), (0, 1), (0, -1)] {
+                let y = (y as isize) + dy;
+                let x = (x as isize) + dx;
+                if y >= 0 && x >= 0 && y <= max_y as isize && x <= max_x as isize {
+                    let p2 = (y as usize, x as usize);
+                    visit.push((Reverse(cost + map[&p2]), p2));
+                }
+            }
+        }
+    }
+    best[&(max_y, max_x)]
+}
+
+fn input_part2(
+    input: &str,
+) -> (
+    HashMap<(usize, usize), i32>,
+    HashMap<(usize, usize), i32>,
+    usize,
+    usize,
+) {
     let mut map = HashMap::new();
     let mut best = HashMap::new();
     let mut max_x = 0;
@@ -87,25 +120,9 @@ pub fn part_2(input: &str) -> i32 {
         }
     }
 
-    let max_y = tile_height * 5 - 1;
     let max_x = tile_width * 5 - 1;
-
-    let mut visit = BinaryHeap::new();
-    visit.push((Reverse(0), (0, 0)));
-    while let Some((Reverse(cost), (y, x))) = visit.pop() {
-        if cost < best[&(y, x)] {
-            best.insert((y, x), cost);
-            for (dy, dx) in [(1isize, 0), (-1, 0), (0, 1), (0, -1)] {
-                let y = (y as isize) + dy;
-                let x = (x as isize) + dx;
-                if y >= 0 && x >= 0 && y <= max_y as isize && x <= max_x as isize {
-                    let p2 = (y as usize, x as usize);
-                    visit.push((Reverse(cost + map[&p2]), p2));
-                }
-            }
-        }
-    }
-    best[&(max_y, max_x)]
+    let max_y = tile_height * 5 - 1;
+    (map, best, max_x, max_y)
 }
 
 #[cfg(test)]
