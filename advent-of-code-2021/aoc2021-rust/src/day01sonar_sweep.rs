@@ -1,7 +1,7 @@
 use crate::AocDay;
 
-pub struct Day01;
-impl AocDay<usize, i64> for Day01 {
+pub struct Day01SonarSweep;
+impl AocDay<usize, i64> for Day01SonarSweep {
     fn part_1(input: &str) -> usize {
         to_depths(input)
             .windows(2)
@@ -31,16 +31,16 @@ fn to_depths(input: &str) -> Vec<i64> {
 
 #[cfg(test)]
 mod tests {
-    use crate::day01::Day01;
+    use crate::day01sonar_sweep::Day01SonarSweep;
     use crate::AocDay;
 
     #[test]
     fn part_1() {
-        assert_eq!(Day01::part_1(include_str!("../../input/day1.txt")), 1_722);
+        assert_eq!(Day01SonarSweep::part_1(include_str!("../../input/day1.txt")), 1_722);
     }
 
     #[test]
     fn part_2() {
-        assert_eq!(Day01::part_2(include_str!("../../input/day1.txt")), 1_748);
+        assert_eq!(Day01SonarSweep::part_2(include_str!("../../input/day1.txt")), 1_748);
     }
 }
