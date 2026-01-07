@@ -1,6 +1,6 @@
 use aoc2021_rust::day01::Day01;
-use aoc2021_rust::AocDay;
 use aoc2021_rust::{day02, day15chiton, day18snailfish, day23amphipod};
+use aoc2021_rust::{day13transparent_origami, AocDay};
 
 fn main() {
     println!("\nDay 1");
@@ -12,6 +12,12 @@ fn main() {
     let input_day2 = include_str!("../../input/day2.txt");
     println!("part 1: {}", day02::part_1(input_day2));
     println!("part 2: {}", day02::part_2(input_day2));
+
+    println!("\nDay 13 Transparent Origami");
+    let input_day13 = include_str!("../../input/day13.txt");
+    let (part_1, part_2) = day13transparent_origami::solve(input_day13);
+    println!("part 1: {}", part_1);
+    println!("part 2: {}", "\n".to_owned() + &*part_2);
 
     println!("\nDay 15 chiton");
     let input_day15 = include_str!("../../input/day15.txt");

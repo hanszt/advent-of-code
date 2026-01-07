@@ -3,6 +3,7 @@ pub mod day02;
 pub mod day15chiton;
 pub mod day18snailfish;
 pub mod day23amphipod;
+pub mod day13transparent_origami;
 
 pub trait AocDay<R1, R2> {
     fn part_1(input: &str) -> R1;
