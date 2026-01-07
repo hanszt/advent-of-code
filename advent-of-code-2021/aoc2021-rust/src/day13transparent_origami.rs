@@ -1,3 +1,4 @@
+use extfn::extfn;
 use std::collections::HashSet;
 
 pub fn solve(input: &str) -> (usize, String) {
@@ -19,41 +20,10 @@ pub fn solve(input: &str) -> (usize, String) {
         let (axis, split) = instruction.split_once('=').unwrap();
         let split: i64 = split.parse().unwrap();
         match axis {
-            "x" => {
-                let mut new_points = HashSet::new();
-                for (y, x) in points.iter() {
-                    if *x == split {
-                        panic!();
-                    }
-
-                    if *x < split {
-                        new_points.insert((*y, *x));
-                    } else {
-                        new_points.insert((*y, split - (*x - split)));
-                    }
-                }
-                points = new_points;
-            }
-            "y" => {
-                let mut new_points = HashSet::new();
-                for (y, x) in points.iter() {
-                    if *y == split {
-                        panic!();
-                    }
-
-                    if *y < split {
-                        new_points.insert((*y, *x));
-                    } else {
-                        new_points.insert((split - (*y - split), *x));
-                    }
-                }
-                points = new_points;
-            }
-            _ => {
-                panic!();
-            }
+            "x" => points = split.updated_by_x(&points),
+            "y" => points = split.updated_by_y(&points),
+            _ => panic!(),
         }
-
         if i == 0 {
             part_a = points.len();
         }
@@ -76,6 +46,38 @@ pub fn solve(input: &str) -> (usize, String) {
     }
 
     (part_a, message)
+}
+
+#[extfn]
+fn updated_by_x(self: i64, points: &HashSet<(i64, i64)>) -> HashSet<(i64, i64)> {
+    let mut new_points = HashSet::new();
+    for (y, x) in points.iter() {
+        if *x == self {
+            panic!();
+        }
+        if *x < self {
+            new_points.insert((*y, *x));
+        } else {
+            new_points.insert((*y, self - (*x - self)));
+        }
+    }
+    new_points
+}
+
+#[extfn]
+fn updated_by_y(self: i64, points: &HashSet<(i64, i64)>) -> HashSet<(i64, i64)> {
+    let mut new_points = HashSet::new();
+    for (y, x) in points.iter() {
+        if *y == self {
+            panic!();
+        }
+        if *y < self {
+            new_points.insert((*y, *x));
+        } else {
+            new_points.insert((self - (*y - self), *x));
+        }
+    }
+    new_points
 }
 
 #[cfg(test)]

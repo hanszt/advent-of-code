@@ -5,3 +5,4 @@ authors = ["Hans Zuidervaart <hanszuidervaart@hotmail.com>"]
 edition = "2024"
 
 [dependencies]
+extfn = "0.1.3"
