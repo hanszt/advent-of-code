@@ -1,10 +1,12 @@
-use aoc2021_rust::{day01, day02, day15chiton, day18snailfish, day23amphipod};
+use aoc2021_rust::day01::Day01;
+use aoc2021_rust::AocDay;
+use aoc2021_rust::{day02, day15chiton, day18snailfish, day23amphipod};
 
 fn main() {
     println!("\nDay 1");
     let input_day1 = include_str!("../../input/day1.txt");
-    println!("part 1: {}", day01::part_1(input_day1));
-    println!("part 2: {}", day01::part_2(input_day1));
+    println!("part 1: {}", Day01::part_1(input_day1));
+    println!("part 2: {}", Day01::part_2(input_day1));
 
     println!("\nDay 2");
     let input_day2 = include_str!("../../input/day2.txt");
