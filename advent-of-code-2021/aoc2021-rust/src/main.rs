@@ -1,5 +1,5 @@
 use aoc2021_rust::day01sonar_sweep::Day01SonarSweep;
-use aoc2021_rust::{day02dive, day15chiton, day18snailfish, day23amphipod};
+use aoc2021_rust::{day02dive, day15chiton, day18snailfish, day21dirac_dice, day23amphipod};
 use aoc2021_rust::{day13transparent_origami, AocDay};
 
 fn main() {
@@ -28,6 +28,11 @@ fn main() {
     let input_day18 = include_str!("../../input/day18.txt");
     println!("part 1: {}", day18snailfish::part_1(input_day18));
     println!("part 2: {}", day18snailfish::part_2(input_day18));
+
+    println!("\nDay 21 Dirac Dice");
+    let input_day21 = include_str!("../../input/day21.txt");
+    println!("part 1: {}", day21dirac_dice::part_1(input_day21));
+    println!("part 2: {}", day21dirac_dice::part_2(input_day21));
 
     println!("\nDay 23 Amphipod");
     let input_day23 = include_str!("../../input/day23.txt");
