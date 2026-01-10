@@ -74,19 +74,33 @@ internal class Day22ReactorReboot(private val inputPath: String) : ChallengeDay 
                 }
             }
         }
-        fun BitSet.getAt(x: Int, y: Int, z: Int): Boolean = get((x * sizeY * sizeZ) + (y * sizeZ) + z)
+        return reactorMatrix.calculateVolume(ux, uy, uz)
+    }
 
-        var nrOfCubesOn = 0L
-        for (x in 0..<ux.lastIndex) {
-            for (y in 0..<uy.lastIndex) {
-                for (z in 0..<uz.lastIndex) {
-                    if (reactorMatrix.getAt(x, y, z)) {
-                        nrOfCubesOn += (ux[x + 1] - ux[x]) * (uy[y + 1] - uy[y]) * (uz[z + 1] - uz[z])
-                    }
-                }
-            }
+    /**
+     * Pro-Tip: Memory Efficiency During Volume Calculation
+     * If you find that the triple-loop for volume calculation is slow, you can use the BitSet.nextSetBit(index) method.
+     * This allows you to skip all the "off" (false) bits entirely, which is much faster if your reactor is mostly empty.
+     */
+    private fun BitSet.calculateVolume(ux: List<Long>, uy: List<Long>, uz: List<Long>): Long {
+        val sizeX = ux.size
+        val sizeY = uy.size
+        val sizeZ = uz.size
+        var totalPhysicalVolume: Long = 0
+        var i = nextSetBit(0)
+        while (i >= 0 && i < (sizeX * sizeY * sizeZ)) {
+            // Convert 1D index back to 3D
+            val x = i / (sizeY * sizeZ)
+            val y = (i / sizeZ) % sizeY
+            val z = i % sizeZ
+
+            // Calculate volume for this specific cell
+            val vol = (ux[x + 1] - ux[x]) * (uy[y + 1] - uy[y]) * (uz[z + 1] - uz[z])
+            totalPhysicalVolume += vol
+
+            i = nextSetBit(i + 1)
         }
-        return nrOfCubesOn
+        return totalPhysicalVolume
     }
 
     private fun List<Cuboid>.toCoordsBy(selector: (Cuboid) -> LongRange): List<Long> = asSequence()
