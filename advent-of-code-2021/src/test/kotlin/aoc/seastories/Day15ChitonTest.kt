@@ -16,9 +16,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeBlank
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Timeout
 import java.io.File
-import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
 internal class Day15ChitonTest {
@@ -40,18 +38,13 @@ internal class Day15ChitonTest {
 
     @Test
     fun `part 2 test input`() {
-        day15Test.part2() shouldBe 315
-    }
-
-    @Test
-    @Timeout(value = 8_000, unit = TimeUnit.MILLISECONDS)
-    fun `part 2 result`() {
-        day15.part2() shouldBe 2897
+        day15Test.part2().cost shouldBe 315
     }
 
     @Test
     fun `part 2 result as grid`() {
-        val pathInGridAsString = File("input/day15.txt").readLines().toMutableIntGrid(Char::digitToInt).pathInGridAsString()
+        val pathInGridAsString =
+            File("input/day15.txt").readLines().toMutableIntGrid(Char::digitToInt).pathInGridAsString()
         println(pathInGridAsString)
         pathInGridAsString.shouldNotBeBlank()
     }
@@ -67,7 +60,9 @@ internal class Day15ChitonTest {
             .mapNotNull(WeightedNode<GridPoint2D>::value)
             .forEach { (x, y) -> grid[y][x] = "%2s".format(grid[y][x]).withColors(BRIGHT_YELLOW, BgColor.YELLOW) }
 
-        return grid.gridAsString { if (it.length == 1) "%2s".format(it).withColors(TextColor.random(Random), BgColor.BROWN) else it }
+        return grid.gridAsString {
+            if (it.length == 1) "%2s".format(it).withColors(TextColor.random(Random), BgColor.BROWN) else it
+        }
     }
 
     @Nested

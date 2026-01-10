@@ -1,13 +1,13 @@
 package aoc.seastories
 
-import aoc.utils.*
-import aoc.utils.grid2d.GridPoint2D
-import aoc.utils.grid2d.GridPoint2D.Companion.by
 import aoc.utils.graph.WeightedNode
 import aoc.utils.graph.dijkstra
 import aoc.utils.graph.toWeightedGraph
+import aoc.utils.grid2d.GridPoint2D
+import aoc.utils.grid2d.GridPoint2D.Companion.by
 import aoc.utils.grid2d.forEachPointAndValue
 import aoc.utils.grid2d.toMutableIntGrid
+import aoc.utils.wrapBack
 import java.io.File
 
 internal class Day15Chiton(inputPath: String) : ChallengeDay {
@@ -22,10 +22,15 @@ internal class Day15Chiton(inputPath: String) : ChallengeDay {
     /**
      * what is the lowest total risk of any path from the top left to the bottom right?
      */
-    override fun part2() = grid
-        .toMutableIntGrid(Char::digitToInt)
-        .enlarge(times = 5)
-        .calculateTotalRisk<Any>()
+    override fun part2() = part2Elizarov()
+
+    /**
+     * Own solution. Quite memory inefficient
+     */
+    fun part2MemoryInefficient(): Int = grid
+            .toMutableIntGrid(Char::digitToInt)
+            .enlarge(times = 5)
+            .calculateTotalRisk<Any>()
 
     private fun <T> Array<IntArray>.calculateTotalRisk(): Int =
         toShortestPath<T>(first().lastIndex by lastIndex, 0 by 0).sumOf(WeightedNode<T>::weight)
@@ -41,12 +46,13 @@ internal class Day15Chiton(inputPath: String) : ChallengeDay {
     }
 
     private fun Array<IntArray>.enlarge(times: Int = 2): Array<IntArray> {
-        val enlarged = Array(size * times) { IntArray(first().size * times) }
+        val n = first().size
+        val enlarged = Array(size * times) { IntArray(n * times) }
         for (stepX in 0 until times) {
             for (stepY in 0 until times) {
                 toMutableIntGrid { (it + stepX + stepY).wrapBack(1, 9) }
                     .forEachPointAndValue { x, y, value ->
-                        enlarged[y + size * stepY][x + first().size * stepX] = value
+                        enlarged[y + size * stepY][x + n * stepX] = value
                     }
             }
         }
