@@ -58,6 +58,8 @@ publishing {
 tasks {
     test {
         useJUnitPlatform()
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
+        println("maxParallelForks = $maxParallelForks")
     }
     withType<Javadoc> {
         options.encoding = "UTF-8"
