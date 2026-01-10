@@ -94,4 +94,16 @@ internal class AocUtilsKtTest {
     fun testSwap() {
         intArrayOf(1, 2, 3, 4).also { it.swap(1, 3) } shouldBe intArrayOf(1, 4, 3, 2)
     }
+
+    @TestFactory
+    fun uniqByTests(): List<DynamicTest> {
+        infix fun Sequence<Int>.shouldResolveTo(expected: List<Int>) = dynamicTest("should resolve to $expected") {
+            uniqBy { it }.toList() shouldBe expected
+        }
+        return listOf(
+            emptySequence<Int>() shouldResolveTo emptyList(),
+            sequenceOf(1) shouldResolveTo listOf(1),
+            sequenceOf(1, 1, 1, 1, 2, 2, 3, 4) shouldResolveTo listOf(1, 2, 3, 4),
+        )
+    }
 }

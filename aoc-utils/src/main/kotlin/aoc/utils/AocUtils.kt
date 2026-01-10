@@ -8,6 +8,45 @@ val camelRegex = "(?<=[a-zA-Z0-9])[A-Z]".toRegex()
 
 fun <T> linkedListOf(first: T): LinkedList<T> = LinkedList<T>().apply { add(first) }
 
+fun <T> Sequence<T>.uniq(): Sequence<T> = distinctBy { it }
+
+/**
+ * Requires that the input is sorted/grouped for the output sequence to emit unique elements.
+ */
+fun <T, K> Sequence<T>.uniqBy(selector: (T) -> K): Sequence<T> = Sequence {
+    object : Iterator<T> {
+        var prevSelected: K? = null;
+        var hasNext = false
+        var next: T? = null
+        val iterator = this@uniqBy.iterator()
+
+        override fun hasNext(): Boolean {
+            if (hasNext) return true
+            while (iterator.hasNext()) {
+                val next = iterator.next()
+                val selected = selector(next)
+                val hasNextUniq = prevSelected != selected
+                this.next = next
+                prevSelected = selected
+                if (hasNextUniq) {
+                    hasNext = true
+                    return true
+                }
+            }
+            hasNext = false
+            return false
+        }
+
+        override fun next(): T {
+            if (hasNext()) {
+                hasNext = false
+                return next as T
+            }
+            throw NoSuchElementException()
+        }
+    }
+}
+
 fun <T, R, C : MutableCollection<in R>> Iterable<T>.zipWithNextTo(destination: C, mapper: (T, T) -> R): C {
     val iterator = iterator()
     if (iterator.hasNext()) {

@@ -1,9 +1,9 @@
 package aoc.seastories
 
 import io.kotest.matchers.shouldBe
-import java.util.concurrent.TimeUnit
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Timeout
+import java.util.concurrent.TimeUnit
 
 internal class Day22ReactorRebootTest {
 
