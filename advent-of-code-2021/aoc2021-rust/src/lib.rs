@@ -5,6 +5,7 @@ pub mod day18snailfish;
 pub mod day23amphipod;
 pub mod day13transparent_origami;
 pub mod day21dirac_dice;
+pub mod day12passage_pathing;
 
 pub trait AocDay<R1, R2> {
     fn part_1(input: &str) -> R1;

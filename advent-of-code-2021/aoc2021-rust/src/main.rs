@@ -1,5 +1,5 @@
 use aoc2021_rust::day01sonar_sweep::Day01SonarSweep;
-use aoc2021_rust::{day02dive, day15chiton, day18snailfish, day21dirac_dice, day23amphipod};
+use aoc2021_rust::{day02dive, day12passage_pathing, day15chiton, day18snailfish, day21dirac_dice, day23amphipod};
 use aoc2021_rust::{day13transparent_origami, AocDay};
 
 fn main() {
@@ -13,13 +13,18 @@ fn main() {
     println!("part 1: {}", day02dive::part_1(input_day2));
     println!("part 2: {}", day02dive::part_2(input_day2));
 
+    println!("\nDay12 Passage Pathing");
+    let input_day12 = include_str!("../../input/day12.txt");
+    println!("part 1: {}", day12passage_pathing::part_1(input_day12));
+    println!("part 2: {}", day12passage_pathing::part_2(input_day12));
+
     println!("\nDay 13 Transparent Origami");
     let input_day13 = include_str!("../../input/day13.txt");
     let (part_1, part_2) = day13transparent_origami::solve(input_day13);
     println!("part 1: {}", part_1);
     println!("part 2: {}", "\n".to_owned() + &*part_2);
 
-    println!("\nDay 15 chiton");
+    println!("\nDay 15 Chiton");
     let input_day15 = include_str!("../../input/day15.txt");
     println!("part 1: {}", day15chiton::part_1(input_day15));
     println!("part 2: {}", day15chiton::part_2(input_day15));
