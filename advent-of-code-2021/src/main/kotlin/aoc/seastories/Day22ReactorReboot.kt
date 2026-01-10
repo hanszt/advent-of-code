@@ -63,13 +63,13 @@ internal class Day22ReactorReboot(private val inputPath: String) : ChallengeDay 
                 val xOffset = x * sizeY * sizeZ
                 for (y in yStart..<yEnd) {
                     val yOffset = y * sizeZ
-                    for (z in zStart..<zEnd) {
-                        val index = xOffset + yOffset + z
-                        if (on) {
-                            reactorMatrix.set(index)
-                        } else {
-                            reactorMatrix.clear(index)
-                        }
+                    // Calculate the 1D range for the entire Z-row
+                    val fromIndex = xOffset + yOffset + zStart
+                    val toIndex = xOffset + yOffset + zEnd
+                    if (on) {
+                        reactorMatrix.set(fromIndex, toIndex)
+                    } else {
+                        reactorMatrix.clear(fromIndex, toIndex)
                     }
                 }
             }
