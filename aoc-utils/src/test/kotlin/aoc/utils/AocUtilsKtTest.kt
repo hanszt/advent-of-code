@@ -96,14 +96,31 @@ internal class AocUtilsKtTest {
     }
 
     @TestFactory
-    fun uniqByTests(): List<DynamicTest> {
+    fun distinctUntilChangedTests(): List<DynamicTest> {
         infix fun Sequence<Int>.shouldResolveTo(expected: List<Int>) = dynamicTest("should resolve to $expected") {
-            uniqBy { it }.toList() shouldBe expected
+            distinctUntilChanged().toList() shouldBe expected
         }
         return listOf(
             emptySequence<Int>() shouldResolveTo emptyList(),
             sequenceOf(1) shouldResolveTo listOf(1),
             sequenceOf(1, 1, 1, 1, 2, 2, 3, 4) shouldResolveTo listOf(1, 2, 3, 4),
+            sequenceOf(2, 2, 1, 1, 1, 1, 3, 4) shouldResolveTo listOf(2, 1, 3, 4), // grouped input
+            sequenceOf(2, 1, 2, 1, 1, 3, 4) shouldResolveTo listOf(2, 1, 2, 1, 3, 4),
+        )
+    }
+
+    @TestFactory
+    fun distinctUntilChangedByTests(): List<DynamicTest> {
+        infix fun Sequence<String>.uniqByLengthShouldBe(expected: List<String>) =
+            dynamicTest("should resolve to $expected") {
+                distinctUntilChanged { it.length }.toList() shouldBe expected
+                distinctBy { it.length }.toList() shouldBe expected
+            }
+        return listOf(
+            emptySequence<String>() uniqByLengthShouldBe emptyList(),
+            sequenceOf(
+                "Hello", "Honor", "it", "at", "big", "cat", "dog"
+            ) uniqByLengthShouldBe listOf("Hello", "it", "big"),
         )
     }
 }

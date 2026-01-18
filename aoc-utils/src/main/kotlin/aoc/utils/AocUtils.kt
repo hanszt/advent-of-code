@@ -8,17 +8,22 @@ val camelRegex = "(?<=[a-zA-Z0-9])[A-Z]".toRegex()
 
 fun <T> linkedListOf(first: T): LinkedList<T> = LinkedList<T>().apply { add(first) }
 
-fun <T> Sequence<T>.uniq(): Sequence<T> = distinctBy { it }
-
 /**
  * Requires that the input is sorted/grouped for the output sequence to emit unique elements.
  */
-fun <T, K> Sequence<T>.uniqBy(selector: (T) -> K): Sequence<T> = Sequence {
+fun <T> Sequence<T>.distinctUntilChanged(): Sequence<T> = distinctUntilChanged { it }
+
+/**
+ * Requires that the input is sorted/grouped by the selector element for the output sequence to emit unique elements.
+ *
+ * Unix naming: distinctUntilChanged (the standard naming convention for the Unix uniq behavior).
+ */
+fun <T, K> Sequence<T>.distinctUntilChanged(selector: (T) -> K): Sequence<T> = Sequence {
     object : Iterator<T> {
         var prevSelected: K? = null;
         var hasNext = false
         var next: T? = null
-        val iterator = this@uniqBy.iterator()
+        val iterator = this@distinctUntilChanged.iterator()
 
         override fun hasNext(): Boolean {
             if (hasNext) return true

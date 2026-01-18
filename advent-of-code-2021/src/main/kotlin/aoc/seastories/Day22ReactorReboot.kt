@@ -1,7 +1,7 @@
 package aoc.seastories
 
+import aoc.utils.distinctUntilChanged
 import aoc.utils.invoke
-import aoc.utils.uniq
 import java.io.File
 import java.util.*
 
@@ -107,7 +107,7 @@ internal class Day22ReactorReboot(private val inputPath: String) : ChallengeDay 
         .map(selector)
         .flatMap { listOf(it.first, it.last + 1) }
         .sorted()
-        .uniq()
+        .distinctUntilChanged()
         .toList()
 
     private fun toCuboid(s: String): Cuboid = s.split(' ').let { (instr, ranges) ->
