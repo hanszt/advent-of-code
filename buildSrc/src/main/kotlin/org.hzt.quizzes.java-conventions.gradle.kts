@@ -10,11 +10,11 @@ plugins {
 
 group = "org.hzt.quizzes"
 version = "1.0-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_24
+java.sourceCompatibility = JavaVersion.VERSION_25
 
-val junitVersion = "6.0.0"
+val junitVersion = "6.0.1"
 val kotestVersion = "5.9.1"
-val hztUtilsVersion = "1.0.5.21"
+val hztUtilsVersion = "1.0.6.25"
 
 dependencies {
     implementation("org.hzt.utils:core:$hztUtilsVersion")
@@ -114,6 +114,6 @@ java {
     //https://kotlinlang.org/docs/gradle-configure-project.html#configure-with-java-modules-jpms-enabled
     modularity.inferModulePath.set(true)
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(24))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
